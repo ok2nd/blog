@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Google Maps API V3ギャラリーマップ改修 - 晴歩雨描</title>
+<link rel="stylesheet" href="../../../../style.css">
+</head>
+<body>
+<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>Google Maps API V3ギャラリーマップ改修</h1><p class="meta">2017-06-30 · <a href="../../../../category/c21.html">地図・マップ</a> <a href="../../../../category/c13.html">ホームページ、Web作成</a></p><div class="entry-body"><p>Google Maps API V3を使って作成したギャラリーマップを少し改修。</p>
+<p><span style="color: #dd830c;">後日追記：Googleの規約変更により以下の地図は表示されなくなっている。</span></p>
+<p>マップを挿入する&lt;div&gt;の上に、ボタンなどのメニューエリア&lt;form&gt;が付いていると、マップ&lt;div&gt;の高さをheight:100%にした場合、ブラウザウインドウから上下が少しはみ出た状態になり、スマホで見る場合などマップが上にスクロールしてしまい、ボタンなどのメニューエリアが隠れて見えなくなってしまう不具合が生じていた。</p>
+<p>ボタンなどのメニューエリア&lt;form&gt;を、マップを挿入する&lt;div&gt;に重ねて表示することで解決。</p>
+<p>あわせて、マップ タイプ（地図、衛星写真）の切り替えに使うマップタイプコントロールの場所を左下に移動させるなど微調整。</p>
+<pre>mapTypeControlOptions: {<br /> position: google.maps.ControlPosition.LEFT_BOTTOM<br />}</pre>
+<p>マップタイプコントロールの配置については、以下を参照。</p>
+<p><a href="https://developers.google.com/maps/documentation/javascript/controls?hl=ja#ControlPositioning" target="_blank">https://developers.google.com/maps/documentation/javascript/controls?hl=ja#ControlPositioning</a></p>
+<p>神戸（三宮・元町） ギャラリー</p>
+<p><a href="https://ok2nd.github.io/tool/map/gallery-kobe.html" target="_blank">https://ok2nd.github.io/tool/map/gallery-kobe.html</a></p>
+<p>夙川・苦楽園 ギャラリー マップ</p>
+<p><a href="https://ok2nd.github.io/tool/map/gallery-shukugawa.html" target="_blank">https://ok2nd.github.io/tool/map/gallery-shukugawa.html</a></p>
+<p>京都 ギャラリー マップ</p>
+<p><a href="https://ok2nd.github.io/tool/map/gallery-kyoto.html" target="_blank">https://ok2nd.github.io/tool/map/gallery-kyoto.html</a></p>
+<p>大阪（梅田） ギャラリー マップ</p>
+<p><a href="https://ok2nd.github.io/tool/map/gallery-umeda.html" target="_blank">https://ok2nd.github.io/tool/map/gallery-umeda.html</a></p>
+<p>酒蔵【灘五郷】 西郷・御影郷・魚崎郷・西宮郷・今津郷 マップ</p>
+<p><a href="https://ok2nd.github.io/tool/map/sakagura-nada.html" target="_blank">https://ok2nd.github.io/tool/map/sakagura-nada.html</a></p>
+<p>【新デザイン】</p>
+<p><img class="hatena-fotolife" title="f:id:art2nd:20170630141328j:plain" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20170630/20170630141328.jpg" alt="f:id:art2nd:20170630141328j:plain" /></p>
+<p>【旧デザイン】</p>
+<p><img class="hatena-fotolife" title="f:id:art2nd:20170630141335j:plain" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20170630/20170630141335.jpg" alt="f:id:art2nd:20170630141335j:plain" /></p></div></article>
+</body>
+</html>

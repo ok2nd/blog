@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>写真のモノクロ化。明度と輝度の違い。GIMPでモノクロ化。 - 晴歩雨描</title>
+<link rel="stylesheet" href="../../../../style.css">
+</head>
+<body>
+<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>写真のモノクロ化。明度と輝度の違い。GIMPでモノクロ化。</h1><p class="meta">2020-08-10 · <a href="../../../../category/c18.html">写真・カメラ</a> <a href="../../../../category/c5.html">アート・美術</a></p><div class="entry-body"><p>色空間には、「<strong>HSL色空間</strong>」と「<strong><a class="keyword" href="http://d.hatena.ne.jp/keyword/HSV">HSV</a>色空間</strong>」という2種類があるらしい。</p>
+<p>HSL色空間は、色を「<strong>色相(Hue)</strong>」「<strong>彩度(Saturation)</strong>」「<strong>輝度（Lightness)</strong>」の3要素で表現する。</p>
+<p><a class="keyword" href="http://d.hatena.ne.jp/keyword/HSV">HSV</a>色空間は、色を「<strong>色相(Hue)</strong>」「<strong>彩度(Saturation)</strong>」「<strong>明度(<a class="keyword" href="http://d.hatena.ne.jp/keyword/Value">Value</a>・Brightness)</strong>」の3要素で表現する。</p>
+<p>「<strong>明度</strong>」と「<strong>輝度</strong>」の違い。写真をモノクロ化する場合、「<strong>明度</strong>」でモノクロ化するのと「<strong>輝度</strong>」でモノクロ化するのとでは、印象が違った写真になる。これについては、以下のサイトが分かりやすい。</p>
+<p><a class="link-card" href="https://at.sachi-web.com/blog-entry-877.html" target="_blank" rel="noopener noreferrer"><span class="lc-body"><span class="lc-title">画像のモノクロ化は輝度で変換しないとヒドイことになる</span><span class="lc-desc">こんにちは、さち です。画像編集アプリを使って、カラー画像をモノクロに変換することってありますよね。モノクロ化する方法は多くありますが、「輝度」についてちゃんと理解していますか？『えっ、輝度って何？ 明度と違うの？』と思…</span><span class="lc-site">知らなきゃ絶対損するPCマル秘ワザ</span></span><span class="lc-thumb"><img src="https://at.sachi-web.com/uploads/luminance00.png" alt="" loading="lazy"></span></a></p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20201010/20201010091753.png" alt="f:id:art2nd:20201010091753p:plain" title="f:id:art2nd:20201010091753p:plain" class="hatena-fotolife" itemprop="image" /></p>
+<p>上記サイトから、一部抜粋して拝借。</p>
+<ul>
+<li><em>「<span style="color: #ff0000;">明度</span>」によるモノクロ化は、単に色の彩度を下げたもの。</em></li>
+<li><em>「<span style="color: #ff0000;">輝度</span>」によるモノクロ化は、色による明るさの違いを考慮したもの。</em></li>
+</ul>
+<p>明度と輝度の変換式</p>
+<ul>
+<li><em><span style="color: #ff0000;">明度</span> ＝（RGBの最大値＋RGBの最小値）÷２</em></li>
+<li><em><span style="color: #ff0000;">輝度</span> ＝ 0.299×R ＋ 0.587×G ＋ 0.114×B （≒ 0.3R＋0.6G＋0.1B）</em></li>
+</ul>
+<p><em>「<span style="color: #ff0000;">輝度</span>」は、R（赤），G（緑），B（青）に係数をかけて重み付けをしている。明るく感じるG（緑）は約0.6倍、暗く感じるB（青）は約0.1倍というように明るさの補正が行われてる。</em></p>
+<p><strong><a class="keyword" href="http://d.hatena.ne.jp/keyword/GIMP">GIMP</a></strong>でモノクロ化を試してみた。</p>
+<figure class="figure-image figure-image-fotolife mceNonEditable" title="オリジナル画像">
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20200810/20200810170624.jpg" alt="f:id:art2nd:20200810170624j:plain" title="f:id:art2nd:20200810170624j:plain" class="hatena-fotolife" itemprop="image" /></p>
+<figcaption class="mceEditable">オリジナル画像</figcaption>
+</figure>
+<p>次の方法では、<em>輝度でモノクロ化される。</em></p>
+<ul>
+<li><a class="keyword" href="http://d.hatena.ne.jp/keyword/GIMP">GIMP</a>メニュー［画像］→［モード(M)］→［グレースケール(G)］</li>
+<li><a class="keyword" href="http://d.hatena.ne.jp/keyword/GIMP">GIMP</a>メニュー［色］→［脱色(E)］→［脱色(D)］</li>
+<li><a class="keyword" href="http://d.hatena.ne.jp/keyword/GIMP">GIMP</a>メニュー［色］→［彩度(U)］でScaleを0.0にする。</li>
+</ul>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20200810/20200810171449.jpg" alt="f:id:art2nd:20200810171449j:plain" title="f:id:art2nd:20200810171449j:plain" class="hatena-fotolife" itemprop="image" /></p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20200810/20200810170822.jpg" alt="f:id:art2nd:20200810170822j:plain" title="f:id:art2nd:20200810170822j:plain" class="hatena-fotolife" itemprop="image" /></p>
+<p>次の方法では、<em>明度でモノクロ化される。</em></p>
+<ul>
+<li><a class="keyword" href="http://d.hatena.ne.jp/keyword/GIMP">GIMP</a>メニュー［色］→［色相-彩度(S)］の彩度を-100にする。</li>
+</ul>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20200810/20200810171504.jpg" alt="f:id:art2nd:20200810171504j:plain" title="f:id:art2nd:20200810171504j:plain" class="hatena-fotolife" itemprop="image" /></p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20200810/20200810171218.jpg" alt="f:id:art2nd:20200810171218j:plain" title="f:id:art2nd:20200810171218j:plain" class="hatena-fotolife" itemprop="image" /></p>
+<p>黄色系の彩度がかなり落ちて、暗っぽくなる。</p>
+<p><a class="link-card" href="../../../2019/07/28/175049.html"><span class="lc-body"><span class="lc-title">複数の写真/画像をまとめて一括でモノクロ（グレースケール）に変換する方法。「縮小専用」「縮小革命」「JTrim」「ImageMagick」</span><span class="lc-desc">複数の写真をまとめて一括（バッチ）でモノクロ（グレースケール）画像に変換する方法。 Windowsアプリ「 縮小専用 」「 JTrim 」「 ImageMagick 」 それぞれを使う方法。 後日追加＞ 「 縮小革命 」…</span><span class="lc-site">晴歩雨描 · <time>2019-07-28</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190726/20190726120816.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../06/01/122253.html"><span class="lc-body"><span class="lc-title">写真をGIMP/G&#x27;MIC［Freaky B&amp;W］でレトロっぽくモノクロ化。</span><span class="lc-desc">写真を GIMP プラグイン 「G&#x27;MIC」フィルターを使って加工。 「G&#x27;MIC」については以下を参照。 今回は、以下の「G&#x27;MIC」フィルターを使ってレトロっぽい雰囲気のモノクロ化。 ［Black &amp; White］→…</span><span class="lc-site">晴歩雨描 · <time>2020-06-01</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20200601/20200601112701.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../03/08/170117.html"><span class="lc-body"><span class="lc-title">GIMPで写真加工。モノクロ化、粒状感、色味付け。レトロ化。色温度。色加工。</span><span class="lc-desc">GIMPで写真加工を色々試してみた。 オリジナル写真は以下の神戸元町で撮った写真。 【モノクロ化】 GIMPメニュー［画像］→［モード(M)］→［グレースケール(G)］でモノクロに。 【粒状感を出す】 GIMPプラグイン…</span><span class="lc-site">晴歩雨描 · <time>2020-03-08</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20200308/20200308155258.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2019/07/26/123725.html"><span class="lc-body"><span class="lc-title">GIMP（G&#x27;MIC）と、FotoSketcherでモノクロ写真をアート加工。★</span><span class="lc-desc">GIMP （ G&#x27;MIC ）と、 FotoSketcher でモノクロ写真をアート加工。 オリジナル写真は、上記の北浜散策で撮った写真をモノクロ化したもの。 GIMPプラグイン「G&#x27;MIC」の以下のフィルターを使用。[C…</span><span class="lc-site">晴歩雨描 · <time>2019-07-26</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190726/20190726122848.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2019/06/27/164018.html"><span class="lc-body"><span class="lc-title">粒子感のあるモノクロ写真：GIMPプラグイン「G&#x27;MIC」＋GIMPフィルター「CIE Ich Noise」を使って加工。</span><span class="lc-desc">先日、 LUMIX DC-LX100M2「L. モノクローム D」の「粒状」モードで写真を撮った。 今回、普通に撮影した写真を、粒子感（粒状感）のあるモノクロ写真に加工してみた。 【後日追記】 GIMP 標準フィルター「…</span><span class="lc-site">晴歩雨描 · <time>2019-06-27</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190627/20190627162820.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../07/24/151052.html"><span class="lc-body"><span class="lc-title">「Photoshop Express」のモノクロ（白黒）ピンホール写真がなかなかいい感じ。写真加工。</span><span class="lc-desc">先日、キヤノン EOS M200＋EF-M11-22mm F4-5.6（35mm判換算焦点距離18-35mm）で撮影した写真を、 Windows 無料アプリ「 JTrim 」、「 GIMP 」、「 Adobe Photo…</span><span class="lc-site">晴歩雨描 · <time>2020-07-24</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20200724/20200724144346.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2019/06/24/141746.html"><span class="lc-body"><span class="lc-title">写真家「山沢栄子」っぽい写真を、LUMIX DC-LX100M2（L.モノクロームD：粒状モード）で撮ってみた。</span><span class="lc-desc">先日、西宮市大谷記念美術館へ写真展「山沢栄子 私の現代」を見に行った。 山沢栄子は1899年生まれで、女性写真家の草分けとして活躍した。晩年の1980年代には 抽象絵画 のような作品を撮っている。 カラー写真による色鮮や…</span><span class="lc-site">晴歩雨描 · <time>2019-06-24</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190624/20190624141034.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../28/161939.html"><span class="lc-body"><span class="lc-title">GIMP色補正）BBCドラマのような落ち着いた色合いの写真にする。彩度と色温度調整。色加工。</span><span class="lc-desc">BBCドラマ は映像がきれい。 しっとりと落ち着いた色合い。各シーンの構図もよく考えられている。細部にこだわっている感じ。人物と背景の配置もうまい。ボケの使い方も絶妙。映像を見ているだけでも楽しい。 Amazon プライ…</span><span class="lc-site">晴歩雨描 · <time>2020-08-28</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20200828/20200828160150.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2018/02/09/170430.html"><span class="lc-body"><span class="lc-title">梅田→中之島→北浜→道頓堀→難波。GM1＋12-32mm/F3.5-5.6、TG-5、P10 Plusで、モノクロ写真＋カラー写真。</span><span class="lc-desc">2月9日。梅田→中之島→北浜→道頓堀→難波。8km。食事を含めて、ぶらぶらと3時間弱。 LUMIX DMC-GM1+12-32mm/F3.5-5.6、OLYMPUS Tough TG-5、HUAWEI P10 Plusで…</span><span class="lc-site">晴歩雨描 · <time>2018-02-09</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20180209/20180209170243.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2018/11/25/213654.html"><span class="lc-body"><span class="lc-title">デジカメ写真の色相を変えると、アートっぽくなる。色の三大要素（色相、明度、彩度）。</span><span class="lc-desc">色には三大要素がある。色相、明度、彩度。色相は赤、黄、青といった色合いの事。色相を円にして並べたものを色相環という。 デジカメ写真を、色相環に従って、色合いを変えてみたら、それだけでアートっぽくなった。（後日、写真を入れ…</span><span class="lc-site">晴歩雨描 · <time>2018-11-25</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20200704/20200704094801.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="225453.html"><span class="lc-body"><span class="lc-title">GIMPのチャンネルミキサーでひまわりの風景写真の色を変えて遊ぶ。色加工。</span><span class="lc-desc">GIMPのチャンネルミキサーを使って、ひまわりの風景写真の色を変えて遊ぶ。 GIMPのチャンネルミキサーは以前にも使った。 GIMPのチャンネルミキサーの意味は相変わらず理解できていない。 GIMPメニュー［色］→［色要…</span><span class="lc-site">晴歩雨描 · <time>2020-08-10</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20200810/20200810224055.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../11/08/154901.html"><span class="lc-body"><span class="lc-title">SILKYPIX JPEG Photography 10）写真のモノクロ化。写真は神戸三宮で、EOS M200＋EF-M11-22mm F4-5.6。</span><span class="lc-desc">写真画像調整ソフト「 SILKYPIX JPEG Photography 10 」で、写真のモノクロ化。 写真は、神戸三宮で撮影したものを使う。 以前、同じ写真を「Adobe Photoshop Express for …</span><span class="lc-site">晴歩雨描 · <time>2020-11-08</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20201108/20201108152349.jpg" alt="" loading="lazy"></span></a></p></div></article>
+</body>
+</html>

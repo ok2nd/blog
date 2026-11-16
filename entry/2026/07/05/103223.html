@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Windows）Python）ピンボケ写真判定アプリ。 - 晴歩雨描</title>
+<link rel="stylesheet" href="../../../../style.css">
+</head>
+<body>
+<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>Windows）Python）ピンボケ写真判定アプリ。</h1><p class="meta">2026-07-05 · <a href="../../../../category/c18.html">写真・カメラ</a></p><div class="entry-body"><p>Pythonで、ピンボケ写真判定アプリを作成。</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260705/20260705102156.png" width="722" height="552" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<h4 id="使い方">使い方</h4>
+<ul>
+<li>フォルダー欄にパスを入力（または「参照...」で選択）</li>
+<li>「ピンボケ検索」ボタンを押す</li>
+<li>ピンボケ写真が自動でTrashフォルダーへ移動される</li>
+</ul>
+<h4 id="主な機能">主な機能</h4>
+<ul>
+<li>ピンボケ自動判定（画像のエッジ量から判定）</li>
+<li>しきい値をGUIから自由に調整可能（デフォルト100）</li>
+<li>サブフォルダー検索（オンにすると子フォルダーも対象。Trashは見つかった各フォルダーごとに個別作成）</li>
+<li>お試しモード（実際には移動せず判定結果だけ確認できる）</li>
+<li>停止ボタン（処理中でもいつでも中断可能）</li>
+<li>ウィンドウを閉じても安全に処理を中断してから終了</li>
+<li>処理履歴の表示（サブフォルダー検索時はフォルダー名も表示）</li>
+<li>同名ファイルは連番を付けて保存（上書きしない）</li>
+</ul>
+<h4 id="対応する画像形式">対応する画像形式</h4>
+<p>.jpg / .jpeg / .png / .bmp / .tif / .tiff / .webp</p>
+<h4 id="Trashフォルダーの作成場所">Trashフォルダーの作成場所</h4>
+<ul>
+<li>サブフォルダー検索なし：指定フォルダー直下に Trash を作成</li>
+<li>サブフォルダー検索あり：ピンボケ写真が見つかった各フォルダーの中に個別に Trash を作成（例：写真\旅行\Trash、写真\家族\Trash）</li>
+</ul>
+<h4 id="注意事項">注意事項</h4>
+<p>ピンボケ判定はエッジ量に基づく簡易的な指標のため、単色・グラデーション中心の写真などは誤判定される場合がある。</p>
+<h4 id="-Pythonソースコード">《 Pythonソースコード》</h4>
+<pre># -*- coding: utf-8 -*-
+"""
+ピンボケ写真整理アプリ (Blur Photo Sorter)
+
+指定フォルダー内の画像を解析し、ピンボケと判定した写真を
+そのフォルダー配下の「Trash」フォルダーへ移動します。
+
+必要なライブラリ:
+    pip install opencv-python numpy
+
+実行方法:
+    python blur_sorter.py
+"""
+
+import os
+import shutil
+import threading
+import queue
+import tkinter as tk
+from tkinter import ttk, filedialog, messagebox
+from pathlib import Path
+
+try:
+    import cv2
+    import numpy as np
+except ImportError:
+    cv2 = None
+    np = None
+
+# 対応する画像拡張子
+IMAGE_EXTENSIONS = {".jpg", ".jpeg", ".png", ".bmp", ".tif", ".tiff", ".webp"}
+
+TRASH_FOLDER_NAME = "Trash"
+
+
+def imread_unicode_gray(path: Path):
+    """日本語などUnicodeパスに対応したグレースケール画像読み込み"""
+    try:
+        data = np.fromfile(str(path), dtype=np.uint8)
+        if data.size == 0:
+            return None
+        img = cv2.imdecode(data, cv2.IMREAD_GRAYSCALE)
+        return img
+    except Exception:
+        return None
+
+
+def calc_blur_score(path: Path):
+    """
+    Laplacian分散によるピンボケ度スコアを計算する。
+    値が小さいほどピンボケ（エッジが少ない）とみなす。
+    読み込み失敗時は None を返す。
+    """
+    img = imread_unicode_gray(path)
+    if img is None:
+        return None
+    # 画像が大きすぎる場合は処理速度のためリサイズ
+    h, w = img.shape[:2]
+    max_dim = 1600
+    if max(h, w) &gt; max_dim:
+        scale = max_dim / max(h, w)
+        img = cv2.resize(img, (int(w * scale), int(h * scale)))
+    variance = cv2.Laplacian(img, cv2.CV_64F).var()
+    return variance
+
+
+def unique_destination(dest_dir: Path, filename: str) -&gt; Path:
+    """移動先で同名ファイルが存在する場合、末尾に番号を付けて衝突を回避する"""
+    dest = dest_dir / filename
+    if not dest.exists():
+        return dest
+    stem = dest.stem
+    suffix = dest.suffix
+    counter = 1
+    while True:
+        candidate = dest_dir / f"{stem}_{counter}{suffix}"
+        if not candidate.exists():
+            return candidate
+        counter += 1
+
+
+class BlurSorterApp:
+    def __init__(self, root: tk.Tk):
+        self.root = root
+        self.root.title("ピンボケ写真整理アプリ")
+        self.root.geometry("720x520")
+        self.root.minsize(640, 460)
+
+        self.msg_queue = queue.Queue()
+        self.worker_thread = None
+        self.stop_event = threading.Event()
+
+        self._build_ui()
+        self._poll_queue()
+
+        # アプリ終了時にも処理を中止できるようにする
+        self.root.protocol("WM_DELETE_WINDOW", self.on_close)
+
+    # ------------------------------------------------------------------
+    # UI構築
+    # ------------------------------------------------------------------
+    def _build_ui(self):
+        pad = {"padx": 8, "pady": 6}
+
+        # フォルダー選択行
+        frame_top = ttk.Frame(self.root)
+        frame_top.pack(fill="x", **pad)
+
+        ttk.Label(frame_top, text="フォルダー:").pack(side="left")
+        self.folder_var = tk.StringVar()
+        self.folder_entry = ttk.Entry(frame_top, textvariable=self.folder_var)
+        self.folder_entry.pack(side="left", fill="x", expand=True, padx=(6, 6))
+
+        ttk.Button(frame_top, text="参照...", command=self.browse_folder).pack(side="left")
+
+        # オプション行
+        frame_opt = ttk.Frame(self.root)
+        frame_opt.pack(fill="x", **pad)
+
+        ttk.Label(frame_opt, text="ぼやけ判定しきい値:").pack(side="left")
+        self.threshold_var = tk.StringVar(value="100")
+        threshold_entry = ttk.Entry(frame_opt, textvariable=self.threshold_var, width=8)
+        threshold_entry.pack(side="left", padx=(6, 4))
+        ttk.Label(
+            frame_opt,
+            text="(値が小さいほど「かなりぼやけた写真だけ」を検出。100前後が目安)",
+            foreground="gray",
+        ).pack(side="left", padx=(4, 0))
+
+        frame_opt2 = ttk.Frame(self.root)
+        frame_opt2.pack(fill="x", padx=8, pady=(0, 6))
+
+        self.recursive_var = tk.BooleanVar(value=False)
+        ttk.Checkbutton(
+            frame_opt2, text="サブフォルダーも検索する", variable=self.recursive_var
+        ).pack(side="left")
+
+        self.dry_run_var = tk.BooleanVar(value=False)
+        ttk.Checkbutton(
+            frame_opt2,
+            text="お試しモード（実際には移動しない・結果表示のみ）",
+            variable=self.dry_run_var,
+        ).pack(side="left", padx=(16, 0))
+
+        # 実行ボタン
+        frame_btn = ttk.Frame(self.root)
+        frame_btn.pack(fill="x", **pad)
+
+        self.start_btn = ttk.Button(
+            frame_btn, text="ピンボケ検索", command=self.start_scan
+        )
+        self.start_btn.pack(side="left")
+
+        self.stop_btn = ttk.Button(
+            frame_btn, text="停止", command=self.stop_scan, state="disabled"
+        )
+        self.stop_btn.pack(side="left", padx=(8, 0))
+
+        self.status_var = tk.StringVar(value="待機中")
+        ttk.Label(frame_btn, textvariable=self.status_var).pack(side="left", padx=(16, 0))
+
+        # プログレスバー
+        self.progress = ttk.Progressbar(self.root, mode="determinate")
+        self.progress.pack(fill="x", padx=8, pady=(0, 6))
+
+        # ログ表示
+        frame_log = ttk.Frame(self.root)
+        frame_log.pack(fill="both", expand=True, padx=8, pady=(0, 8))
+
+        self.log_text = tk.Text(frame_log, wrap="word", state="disabled")
+        scrollbar = ttk.Scrollbar(frame_log, command=self.log_text.yview)
+        self.log_text.configure(yscrollcommand=scrollbar.set)
+        self.log_text.pack(side="left", fill="both", expand=True)
+        scrollbar.pack(side="right", fill="y")
+
+    # ------------------------------------------------------------------
+    # イベントハンドラ
+    # ------------------------------------------------------------------
+    def browse_folder(self):
+        path = filedialog.askdirectory()
+        if path:
+            self.folder_var.set(path)
+
+    def start_scan(self):
+        if cv2 is None or np is None:
+            messagebox.showerror(
+                "エラー",
+                "opencv-python と numpy がインストールされていません。\n"
+                "コマンドプロンプトで以下を実行してください:\n\n"
+                "pip install opencv-python numpy",
+            )
+            return
+
+        folder = self.folder_var.get().strip()
+        if not folder:
+            messagebox.showwarning("入力エラー", "フォルダーを指定してください。")
+            return
+
+        folder_path = Path(folder)
+        if not folder_path.is_dir():
+            messagebox.showerror("エラー", "指定されたフォルダーが存在しません。")
+            return
+
+        try:
+            threshold = float(self.threshold_var.get())
+        except ValueError:
+            messagebox.showerror("入力エラー", "しきい値は数値で入力してください。")
+            return
+
+        if self.worker_thread and self.worker_thread.is_alive():
+            messagebox.showinfo("処理中", "現在処理を実行中です。")
+            return
+
+        self.log_clear()
+        self.stop_event.clear()
+        self.start_btn.config(state="disabled")
+        self.stop_btn.config(state="normal")
+        self.status_var.set("検索中...")
+        self.progress["value"] = 0
+
+        self.worker_thread = threading.Thread(
+            target=self.run_scan,
+            args=(folder_path, threshold, self.recursive_var.get(), self.dry_run_var.get()),
+            daemon=True,
+        )
+        self.worker_thread.start()
+
+    def stop_scan(self):
+        """処理中のスキャンに停止を要求する"""
+        if self.worker_thread and self.worker_thread.is_alive():
+            self.stop_event.set()
+            self.status_var.set("停止中...")
+            self.stop_btn.config(state="disabled")
+
+    def on_close(self):
+        """ウィンドウを閉じるときに、実行中の処理があれば停止させてから終了する"""
+        if self.worker_thread and self.worker_thread.is_alive():
+            self.stop_event.set()
+            self.status_var.set("終了処理中...")
+            # 現在処理中のファイル1件が終わるまで少し待つ（最大3秒）
+            self.worker_thread.join(timeout=3.0)
+        self.root.destroy()
+
+    # ------------------------------------------------------------------
+    # スキャン処理（別スレッドで実行）
+    # ------------------------------------------------------------------
+    def run_scan(self, folder_path: Path, threshold: float, recursive: bool, dry_run: bool):
+        # 対象ファイル一覧を作成
+        # ※ サブフォルダー検索時は、どの階層の「Trash」フォルダーも対象から除外する
+        if recursive:
+            all_files = [
+                p
+                for p in folder_path.rglob("*")
+                if p.is_file()
+                and p.suffix.lower() in IMAGE_EXTENSIONS
+                and TRASH_FOLDER_NAME not in p.relative_to(folder_path).parts[:-1]
+            ]
+        else:
+            all_files = [
+                p
+                for p in folder_path.iterdir()
+                if p.is_file() and p.suffix.lower() in IMAGE_EXTENSIONS
+            ]
+
+        total = len(all_files)
+        self.msg_queue.put(("log", f"対象画像ファイル数: {total}"))
+
+        if total == 0:
+            self.msg_queue.put(("log", "画像ファイルが見つかりませんでした。"))
+            self.msg_queue.put(("done", None))
+            return
+
+        moved_count = 0
+        error_count = 0
+        stopped = False
+
+        for i, file_path in enumerate(all_files, start=1):
+            if self.stop_event.is_set():
+                stopped = True
+                break
+
+            # 表示名: サブフォルダー検索時は、フォルダー名も分かるように相対パスを表示する
+            if recursive:
+                display_name = str(file_path.relative_to(folder_path))
+            else:
+                display_name = file_path.name
+
+            score = calc_blur_score(file_path)
+
+            if score is None:
+                self.msg_queue.put(("log", f"[読込失敗] {display_name}"))
+                error_count += 1
+            elif score &lt; threshold:
+                # 「サブフォルダーも検索する」場合は、各サブフォルダー単位でTrashフォルダーを作る
+                trash_dir = file_path.parent / TRASH_FOLDER_NAME
+
+                if dry_run:
+                    self.msg_queue.put(
+                        ("log", f"[ピンボケ判定・移動なし] {display_name} (score={score:.1f})")
+                    )
+                else:
+                    try:
+                        trash_dir.mkdir(exist_ok=True)
+                        dest = unique_destination(trash_dir, file_path.name)
+                        shutil.move(str(file_path), str(dest))
+                        self.msg_queue.put(
+                            (
+                                "log",
+                                f"[移動] {display_name} -&gt; "
+                                f"{trash_dir.relative_to(folder_path)} (score={score:.1f})",
+                            )
+                        )
+                        moved_count += 1
+                    except Exception as e:
+                        self.msg_queue.put(("log", f"[移動失敗] {display_name}: {e}"))
+                        error_count += 1
+            else:
+                self.msg_queue.put(("log", f"[鮮明] {display_name} (score={score:.1f})"))
+
+            self.msg_queue.put(("progress", i / total * 100))
+
+        if stopped:
+            summary = (
+                f"ユーザーにより停止されました。({i}/{total}件を処理、"
+                f"うち{moved_count}件を移動)"
+            )
+        else:
+            summary = f"完了: 全{total}件中 ピンボケ判定{moved_count}件を移動しました。"
+            if dry_run:
+                summary = (
+                    f"完了(お試しモード): 全{total}件中 ピンボケ判定された件数を上記に表示しました。"
+                )
+        if error_count:
+            summary += f" (読込/移動エラー {error_count}件)"
+
+        self.msg_queue.put(("log", summary))
+        self.msg_queue.put(("done", None))
+
+    # ------------------------------------------------------------------
+    # スレッド間通信（キュー監視）
+    # ------------------------------------------------------------------
+    def _poll_queue(self):
+        try:
+            while True:
+                kind, payload = self.msg_queue.get_nowait()
+                if kind == "log":
+                    self.log_append(payload)
+                elif kind == "progress":
+                    self.progress["value"] = payload
+                elif kind == "done":
+                    self.status_var.set("完了")
+                    self.start_btn.config(state="normal")
+                    self.stop_btn.config(state="disabled")
+        except queue.Empty:
+            pass
+        self.root.after(100, self._poll_queue)
+
+    # ------------------------------------------------------------------
+    # ログ操作
+    # ------------------------------------------------------------------
+    def log_append(self, text: str):
+        self.log_text.config(state="normal")
+        self.log_text.insert("end", text + "\n")
+        self.log_text.see("end")
+        self.log_text.config(state="disabled")
+
+    def log_clear(self):
+        self.log_text.config(state="normal")
+        self.log_text.delete("1.0", "end")
+        self.log_text.config(state="disabled")
+
+
+def main():
+    root = tk.Tk()
+    app = BlurSorterApp(root)
+    root.mainloop()
+
+
+if __name__ == "__main__":
+    main()
+</pre>
+<p><a class="link-card" href="https://ok2nd.github.io/sitemap/hatena-sitemap-table.html?search=python" target="_blank" rel="noopener noreferrer"><span class="lc-body"><span class="lc-title">晴歩雨描：記事一覧</span><span class="lc-desc"></span><span class="lc-site">ok2nd.github.io</span></span></a></p>
+<p><a class="link-card" href="../../05/26/164913.html"><span class="lc-body"><span class="lc-title">Windows）Python）写真「顔検出＋AI輪郭抽出＋AI自動シミ消し＋美肌効果」アプリ作成。</span><span class="lc-desc">Pythonで、写真の人物を美肌に編集加工するWindowsアプリなどを作成してきた。 AIによる顔検出＋AI輪郭抽出も行った。 写真のオブジェクト除去も作成した。シミ消しにも使える。 今回、 「顔検出＋AI輪郭抽出＋美…</span><span class="lc-site">晴歩雨描 · <time>2026-05-26</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260528/20260528114608.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../04/02/165334.html"><span class="lc-body"><span class="lc-title">Claude）Python）画像フォーマット変換Windowsアプリ。JPEG,PNG,WebP,AVIF,GIF,SVG,TIFF,BMP,HEIC/HEIF → JPEG,PNG,WebP,AVIF。複数一括も可。サイズ比較。</span><span class="lc-desc">画像フォーマットを変換するWindowsアプリ作成。複数ファイル一括も可。 変換できるフォーマット形式は以下。 インプット形式：JPEG、PNG、WebP、AVIF、GIF、SVG、TIFF、BMP、HEIC/HEIF …</span><span class="lc-site">晴歩雨描 · <time>2026-04-02</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260402/20260402160928.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../03/31/094105.html"><span class="lc-body"><span class="lc-title">Claude）Python）「縦横比率指定トリミング」Windowsアプリ作成。ICCプロファイル維持。</span><span class="lc-desc">今まで、写真画像を縦横比率指定でトリミングする場合、Windowsアプリ「トリミング de 顔写真！」を使ってきた。 しかし、「 トリミング de 顔写真！ 」では、 ICCプロファイル （sRGB、Adobe RGB、…</span><span class="lc-site">晴歩雨描 · <time>2026-03-31</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260331/20260331093543.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../03/30/114823.html"><span class="lc-body"><span class="lc-title">Claude）Python）「縮小革命」風の「画像一括縮小」Windowsアプリ作成。ICCプロファイル維持。</span><span class="lc-desc">写真画像の縮小には、「 縮小革命 簡易版 」「 縮小革命 」を、永らく使ってきた。 最近、「縮小革命 簡易版」では「EXIF情報：継承」に、「縮小革命」では「簡易色域圧縮：AobeRGB→sRGB変換をする」にしないと、…</span><span class="lc-site">晴歩雨描 · <time>2026-03-30</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260330/20260330113953.jpg" alt="" loading="lazy"></span></a></p></div></article>
+</body>
+</html>

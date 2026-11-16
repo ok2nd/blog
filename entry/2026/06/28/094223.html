@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>アイコンフォント「Font Awesome」概要。Leaflet地図 / easyButton 連携。＋アイコン一覧。 - 晴歩雨描</title>
+<link rel="stylesheet" href="../../../../style.css">
+</head>
+<body>
+<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>アイコンフォント「Font Awesome」概要。Leaflet地図 / easyButton 連携。＋アイコン一覧。</h1><p class="meta">2026-06-28 · <a href="../../../../category/c21.html">地図・マップ</a> <a href="../../../../category/c13.html">ホームページ、Web作成</a></p><div class="entry-body"><p>アイコンフォント「<em>Font Awesome</em>」の概要。<em>Leaflet地図</em> / <em>easyButton</em> 連携を含む。</p>
+<p><span style="color: #dd830c;">※ フォントサンプルを含めた、もう少し分かり易い解説は、以下に。</span></p>
+<p><a class="link-card" href="https://ok2nd.github.io/tool/icon/fontawesome-guide.html" target="_blank" rel="noopener noreferrer"><span class="lc-body"><span class="lc-title">Font Awesome 完全解説 — Leaflet / easyButton との連携まで</span><span class="lc-desc"></span><span class="lc-site">ok2nd.github.io</span></span></a></p>
+<h3 id="Font-Awesome-とは">Font Awesome とは</h3>
+<p>Font Awesome は、アイコンをフォントとして提供するライブラリである。画像ファイルは不要で、<code>&lt;i&gt;</code> タグにクラスを付けるだけで表示できる。CSS の <code>color</code> や <code>font-size</code> でそのまま制御できるのが最大の利点だ。</p>
+<p>無償の <strong>Free</strong> エディションと有償の <strong>Pro</strong> エディションがある。CDN を1行読み込むだけで始められる。</p>
+<pre><code>&lt;link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"&gt;</code></pre>
+<h3 id="基本の使い方">基本の使い方</h3>
+<p><code>&lt;i&gt;</code> タグにスタイルクラスとアイコン名クラスを付与する。スタイルクラスは3種類ある。</p>
+<table border="1" cellspacing="0" cellpadding="6">
+<tbody>
+<tr>
+<th>クラス</th>
+<th>種別</th>
+<th>内容</th>
+</tr>
+<tr>
+<td><code>fa-solid</code></td>
+<td>Solid</td>
+<td>塗りつぶしアイコン（最も種類が多い）</td>
+</tr>
+<tr>
+<td><code>fa-regular</code></td>
+<td>Regular</td>
+<td>輪郭のみのアイコン</td>
+</tr>
+<tr>
+<td><code>fa-brands</code></td>
+<td>Brands</td>
+<td>企業・サービスのロゴ</td>
+</tr>
+</tbody>
+</table>
+<pre><code>&lt;i class="fa-solid fa-house"&gt;&lt;/i&gt;       &lt;!-- Solid --&gt;
+&lt;i class="fa-regular fa-star"&gt;&lt;/i&gt;     &lt;!-- Regular --&gt;
+&lt;i class="fa-brands fa-github"&gt;&lt;/i&gt;    &lt;!-- Brands --&gt;</code></pre>
+<h4 id="サイズ変更">サイズ変更</h4>
+<p>組み込みクラス <code>fa-xs</code> 〜 <code>fa-2xl</code>、または CSS の <code>font-size</code> で指定する。</p>
+<pre><code>&lt;i class="fa-solid fa-location-dot fa-xs"&gt;&lt;/i&gt;
+&lt;i class="fa-solid fa-location-dot fa-lg"&gt;&lt;/i&gt;
+&lt;i class="fa-solid fa-location-dot fa-2xl"&gt;&lt;/i&gt;
+&lt;i class="fa-solid fa-location-dot" style="font-size:48px"&gt;&lt;/i&gt;</code></pre>
+<h4 id="色変更">色変更</h4>
+<p>CSS の <code>color</code> プロパティで着色する。親要素の色も継承する。</p>
+<pre><code>&lt;i class="fa-solid fa-star" style="color:#3b6ef6"&gt;&lt;/i&gt;
+&lt;i class="fa-solid fa-star" style="color:#e84393"&gt;&lt;/i&gt;</code></pre>
+<h4 id="アニメーション">アニメーション</h4>
+<pre><code>&lt;i class="fa-solid fa-spinner fa-spin"&gt;&lt;/i&gt;   &lt;!-- 回転 --&gt;
+&lt;i class="fa-solid fa-bell fa-shake"&gt;&lt;/i&gt;     &lt;!-- 振動 --&gt;
+&lt;i class="fa-solid fa-heart fa-beat"&gt;&lt;/i&gt;     &lt;!-- 鼓動 --&gt;</code></pre>
+<h4 id="アイコンを重ねるfa-stack">アイコンを重ねる（fa-stack）</h4>
+<p><code>fa-stack</code> コンテナで2つのアイコンを重ね合わせられる。</p>
+<pre><code>&lt;span class="fa-stack"&gt;
+  &lt;i class="fa-solid fa-circle fa-stack-2x" style="color:#3b6ef6"&gt;&lt;/i&gt;
+  &lt;i class="fa-solid fa-map-pin fa-stack-1x fa-inverse"&gt;&lt;/i&gt;
+&lt;/span&gt;</code></pre>
+<h3 id="Leaflet-との組み合わせ">Leaflet との組み合わせ</h3>
+<p>Leaflet は軽量な OSS の地図ライブラリである。<code>L.divIcon</code> を使うと任意の HTML をマーカーにできるため、Font Awesome のアイコンをそのままピンとして地図上に置ける。</p>
+<pre><code>const icon = L.divIcon({
+  html: '&lt;i class="fa-solid fa-location-dot" style="font-size:32px;color:#e84393"&gt;&lt;/i&gt;',
+  iconSize:   [32, 32],
+  iconAnchor: [16, 32],   // アイコン下端を座標に合わせる
+  className:  ''           // デフォルトの白背景を除去
+});
+
+L.marker([35.6812, 139.7671], { icon }).addTo(map).bindPopup('東京駅');</code></pre>
+<p><code>className: ''</code> を指定しないと Leaflet のデフォルトスタイル（白背景・枠線）が残るので注意。ポップアップ内でも <code>&lt;i&gt;</code> タグをそのまま使える。</p>
+<pre><code>marker.bindPopup('&lt;i class="fa-solid fa-utensils"&gt;&lt;/i&gt; レストラン');</code></pre>
+<h3 id="easy-buttonjs-との組み合わせ">easy-button.js との組み合わせ</h3>
+<p>easy-button.js は Leaflet 用プラグインで、地図のコントロール領域（ズームボタンの隣）にカスタムボタンをワンライナーで追加できる。Font Awesome のクラス名を第1引数に渡すだけでアイコンボタンが完成する。</p>
+<h4 id="CDN-での読み込み3点セット">CDN での読み込み（3点セット）</h4>
+<pre><code>&lt;!-- Leaflet --&gt;
+&lt;link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"&gt;
+&lt;script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"&gt;&lt;/script&gt;
+
+&lt;!-- Font Awesome（Leaflet より先に読み込む）--&gt;
+&lt;link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"&gt;
+
+&lt;!-- easy-button --&gt;
+&lt;link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.css"&gt;
+&lt;script src="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.js"&gt;&lt;/script&gt;</code></pre>
+<h4 id="単ボタンの追加">単ボタンの追加</h4>
+<pre><code>L.easyButton(
+  'fa-solid fa-location-crosshairs',   // Font Awesome クラス名
+  function(btn, map) {
+    map.locate({ setView: true, maxZoom: 16 });
+  },
+  '現在地に移動'                        // ツールチップ
+).addTo(map);</code></pre>
+<h4 id="トグルボタン状態切り替え">トグルボタン（状態切り替え）</h4>
+<p><code>states</code> に複数の状態を渡すと、クリックのたびにアイコンが切り替わる。レイヤーの表示/非表示などに使う。</p>
+<pre><code>L.easyButton({
+  states: [
+    {
+      stateName: 'show',
+      icon:  'fa-solid fa-eye',
+      title: 'レイヤーを非表示',
+      onClick(btn, map) { overlay.remove(); btn.state('hide'); }
+    },
+    {
+      stateName: 'hide',
+      icon:  'fa-solid fa-eye-slash',
+      title: 'レイヤーを表示',
+      onClick(btn, map) { overlay.addTo(map); btn.state('show'); }
+    }
+  ]
+}).addTo(map);</code></pre>
+<h4 id="複数ボタンのグループ化easyBar">複数ボタンのグループ化（easyBar）</h4>
+<p><code>L.easyBar</code> でまとめると、標準のズームコントロールと同じ外観のボタン群になる。</p>
+<pre><code>L.easyBar([
+  L.easyButton('fa-solid fa-magnifying-glass-plus',  zoomIn),
+  L.easyButton('fa-solid fa-magnifying-glass-minus', zoomOut),
+  L.easyButton('fa-solid fa-house',                  goHome),
+]).addTo(map);</code></pre>
+<h3 id="3ライブラリの役割まとめ">3ライブラリの役割まとめ</h3>
+<table border="1" cellspacing="0" cellpadding="6">
+<tbody>
+<tr>
+<th>ライブラリ</th>
+<th>役割</th>
+<th>Font Awesome との接点</th>
+</tr>
+<tr>
+<td>Font Awesome</td>
+<td>アイコン素材の提供</td>
+<td>—（提供側）</td>
+</tr>
+<tr>
+<td>Leaflet</td>
+<td>地図の描画・操作</td>
+<td><code>L.divIcon</code> の html にアイコンを埋め込む</td>
+</tr>
+<tr>
+<td>easy-button.js</td>
+<td>地図コントロールにボタンを追加</td>
+<td>第1引数にクラス名を渡すだけでアイコンボタン化</td>
+</tr>
+</tbody>
+</table>
+<h3 id="よくあるトラブル">よくあるトラブル</h3>
+<table border="1" cellspacing="0" cellpadding="6">
+<tbody>
+<tr>
+<th>症状</th>
+<th>原因と対処</th>
+</tr>
+<tr>
+<td>□（豆腐）で表示される</td>
+<td>クラス名の誤り。<code>fa-solid</code> / <code>fa-regular</code> / <code>fa-brands</code> のどれかを必ず付ける</td>
+</tr>
+<tr>
+<td>easyButton のアイコンが出ない</td>
+<td>Font Awesome の CSS が easyButton の JS より後に読み込まれている。順序を入れ替える</td>
+</tr>
+<tr>
+<td>divIcon に白背景が残る</td>
+<td><code>className: ''</code> を付け忘れている</td>
+</tr>
+<tr>
+<td>v4 のクラス名（<code>fas</code> / <code>fab</code>）が効かない</td>
+<td>v6 では <code>fa-solid</code> / <code>fa-brands</code> に変更された</td>
+</tr>
+</tbody>
+</table>
+<p>良く使いそうなアイコン一覧も作成した。検索もできる。アイコンサイズや色も変更できる。</p>
+<h3 id="-Font-Awesome-アイコン一覧-">《 Font Awesome アイコン一覧 》</h3>
+<p><a href="https://ok2nd.github.io/tool/icon/leaflet-fa-icons.html" target="_blank">https://ok2nd.github.io/tool/icon/leaflet-fa-icons.html</a></p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260628/20260628092249.png" width="870" height="746" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p><a class="link-card" href="https://ok2nd.github.io/leaflet/" target="_blank" rel="noopener noreferrer"><span class="lc-body"><span class="lc-title">Leaflet地図 リスト by 晴歩雨描</span><span class="lc-desc"></span><span class="lc-site">ok2nd.github.io</span></span></a></p>
+<p><a class="link-card" href="https://ok2nd.github.io/sitemap/hatena-sitemap-table.html?search=leaflet" target="_blank" rel="noopener noreferrer"><span class="lc-body"><span class="lc-title">晴歩雨描：記事一覧</span><span class="lc-desc"></span><span class="lc-site">ok2nd.github.io</span></span></a></p>
+<p><a class="link-card" href="../../../2021/06/02/173532.html"><span class="lc-body"><span class="lc-title">Leaflet地図：フルスクリーン表示機能追加。requestFullscreen()版。サンプルソース。</span><span class="lc-desc">地図データを扱う JavaScript ライブラリ「Leaflet」を使って、地図表示を試してきた。 前回、ライブラリ「 Leaflet.fullscreen 」を使って、フルスクリーン表示機能を追加した。 今回、「Le…</span><span class="lc-site">晴歩雨描 · <time>2021-06-02</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20210602/20210602172756.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2021/05/01/101739.html"><span class="lc-body"><span class="lc-title">Leaflet地図：現在地表示ボタン追加。位置情報継続的更新。サンプルソース。</span><span class="lc-desc">地図データを扱うJavaScript ライブラリ「 Leaflet 」を使って、地図表示を試してきた。 「 Leaflet 」を使って、「 Google マップ 」「 OpenStreetMap 」「 国土地理院 」「 …</span><span class="lc-site">晴歩雨描 · <time>2021-05-01</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20210501/20210501094202.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2020/08/21/153625.html"><span class="lc-body"><span class="lc-title">はてなブログで使えるアイコンWebフォント</span><span class="lc-desc">はてなブログ の本文文章の中で、アイコンを使いたい時がある。例えば、 スマホ などで設定画面を開くためのアイコン［ ］。 はてなブログ で標準で使えるアイコンWebフォントが用意されている。 使い方は、HTML編集画面で…</span><span class="lc-site">晴歩雨描 · <time>2020-08-21</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20200821/20200821152444.jpg" alt="" loading="lazy"></span></a></p></div></article>
+</body>
+</html>

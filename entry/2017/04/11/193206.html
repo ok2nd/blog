@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>「ブロック(コンテナ)全体は中央揃え(センタリング)＋中の要素(複数画像)は左寄せ」をJavaScriptを使わないでCSSのみで実現できる方法 - 晴歩雨描</title>
+<link rel="stylesheet" href="../../../../style.css">
+</head>
+<body>
+<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>「ブロック(コンテナ)全体は中央揃え(センタリング)＋中の要素(複数画像)は左寄せ」をJavaScriptを使わないでCSSのみで実現できる方法</h1><p class="meta">2017-04-11 · <a href="../../../../category/c13.html">ホームページ、Web作成</a></p><div class="entry-body"><p>このブログで以前に書いた「<a href="../../03/13/143736.html" target="_blank">ブロック全体は中央揃え＋中の複数画像は左寄</a>」をJavaScriptを使わないでCSSのみで実現できる方法が見つかったので、紹介。<img class="hatena-fotolife" title="f:id:art2nd:20170313140402j:plain" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20170313/20170313140402.jpg" alt="f:id:art2nd:20170313140402j:plain" /><br />「Webクリエイターボックス」の以下の記事のコメント欄で質問したら、「和草イデハナ」さんから「Media Queriesを使えば良いのでは」という返信をもらい、やってみたらうまくいった。Media Queriesを使ってウインドウのmax-widthの幅に応じて、コンテナボックスに適切なwidthを設定する。</p>
+<p>≪日本語対応！CSS Flexboxのチートシートを作ったので配布します | Webクリエイターボックス≫</p>
+<p><a href="http://www.webcreatorbox.com/tech/css-flexbox-cheat-sheet/" target="_blank">http://www.webcreatorbox.com/tech/css-flexbox-cheat-sheet/</a></p>
+<p>Media Queriesを使ったサンプルが以下。</p>
+<p><a target="_blank" href="https://ok2nd.github.io/tool/html/thumbnail-sample-media-queries.html">https://ok2nd.github.io/tool/html/thumbnail-sample-media-queries.html</a></p>
+<pre>&lt;div id="contents"&gt;
+	&lt;div id="gallery"&gt;
+		&lt;span style="background-image: url('thumbs/001.jpg')"&gt;&lt;/span&gt;
+		&lt;span style="background-image: url('thumbs/002.jpg')"&gt;&lt;/span&gt;
+		...
+	&lt;/div&gt;
+&lt;/div&gt;
+&lt;style&gt;
+#contents {
+	margin: 0 auto;
+}
+#gallery {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	width: 992px;
+	margin: auto;
+}
+@media screen and (max-width: 1052px) {
+	#gallery {
+		width: 744px;
+	}
+}
+@media screen and (max-width: 804px) {
+	#gallery {
+		width: 496px;
+	}
+}
+@media screen and (max-width: 556px) {
+	#gallery {
+		width: 248px;
+	}
+}
+#gallery span {
+	display: flex;
+	background-position: center center;
+	background-repeat: no-repeat;
+	margin: 4px;
+	width: 240px;
+	height: 240px;
+	background-size: contain;
+}
+&lt;/style&gt;
+</pre>
+<p><a class="link-card" href="../../../2018/05/05/163731.html"><span class="lc-body"><span class="lc-title">写真を正方形にトリミングする方法。画像処理しないでCSSのみでトリミング。</span><span class="lc-desc">写真・画像をサムネイル表示する場合など、正方形にトリミングしたい場合がある。画像処理ソフトでトリミングする方法もあるが、 Webブラウザ で表示するのが目的なら、写真・画像はそのままで CSS でトリミングすることができ…</span><span class="lc-site">晴歩雨描 · <time>2018-05-05</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20180505/20180505162503.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../03/15/092041.html"><span class="lc-body"><span class="lc-title">CSSで画像を正方形枠内で上下左右中央揃え（センタリング）するシンプルな方法</span><span class="lc-desc">前回の「 写真/画像をサムネイル一覧するHTMLサンプル 」で紹介したHTMLサンプルでは、画像を正方形枠内で上下左右中央揃えする方法として、&lt;span&gt;タグのbackground-imageとbackground-si…</span><span class="lc-site">晴歩雨描 · <time>2017-03-15</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20170315/20170315085112.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2019/06/15/112639.html"><span class="lc-body"><span class="lc-title">CSSのflexbox（display:flex;）で、写真/画像を横並びにする。inline-blockやfloat:leftは使わない。＋ &lt;div&gt;の横幅一杯に画像を並べてリサイザブル（レスポンシブ）にする。</span><span class="lc-desc">Webページで写真/画像を横並びにする方法として、以前は display: inline-block; display: table-cell; float: left; などを使っていた。どれもあまり使いやすいとは言え…</span><span class="lc-site">晴歩雨描 · <time>2019-06-15</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190615/20190615110247.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2019/02/15/150757.html"><span class="lc-body"><span class="lc-title">CSSで写真に影付きのシンプルな枠(フレーム)を付ける。</span><span class="lc-desc">CSS で写真にシンプルな枠(フレーム)を付ける。 枠に淡い影を付ける。 &lt;img class=&quot;box-frame&quot; src=&quot;img/xxx.jpg&quot;&gt; &lt;style&gt; .box-frame { padding:7p…</span><span class="lc-site">晴歩雨描 · <time>2019-02-15</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190215/20190215151027.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2019/09/02/174735.html"><span class="lc-body"><span class="lc-title">JavaScript、jQuery、CSS）ポップアップ写真画像をブラウザのウインドウサイズに合わせて拡大縮小できるようにした。</span><span class="lc-desc">以前、HTMLで写真サムネイルアルバム＋ポップアップ画像ページを作成した。下はその時のブログ記事。 作成したサムネイルアルバムWebページは、以下。 https://ok2nd.sakura.ne.jp/album/ko…</span><span class="lc-site">晴歩雨描 · <time>2019-09-02</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190902/20190902154309.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2021/07/21/120850.html"><span class="lc-body"><span class="lc-title">JavaScript）2枚の写真/画像の一部を拡大して画質比較できるツールを作成。</span><span class="lc-desc">ブラウザで、2枚の写真の一部を拡大して画質比較できるツールを作成してみた。 「画像の一部を拡大して別枠に表示する」以下のJavaScriptライブラリ「jquery.ImageExpansion.js」の改修版を使用。 …</span><span class="lc-site">晴歩雨描 · <time>2021-07-21</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20210721/20210721105848.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2018/07/07/144138.html"><span class="lc-body"><span class="lc-title">HTML(TABLE)クリッカブルマップ「日本地図」を作成。スマホ対応。</span><span class="lc-desc">HTML(TABLE)で、クリッカブルマップとしての日本地図を作成。（昔、作ったものを手直し） スマホを想定して、縦長画面の時は都道府県名を縦書きにして画面内に収まるようにした。スマホ画面を横位置にした場合の縦が狭い画面…</span><span class="lc-site">晴歩雨描 · <time>2018-07-07</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20180707/20180707224156.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2019/07/27/164241.html"><span class="lc-body"><span class="lc-title">JavaScript）パソコンローカルの2枚の写真/画像をドラッグ＆ドロップして横並びに表示して比較するWebツール作成。</span><span class="lc-desc">2つの写真/画像を横に並べて比較したい時がある。似たような写真でどちらが良いかを確認したい時など。 画像を横に並べて比較できるツールはあるが、似たような写真がたくさんある場合、比較相手をとっかえひっかえしながら比べたい場…</span><span class="lc-site">晴歩雨描 · <time>2019-07-27</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190727/20190727160638.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2019/06/18/143439.html"><span class="lc-body"><span class="lc-title">JavaScript）「デジカメ・スナップ写真 ブログ記事一覧」にjQueryプラグイン「DataTables」で検索機能追加。</span><span class="lc-desc">Webページ「晴歩雨描 デジカメ・スナップ写真 ブログ記事一覧」 に、JavaScriptでテーブル行の検索機能を追加。 jQueryプラグイン「DataTables」を使用。 【注意事項】 １．&lt;thead&gt;&lt;/the…</span><span class="lc-site">晴歩雨描 · <time>2019-06-18</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190618/20190618131027.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2021/05/28/103153.html"><span class="lc-body"><span class="lc-title">画像にエフェクト（色補正）をかけるJavaScriptライブラリ「CamanJS」を使ってみた。ローカルファイルアップロード版も作成。</span><span class="lc-desc">画像にエフェクトをかけるJavaScriptライブラリ「 CamanJS 」を使ってみた。 参考にしたページ。 jQueryと合わせてCamanJSライブラリを読み込む。 &lt;script src=&quot;//code.jque…</span><span class="lc-site">晴歩雨描 · <time>2021-05-28</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20210528/20210528101414.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2022/08/18/130246.html"><span class="lc-body"><span class="lc-title">JavaScript、CSS）aタグ、divタグを使わずに、imgタグだけで画像をポップアップする。</span><span class="lc-desc">HTMLで画像をポップアップする場合、&lt;a&gt;タグや&lt;div&gt;タグで&lt;img&gt;タグを囲んで行うのが一般的。 &lt;a&gt;タグ、&lt;div&gt;タグを使わずに、&lt;img&gt;タグだけで画像をポップアップする方法を探した。以下に目的のものがあ…</span><span class="lc-site">晴歩雨描 · <time>2022-08-18</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220818/20220818150842.jpg" alt="" loading="lazy"></span></a></p></div></article>
+</body>
+</html>

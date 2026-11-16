@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Windows）JPEG画像から、GIFアニメ作成手順。「Giam」を使用。 - 晴歩雨描</title>
+<link rel="stylesheet" href="../../../../style.css">
+</head>
+<body>
+<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>Windows）JPEG画像から、GIFアニメ作成手順。「Giam」を使用。</h1><p class="meta">2025-03-04 · <a href="../../../../category/c18.html">写真・カメラ</a> <a href="../../../../category/c8.html">コンピュータ</a> <a href="../../../../category/c13.html">ホームページ、Web作成</a> <a href="../../../../category/c38.html">野鳥</a></p><div class="entry-body"><p><em><span style="color: #dd830c;">【後日追記】</span></em></p>
+<p><em><span style="color: #dd830c;">画像一括アニメーションファイル（ GIF / APNG / AVIF / WebP / MP4 ）作成Windowsアプリ作成。</span></em></p>
+<p><a class="link-card" href="../../../2026/03/22/103448.html"><span class="lc-body"><span class="lc-title">Python）Windows）画像アニメーションファイル（ GIF / APNG / AVIF / WebP / MP4 ）作成アプリ。</span><span class="lc-desc">今まで、GIFアニメ作成には、Webサイト「 フォトコンバイン ：GIFアニメーション画像作成ツール」や、Windowsアプリ「 Giam 」を使用していた。 どちらも使いづらい面があったので、シンプルかつ、その他のアニ…</span><span class="lc-site">晴歩雨描 · <time>2026-03-22</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260322/20260322101900.jpg" alt="" loading="lazy"></span></a></p>
+<hr />
+<p>GIFアニメ作成には、今までWebサイト「フォトコンバイン：GIFアニメーション画像作成ツール」を使用していた。</p>
+<p><a class="link-card" href="https://photocombine.net/gifanime/" target="_blank" rel="noopener noreferrer"><span class="lc-body"><span class="lc-title">GIFアニメーション画像作成ツール｜フォトコンバイン</span><span class="lc-desc"></span><span class="lc-site">photocombine.net</span></span></a></p>
+<p>今回、Windowsアプリ「<em>Giam</em>」を試してみた。</p>
+<p><a class="link-card" href="https://www.vector.co.jp/soft/win95/art/se041233.html?srsltid=AfmBOor_vUJcMvz55qCfBFUjiIINwHvX_vsqCRvr7r0EnLTB1wU_OB9L" target="_blank" rel="noopener noreferrer"><span class="lc-body"><span class="lc-title">Giamの詳細情報 : Vector ソフトを探す！</span><span class="lc-desc">GIF &amp; MNG-LC アニメーション作成ツール</span><span class="lc-site">www.vector.co.jp</span></span></a></p>
+<p>元写真は、2024年6月に北海道サロマ湖ワッカ原生花園で撮影したノビタキ。</p>
+<p><a class="link-card" href="../../../2024/06/28/090354.html"><span class="lc-body"><span class="lc-title">北海道サロマ湖）1日目。ワッカ原生花園（1）。ノビタキ（＋幼鳥、餌ヤリ）。</span><span class="lc-desc">6月23日～25日。北海道サロマ湖、2泊3日。 今回の北海道旅行期間中の天気予報は芳しくない。 6月23日夕方。ワッカ原生花園。レンタサイクルでワッカ原生花園、11km、2時間30分。 天気予報では曇りだったが、時々小雨…</span><span class="lc-site">晴歩雨描 · <time>2024-06-28</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20240628/20240628090217.jpg" alt="" loading="lazy"></span></a></p>
+<h5 id="作成手順">【作成手順】</h5>
+<p>１.トリミング。</p>
+<ul>
+<li>以下のようなツールを使う。今回は「トリミング de 顔写真！」で、正方形にトリミング。</li>
+<ul>
+<li>「トリミング de 顔写真！」</li>
+<li>「JTrim」</li>
+<li>「Ralpha Image Resizer」</li>
+</ul>
+</ul>
+<p>２.画質補正。</p>
+<ul>
+<li>今回は「ImageMagick」で、一括して明るさ補正。
+<pre>mkdir Level1.2
+magick mogrify -path Level1.2 -level 10%,90%,1.2 *.jpg
+</pre>
+</li>
+</ul>
+<p>３.画像縮小。</p>
+<ul>
+<li>ブログ用に、画像を小さくする。「縮小革命」を使用して一括して縮小。</li>
+</ul>
+<p>４.GIFアニメ作成。</p>
+<ul>
+<li>今回、「Giam」を使用。ウェイト時間は「40/100s」にしてみた。</li>
+</ul>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250304/20250304163831.jpg" width="596" height="430" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<h5 id="作成したGIFアニメ">【作成したGIFアニメ】</h5>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250304/20250304163913.gif" width="800" height="800" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p><a class="link-card" href="../../../2023/01/30/222950.html"><span class="lc-body"><span class="lc-title">画像を決まった縦横比でトリミングするなら、「トリミング de 顔写真!」が便利。</span><span class="lc-desc">画像・写真をあらかじめ決まった縦横比でトリミングするなら、「トリミング de 顔写真!」が便利。永らく使っている Windows アプリだが、ブログに挙げていなかったので、今更ながら挙げておく。 トリミング比率は、スクエ…</span><span class="lc-site">晴歩雨描 · <time>2023-01-30</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20230130/20230130224417.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2018/11/24/101431.html"><span class="lc-body"><span class="lc-title">露出アンダー、露出オーバー写真のJTrimガンマ補正を実験</span><span class="lc-desc">デジカメで撮った写真が暗すぎたり（露出アンダー）、明るすぎる（ 露出オーバー ）場合、画像編集ソフトを使えばある程度補正ができる。 明るさを調整するには、画像編集ソフトの「ガンマ補正」が簡単で便利。 ガンマ補正を使わずに…</span><span class="lc-site">晴歩雨描 · <time>2018-11-24</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20181124/20181124100417.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2019/07/28/175049.html"><span class="lc-body"><span class="lc-title">複数の写真/画像をまとめて一括でモノクロ（グレースケール）に変換する方法。「縮小専用」「縮小革命」「JTrim」「ImageMagick」</span><span class="lc-desc">複数の写真をまとめて一括（バッチ）でモノクロ（グレースケール）画像に変換する方法。 Windowsアプリ「 縮小専用 」「 JTrim 」「 ImageMagick 」 それぞれを使う方法。 後日追加＞ 「 縮小革命 」…</span><span class="lc-site">晴歩雨描 · <time>2019-07-28</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190726/20190726120816.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2021/07/28/135739.html"><span class="lc-body"><span class="lc-title">Windows）画像一括（バッチ）トリミングなら「Ralpha Image Resizer」が便利。</span><span class="lc-desc">【後日追記】 その後、Pythonで、画像一括トリミングWindowsアプリを作成した。（↓） 複数の画像（写真）をまとめてバッチ処理でトリミングするなら、「Ralpha Image Resizer」が便利。 １．画像を…</span><span class="lc-site">晴歩雨描 · <time>2021-07-28</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20210728/20210728134623.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../02/06/162502.html"><span class="lc-body"><span class="lc-title">ImageMagickの-levelでトーンカーブを模倣して、画像の明るさ調整を一括で行う。</span><span class="lc-desc">野鳥写真では、背景の明るさに影響されるのか、鳥が暗めに写ることが多い。 ブログに上げる写真で野鳥が暗めの場合は、GIMPのトーンカーブで明るい部分をより明るくする補正をかけている。ただ、枚数が多いと、結構面倒。 GIMP…</span><span class="lc-site">晴歩雨描 · <time>2025-02-06</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250206/20250206161422.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2019/03/22/111636.html"><span class="lc-body"><span class="lc-title">過去の桜の写真を、「ImageMagick」のヒストグラム平坦化で明るい感じにしてみた。</span><span class="lc-desc">過去の桜の写真を、 Windows アプリ「 ImageMagick 」の ヒストグラム 平坦化（equalize）で明るい感じにしてみた。 Windows アプリ「 ImageMagick 」の使い方は以下を参照。 オ…</span><span class="lc-site">晴歩雨描 · <time>2019-03-22</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190322/20190322110209.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2020/08/31/135359.html"><span class="lc-body"><span class="lc-title">Windows画像縮小アプリソフト「縮小革命」を使ってみる。</span><span class="lc-desc">パソコンで、写真画像を縮小するのに「 縮小専用 」を使っている。 【後日追記】 以下の設定で使わないと、ICCプロファイル（sRGB、Adobe RGB、Display P3など）が保存されず、鮮やかさなどの色合いが失わ…</span><span class="lc-site">晴歩雨描 · <time>2020-08-31</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20200831/20200831134233.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2019/02/04/161306.html"><span class="lc-body"><span class="lc-title">備忘録：Windowsパソコンにインストールしているアプリケーションフリーソフト。自分にとって定番。</span><span class="lc-desc">Windowsパソコンに入れている主なアプリケーション・フリーソフトの一覧。再インストール時のための備忘録として。 ■ 写真・画像関連 FastStone Image Viewer：画像表示 JTrim：画像編集・加工、…</span><span class="lc-site">晴歩雨描 · <time>2019-02-04</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190204/20190204160808.jpg" alt="" loading="lazy"></span></a></p></div></article>
+</body>
+</html>

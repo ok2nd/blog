@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>JScript）Scripting.FileSystemObjectではUTF-8テキスト文字化けする。ADODB.Streamを使う。 - 晴歩雨描</title>
+<link rel="stylesheet" href="../../../../style.css">
+</head>
+<body>
+<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>JScript）Scripting.FileSystemObjectではUTF-8テキスト文字化けする。ADODB.Streamを使う。</h1><p class="meta">2022-08-07 · <a href="../../../../category/c8.html">コンピュータ</a></p><div class="entry-body"><p>備忘録として。</p>
+<p><a class="keyword" href="http://d.hatena.ne.jp/keyword/JScript">JScript</a>で、Scripting.FileSystemObjectを使って、<a class="keyword" href="http://d.hatena.ne.jp/keyword/UTF-8">UTF-8</a>テキストファイルを読み書きすると文字化けする。</p>
+<p>ADODB.Streamを使えば、解決する。</p>
+<pre>var fs = WScript.CreateObject("Scripting.FileSystemObject");
+var ts = fs.OpenTextFile("inp.txt"); 
+var str = ts.ReadAll();
+
+var fso = WScript.CreateObject("Scripting.FileSystemObject");
+var outfile = fso.CreateTextFile("out.txt", true, true);
+outfile.Write(str);
+</pre>
+<p>↓↓↓（書き換え）↓↓↓</p>
+<pre>var sr = new ActiveXObject("ADODB.Stream");
+sr.Type = 2;				// adTypeText
+sr.charset = "<a class="keyword" href="http://d.hatena.ne.jp/keyword/utf-8">utf-8</a>";
+sr.Open();
+sr.LoadFromFile("inp.txt");
+var txt = sr.ReadText(-1);		// adReadAll
+sr.Close();
+
+var sw = new ActiveXObject("ADODB.Stream");
+sw.Type = 2;				// adTypeText
+sw.charset = "<a class="keyword" href="http://d.hatena.ne.jp/keyword/utf-8">utf-8</a>";
+sw.Open();
+sw.WriteText(txt, 1);			// adWriteLine
+sw.SaveToFile("out.txt", 2);	   	// adSaveCreateOverWrite
+sw.Close();
+</pre>
+<p><a class="link-card" href="../../../2019/06/24/002655.html"><span class="lc-body"><span class="lc-title">検索機能付き「はてなブログ記事一覧」HTML生成スクリプト(JScript)を作成。</span><span class="lc-desc">先日、はてなブログのHTMLサイトマップ（はてなブログ記事一覧）を生成するスクリプト(JScript)を作成した。 これは、Googleクローラーに読み込んでもらうのが目的だったが、今回は人間が利用するための「はてなブロ…</span><span class="lc-site">晴歩雨描 · <time>2019-06-24</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190623/20190623234257.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2019/06/21/215450.html"><span class="lc-body"><span class="lc-title">「Google Search Console」のサイトマップ登録の進展がないので、はてなブログのHTMLサイトマップを生成するスクリプト(JScript)を作成した。</span><span class="lc-desc">先日、「 Google Search Console 」で、 はてなブログ の サイトマップ （「sitemap. xml 」、「sitemap. xml ?page=???」）を登録したが、いくつかが「取得できませんで…</span><span class="lc-site">晴歩雨描 · <time>2019-06-21</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190621/20190621213324.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2018/12/21/143023.html"><span class="lc-body"><span class="lc-title">パナソニックのデジカメ写真のEXIFから、フォトスタイル、クリエイティブコントロール情報を抜き出して、画像ファイル名にEXIF情報を付け足す。（ExifTool/JScript）</span><span class="lc-desc">先日、 ソニー のデジカメ写真の EXIF から、クリエイティブスタイル、ピクチャーエフェクト情報を抜き出して、画像ファイル名に EXIF 情報を付け足す JScript を作成した。 今回、 パナソニック のデジカメ写…</span><span class="lc-site">晴歩雨描 · <time>2018-12-21</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20181221/20181221142044.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2018/11/29/093518.html"><span class="lc-body"><span class="lc-title">ソニーのデジカメ写真のEXIFから、クリエイティブスタイル、ピクチャーエフェクト情報を抜き出して、画像ファイル名にEXIF情報を付け足す。（ExifTool/JScript）</span><span class="lc-desc">先日、 価格.com 掲示 板で、DSC-RX100M6でクリエイティブスタイルやピクチャーエフェクトを設定して撮影した写真の EXIF 情報を確認する方法を質問して、ExifToolというのを教えてもらった。 Wind…</span><span class="lc-site">晴歩雨描 · <time>2018-11-29</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20181129/20181129091633.jpg" alt="" loading="lazy"></span></a></p></div></article>
+</body>
+</html>

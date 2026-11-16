@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Claude）Python）PowerPointに複数写真（画像）を順番に並べて貼り付けるプログラム作成（改訂版）。 - 晴歩雨描</title>
+<link rel="stylesheet" href="../../../../style.css">
+</head>
+<body>
+<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>Claude）Python）PowerPointに複数写真（画像）を順番に並べて貼り付けるプログラム作成（改訂版）。</h1><p class="meta">2025-05-09 · <a href="../../../../category/c8.html">コンピュータ</a> <a href="../../../../category/c42.html">＜AI＞</a> <a href="../../../../category/c18.html">写真・カメラ</a></p><div class="entry-body"><p>以前に、PowerPointに複数写真を順番に並べて貼り付けるプログラムをPythonで作成した。</p>
+<p><a class="link-card" href="../../04/10/172840.html"><span class="lc-body"><span class="lc-title">Claude）Python）PowerPointに複数写真（画像）を順番に並べて貼り付けるプログラム作成（Ver.1）。</span><span class="lc-desc">※ このプログラムについては、後日、改訂版を作成。（↓） PowerPoint に複数写真を順番に並べて貼り付けるプログラムを作成。AI生成ツール「 Claude 」に作ってもらった。 Python で作成。貼り付ける写…</span><span class="lc-site">晴歩雨描 · <time>2025-04-10</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250410/20250410165838.jpg" alt="" loading="lazy"></span></a></p>
+<p>今回、このプログラムの改訂版。前回と同じく、AI生成ツール「Claude」に作ってもらった。</p>
+<p>基本機能はそのままで、オプション項目の設定画面を一つにまとめた。</p>
+<h5 id="仕様">【仕様】</h5>
+<ul>
+<li>PowerPoint用紙はA4横サイズ（29.7cm × 21.0cm）とする。</li>
+<li>写真画像は、特定のフォルダーに入っている。</li>
+<li>各画像の縦横比は維持。</li>
+<li>写真画像は、長辺が長い方を横にして、左上から順番に右下へ並べていく。（縦長画像は横倒しにする。）</li>
+<li>指定のアスペクト比で貼り付け枠の大きさを設定し、枠に入りきらないサイズの画像は縮小して貼り付ける。</li>
+<li>スライドが一杯になると新しいスライドを追加。</li>
+<li>画像フォルダーなどのオプション項目を設定できる。
+<ul>
+<li>画像フォルダ</li>
+<li>保存先PowerPointファイル</li>
+<li>標準アスペクト比（4:3、3:2、1:1）</li>
+<li>画像幅（ミリメートル）</li>
+<li>横間隔（ミリメートル）</li>
+<li>縦の間隔（ミリメートル）</li>
+<li>ページ余白（ミリメートル）</li>
+</ul>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260411/20260411082833.jpg" width="621" height="630" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+</li>
+</ul>
+<h5 id="Pythonプログラム">【Pythonプログラム】</h5>
+<p>作成されたプログラムを、「PP画像貼り付け.pyw」（名前は任意）という名前にして、デスクトップに置いておき、ダブルクリックで実行する。</p>
+<p><span style="color: #dd830c;">※ Pythonプログラムの拡張子は通常「py」だが、コンソールウィンドウが開いてしまうので、拡張子を「pyw」にすることで、それを防げる。</span></p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250411/20250411092736.png" width="158" height="142" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<h5 id="Pythonインストール">【Pythonインストール】</h5>
+<p>Pythonがインストールされていなければ、インストールする。</p>
+<p><a class="link-card" href="../../../2023/09/08/210741.html"><span class="lc-body"><span class="lc-title">Windows）「Python（Ver.3.11.5）」インストール。</span><span class="lc-desc">Windows版Pythonのインストール手順の備忘録。 ■ Pythonダウンロード 現時点の最新、Ver.3.11.5。 ■ Python インストール 「 python-3.11.5-amd64.exe 」を実行。…</span><span class="lc-site">晴歩雨描 · <time>2023-09-08</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20230908/20230908204241.jpg" alt="" loading="lazy"></span></a></p>
+<p>次のライブラリが必要なので、インストールする。</p>
+<ul>
+<li>python-pptx: PowerPointファイルを操作するライブラリ</li>
+<li>Pillow (PIL): 画像処理用ライブラリ</li>
+</ul>
+<p>Pythonのパッケージマネージャー「pip」を使って、必要なライブラリをインターネットから自動的にダウンロードしてインストールする。コマンドプロンプトで以下を実行。</p>
+<pre>pip install python-pptx Pillow
+</pre>
+<h5 id="Pythonプログラムコード">【Pythonプログラムコード】</h5>
+<p>UTF-8で保存する。プログラム名は、一例として「PP画像貼り付け.pyw」とする。</p>
+<pre>import io
+import os
+import sys
+import tkinter as tk
+from tkinter import messagebox, ttk
+from pptx import Presentation
+from pptx.util import Mm
+from PIL import Image
+
+# コンソールウィンドウを非表示にするためのコード
+if sys.platform.startswith('win'):
+    import ctypes
+    ctypes.windll.user32.ShowWindow(ctypes.windll.kernel32.GetConsoleWindow(), 0)
+
+# tkinterdnd2 のインポート（ドラッグ＆ドロップ対応）
+try:
+    from tkinterdnd2 import TkinterDnD, DND_FILES
+    DND_AVAILABLE = True
+except ImportError:
+    DND_AVAILABLE = False
+
+
+IMAGE_EXTS = ('.png', '.jpg', '.jpeg', '.jpe', '.mpo', '.bmp', '.gif', '.tif', '.tiff', '.webp')
+# python-pptx がそのまま扱える形式
+PPTX_NATIVE_FORMATS = {'BMP', 'GIF', 'JPEG', 'PNG', 'TIFF'}
+
+
+class PowerPointImagePlacer:
+    def __init__(self):
+        # メインウィンドウの初期化（D&amp;D対応）
+        if DND_AVAILABLE:
+            self.root = TkinterDnD.Tk()
+        else:
+            self.root = tk.Tk()
+
+        # ちらつき防止：配置が確定するまで非表示にする
+        self.root.withdraw()
+
+        self.root.title("PowerPoint画像一括配置ツール")
+        self.root.geometry("620x600")
+        self.root.resizable(False, False)
+
+        # 変数の初期化
+        self.folder_path = tk.StringVar()
+        self.output_pptx_path = tk.StringVar()
+        self.aspect_ratio_var = tk.StringVar(value="4:3")
+        self.image_width_mm = tk.DoubleVar(value=40.8)
+        self.horizontal_spacing_mm = tk.DoubleVar(value=0.1)
+        self.vertical_spacing_mm = tk.DoubleVar(value=0.2)
+        self.margin_mm = tk.DoubleVar(value=5.3)
+
+        # フォルダパスが変わったら保存先を自動更新
+        self.folder_path.trace_add("write", self._on_folder_changed)
+
+        # UIの作成
+        self.create_widgets()
+
+        # ウィンドウが閉じられた時の処理
+        self.root.protocol("WM_DELETE_WINDOW", self.on_closing)
+
+        # UI構築完了後に中央配置して表示（ちらつき防止）
+        self.center_window(self.root)
+        self.root.deiconify()
+
+    def center_window(self, window):
+        window.update_idletasks()
+        # geometry文字列から幅・高さを取得（レンダリング前でも正確な値が得られる）
+        geo = window.geometry()
+        size_part = geo.split("+")[0]
+        width, height = map(int, size_part.split("x"))
+        x = (window.winfo_screenwidth() // 2) - (width // 2)
+        y = (window.winfo_screenheight() // 2) - (height // 2)
+        window.geometry('{}x{}+{}+{}'.format(width, height, x, y))
+
+    def _on_folder_changed(self, *args):
+        """フォルダパスが変更されたとき、保存先を自動設定する"""
+        folder = self.folder_path.get().strip()
+        if folder and os.path.isdir(folder):
+            parent = os.path.dirname(folder)
+            folder_name = os.path.basename(folder)
+            default_pptx = os.path.join(parent, folder_name + ".pptx")
+            self.output_pptx_path.set(default_pptx)
+
+    def create_widgets(self):
+        main_frame = ttk.Frame(self.root, padding="20 20 20 20")
+        main_frame.pack(fill=tk.BOTH, expand=True)
+
+        # ─── 画像フォルダ ───────────────────────────────────────────
+        folder_frame = ttk.LabelFrame(main_frame, text="画像フォルダ", padding="10 10 10 10")
+        folder_frame.pack(fill=tk.X, pady=(0, 4))
+
+        # D&amp;D 説明ラベル
+        if DND_AVAILABLE:
+            hint_text = "📂  Windowsのフォルダーをここへドラッグ＆ドロップしてください"
+        else:
+            hint_text = "⚠ D&amp;D非対応（tkinterdnd2未インストール）。パスを直接入力してください。"
+        hint_label = tk.Label(
+            folder_frame,
+            text=hint_text,
+            fg="#1a6ec8",
+            bg="#eef4fb",
+            relief="groove",
+            font=("Yu Gothic UI", 9, "bold"),
+            padx=8, pady=6,
+            anchor="w",
+            cursor="hand2" if DND_AVAILABLE else "arrow"
+        )
+        hint_label.pack(fill=tk.X, pady=(0, 6))
+
+        folder_entry = ttk.Entry(folder_frame, textvariable=self.folder_path)
+        folder_entry.pack(fill=tk.X)
+
+        # D&amp;D の登録
+        if DND_AVAILABLE:
+            for widget in (hint_label, folder_entry):
+                widget.drop_target_register(DND_FILES)
+                widget.dnd_bind("&lt;&lt;Drop&gt;&gt;", self._on_folder_drop)
+
+        # ─── 保存先 PowerPoint ──────────────────────────────────────
+        output_frame = ttk.LabelFrame(
+            main_frame,
+            text="保存先 PowerPointファイル（拡張子 .pptx 省略可）",
+            padding="10 10 10 10"
+        )
+        output_frame.pack(fill=tk.X, pady=(0, 10))
+
+        output_entry = ttk.Entry(output_frame, textvariable=self.output_pptx_path)
+        output_entry.pack(fill=tk.X)
+
+        # ─── 画像設定 ───────────────────────────────────────────────
+        settings_frame = ttk.LabelFrame(main_frame, text="画像設定", padding="10 10 10 10")
+        settings_frame.pack(fill=tk.BOTH, pady=(0, 10))
+
+        # アスペクト比
+        ttk.Label(settings_frame, text="標準アスペクト比:").grid(row=0, column=0, sticky=tk.W, pady=5)
+        aspect_frame = ttk.Frame(settings_frame)
+        aspect_frame.grid(row=0, column=1, sticky=tk.W, pady=5)
+        for text, value in [("4:3", "4:3"), ("3:2", "3:2"), ("1:1", "1:1")]:
+            ttk.Radiobutton(aspect_frame, text=text, variable=self.aspect_ratio_var, value=value).pack(side=tk.LEFT, padx=(0, 10))
+
+        # 画像幅
+        ttk.Label(settings_frame, text="画像幅 (mm):").grid(row=1, column=0, sticky=tk.W, pady=5)
+        ttk.Spinbox(settings_frame, from_=1.0, to=297.0, increment=1.0,
+                    textvariable=self.image_width_mm, width=10).grid(row=1, column=1, sticky=tk.W, pady=5)
+
+        # 横間隔
+        ttk.Label(settings_frame, text="横間隔 (mm):").grid(row=2, column=0, sticky=tk.W, pady=5)
+        ttk.Spinbox(settings_frame, from_=0.0, to=50.0, increment=0.5,
+                    textvariable=self.horizontal_spacing_mm, width=10).grid(row=2, column=1, sticky=tk.W, pady=5)
+
+        # 縦間隔
+        ttk.Label(settings_frame, text="縦間隔 (mm):").grid(row=3, column=0, sticky=tk.W, pady=5)
+        ttk.Spinbox(settings_frame, from_=0.0, to=50.0, increment=0.5,
+                    textvariable=self.vertical_spacing_mm, width=10).grid(row=3, column=1, sticky=tk.W, pady=5)
+
+        # ページ余白
+        ttk.Label(settings_frame, text="ページ余白 (mm):").grid(row=4, column=0, sticky=tk.W, pady=5)
+        ttk.Spinbox(settings_frame, from_=0.0, to=50.0, increment=0.5,
+                    textvariable=self.margin_mm, width=10).grid(row=4, column=1, sticky=tk.W, pady=5)
+        ttk.Label(settings_frame, text="5.3mm：フチなし印刷可").grid(row=4, column=2, sticky=tk.W, pady=5)
+
+        # ─── 情報表示 ───────────────────────────────────────────────
+        info_frame = ttk.LabelFrame(main_frame, text="情報", padding="10 10 10 10")
+        info_frame.pack(fill=tk.BOTH, expand=True, pady=(0, 10))
+
+        self.info_text = tk.Text(info_frame, height=5, wrap=tk.WORD)
+        self.info_text.pack(fill=tk.BOTH, expand=True)
+        self.info_text.config(state=tk.DISABLED)
+
+        # ─── ボタン ─────────────────────────────────────────────────
+        button_frame = ttk.Frame(main_frame)
+        button_frame.pack(fill=tk.X)
+
+        ttk.Button(button_frame, text="閉じる", command=self.on_closing, width=15).pack(side=tk.RIGHT, padx=(5, 0))
+        ttk.Button(button_frame, text="実行", command=self.execute, width=15).pack(side=tk.RIGHT)
+
+    @staticmethod
+    def _parse_dnd_paths(data):
+        """
+        tkinterdnd2 のドロップデータを解析してパスのリストを返す。
+        スペースを含むパスは {パス} 形式で渡されるため、それを正しく処理する。
+        例:
+          C:\\temp\\folder          → ['C:\\temp\\folder']
+          {C:\\my folder}           → ['C:\\my folder']
+          {C:\\a b} C:\\temp\\c     → ['C:\\a b', 'C:\\temp\\c']
+        """
+        paths = []
+        data = data.strip()
+        while data:
+            if data.startswith("{"):
+                end = data.find("}")
+                if end == -1:
+                    paths.append(data[1:])
+                    break
+                paths.append(data[1:end])
+                data = data[end + 1:].strip()
+            else:
+                # スペースで区切られた次のトークン
+                parts = data.split(None, 1)
+                paths.append(parts[0])
+                data = parts[1].strip() if len(parts) &gt; 1 else ""
+        return paths
+
+    # ── D&amp;D ハンドラ ────────────────────────────────────────────────
+    def _on_folder_drop(self, event):
+        """ドロップされたパスを受け取り、フォルダパスに設定する"""
+        paths = self._parse_dnd_paths(event.data)
+        if not paths:
+            return
+
+        path = paths[0]  # 複数ドロップされた場合は最初のものだけ使用
+
+        if os.path.isdir(path):
+            self.folder_path.set(path)
+            image_count = sum(
+                1 for f in os.listdir(path)
+                if f.lower().endswith(IMAGE_EXTS)
+            )
+            self.update_info_text(
+                f"フォルダ: {path}\n画像ファイル数: {image_count} 枚", clear=True
+            )
+        else:
+            messagebox.showwarning("警告", f"フォルダではありません:\n{path}")
+
+    # ── ユーティリティ ───────────────────────────────────────────────
+    def update_info_text(self, text, clear=False):
+        self.info_text.config(state=tk.NORMAL)
+        if clear:
+            self.info_text.delete(1.0, tk.END)
+        self.info_text.insert(tk.END, text + "\n")
+        self.info_text.see(tk.END)
+        self.info_text.config(state=tk.DISABLED)
+        self.root.update()
+
+    def validate_inputs(self):
+        if not self.folder_path.get():
+            messagebox.showwarning("警告", "画像フォルダを指定してください。")
+            return False
+        if not os.path.isdir(self.folder_path.get()):
+            messagebox.showwarning("警告", "指定された画像フォルダが存在しません。")
+            return False
+        if not self.output_pptx_path.get():
+            messagebox.showwarning("警告", "保存先PowerPointファイルを指定してください。")
+            return False
+        image_files = [
+            f for f in os.listdir(self.folder_path.get())
+            if f.lower().endswith(IMAGE_EXTS)
+        ]
+        if not image_files:
+            messagebox.showwarning("警告", "指定フォルダに画像ファイルが見つかりませんでした。")
+            return False
+        return True
+
+    @staticmethod
+    def _prepare_image(img_path):
+        """
+        画像を開き、PowerPointに貼れる形で返す。
+        戻り値: (貼り付け用ソース, 横長基準の幅, 高さ, 回転したか)
+        - MPO(iPhone等のJPEG)・WEBPなど python-pptx 非対応形式は JPEG/PNG に変換
+        - 縦長画像は90度回転して横長にする
+        - 変換も回転も不要なら元ファイルのパスをそのまま返す
+        """
+        with Image.open(img_path) as img:
+            fmt = img.format
+            width, height = img.size
+            rotated = height &gt; width
+            if rotated:
+                width, height = height, width
+
+            if not rotated and fmt in PPTX_NATIVE_FORMATS:
+                return img_path, width, height, False
+
+            work = img.copy()
+
+        if rotated:
+            try:
+                work = work.transpose(Image.Transpose.ROTATE_90)
+            except AttributeError:  # 古いPillow
+                work = work.transpose(Image.ROTATE_90)
+
+        buf = io.BytesIO()
+        if fmt in ("JPEG", "MPO"):
+            if work.mode not in ("RGB", "L"):
+                work = work.convert("RGB")
+            work.save(buf, format="JPEG", quality=95)
+        else:
+            if work.mode not in ("RGB", "RGBA", "L", "LA", "P"):
+                work = work.convert("RGB")
+            work.save(buf, format="PNG")
+        buf.seek(0)
+        return buf, width, height, rotated
+
+    def execute(self):
+        if not self.validate_inputs():
+            return
+
+        folder_path = self.folder_path.get()
+        output_pptx_path = self.output_pptx_path.get().strip()
+
+        if not output_pptx_path.lower().endswith('.pptx'):
+            output_pptx_path += '.pptx'
+
+        selected_aspect = self.aspect_ratio_var.get()
+        if selected_aspect == "4:3":
+            aspect_ratio = 3 / 4
+        elif selected_aspect == "3:2":
+            aspect_ratio = 2 / 3
+        else:
+            aspect_ratio = 1
+
+        image_width_mm = self.image_width_mm.get()
+        image_height_mm = image_width_mm * aspect_ratio
+        horizontal_spacing_mm = self.horizontal_spacing_mm.get()
+        vertical_spacing_mm = self.vertical_spacing_mm.get()
+        margin_mm = self.margin_mm.get()
+
+        target_width = Mm(image_width_mm)
+        target_height = Mm(image_height_mm)
+        h_spacing = Mm(horizontal_spacing_mm)
+        v_spacing = Mm(vertical_spacing_mm)
+        margin = Mm(margin_mm)
+
+        prs = Presentation()
+        prs.slide_width = Mm(297)
+        prs.slide_height = Mm(210)
+        blank_layout = prs.slide_layouts[6]
+        slide = prs.slides.add_slide(blank_layout)
+
+        image_files = [
+            os.path.join(folder_path, f)
+            for f in os.listdir(folder_path)
+            if f.lower().endswith(IMAGE_EXTS)
+        ]
+
+        progress_window = tk.Toplevel(self.root)
+        progress_window.title("処理中...")
+        progress_window.geometry("400x120")
+        self.center_window(progress_window)
+
+        total_images = len(image_files)
+        progress_label = ttk.Label(progress_window, text=f"画像を処理中: 0/{total_images}")
+        progress_label.pack(pady=10)
+        status_label = ttk.Label(progress_window, text="", wraplength=380)
+        status_label.pack(pady=5)
+        progress_bar = ttk.Progressbar(progress_window, orient="horizontal", length=380, mode="determinate")
+        progress_bar.pack(pady=10)
+        progress_window.update()
+
+        x_start = margin
+        y_start = margin
+        x_pos = x_start
+        y_pos = y_start
+        max_width = prs.slide_width - margin
+        max_height = prs.slide_height - margin
+
+        for i, img_path in enumerate(image_files):
+            try:
+                image_source, orig_width, orig_height, rotated = self._prepare_image(img_path)
+                img_aspect = orig_height / orig_width
+
+                actual_width = target_width
+                actual_height = target_width * img_aspect
+                if img_aspect &gt; aspect_ratio:
+                    status_text = f"{os.path.basename(img_path)}: 標準より縦長 (比率 1:{1/img_aspect:.2f})"
+                else:
+                    status_text = f"{os.path.basename(img_path)}: 標準サイズ内 (比率 1:{1/img_aspect:.2f})"
+
+                if x_pos + actual_width &gt; max_width:
+                    x_pos = x_start
+                    y_pos += target_height + v_spacing
+
+                if y_pos + target_height &gt; max_height:
+                    slide = prs.slides.add_slide(blank_layout)
+                    x_pos = x_start
+                    y_pos = y_start
+
+                pic = slide.shapes.add_picture(image_source, x_pos, y_pos, width=actual_width)
+                if actual_height &gt; target_height:
+                    scale_factor = target_height / actual_height
+                    pic.width = int(actual_width * scale_factor)
+                    pic.height = int(target_height)
+                    status_text += " → 縮小配置"
+
+                x_pos += target_width + h_spacing
+
+                progress_label.config(text=f"画像を処理中: {i+1}/{total_images}")
+                status_label.config(text=status_text)
+                progress_bar["value"] = ((i + 1) / total_images) * 100
+                progress_window.update()
+
+            except Exception as e:
+                progress_window.destroy()
+                messagebox.showerror("エラー", f"画像 {os.path.basename(img_path)} の処理中にエラーが発生しました\n{str(e)}")
+                return
+
+        progress_window.destroy()
+
+        try:
+            prs.save(output_pptx_path)
+            messagebox.showinfo("完了", f"プレゼンテーションを保存しました。\n{output_pptx_path}")
+            self.update_info_text(f"完了: {total_images} 枚の画像を配置しました。", clear=True)
+        except Exception as e:
+            messagebox.showerror("エラー", f"保存中にエラーが発生しました\n{str(e)}")
+
+    def on_closing(self):
+        sys.exit()
+
+    def run(self):
+        self.root.mainloop()
+
+
+if __name__ == "__main__":
+    app = PowerPointImagePlacer()
+    app.run()
+</pre>
+<h5 id="作成されるPowerPoint文書イメージ">【作成されるPowerPoint文書イメージ】</h5>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250410/20250410165838.jpg" width="1200" height="848" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<p><a class="link-card" href="../../03/20/171056.html"><span class="lc-body"><span class="lc-title">JavaScript）AIツール「Claude」で、ブラウザに画像をアップロードしてトーンカーブで明るさ補正をしてダウンロードできるWebツール作成。</span><span class="lc-desc">以前に、ブラウザに画像をアップロードしてトーンカーブで明るさ補正できるツールを「jquery.iocurve」を使用して作成した。だが、難点として、新しい画像をアップロードして、現時点のトーンカーブを適用させることが難し…</span><span class="lc-site">晴歩雨描 · <time>2025-03-20</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250320/20250320170144.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../18/090800.html"><span class="lc-body"><span class="lc-title">Claude）Python）「写真の明るさ＆コントラスト一括補正」Windowsアプリ作成。ICCプロファイル維持。</span><span class="lc-desc">Pythonで「 写真の明るさ＆コントラスト一括補正 」Windowsアプリ作成。 複数の画像を一括して補正できる。 AIツールClaudeに作成してもらった。 ※ 【後日追記】最初のバージョンでは、元の写真に埋め込まれ…</span><span class="lc-site">晴歩雨描 · <time>2025-05-18</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250518/20250518090322.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../03/20/115145.html"><span class="lc-body"><span class="lc-title">AIツール「ChatGPT、Gemini、Copilot、Perplexity、リートン、Claude」＋JavaScriptライブラリ「p5.js」で「物理シミュレーション」アプリ作成。Claudeはアプリケーション作成能力が高い。</span><span class="lc-desc">昨日、 JavaScriptライブラリ「p5.js」 を使った「魚の群れのシミュレーション」を、AIツール「ChatGPT、Gemini、Copilot、Perplexity、リートン、Claude」で作った。 今回、J…</span><span class="lc-site">晴歩雨描 · <time>2025-03-20</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250320/20250320114142.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../03/20/141502.html"><span class="lc-body"><span class="lc-title">AIツール「Claude」でJavaScript＋p5.jsアプリ作成。花火、水の流れや波紋、マウス操作で遊ぶゲーム。</span><span class="lc-desc">先程、AIツール「ChatGPT、Gemini、Copilot、Perplexity、リートン、Claude」＋JavaScriptライブラリ「p5.js」で「物理シミュレーション」アプリを作成した。 この時、Claud…</span><span class="lc-site">晴歩雨描 · <time>2025-03-20</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250320/20250320140055.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../03/29/100520.html"><span class="lc-body"><span class="lc-title">太陽系の惑星「水星、金星、地球、火星、木星、土星、天王星、海王星、冥王星」をテーマに、Claudeに物語を考えてもらった。ChatGPT、Gemini、Ideogramで、物語の文章から画像生成も。</span><span class="lc-desc">先程、太陽系の惑星をテーマに、ChatGPTにエッセイを考えてもらった。 今回、太陽系の惑星「 水星、金星、地球、火星、木星、土星、天王星、海王星、冥王星（準惑星） 」をテーマに、AIツール「 Claude 」物語を考え…</span><span class="lc-site">晴歩雨描 · <time>2025-03-29</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250329/20250329100452.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2023/09/10/140435.html"><span class="lc-body"><span class="lc-title">Python）ローカル）写真解像度を上げる（アップスケーリング、高画質化）Pythonツール「SwinIR」を試してみた。</span><span class="lc-desc">写真解像度を上げる「 SwinIR 」を試してみた。 「SwinIR」を利用するためには、「 Python 」が必要になるので、Pythonをインストールしておく。 【SwinIR 導入手順】 ■ 「Python」パッケ…</span><span class="lc-site">晴歩雨描 · <time>2023-09-10</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20230910/20230910135149.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../04/08/095058.html"><span class="lc-body"><span class="lc-title">ChatGPTの画像生成AI「4o Image Generation」の写真の高画質化は凄まじい（？）。一般的なアップスケーリングツールとは一線を画す。「DALL・E」との比較も。</span><span class="lc-desc">先日、写真の高画質化/鮮明化Windowsアプリ「Aiarty Image Enhancer」「Upscayl」で、アップスケーリングなしの1倍で、野鳥写真を使って高画質化/鮮明化レベルを検証した。 ChatGPT「4o…</span><span class="lc-site">晴歩雨描 · <time>2025-04-08</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250408/20250408091610.png" alt="" loading="lazy"></span></a></p></div></article>
+</body>
+</html>

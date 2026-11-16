@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Leafletで、ECMWFの降水予測データを地図表示するのを試した。実用的なアプリを作成するのは難しい。 - 晴歩雨描</title>
+<link rel="stylesheet" href="../../../../style.css">
+</head>
+<body>
+<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>Leafletで、ECMWFの降水予測データを地図表示するのを試した。実用的なアプリを作成するのは難しい。</h1><p class="meta">2026-02-07 · <a href="../../../../category/c23.html">天気予報</a> <a href="../../../../category/c13.html">ホームページ、Web作成</a> <a href="../../../../category/c21.html">地図・マップ</a></p><div class="entry-body"><p><em>ECMWF</em>の降水予測データを<em>Leaflet＋OpenStreetMap</em>を使って地図表示するWebツールアプリを作成してみた。（生成AIの助けを借りて）</p>
+<p><em>Open-Meteo</em> が <em>ECMWF IFS</em> 予測データへの無料アクセスを提供しており、API経由で簡単に取得できる。</p>
+<p><a href="https://api.open-meteo.com/v1/ecmwf" target="_blank">https://api.open-meteo.com/v1/ecmwf</a></p>
+<p>このデータを使って、<em>Leaflet</em>で<em>OpenStreetMap</em>に降水予測を表示する。</p>
+<p>しかし、<em>Windy</em>や<em>Ventusky</em>の降水予測地図と大きく違ってしまう。主な理由は以下。</p>
+<ul>
+<li>Open-Meteo APIデータの解像度が低い。サーバーに負荷を与えないように、サンプリングデータが約200km四方に1点と粗い。（Windy/Ventusky：ECMWF公式データまたは独自の高解像度データ。）</li>
+<li>補間アルゴリズム（IDW補間）が降水には向いていない。</li>
+</ul>
+<p>これらを改善しようとすると、サーバー側に負荷もかかるし、Webアプリのレスポンスも大きく落ちる。実用的なアプリを作るのは難しそう。</p>
+<h5 id="Leafletで作成したECMWF降水予測アプリ">【Leafletで作成したECMWF降水予測アプリ】</h5>
+<p>※ 最大で2週間分のデータを取得できるようにした。</p>
+<p>※ 実用性が乏しいので、ソースコードは非公開。</p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260207/20260207130802.jpg" width="918" height="678" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<h5 id="-Windy-">【 Windy 】</h5>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260207/20260207130809.jpg" width="918" height="678" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<h5 id="-Ventusky-">【 Ventusky 】</h5>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260207/20260207130816.jpg" width="918" height="678" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p><a class="link-card" href="../05/125850.html"><span class="lc-body"><span class="lc-title">地図による天気予報（予測）サイト「Windy.com」代替「Ventusky」なら2週間先まで予測地図表示できる。</span><span class="lc-desc">8年前に『風速、雨、雪、気温などの天気予測を地図で確認できる「Windy.com」が凄すぎる』という記事を書いた。 「Windy.com」が、Windy Premiumに入らないと、5日間しか天気予測地図を表示できなくな…</span><span class="lc-site">晴歩雨描 · <time>2026-02-05</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260205/20260205124928.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../03/124042.html"><span class="lc-body"><span class="lc-title">Leaflet地図：現在の積雪を地図表示。気象庁データを使用。JavaScript＆PHP（CORS制限回避）。XAMPPでCA証明書。InfinityFree。</span><span class="lc-desc">気象庁の「 現在の積雪 」データを使って、 Leaflet で地図表示するようにした。 ■ 使用したデータ 《 気象庁：積雪観測地点情報（json）》 https://www.jma.go.jp/bosai/amedas…</span><span class="lc-site">晴歩雨描 · <time>2026-02-03</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260203/20260203120620.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2021/07/11/150343.html"><span class="lc-body"><span class="lc-title">Leaflet地図：「RainViewer」の雨雲レーダーを重ねて表示。サンプルソース。</span><span class="lc-desc">地図データを扱うJavaScript ライブラリ「Leaflet」を使って、地図表示を試してきた。 今回、「 RainViewer 」の雨雲レーダーを地図に重ねて表示するようにした。 【後日追記】 ※ RainViewe…</span><span class="lc-site">晴歩雨描 · <time>2021-07-11</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20210711/20210711143852.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2021/06/19/151312.html"><span class="lc-body"><span class="lc-title">Leaflet地図：「OpenWeatherMap」の天気予報（気象情報）表示。サンプルソース。</span><span class="lc-desc">地図データを扱うJavaScript ライブラリ「Leaflet」を使って、地図表示を試してきた。 今回、Leaflet地図に「 OpenWeatherMap 」の天気予報を表示してみた。 「OpenWeatherMap…</span><span class="lc-site">晴歩雨描 · <time>2021-06-19</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20210619/20210619143923.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2020/09/03/175018.html"><span class="lc-body"><span class="lc-title">Windy.comは、山の天気予報にも使える。標高別の気温や風速。雲の厚さ。</span><span class="lc-desc">以前に、 Windy.com に関する以下の記事を書いた。 山の天気予報についても書いた。 Windy.com は、 山の天気予報 にも使える。（以下、パソコンブラウザ画面） マウスでクリックすると、その地点の ベーシッ…</span><span class="lc-site">晴歩雨描 · <time>2020-09-03</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20200903/20200903164740.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2021/06/12/132829.html"><span class="lc-body"><span class="lc-title">Leafletを使った凄い地図たち。天気図、地質図、ハザードマップ、名字マップ、3D鉄道運行情報。</span><span class="lc-desc">地図データを扱うJavaScript ライブラリ「Leaflet」を使って、地図表示を試してきた。 ネット上で「Leaflet」に関する情報を検索する中で、Leafletを使ったすごい地図をいくつか見つけた。 【天気情報…</span><span class="lc-site">晴歩雨描 · <time>2021-06-12</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20210612/20210612114307.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2019/08/12/085547.html"><span class="lc-body"><span class="lc-title">Windy.comは、ECMWF（ヨーロッパ中期予報センター）予測だけでなく、GFS（アメリカ海洋大気庁）予測に切り換えできる。</span><span class="lc-desc">以前に、Windy.comに関する以下の記事を書いたが、Windy.comは、 ECMWF （ヨーロッパ中期予報センター）予測だけでなく、 GFS （アメリカ海洋大気庁）予測に切り換えできる。 パソコンでは、画面右下の選…</span><span class="lc-site">晴歩雨描 · <time>2019-08-12</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190812/20190812084939.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2018/07/08/001418.html"><span class="lc-body"><span class="lc-title">備忘録：河川の氾濫、洪水等の危険度分布マップ、土砂災害、洪水、津波ハザードマップ</span><span class="lc-desc">河川の氾濫、洪水等の危険度分布マップ、土砂災害、洪水、 津波 ハザードマップ 。備忘録として。</span><span class="lc-site">晴歩雨描 · <time>2018-07-08</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20180708/20180708000746.jpg" alt="" loading="lazy"></span></a></p></div></article>
+</body>
+</html>

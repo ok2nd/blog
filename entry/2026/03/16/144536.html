@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Claude）JavaScript）アプリ「太陽系エクスプローラー」作成。＋Eyes on the Solar System - NASA/JPL。 - 晴歩雨描</title>
+<link rel="stylesheet" href="../../../../style.css">
+</head>
+<body>
+<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>Claude）JavaScript）アプリ「太陽系エクスプローラー」作成。＋Eyes on the Solar System - NASA/JPL。</h1><p class="meta">2026-03-16 · <a href="../../../../category/c9.html">サイエンス・物理・宇宙</a> <a href="../../../../category/c13.html">ホームページ、Web作成</a> <a href="../../../../category/c42.html">＜AI＞</a></p><div class="entry-body"><p>生成AIをいろいろと使っている。</p>
+<p>「ライフハッカー・ジャパン」に以下の記事があった。</p>
+<p><a class="link-card" href="https://www.lifehacker.jp/article/2603claude-vs-chatgpt-vs-gemini-simulation-obvious-winner/" target="_blank" rel="noopener noreferrer"><span class="lc-body"><span class="lc-title">ChatGPT・Gemini・Claudeを比較。「そのまま使える成果物」を出せるのか試してみた | ライフハッカー・ジャパン</span><span class="lc-desc">私はこれまで、ChatGPTやGeminiも使用してきました。しかし、巷ではClaude（クロード）の評判がとにかく高い。「本気で仕事を進めたいならClaude一択」という声を無視できず、ついに検証を決意しました。</span><span class="lc-site">ライフハッカー・ジャパン</span></span><span class="lc-thumb"><img src="https://media.loom-app.com/loom/2026/03/16/4dbf19b8-d7a4-4907-a9d5-8acfcf8547ec/original.png?w=1200&amp;h=630&amp;f=jpg" alt="" loading="lazy"></span></a></p>
+<p>自分も、複数の生成AIを使い分けている。</p>
+<p>疑問に思ったことは、<em>ChatGPT、Gemini、Claude</em>それぞれに聞いて、回答を比較したりしている。</p>
+<p>画像生成AIでは、「<em>Seedream 4（Dreamina）</em>」が一番すぐれていると思う。</p>
+<p><em>プログラム開発では、上記「ライフハッカー・ジャパン」の記事の通り、Claudeが一番すぐれていると思う。</em></p>
+<p>「ライフハッカー・ジャパン」の記事と同じく、<em>Claude（無料版のClaude Sonnet 4.6）</em>に「太陽系エクスプローラー」なるものを作成依頼した。</p>
+<p>プロンプトは、『<em>HTML+JavaScript＋CSSで、「太陽系エクスプローラー」アプリを作成して。</em>』だけ。</p>
+<p>出来上がったのが、以下。修正依頼はしてない。コメントや空白行含めて、873ステップ。素晴らしい。自分では全くコードを書いていないので、こういうのを、「バイブコーディング（Vibe Coding）」というらしい。</p>
+<p>《 太陽系エクスプローラー 》</p>
+<p><a href="https://ok2nd.github.io/tool/solar-system-explorer/" target="_blank">https://ok2nd.github.io/tool/solar-system-explorer/</a></p>
+<p>【Claudeによる解説】</p>
+<ul>
+<li>リアルタイムアニメーション — 実際の公転速度比率で8惑星が太陽の周りを周回</li>
+<li>惑星クリックで詳細パネル表示 — 軌道データ・物理データ・環境データ・解説テキスト</li>
+<li>速度コントロール — スライダーで×0.1〜×5.0まで変更可能、一時停止ボタン付き</li>
+<li>ホバーエフェクト — 惑星名ツールチップ表示＋ハイライト</li>
+<li>視覚的こだわり — 土星・天王星の環、木星の縞と大赤斑、地球の大陸表現、太陽コロナなど</li>
+</ul>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260316/20260316143539.png" width="860" height="682" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>惑星クリックで詳細パネル表示。</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260316/20260316143542.png" width="886" height="765" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>本格的なアプリとしては、NASAが提供する高精度の3Dシミュレーションがある。</p>
+<p>《 <em>Eyes on the Solar System - NASA/JPL</em> 》</p>
+<ul>
+<li>太陽系全体をリアルタイム3Dで自由に飛び回る</li>
+<li>惑星・衛星・小惑星・彗星を拡大してじっくり観察する</li>
+<li>時間を1949年〜2049年の範囲で巻き戻し・早送りする</li>
+<li>過去のミッションの軌道を追体験する</li>
+<li>将来の惑星配置を確認する</li>
+<li>160機以上のNASA探査機をリアルタイムで追跡する</li>
+<li>探査機の3Dモデルを間近に確認する</li>
+<li>約38,000個の近地球天体（NEO）をリアルタイム可視化する</li>
+<li>次に接近する小惑星5個を確認する</li>
+<li>DSN Now で地上アンテナと探査機のリアルタイム通信を監視する</li>
+<li>系外惑星（ケプラー・TESS）を宇宙規模で一覧・比較する</li>
+</ul>
+<p><a href="https://eyes.nasa.gov/apps/solar-system/" target="_blank">https://eyes.nasa.gov/apps/solar-system/</a></p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260316/20260316152436.png" width="1014" height="713" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260316/20260316152439.png" width="1045" height="744" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p><a class="link-card" href="../../../2025/10/21/141052.html"><span class="lc-body"><span class="lc-title">Claude）Python）写真を美肌に編集加工するWindowsアプリ作成（５）。毛穴やシミを目立たなくする。AI顔検出＋AI輪郭抽出（精度向上版）。ICCプロファイル維持。</span><span class="lc-desc">先日、写真を美肌に編集加工するWindowsアプリをPythonで作成した。 輪郭抽出枠が大雑把だったので、もう少し細かく輪郭を抽出できるバージョンを作成。 課題としては、輪郭抽出の処理時間が大幅に上がったことと、抽出で…</span><span class="lc-site">晴歩雨描 · <time>2025-10-21</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20251021/20251021140459.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2025/10/03/151654.html"><span class="lc-body"><span class="lc-title">Claude）JavaScript）Web版「カラーソートパズルゲーム」作成。ボケ防止、認知症予防（？）。</span><span class="lc-desc">JavaScriptで、Web版「カ ラーソートパズルゲーム 」を作成。 老人性ボケ防止や認知症予防に役立つかも？。 ≪ カラーソートパズル ≫ https://ok2nd.github.io/tool/puzzle/c…</span><span class="lc-site">晴歩雨描 · <time>2025-10-03</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20251004/20251004075224.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2025/10/01/145235.html"><span class="lc-body"><span class="lc-title">Claude）JavaScript）Web版「緑内障簡易視野検査（セルフチェック）ツール（１）」作成。</span><span class="lc-desc">JavaScriptで、Web版「 緑内障簡易視野検査ツール 」を作成した。 ≪ 緑内障簡易視野検査ツール ≫ https://ok2nd.github.io/tool/glaucoma/test.html 【利用方法】…</span><span class="lc-site">晴歩雨描 · <time>2025-10-01</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20251001/20251001144653.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2025/09/29/090826.html"><span class="lc-body"><span class="lc-title">Claude）Python）シンプルなWindows用ランチャーアプリ作成。</span><span class="lc-desc">Pythonで作成したWindows用アプリが増えてきた。 これらを起動する ランチャーアプリ が欲しいと思って、作成した。 設定できる項目を少なくして、極力シンプルなものにした。 設定できるのは、ボタンサイズと横に並べ…</span><span class="lc-site">晴歩雨描 · <time>2025-09-29</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260108/20260108141324.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2025/08/02/132106.html"><span class="lc-body"><span class="lc-title">JavaScript）「無料対戦オセロゲーム」をClaudeとGeminiで作成。（ローカルストレージ版）</span><span class="lc-desc">「 無料対戦オセロゲーム 」を、 Claude と Geminiを使って 作成した。 ローカルストレージ 版なので、同一のPCやスマホの同一ブラウザ内同志でないと対戦できない。（ネットワーク対戦化版は下記にリンク） Ja…</span><span class="lc-site">晴歩雨描 · <time>2025-08-02</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250802/20250802131152.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2025/06/13/162926.html"><span class="lc-body"><span class="lc-title">Claude）JavaScript）透過画像作成Webツール作成。</span><span class="lc-desc">先程、Pythonで「透過画像作成」Windowsアプリを作成した。 今回、ほぼ同等の機能のWebアプリをJavaScriptで作成した。AIツールClaudeに作成してもらった。 以前に、JavaScriptで同様のア…</span><span class="lc-site">晴歩雨描 · <time>2025-06-13</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250613/20250613162135.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2025/04/10/172840.html"><span class="lc-body"><span class="lc-title">Claude）Python）PowerPointに複数写真（画像）を順番に並べて貼り付けるプログラム作成（Ver.1）。</span><span class="lc-desc">※ このプログラムについては、後日、改訂版を作成。（↓） PowerPoint に複数写真を順番に並べて貼り付けるプログラムを作成。AI生成ツール「 Claude 」に作ってもらった。 Python で作成。貼り付ける写…</span><span class="lc-site">晴歩雨描 · <time>2025-04-10</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250410/20250410165838.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2025/03/29/100520.html"><span class="lc-body"><span class="lc-title">太陽系の惑星「水星、金星、地球、火星、木星、土星、天王星、海王星、冥王星」をテーマに、Claudeに物語を考えてもらった。ChatGPT、Gemini、Ideogramで、物語の文章から画像生成も。</span><span class="lc-desc">先程、太陽系の惑星をテーマに、ChatGPTにエッセイを考えてもらった。 今回、太陽系の惑星「 水星、金星、地球、火星、木星、土星、天王星、海王星、冥王星（準惑星） 」をテーマに、AIツール「 Claude 」物語を考え…</span><span class="lc-site">晴歩雨描 · <time>2025-03-29</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250329/20250329100452.jpg" alt="" loading="lazy"></span></a></p></div></article>
+</body>
+</html>

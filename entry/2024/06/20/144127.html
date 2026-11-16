@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>JScript）リンクURL入りのテキストファイルをHTMLファイルに変換するスクリプト。（ChatGPTコード生成） - 晴歩雨描</title>
+<link rel="stylesheet" href="../../../../style.css">
+</head>
+<body>
+<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>JScript）リンクURL入りのテキストファイルをHTMLファイルに変換するスクリプト。（ChatGPTコード生成）</h1><p class="meta">2024-06-20 · <a href="../../../../category/c8.html">コンピュータ</a> <a href="../../../../category/c42.html">＜AI＞</a> <a href="../../../../category/c13.html">ホームページ、Web作成</a></p><div class="entry-body"><p>リンクURLが入ったテキストファイルをHTMLファイルに変換するJScriptスクリプトを作成。</p>
+<p>仕様：以下の例のようなテキストファイル（Shift-JIS）を読み込んで、下のようなHTMLファイル（UTF-8）を出力するJscript。</p>
+<p>● インプット・テキストファイル（例）</p>
+<pre>ページ・タイトル1
+<a href="https://.......">https://.......</a>
+
+ページ・タイトル2
+<a href="https://.......">https://.......</a>
+
+ページ・タイトル3
+<a href="https://.......">https://.......</a>
+（・・・以下複数続く・・・）
+</pre>
+<p>● アウトプット・HTMLファイル（例）</p>
+<pre>&lt;html lang="ja"&gt;
+&lt;head&gt;
+&lt;meta charset="utf-8"&gt;
+&lt;title&gt;サンプル&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h1&gt;サンプル&lt;/h1&gt;
+&lt;p&gt;&lt;a href="<a href="https://.......">https://.......</a>" target="_blank"&gt;ページ・タイトル1&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href="<a href="https://.......">https://.......</a>" target="_blank"&gt;ページ・タイトル2&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href="<a href="https://.......">https://.......</a>" target="_blank"&gt;ページ・タイトル3&lt;/a&gt;&lt;/p&gt;
+（・・・以下複数続く・・・）
+&lt;/body&gt;
+&lt;/html&gt;
+</pre>
+<p>【JScript：text2html.jse】</p>
+<pre>// ファイルシステムオブジェクトの作成
+var fso = WScript.CreateObject("Scripting.FileSystemObject");
+var ado = WScript.CreateObject("ADODB.Stream");
+
+// インプットファイルとアウトプットファイルのパス
+var inputFile = "input.txt";	// Shift-JIS
+var outputFile = "output.html";	// UTF-8
+
+// インプットファイルが存在するかチェック
+if (!fso.FileExists(inputFile)) {
+	WScript.Echo("インプットファイルが見つかりません: " + inputFile);
+	WScript.Quit(1);
+}
+
+// インプットファイルをShift-JISで読み込み
+ado.Type = 2; // テキストモード
+ado.Mode = 3; // 読み取り/書き込み
+ado.Charset = "Shift-JIS";
+ado.Open();
+ado.LoadFromFile(inputFile);
+var content = ado.ReadText();
+ado.Close();
+
+// 各行を配列に分割
+var lines = content.split("\r\n");
+
+// アウトプットファイルをUTF-8で作成
+ado.Type = 2; // テキストモード
+ado.Mode = 3; // 読み取り/書き込み
+ado.Charset = "UTF-8";
+ado.Open();
+ado.WriteText('&lt;html lang="ja"&gt;\n&lt;head&gt;\n&lt;meta charset="utf-8"&gt;\n&lt;title&gt;サンプル&lt;/title&gt;\n&lt;/head&gt;\n&lt;body&gt;\n&lt;h1&gt;サンプル&lt;/h1&gt;\n');
+
+// リンク部分を生成する関数
+function generateLink(title, url) {
+	return '&lt;p&gt;&lt;a href="' + url + '" target="_blank"&gt;' + title + '&lt;/a&gt;&lt;/p&gt;\n';
+}
+
+// インプットファイルの内容を読み込み、リンク部分を書き込み
+var currentTitle = '';
+for (var i = 0; i &lt; lines.length; i++) {
+	var line = lines[i];
+	if (line.indexOf('http') === 0) { // 'http'で始まるかチェック
+		ado.WriteText(generateLink(currentTitle, line));
+		currentTitle = '';
+	} else {
+		currentTitle = line;
+	}
+}
+
+// HTMLテンプレートの終了部分を書き込み
+ado.WriteText('&lt;/body&gt;\n&lt;/html&gt;');
+ado.SaveToFile(outputFile, 2); // ファイルを保存
+ado.Close();
+
+// 完了メッセージを表示
+WScript.Echo("HTMLファイルが生成されました: " + outputFile);
+
+</pre>
+<p>以下にスクリプトを置いている。拡張子から「.txt」を外してShift-JISコードにして実行する。</p>
+<p><a href="https://ok2nd.github.io/tool/text2html/text2html.jse.txt" target="_blank">https://ok2nd.github.io/tool/text2html/text2html.jse.txt</a></p>
+<p><em>「ChatGPT 3.5</em>」に作ってもらった。</p>
+<p>最初「<em>Google Gemini</em>」に作ってもらったら、「Node.js」ベースの回答がきたので、「WScript.CreateObject("Scripting.FileSystemObject");」を使った方法を指示したが、</p>
+<p>「残念ながら、JScriptでは WScript.CreateObject("Scripting.FileSystemObject"); を使用することはできません。」として希望するものが作成出来なかった。</p>
+<p>「<em>ChatGPT 3.5</em>」に依頼したら、最初は「Node.js」ベースの回答だったが、「WScript.CreateObject("Scripting.FileSystemObject");」を使った方法を指示したら、すんなりと回答が得られた。</p>
+<p><a class="link-card" href="../../../2023/06/30/121450.html"><span class="lc-body"><span class="lc-title">ソニーのデジカメ写真のEXIFから、「クリエイティブルック」情報を抜き出して、画像ファイル名に「クリエイティブルック名」を付け足す。（ExifTool/JScript）</span><span class="lc-desc">以前、「 ソニー のデジカメ写真の EXIF から、クリエイティブスタイル、ピクチャーエフェクト情報を抜き出して、画像ファイル名に EXIF 情報を付け足す。」という記事を書いた。 これは、「 DSC-RX100M6 」…</span><span class="lc-site">晴歩雨描 · <time>2023-06-30</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20230630/20230630120338.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2022/08/17/133109.html"><span class="lc-body"><span class="lc-title">はてなブログエクスポートファイルからキーワードリンク&lt;a&gt;タグを除去するJScript。WordPressインポート用。</span><span class="lc-desc">はてなブログ では、文章中の特定のキーワードに勝手にアンダーラインが引かれリンクになる。 無料版では標準的にはこれを消せない。 はてなブログ からエクスポートするファイルにも、その キーワードリンク はそのまま残っている…</span><span class="lc-site">晴歩雨描 · <time>2022-08-17</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220817/20220817132953.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2022/08/12/143645.html"><span class="lc-body"><span class="lc-title">WordPress）はてなブログのブログカードをWordPressローカルリンクのショートコードに変更するJScript作成。</span><span class="lc-desc">自宅のWindowsPCローカルに WordPress をインストールしている。 はてなブログ をエクスポートして、 WordPress にインポートした。 ブログカードは、 はてなブログ に依存したままになる。自分のブ…</span><span class="lc-site">晴歩雨描 · <time>2022-08-12</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220812/20220812141901.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2022/08/08/123707.html"><span class="lc-body"><span class="lc-title">はてなブログのエクスポートファイルの画像リンクをWordPressローカルに変えるJScriptを作成。</span><span class="lc-desc">自宅のWindowsPCローカルに WordPress をインストールしている。 はてなブログ のエクスポートファイルでは写真画像は、 はてなフォトライフ を参照する形になっている。 ≪サンプル≫ https://cdn…</span><span class="lc-site">晴歩雨描 · <time>2022-08-08</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220808/20220808125307.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2019/06/24/002655.html"><span class="lc-body"><span class="lc-title">検索機能付き「はてなブログ記事一覧」HTML生成スクリプト(JScript)を作成。</span><span class="lc-desc">先日、はてなブログのHTMLサイトマップ（はてなブログ記事一覧）を生成するスクリプト(JScript)を作成した。 これは、Googleクローラーに読み込んでもらうのが目的だったが、今回は人間が利用するための「はてなブロ…</span><span class="lc-site">晴歩雨描 · <time>2019-06-24</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190623/20190623234257.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2018/11/29/093518.html"><span class="lc-body"><span class="lc-title">ソニーのデジカメ写真のEXIFから、クリエイティブスタイル、ピクチャーエフェクト情報を抜き出して、画像ファイル名にEXIF情報を付け足す。（ExifTool/JScript）</span><span class="lc-desc">先日、 価格.com 掲示 板で、DSC-RX100M6でクリエイティブスタイルやピクチャーエフェクトを設定して撮影した写真の EXIF 情報を確認する方法を質問して、ExifToolというのを教えてもらった。 Wind…</span><span class="lc-site">晴歩雨描 · <time>2018-11-29</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20181129/20181129091633.jpg" alt="" loading="lazy"></span></a></p></div></article>
+</body>
+</html>

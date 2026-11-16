@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>備忘録：JavaScript、jQuery スニペット - 晴歩雨描</title>
+<link rel="stylesheet" href="../../../../style.css">
+</head>
+<body>
+<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>備忘録：JavaScript、jQuery スニペット</h1><p class="meta">2018-07-08 · <a href="../../../../category/c13.html">ホームページ、Web作成</a></p><div class="entry-body"><p><a class="keyword" href="http://d.hatena.ne.jp/keyword/JavaScript">JavaScript</a>、<a class="keyword" href="http://d.hatena.ne.jp/keyword/jQuery">jQuery</a>のよく使いそうな基本的(基礎的)<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%B9%A5%CB%A5%DA%A5%C3%A5%C8">スニペット</a>。</p>
+<p style="margin: 0px; padding: 0px;">// <a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%B9%A5%DE%A5%DB">スマホ</a>判別</p>
+<pre style="margin: 0px; padding: 4px; color: #00a;">if (navigator.userAgent.match(/(<a class="keyword" href="http://d.hatena.ne.jp/keyword/Android">Android</a>|<a class="keyword" href="http://d.hatena.ne.jp/keyword/iPhone">iPhone</a>|<a class="keyword" href="http://d.hatena.ne.jp/keyword/iPad">iPad</a>|<a class="keyword" href="http://d.hatena.ne.jp/keyword/iPod">iPod</a>|Mobile|<a class="keyword" href="http://d.hatena.ne.jp/keyword/Windows">Windows</a> Phone)/)) {
+	// <a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%B9%A5%DE%A5%DB">スマホ</a>、<a class="keyword" href="http://d.hatena.ne.jp/keyword/iPad">iPad</a>
+} else {
+	// PC 他
+}
+</pre>
+<p style="margin: 0px; padding: 0px;">// DOMがロードされて操作・解析が可能になったタイミングでの処理（<a class="keyword" href="http://d.hatena.ne.jp/keyword/jQuery">jQuery</a>を使わない場合）</p>
+<pre style="margin: 0px; padding: 4px; color: #00a;">window.onload = function() { // window.onloadは複数書けない
+	// ...
+};
+</pre>
+<pre style="margin: 0px; padding: 4px; color: #00a;">window.addEventListener('load', function() {
+	// ...
+});</pre>
+<p style="margin: 0px; padding: 0px;">// DOMがロードされて操作・解析が可能になったタイミングでの処理（<a class="keyword" href="http://d.hatena.ne.jp/keyword/jQuery">jQuery</a>）</p>
+<pre style="margin: 0px; padding: 4px; color: #00a;">$(function(){
+	// ...
+});</pre>
+<p style="margin: 0px; padding: 0px;">// 画像などを含め、ページが完全に読み込まれたタイミングでの処理（<a class="keyword" href="http://d.hatena.ne.jp/keyword/jQuery">jQuery</a>）</p>
+<pre style="margin: 0px; padding: 4px; color: #00a;">$(window).load(function(){
+	// ...
+});
+</pre>
+<p style="margin: 0px; padding: 0px;">// 画面がリサイズされたタイミングでの処理（<a class="keyword" href="http://d.hatena.ne.jp/keyword/jQuery">jQuery</a>）</p>
+<pre style="margin: 0px; padding: 4px; color: #00a;">$(window).resize(function(){
+	// ...
+});
+</pre>
+<p style="margin: 0px; padding: 0px;">// 画面の幅、高さ</p>
+<pre style="margin: 0px; padding: 4px; color: #00a;">	window.innerWidth
+	window.innerHeight
+	$(window).width()
+	$(window).height()
+</pre>
+<p style="margin: 0px; padding: 0px;">// 要素の表示</p>
+<pre style="margin: 0px; padding: 4px; color: #00a;">	$('#foo').show();
+	$('#foo').<a class="keyword" href="http://d.hatena.ne.jp/keyword/css">css</a>('display', '');
+</pre>
+<p style="margin: 0px; padding: 0px;">// 要素の非表示</p>
+<pre style="margin: 0px; padding: 4px; color: #00a;">	$('#foo').hide();
+	$('#foo').<a class="keyword" href="http://d.hatena.ne.jp/keyword/css">css</a>('display', 'none');
+</pre>
+<p style="margin: 0px; padding: 0px;">// <a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%BB%A5%EC%A5%AF%A5%BF">セレクタ</a>除外（.not）</p>
+<pre style="margin: 0px; padding: 4px; color: #00a;">	$('#foo').not('#dummy').<a class="keyword" href="http://d.hatena.ne.jp/keyword/css">css</a>('display', '');
+</pre>
+<p style="margin: 0px; padding: 0px;">// 文字列置換（半角・全角スペースを+に置換）</p>
+<pre style="margin: 0px; padding: 4px; color: #00a;">	str.replace(/ /g, '+').replace(/　/g, '+');
+</pre>
+<p style="margin: 0px; padding: 0px;">// 四捨五入</p>
+<pre style="margin: 0px; padding: 4px; color: #00a;">	Math.round(val);
+</pre>
+<p style="margin: 0px; padding: 0px;">// 四捨五入（小数点第1位以下）</p>
+<pre style="margin: 0px; padding: 4px; color: #00a;">	Math.round(val * 10) / 10;
+</pre>
+<p style="margin: 0px; padding: 0px;">// 切り捨て</p>
+<pre style="margin: 0px; padding: 4px; color: #00a;">	Math.floor(val);
+</pre>
+<p style="margin: 0px; padding: 0px;">// 切り上げ</p>
+<pre style="margin: 0px; padding: 4px; color: #00a;">	Math.ceil(val);
+</pre>
+<p style="margin: 0px; padding: 0px;">// 数値→文字列</p>
+<pre style="margin: 0px; padding: 4px; color: #00a;">	String(num);
+</pre>
+<p style="margin: 0px; padding: 0px;">// 文字列→数値</p>
+<pre style="margin: 0px; padding: 4px; color: #00a;">	Number(str);
+</pre>
+<p style="margin: 0px; padding: 0px;">// ページリダイレクト（画面遷移）</p>
+<pre style="margin: 0px; padding: 4px; color: #00a;">	window.location.href = '<a href="http://...';">http://...';</a>
+</pre>
+<p style="margin: 0px; padding: 0px;">// 新しいタブを開き、ページを開く</p>
+<pre style="margin: 0px; padding: 4px; color: #00a;">	window.open('<a href="http://...',">http://...',</a> '_blank');
+</pre>
+<p style="margin: 0px; padding: 0px;">// ボタンクリック</p>
+<pre style="margin: 0px; padding: 4px; color: #00a;">	&lt;input type="button" <a class="keyword" href="http://d.hatena.ne.jp/keyword/value">value</a>="ＸＸ" onClick="foo()"&gt;
+	&lt;a href="#" onClick="foo();return false;"&gt;ＸＸ&lt;/a&gt;
+</pre>
+<p style="margin: 0px; padding: 0px;">// ボタンクリック（<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%B9%A5%DE%A5%DB">スマホ</a>の場合、onClickよりも望ましい）</p>
+<pre style="margin: 0px; padding: 4px; color: #00a;">	&lt;input type="button" <a class="keyword" href="http://d.hatena.ne.jp/keyword/value">value</a>="ＸＸ" ontouchend="foo()"&gt;
+</pre>
+<p style="margin: 0px; padding: 0px;">// inputタグ等にフォーカス（<a class="keyword" href="http://d.hatena.ne.jp/keyword/jQuery">jQuery</a>）</p>
+<pre style="margin: 0px; padding: 4px; color: #00a;">	$('#foo').focus();
+</pre>
+<p style="margin: 0px; padding: 0px;">// HTML書き換え（<a class="keyword" href="http://d.hatena.ne.jp/keyword/jQuery">jQuery</a>）</p>
+<pre style="margin: 0px; padding: 4px; color: #00a;">	$('#foo').html('xxx');
+</pre>
+<p style="margin: 0px; padding: 0px;">// inputタグ等<a class="keyword" href="http://d.hatena.ne.jp/keyword/value">value</a>値取得（<a class="keyword" href="http://d.hatena.ne.jp/keyword/jQuery">jQuery</a>）</p>
+<pre style="margin: 0px; padding: 4px; color: #00a;">	var foo = $('#foo').val();
+</pre>
+<p style="margin: 0px; padding: 0px;">// <a class="keyword" href="http://d.hatena.ne.jp/keyword/cookie">cookie</a> 値セット 7日間 (<a class="keyword" href="http://d.hatena.ne.jp/keyword/jquery">jquery</a>.<a class="keyword" href="http://d.hatena.ne.jp/keyword/cookie">cookie</a>.js)</p>
+<pre style="margin: 0px; padding: 4px; color: #00a;">	$.<a class="keyword" href="http://d.hatena.ne.jp/keyword/cookie">cookie</a>('キー', '値', { expires:7 });
+	$.<a class="keyword" href="http://d.hatena.ne.jp/keyword/cookie">cookie</a>('キー', '値', { expires:7,  path:'/' });
+</pre>
+<p style="margin: 0px; padding: 0px;">// <a class="keyword" href="http://d.hatena.ne.jp/keyword/cookie">cookie</a> 値取得 (<a class="keyword" href="http://d.hatena.ne.jp/keyword/jquery">jquery</a>.<a class="keyword" href="http://d.hatena.ne.jp/keyword/cookie">cookie</a>.js)</p>
+<pre style="margin: 0px; padding: 4px; color: #00a;">	var foo = $.<a class="keyword" href="http://d.hatena.ne.jp/keyword/cookie">cookie</a>('キー');
+</pre>
+<p style="margin: 0px; padding: 0px;">// <a class="keyword" href="http://d.hatena.ne.jp/keyword/cookie">cookie</a> 削除 (<a class="keyword" href="http://d.hatena.ne.jp/keyword/jquery">jquery</a>.<a class="keyword" href="http://d.hatena.ne.jp/keyword/cookie">cookie</a>.js)</p>
+<pre style="margin: 0px; padding: 4px; color: #00a;">	$.removeCookie('キー');
+</pre>
+<p style="margin: 0px; padding: 0px;">// キーボード入力文字読み込み</p>
+<pre style="margin: 0px; padding: 4px; color: #00a;">document.onkeydown = function (event) {
+	if (event.keyCode &gt;= 49 &amp;&amp; event.keyCode &lt;=58) {	// キーボード 1～9
+		var key = event.keyCode - 48;
+		location.href = '?m='+key;	// リダイレクト
+	}
+}
+</pre>
+<p style="margin: 0px; padding: 0px;">// URLパラメーターを取得し配列に格納</p>
+<pre style="margin: 0px; padding: 4px; color: #00a;">var arg = new Object;
+var pair=location.search.substring(1).split('&amp;');
+for(var i=0;pair[i];i++) {
+	var kv = pair[i].split('=');
+	arg[kv[0]]=kv[1];
+}
+<a href="http://exmple.com?hoge1=xxx">http://exmple.com?hoge1=xxx</a>なら、arg.hoge1 = 'xxx'
+</pre>
+<p style="margin: 0px; padding: 0px;">// 画像本来のサイズ(幅, 高さ)を取得</p>
+<pre style="margin: 0px; padding: 4px; color: #00a;">var element = document.getElementById(id);
+var w = element.naturalWidth;
+var h = element.naturalHeight;
+</pre>
+<p style="margin: 0px; padding: 0px;">// 関数で、戻り値を複数返す</p>
+<pre style="margin: 0px; padding: 4px; color: #00a;">var obj = new Object();
+obj.hoge1 = ???;
+obj.hoge2 = ???;
+return obj;
+</pre>
+<p style="margin: 0px; padding: 0px;">// <a class="keyword" href="http://d.hatena.ne.jp/keyword/canvas">canvas</a>のサイズを変更したい場合は、<a class="keyword" href="http://d.hatena.ne.jp/keyword/css">css</a>ではうまくいかない。（<a class="keyword" href="http://d.hatena.ne.jp/keyword/jQuery">jQuery</a>）</p>
+<pre style="margin: 0px; padding: 4px; color: #00a;">&lt;<a class="keyword" href="http://d.hatena.ne.jp/keyword/canvas">canvas</a> id="<a class="keyword" href="http://d.hatena.ne.jp/keyword/canvas">canvas</a>"&gt;&lt;/<a class="keyword" href="http://d.hatena.ne.jp/keyword/canvas">canvas</a>&gt;
+$('#<a class="keyword" href="http://d.hatena.ne.jp/keyword/canvas">canvas</a>').attr('width', w);
+$('#<a class="keyword" href="http://d.hatena.ne.jp/keyword/canvas">canvas</a>').attr('height', h);
+</pre>
+<p style="margin: 0px; padding: 0px;">// iframeのsrcを書き換える。</p>
+<pre style="margin: 0px; padding: 4px; color: #00a;">&lt;iframe name="fName" src=""&gt;&lt;/iframe&gt;
+document.fName.location.href = '<a href="http://...';">http://...';</a>
+</pre>
+<p>// imgのsrcを書き換える。（<a class="keyword" href="http://d.hatena.ne.jp/keyword/jQuery">jQuery</a>）</p>
+<pre style="margin: 0px; padding: 4px; color: #00a;">&lt;img id="photo" src="..."&gt;
+$('#photo').attr('src','<a class="keyword" href="http://d.hatena.ne.jp/keyword/hoge">hoge</a>.jpg');
+</pre>
+<p>// selectのoption選択で関数コール。option <a class="keyword" href="http://d.hatena.ne.jp/keyword/value">value</a>取得。（<a class="keyword" href="http://d.hatena.ne.jp/keyword/jQuery">jQuery</a>）</p>
+<pre style="margin: 0px; padding: 4px; color: #00a;">&lt;select id="<a class="keyword" href="http://d.hatena.ne.jp/keyword/hoge">hoge</a>" onchange="foo()"&gt;
+function foo() {
+    var sel_val = $('#<a class="keyword" href="http://d.hatena.ne.jp/keyword/hoge">hoge</a>').val();
+}
+</pre></div></article>
+</body>
+</html>

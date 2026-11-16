@@ -1,0 +1,1143 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Claude）Python）写真を美肌に編集加工するWindowsアプリ作成（５）。毛穴やシミを目立たなくする。AI顔検出＋AI輪郭抽出（精度向上版）。ICCプロファイル維持。 - 晴歩雨描</title>
+<link rel="stylesheet" href="../../../../style.css">
+</head>
+<body>
+<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>Claude）Python）写真を美肌に編集加工するWindowsアプリ作成（５）。毛穴やシミを目立たなくする。AI顔検出＋AI輪郭抽出（精度向上版）。ICCプロファイル維持。</h1><p class="meta">2025-10-21 · <a href="../../../../category/c18.html">写真・カメラ</a> <a href="../../../../category/c42.html">＜AI＞</a></p><div class="entry-body"><p>先日、写真を美肌に編集加工するWindowsアプリをPythonで作成した。</p>
+<p><a class="link-card" href="../19/112739.html"><span class="lc-body"><span class="lc-title">Claude）Python）写真を美肌に編集加工するWindowsアプリ作成（４）。毛穴やシミを目立たなくする。AI顔検出＋AI輪郭抽出。</span><span class="lc-desc">先日、写真を美肌に編集加工するWindowsアプリをPythonで作成した。 これの改良版として、AIによる 顔検出 と 輪郭抽出 を組み合わせて、 美肌加工 するアプリを作成。 【後日追記】更なる改良版を作成（↓）。 …</span><span class="lc-site">晴歩雨描 · <time>2025-10-19</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20251019/20251019110101.png" alt="" loading="lazy"></span></a></p>
+<p>輪郭抽出枠が大雑把だったので、もう少し細かく輪郭を抽出できるバージョンを作成。</p>
+<p><em>課題としては、輪郭抽出の処理時間が大幅に上がったことと、抽出できる範囲がまだ完璧とは言えない点。（※ この点は、今後も改善していきたい。）</em></p>
+<p><em>追加機能として、輪郭抽出枠をマウスによる手動でも範囲追加、範囲削除できるようにした。顔検出していなくても、輪郭抽出枠の範囲追加、範囲削除が出来る。タブレットを使えば、顔の輪郭を忠実に囲むことが可能と思われる。</em></p>
+<h5 id="使い方">【使い方】</h5>
+<p>1. 画像の読み込み<br />   「ファイル選択」ボタンから画像を選択<br />   (ドラッグ&amp;ドロップも可能)<br />   <br />2. 顔検出<br />   「顔検出」ボタンで自動的に顔を検出<br />   - 緑の枠で顔を囲む<br />   - 枠をクリックで除外可能<br />   - マウスドラッグで手動追加可能<br />   <br />3. 輪郭抽出<br />   「輪郭抽出(時間かかる)」で肌領域を抽出<br />   - AIが顔・首・肩まで自動検出<br />   - 青い線で輪郭を表示<br />   <br />4. 輪郭編集<br />   「範囲追加」「範囲削除」で輪郭を調整<br />   - ボタンを押してマウスドラッグで範囲指定<br />   - 連続して複数回範囲指定可能<br />   - 輪郭抽出なしでも使用可能<br />   - 独立した複数領域の追加も可能<br />   - 美肌効果後も編集可能（自動再適用）<br />   <br />5. 美肌効果<br />   「美肌効果」ボタンで肌を滑らかに<br />   「美肌効果(範囲＋)」で周辺も含む（今回のバージョンでは不要かも）<br />   - スライダーで効果を調整(0-100)<br />   - スライダー操作でリアルタイム更新</p>
+<h5 id="プログラム画面サンプル">【プログラム画面サンプル】</h5>
+<p>≪ 顔検出 ≫</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20251021/20251021135504.png" width="915" height="662" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>≪ 輪郭抽出：枠が顔の中に入り込むケースがある ≫</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20251021/20251021135507.png" width="915" height="662" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>≪ 輪郭抽出：範囲追加をマウスで手動で行う ≫</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20251021/20251021135510.png" width="914" height="663" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>≪ 輪郭抽出：範囲削除をマウスで手動で行う ≫</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20251021/20251021135513.png" width="916" height="660" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>≪ 美肌効果適用 ≫</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20251021/20251021140459.png" width="915" height="662" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>≪ 顔検出 ≫</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20251021/20251021135534.png" width="915" height="662" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>≪ 輪郭抽出：顔の面積が小さくても輪郭抽出できるようになった ≫</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20251021/20251021135538.png" width="915" height="662" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<h5 id="Pythonライブラリインストール">【Pythonライブラリインストール】</h5>
+<p>次のライブラリが必要なので、インストールする。</p>
+<pre>pip install opencv-python pillow mediapipe numpy tkinterdnd2</pre>
+<h5 id="Pythonプログラムコード">【Pythonプログラムコード】</h5>
+<p><span style="color: #dd830c;">※ 【後日追記】最初のバージョンでは、元の写真に埋め込まれたICCプロファイル（sRGB、Adobe RGB、Display P3など）が保存されていなかった。そのために、鮮やかさなどの色合いが失われていた。この点を修正した。</span></p>
+<pre>import tkinter as tk
+from tkinter import ttk, filedialog, messagebox
+from PIL import Image, ImageTk, ImageDraw, ImageFilter
+import cv2
+import numpy as np
+import mediapipe as mp
+import os
+import sys
+import io
+
+class FaceBeautyApp:
+    def __init__(self, root):
+        self.root = root
+        self.root.title("顔検出・美肌効果アプリ")
+        self.root.geometry("1200x800")
+        
+        # MediaPipe初期化
+        self.mp_face_detection = mp.solutions.face_detection
+        self.mp_face_mesh = mp.solutions.face_mesh
+        self.mp_selfie_segmentation = mp.solutions.selfie_segmentation
+        
+        self.face_detection = self.mp_face_detection.FaceDetection(
+            model_selection=1, min_detection_confidence=0.5)
+        self.face_mesh = self.mp_face_mesh.FaceMesh(
+            static_image_mode=True, max_num_faces=10, min_detection_confidence=0.3)
+        self.selfie_segmentation = self.mp_selfie_segmentation.SelfieSegmentation(
+            model_selection=1)
+        
+        # 変数初期化
+        self.original_image = None
+        self.current_image = None
+        self.display_image = None
+        self.photo = None
+        self.image_path = None
+        self.face_boxes = []
+        self.show_boxes = True
+        self.face_contours = []
+        self.beauty_applied = False
+        self.drag_start = None
+        self.temp_box = None
+        self.display_scale = 1.0
+        self.image_offset = (0, 0)
+        self.beauty_intensity_applied = 0
+        self.beauty_mode = 'normal'
+        self.icc_profile = None  # ICCプロファイル保持用
+        
+        # 処理状態フラグ
+        self.detect_done = False
+        self.contour_done = False
+        self.beauty_normal_done = False
+        self.beauty_plus_done = False
+        
+        # 輪郭編集モード
+        self.contour_edit_mode = False
+        self.editing_contour_idx = None
+        self.edit_points = []
+        self.edit_mode_type = None
+        
+        # tkinterdnd2の有効性チェック
+        self.dnd_available = False
+        
+        self.setup_ui()
+        
+    def setup_ui(self):
+        # メインフレーム
+        main_frame = tk.Frame(self.root)
+        main_frame.pack(fill=tk.BOTH, expand=True)
+        
+        # 左側コントロールパネル
+        control_panel = tk.Frame(main_frame, width=250, bg='#f0f0f0')
+        control_panel.pack(side=tk.LEFT, fill=tk.Y, padx=5, pady=5)
+        control_panel.pack_propagate(False)
+        
+        # タイトル
+        title_label = tk.Label(control_panel, text="コントロールパネル", 
+                              font=('Arial', 14, 'bold'), bg='#f0f0f0')
+        title_label.pack(pady=10)
+        
+        # ファイル選択ボタン
+        file_frame = tk.LabelFrame(control_panel, text="画像読み込み", bg='#f0f0f0', font=('Arial', 10, 'bold'))
+        file_frame.pack(fill=tk.X, padx=10, pady=5)
+        
+        self.load_btn = tk.Button(file_frame, text="ファイル選択", command=self.select_file,
+                                 bg='#00BCD4', fg='white', font=('Arial', 10))
+        self.load_btn.pack(fill=tk.X, padx=5, pady=3)
+        
+        # 顔検出セクション
+        face_frame = tk.LabelFrame(control_panel, text="顔検出", bg='#f0f0f0', font=('Arial', 10, 'bold'))
+        face_frame.pack(fill=tk.X, padx=10, pady=5)
+        
+        detect_btn_frame = tk.Frame(face_frame, bg='#f0f0f0')
+        detect_btn_frame.pack(fill=tk.X, padx=5, pady=3)
+        
+        self.detect_btn = tk.Button(detect_btn_frame, text="顔検出", command=self.detect_faces,
+                                   bg='#4CAF50', fg='white', font=('Arial', 10))
+        self.detect_btn.pack(side=tk.LEFT, fill=tk.X, expand=True)
+        
+        self.detect_check = tk.Label(detect_btn_frame, text="", bg='#f0f0f0', font=('Arial', 12), width=2)
+        self.detect_check.pack(side=tk.LEFT)
+        
+        self.reset_detect_btn = tk.Button(face_frame, text="リセット", command=self.reset_detection,
+                                         bg='#ff9800', fg='white', font=('Arial', 9))
+        self.reset_detect_btn.pack(fill=tk.X, padx=5, pady=3)
+        
+        # 輪郭抽出セクション
+        contour_frame = tk.LabelFrame(control_panel, text="輪郭抽出", bg='#f0f0f0', font=('Arial', 10, 'bold'))
+        contour_frame.pack(fill=tk.X, padx=10, pady=5)
+        
+        contour_btn_frame = tk.Frame(contour_frame, bg='#f0f0f0')
+        contour_btn_frame.pack(fill=tk.X, padx=5, pady=3)
+        
+        self.contour_btn = tk.Button(contour_btn_frame, text="輪郭抽出(時間かかる)", command=self.extract_contours,
+                                     bg='#2196F3', fg='white', font=('Arial', 9))
+        self.contour_btn.pack(side=tk.LEFT, fill=tk.X, expand=True)
+        
+        self.contour_check = tk.Label(contour_btn_frame, text="", bg='#f0f0f0', font=('Arial', 12), width=2)
+        self.contour_check.pack(side=tk.LEFT)
+        
+        # 輪郭編集ボタン
+        edit_frame = tk.Frame(contour_frame, bg='#f0f0f0')
+        edit_frame.pack(fill=tk.X, padx=5, pady=3)
+        
+        edit_add_btn_frame = tk.Frame(edit_frame, bg='#f0f0f0')
+        edit_add_btn_frame.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=(0, 2))
+        
+        self.edit_add_btn = tk.Button(edit_add_btn_frame, text="範囲追加", command=self.toggle_edit_add,
+                                     bg='#4CAF50', fg='white', font=('Arial', 9))
+        self.edit_add_btn.pack(side=tk.LEFT, fill=tk.X, expand=True)
+        
+        self.edit_add_check = tk.Label(edit_add_btn_frame, text="", bg='#f0f0f0', font=('Arial', 10), width=2)
+        self.edit_add_check.pack(side=tk.LEFT)
+        
+        edit_remove_btn_frame = tk.Frame(edit_frame, bg='#f0f0f0')
+        edit_remove_btn_frame.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=(2, 0))
+        
+        self.edit_remove_btn = tk.Button(edit_remove_btn_frame, text="範囲削除", command=self.toggle_edit_remove,
+                                        bg='#f44336', fg='white', font=('Arial', 9))
+        self.edit_remove_btn.pack(side=tk.LEFT, fill=tk.X, expand=True)
+        
+        self.edit_remove_check = tk.Label(edit_remove_btn_frame, text="", bg='#f0f0f0', font=('Arial', 10), width=2)
+        self.edit_remove_check.pack(side=tk.LEFT)
+        
+        self.reset_contour_btn = tk.Button(contour_frame, text="リセット", command=self.reset_contours,
+                                          bg='#ff9800', fg='white', font=('Arial', 9))
+        self.reset_contour_btn.pack(fill=tk.X, padx=5, pady=3)
+        
+        # 美肌効果セクション
+        beauty_frame = tk.LabelFrame(control_panel, text="美肌効果", bg='#f0f0f0', font=('Arial', 10, 'bold'))
+        beauty_frame.pack(fill=tk.X, padx=10, pady=5)
+        
+        beauty_btn_frame = tk.Frame(beauty_frame, bg='#f0f0f0')
+        beauty_btn_frame.pack(fill=tk.X, padx=5, pady=3)
+        
+        self.beauty_btn = tk.Button(beauty_btn_frame, text="美肌効果", command=self.apply_beauty,
+                                   bg='#E91E63', fg='white', font=('Arial', 10))
+        self.beauty_btn.pack(side=tk.LEFT, fill=tk.X, expand=True)
+        
+        self.beauty_normal_check = tk.Label(beauty_btn_frame, text="", bg='#f0f0f0', font=('Arial', 12), width=2)
+        self.beauty_normal_check.pack(side=tk.LEFT)
+        
+        beauty_plus_btn_frame = tk.Frame(beauty_frame, bg='#f0f0f0')
+        beauty_plus_btn_frame.pack(fill=tk.X, padx=5, pady=3)
+        
+        self.beauty_plus_btn = tk.Button(beauty_plus_btn_frame, text="美肌効果(範囲＋)", command=self.apply_beauty_plus,
+                                        bg='#F06292', fg='white', font=('Arial', 10))
+        self.beauty_plus_btn.pack(side=tk.LEFT, fill=tk.X, expand=True)
+        
+        self.beauty_plus_check = tk.Label(beauty_plus_btn_frame, text="", bg='#f0f0f0', font=('Arial', 12), width=2)
+        self.beauty_plus_check.pack(side=tk.LEFT)
+        
+        # 美肌スライダー
+        slider_frame = tk.Frame(beauty_frame, bg='#f0f0f0')
+        slider_frame.pack(fill=tk.X, padx=5, pady=3)
+        
+        tk.Label(slider_frame, text="効果:", bg='#f0f0f0', font=('Arial', 9)).pack(side=tk.LEFT)
+        self.beauty_var = tk.IntVar(value=70)
+        self.beauty_slider = tk.Scale(slider_frame, from_=0, to=100, orient=tk.HORIZONTAL,
+                                     variable=self.beauty_var, bg='#f0f0f0',
+                                     command=self.on_slider_change)
+        self.beauty_slider.pack(side=tk.LEFT, fill=tk.X, expand=True)
+        
+        self.reset_beauty_btn = tk.Button(beauty_frame, text="リセット", command=self.reset_beauty,
+                                         bg='#ff9800', fg='white', font=('Arial', 9))
+        self.reset_beauty_btn.pack(fill=tk.X, padx=5, pady=3)
+        
+        # 保存ボタン
+        self.save_btn = tk.Button(control_panel, text="保存", command=self.save_image,
+                                 bg='#9C27B0', fg='white', font=('Arial', 11, 'bold'))
+        self.save_btn.pack(fill=tk.X, padx=10, pady=10)
+        
+        # 使い方ボタン
+        self.help_btn = tk.Button(control_panel, text="使い方", command=self.show_help,
+                                 bg='#607D8B', fg='white', font=('Arial', 10))
+        self.help_btn.pack(fill=tk.X, padx=10, pady=5)
+        
+        # 右側画像表示エリア
+        image_frame = tk.Frame(main_frame, bg='white')
+        image_frame.pack(side=tk.RIGHT, fill=tk.BOTH, expand=True, padx=5, pady=5)
+        
+        # キャンバス
+        self.canvas = tk.Canvas(image_frame, bg='#e0e0e0', cursor='cross')
+        self.canvas.pack(fill=tk.BOTH, expand=True)
+        
+        # ウィンドウサイズ変更イベント
+        self.canvas.bind('&lt;Configure&gt;', self.on_canvas_resize)
+        
+        # ドラッグ&amp;ドロップ設定
+        try:
+            self.canvas.drop_target_register('DND_Files')
+            self.canvas.dnd_bind('&lt;&lt;Drop&gt;&gt;', self.on_drop)
+            self.dnd_available = True
+        except:
+            pass
+        
+        # マウスイベント
+        self.canvas.bind('&lt;Button-1&gt;', self.on_canvas_click)
+        self.canvas.bind('&lt;B1-Motion&gt;', self.on_canvas_drag)
+        self.canvas.bind('&lt;ButtonRelease-1&gt;', self.on_canvas_release)
+        
+        # 初期メッセージ
+        msg = "ここに画像をドラッグ&amp;ドロップ\nまたは「ファイル選択」ボタンをクリック" if self.dnd_available else "「ファイル選択」ボタンをクリック"
+        self.canvas.create_text(400, 300, text=msg,
+                               font=('Arial', 14), fill='gray', tags='placeholder')
+    
+    def on_canvas_resize(self, event):
+        if self.current_image is not None:
+            self.display_current_image()
+    
+    def on_slider_change(self, value):
+        if self.beauty_applied and self.face_contours:
+            self.apply_beauty_effect()
+    
+    def select_file(self):
+        file_path = filedialog.askopenfilename(
+            title="画像ファイルを選択",
+            filetypes=[
+                ("画像ファイル", "*.jpg *.jpeg *.png *.bmp *.gif *.tif *.tiff"),
+                ("すべてのファイル", "*.*")
+            ]
+        )
+        if file_path:
+            self.load_image(file_path)
+    
+    def on_drop(self, event):
+        files = self.root.tk.splitlist(event.data)
+        if files:
+            self.load_image(files[0])
+    
+    def load_image(self, path):
+        try:
+            path = path.strip('{}').strip('"').strip("'")
+            
+            # --- ICCプロファイル保持のためPILで読み込む ---
+            # PIL は日本語パスに対応しているが、念のためバイナリ読み込み経由
+            with open(path, 'rb') as f:
+                raw_bytes = f.read()
+            pil_img = Image.open(io.BytesIO(raw_bytes))
+            
+            # ICCプロファイルを保存（存在しない場合はNone）
+            self.icc_profile = pil_img.info.get('icc_profile', None)
+            
+            # RGBに統一（CMYK / グレースケール等にも対応）
+            if pil_img.mode != 'RGB':
+                pil_img = pil_img.convert('RGB')
+            
+            self.original_image = np.array(pil_img)
+            
+            if self.original_image is None or self.original_image.size == 0:
+                raise ValueError("画像を読み込めませんでした")
+            
+            self.image_path = path
+            self.current_image = self.original_image.copy()
+            
+            # リセット
+            self.face_boxes = []
+            self.face_contours = []
+            self.beauty_applied = False
+            self.show_boxes = True
+            self.beauty_intensity_applied = 0
+            self.contour_edit_mode = False
+            self.edit_mode_type = None
+            self.edit_points = []
+            
+            # 状態フラグリセット
+            self.detect_done = False
+            self.contour_done = False
+            self.beauty_normal_done = False
+            self.beauty_plus_done = False
+            self.update_check_marks()
+            
+            self.display_current_image()
+            
+        except Exception as e:
+            messagebox.showerror("エラー", f"画像の読み込みに失敗しました:\n{str(e)}")
+    
+    def display_current_image(self):
+        if self.current_image is None:
+            return
+        
+        self.canvas.update_idletasks()
+        canvas_width = self.canvas.winfo_width()
+        canvas_height = self.canvas.winfo_height()
+        
+        if canvas_width &lt;= 1 or canvas_height &lt;= 1:
+            canvas_width = 800
+            canvas_height = 600
+        
+        img = Image.fromarray(self.current_image)
+        img_width, img_height = img.size
+        
+        scale = min(canvas_width / img_width, canvas_height / img_height)
+        new_width = int(img_width * scale)
+        new_height = int(img_height * scale)
+        
+        self.display_scale = scale
+        self.display_image = img.resize((new_width, new_height), Image.LANCZOS)
+        
+        display_with_overlay = self.display_image.copy()
+        draw = ImageDraw.Draw(display_with_overlay)
+        
+        if self.show_boxes and self.face_boxes:
+            for box in self.face_boxes:
+                x1, y1, x2, y2 = [int(coord * scale) for coord in box]
+                draw.rectangle([x1, y1, x2, y2], outline='green', width=3)
+        
+        if self.face_contours:
+            for contour in self.face_contours:
+                scaled_contour = [(int(x * scale), int(y * scale)) for x, y in contour]
+                if len(scaled_contour) &gt; 1:
+                    draw.line(scaled_contour + [scaled_contour[0]], fill='blue', width=2)
+        
+        if self.contour_edit_mode and self.edit_points:
+            scaled_edit = [(int(x * scale), int(y * scale)) for x, y in self.edit_points]
+            if len(scaled_edit) &gt; 1:
+                color = 'green' if self.edit_mode_type == 'add' else 'red'
+                draw.line(scaled_edit, fill=color, width=3)
+        
+        if self.temp_box:
+            x1, y1, x2, y2 = [int(coord * scale) for coord in self.temp_box]
+            draw.rectangle([x1, y1, x2, y2], outline='yellow', width=2)
+        
+        self.photo = ImageTk.PhotoImage(display_with_overlay)
+        
+        self.canvas.delete('all')
+        x = (canvas_width - new_width) // 2
+        y = (canvas_height - new_height) // 2
+        self.canvas.create_image(x, y, anchor=tk.NW, image=self.photo)
+        self.image_offset = (x, y)
+    
+    def update_check_marks(self):
+        self.detect_check.config(text="✓" if self.detect_done else "")
+        self.contour_check.config(text="✓" if self.contour_done else "")
+        self.beauty_normal_check.config(text="✓" if self.beauty_normal_done else "")
+        self.beauty_plus_check.config(text="✓" if self.beauty_plus_done else "")
+        
+        # 編集モードのチェックマーク
+        self.edit_add_check.config(text="✓" if self.edit_mode_type == 'add' else "")
+        self.edit_remove_check.config(text="✓" if self.edit_mode_type == 'remove' else "")
+    
+    def detect_faces(self):
+        if self.original_image is None:
+            messagebox.showwarning("警告", "画像を読み込んでください")
+            return
+        
+        # 輪郭抽出関連を全てリセット
+        self.face_contours = []
+        self.beauty_applied = False
+        self.current_image = self.original_image.copy()
+        self.contour_done = False
+        self.beauty_normal_done = False
+        self.beauty_plus_done = False
+        
+        # 編集モードもリセット
+        self.contour_edit_mode = False
+        self.edit_mode_type = None
+        self.edit_points = []
+        
+        try:
+            results = self.face_detection.process(self.original_image)
+            
+            self.face_boxes = []
+            if results.detections:
+                h, w, _ = self.original_image.shape
+                for detection in results.detections:
+                    bbox = detection.location_data.relative_bounding_box
+                    x1 = int(bbox.xmin * w)
+                    y1 = int(bbox.ymin * h)
+                    x2 = int((bbox.xmin + bbox.width) * w)
+                    y2 = int((bbox.ymin + bbox.height) * h)
+                    
+                    x1, y1 = max(0, x1), max(0, y1)
+                    x2, y2 = min(w, x2), min(h, y2)
+                    
+                    self.face_boxes.append((x1, y1, x2, y2))
+            
+            if not self.face_boxes:
+                messagebox.showwarning("検出失敗", "顔を検出できませんでした")
+                self.detect_done = False
+            else:
+                self.detect_done = True
+            
+            self.show_boxes = True
+            self.update_check_marks()
+            self.display_current_image()
+            
+        except Exception as e:
+            messagebox.showerror("エラー", f"顔検出に失敗しました:\n{str(e)}")
+    
+    def reset_detection(self):
+        self.face_boxes = []
+        self.face_contours = []
+        self.beauty_applied = False
+        self.show_boxes = True
+        self.current_image = self.original_image.copy() if self.original_image is not None else None
+        self.detect_done = False
+        self.contour_done = False
+        self.beauty_normal_done = False
+        self.beauty_plus_done = False
+        self.contour_edit_mode = False
+        self.edit_mode_type = None
+        self.update_check_marks()
+        self.display_current_image()
+    
+    def extract_contours(self):
+        if not self.face_boxes:
+            messagebox.showwarning("警告", "先に顔検出を実行してください")
+            return
+        
+        self.beauty_applied = False
+        self.current_image = self.original_image.copy()
+        self.beauty_normal_done = False
+        self.beauty_plus_done = False
+        
+        try:
+            h, w, _ = self.original_image.shape
+            img_bgr = cv2.cvtColor(self.original_image, cv2.COLOR_RGB2BGR)
+            
+            self.face_contours = []
+            
+            for box in self.face_boxes:
+                x1, y1, x2, y2 = box
+                
+                box_height = y2 - y1
+                box_width = x2 - x1
+                
+                # 拡張範囲
+                expanded_y1 = max(0, y1 - int(box_height * 0.2))
+                expanded_y2 = min(h, y2 + int(box_height * 0.6))
+                expanded_x1 = max(0, x1 - int(box_width * 0.25))
+                expanded_x2 = min(w, x2 + int(box_width * 0.25))
+                
+                # GrabCutで前景抽出
+                mask = np.zeros((h, w), np.uint8)
+                bgd_model = np.zeros((1, 65), np.float64)
+                fgd_model = np.zeros((1, 65), np.float64)
+                
+                rect = (expanded_x1, expanded_y1, 
+                       expanded_x2 - expanded_x1, 
+                       expanded_y2 - expanded_y1)
+                
+                cv2.grabCut(img_bgr, mask, rect, bgd_model, fgd_model, 5, cv2.GC_INIT_WITH_RECT)
+                
+                mask2 = np.where((mask == 2) | (mask == 0), 0, 1).astype('uint8')
+                
+                # 拡大領域のマスクのみ使用
+                roi_mask = np.zeros_like(mask2)
+                roi_mask[expanded_y1:expanded_y2, expanded_x1:expanded_x2] = \
+                    mask2[expanded_y1:expanded_y2, expanded_x1:expanded_x2]
+                
+                # 領域別に異なる肌色検出を適用
+                # 上部（顔・髪境界）：厳しい検出
+                # 下部（首）：緩い検出
+                
+                # YCrCbカラースペースでの肌色検出
+                img_ycrcb = cv2.cvtColor(self.original_image, cv2.COLOR_RGB2YCrCb)
+                
+                # 厳しい肌色検出（頭部用）
+                lower_skin_strict = np.array([0, 135, 85], dtype=np.uint8)
+                upper_skin_strict = np.array([255, 170, 120], dtype=np.uint8)
+                skin_mask_strict = cv2.inRange(img_ycrcb, lower_skin_strict, upper_skin_strict)
+                
+                # 緩い肌色検出（首・体用）
+                lower_skin_loose = np.array([0, 130, 75], dtype=np.uint8)
+                upper_skin_loose = np.array([255, 175, 130], dtype=np.uint8)
+                skin_mask_loose = cv2.inRange(img_ycrcb, lower_skin_loose, upper_skin_loose)
+                
+                # HSVでの補助的な肌色検出
+                img_hsv = cv2.cvtColor(self.original_image, cv2.COLOR_RGB2HSV)
+                lower_skin_hsv = np.array([0, 20, 70], dtype=np.uint8)
+                upper_skin_hsv = np.array([25, 160, 255], dtype=np.uint8)
+                skin_mask_hsv = cv2.inRange(img_hsv, lower_skin_hsv, upper_skin_hsv)
+                
+                # 明度による髪の除外（頭部のみ）
+                gray = cv2.cvtColor(self.original_image, cv2.COLOR_RGB2GRAY)
+                _, brightness_mask = cv2.threshold(gray, 50, 255, cv2.THRESH_BINARY)
+                
+                # 領域別マスク作成
+                region_mask = np.zeros((h, w), dtype=np.uint8)
+                
+                # 顔の上半分（髪が多い領域）：厳しい条件
+                upper_region_y = y2  # 顔検出枠の下端まで
+                upper_mask = np.zeros((h, w), dtype=np.uint8)
+                upper_mask[expanded_y1:upper_region_y, expanded_x1:expanded_x2] = 255
+                
+                # 厳しい条件（AND条件）
+                strict_result = cv2.bitwise_and(skin_mask_strict, skin_mask_hsv)
+                strict_result = cv2.bitwise_and(strict_result, brightness_mask)
+                strict_result = cv2.bitwise_and(strict_result, upper_mask)
+                
+                # 顔の下半分から首（肌が多い領域）：緩い条件
+                lower_mask = np.zeros((h, w), dtype=np.uint8)
+                lower_mask[upper_region_y:expanded_y2, expanded_x1:expanded_x2] = 255
+                
+                # 緩い条件（OR条件を含む）
+                loose_result = cv2.bitwise_or(skin_mask_loose, skin_mask_hsv)
+                loose_result = cv2.bitwise_and(loose_result, lower_mask)
+                
+                # 2つの領域を統合
+                region_mask = cv2.bitwise_or(strict_result, loose_result)
+                
+                # GrabCutの結果と組み合わせる
+                roi_mask = cv2.bitwise_and(roi_mask, region_mask)
+                
+                # ノイズ除去（段階的に）
+                kernel_small = np.ones((3, 3), np.uint8)
+                roi_mask = cv2.morphologyEx(roi_mask, cv2.MORPH_OPEN, kernel_small, iterations=1)
+                
+                # 穴埋め
+                kernel_medium = np.ones((9, 9), np.uint8)
+                roi_mask = cv2.morphologyEx(roi_mask, cv2.MORPH_CLOSE, kernel_medium, iterations=2)
+                
+                # さらに滑らかに
+                kernel_large = np.ones((13, 13), np.uint8)
+                roi_mask = cv2.morphologyEx(roi_mask, cv2.MORPH_CLOSE, kernel_large, iterations=1)
+                
+                # 輪郭を検出
+                contours, _ = cv2.findContours(roi_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+                
+                if contours:
+                    # 面積でフィルタリング
+                    valid_contours = [cnt for cnt in contours if cv2.contourArea(cnt) &gt; (box_width * box_height) * 0.15]
+                    
+                    if not valid_contours:
+                        continue
+                    
+                    # 最大の輪郭を選択
+                    largest_contour = max(valid_contours, key=cv2.contourArea)
+                    
+                    # 面積チェック
+                    area = cv2.contourArea(largest_contour)
+                    min_area = (box_width * box_height) * 0.2
+                    
+                    if area &lt; min_area:
+                        continue
+                    
+                    # 輪郭を滑らかに（凸包は使わない - 首のラインを保持）
+                    epsilon = 0.004 * cv2.arcLength(largest_contour, True)
+                    smoothed_contour = cv2.approxPolyDP(largest_contour, epsilon, True)
+                    
+                    # 座標を変換
+                    adjusted_contour = []
+                    for point in smoothed_contour:
+                        x = int(point[0][0])
+                        y = int(point[0][1])
+                        adjusted_contour.append((x, y))
+                    
+                    # 点数を調整
+                    if len(adjusted_contour) &gt; 150:
+                        step = max(1, len(adjusted_contour) // 150)
+                        adjusted_contour = adjusted_contour[::step]
+                    
+                    if len(adjusted_contour) &gt; 10:
+                        self.face_contours.append(adjusted_contour)
+            
+            if not self.face_contours:
+                messagebox.showwarning("抽出失敗", "輪郭を抽出できませんでした")
+                self.contour_done = False
+                self.show_boxes = True
+            else:
+                self.contour_done = True
+                self.show_boxes = False
+            
+            self.update_check_marks()
+            self.display_current_image()
+            
+        except Exception as e:
+            messagebox.showerror("エラー", f"輪郭抽出に失敗しました:\n{str(e)}")
+    
+    def toggle_edit_add(self):
+        """範囲追加モードのトグル"""
+        if self.original_image is None:
+            messagebox.showwarning("警告", "画像を読み込んでください")
+            return
+        
+        # 輪郭がない場合は空のリストで開始
+        if not self.face_contours:
+            self.face_contours = []
+        
+        # 範囲追加モードの場合は継続、そうでない場合は開始
+        if self.edit_mode_type == 'add':
+            # 既に追加モードの場合は何もしない（継続）
+            pass
+        else:
+            # 編集モードを追加に変更
+            self.contour_edit_mode = True
+            self.edit_mode_type = 'add'
+            self.edit_points = []
+            # 顔検出枠を非表示
+            self.show_boxes = False
+        
+        self.update_check_marks()
+        self.display_current_image()
+    
+    def toggle_edit_remove(self):
+        """範囲削除モードのトグル"""
+        if self.original_image is None:
+            messagebox.showwarning("警告", "画像を読み込んでください")
+            return
+        
+        # 輪郭がない場合は空のリストで開始
+        if not self.face_contours:
+            self.face_contours = []
+        
+        # 範囲削除モードの場合は継続、そうでない場合は開始
+        if self.edit_mode_type == 'remove':
+            # 既に削除モードの場合は何もしない（継続）
+            pass
+        else:
+            # 編集モードを削除に変更
+            self.contour_edit_mode = True
+            self.edit_mode_type = 'remove'
+            self.edit_points = []
+            # 顔検出枠を非表示
+            self.show_boxes = False
+        
+        self.update_check_marks()
+        self.display_current_image()
+    
+    def apply_contour_edit(self):
+        """マウスで描いた範囲に基づいて輪郭を編集"""
+        if not self.edit_points or len(self.edit_points) &lt; 3:
+            return
+        
+        h, w = self.original_image.shape[:2]
+        
+        edit_mask = np.zeros((h, w), dtype=np.uint8)
+        edit_polygon = np.array(self.edit_points, dtype=np.int32)
+        cv2.fillPoly(edit_mask, [edit_polygon], 255)
+        
+        if not self.face_contours or len(self.face_contours) == 0:
+            # 輪郭が存在しない場合、新規作成
+            if self.edit_mode_type == 'add':
+                contours, _ = cv2.findContours(edit_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+                if contours:
+                    largest = max(contours, key=cv2.contourArea)
+                    epsilon = 0.003 * cv2.arcLength(largest, True)
+                    smoothed = cv2.approxPolyDP(largest, epsilon, True)
+                    
+                    new_contour = [(int(point[0][0]), int(point[0][1])) for point in smoothed]
+                    if len(new_contour) &gt; 10:
+                        self.face_contours = [new_contour]
+        else:
+            # 既存の輪郭を編集
+            if self.edit_mode_type == 'add':
+                # 追加モード：既存の輪郭とマージするか、新規領域として追加
+                # すべての輪郭を統合したマスクを作成
+                combined_mask = np.zeros((h, w), dtype=np.uint8)
+                for contour in self.face_contours:
+                    contour_array = np.array(contour, dtype=np.int32)
+                    cv2.fillPoly(combined_mask, [contour_array], 255)
+                
+                # 編集マスクと統合
+                combined_mask = cv2.bitwise_or(combined_mask, edit_mask)
+                
+                # ノイズ除去
+                kernel = np.ones((3, 3), np.uint8)
+                combined_mask = cv2.morphologyEx(combined_mask, cv2.MORPH_CLOSE, kernel)
+                combined_mask = cv2.morphologyEx(combined_mask, cv2.MORPH_OPEN, kernel)
+                
+                # 新しい輪郭を抽出（複数の独立した領域を保持）
+                contours, _ = cv2.findContours(combined_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+                
+                new_contours = []
+                if contours:
+                    for cnt in contours:
+                        if cv2.contourArea(cnt) &gt; 100:  # 最小面積フィルタ
+                            epsilon = 0.003 * cv2.arcLength(cnt, True)
+                            smoothed = cv2.approxPolyDP(cnt, epsilon, True)
+                            
+                            new_contour = [(int(point[0][0]), int(point[0][1])) for point in smoothed]
+                            if len(new_contour) &gt; 10:
+                                new_contours.append(new_contour)
+                
+                if new_contours:
+                    self.face_contours = new_contours
+            else:
+                # 削除モード：各輪郭から削除
+                new_contours = []
+                for contour in self.face_contours:
+                    contour_mask = np.zeros((h, w), dtype=np.uint8)
+                    contour_array = np.array(contour, dtype=np.int32)
+                    cv2.fillPoly(contour_mask, [contour_array], 255)
+                    
+                    # マスクから削除
+                    combined_mask = cv2.bitwise_and(contour_mask, cv2.bitwise_not(edit_mask))
+                    
+                    # ノイズ除去
+                    kernel = np.ones((3, 3), np.uint8)
+                    combined_mask = cv2.morphologyEx(combined_mask, cv2.MORPH_CLOSE, kernel)
+                    combined_mask = cv2.morphologyEx(combined_mask, cv2.MORPH_OPEN, kernel)
+                    
+                    # 新しい輪郭を抽出
+                    contours, _ = cv2.findContours(combined_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+                    
+                    if contours:
+                        for cnt in contours:
+                            if cv2.contourArea(cnt) &gt; 100:
+                                epsilon = 0.003 * cv2.arcLength(cnt, True)
+                                smoothed = cv2.approxPolyDP(cnt, epsilon, True)
+                                
+                                new_contour = [(int(point[0][0]), int(point[0][1])) for point in smoothed]
+                                
+                                if len(new_contour) &gt; 10:
+                                    new_contours.append(new_contour)
+                
+                if new_contours:
+                    self.face_contours = new_contours
+        
+        # 美肌効果が適用されている場合は再適用
+        if self.beauty_applied:
+            self.apply_beauty_effect()
+    
+    def reset_contours(self):
+        self.face_contours = []
+        self.beauty_applied = False
+        self.show_boxes = True
+        self.current_image = self.original_image.copy() if self.original_image is not None else None
+        self.contour_done = False
+        self.beauty_normal_done = False
+        self.beauty_plus_done = False
+        self.contour_edit_mode = False
+        self.edit_mode_type = None
+        self.update_check_marks()
+        self.display_current_image()
+    
+    def apply_beauty(self):
+        if not self.face_contours and not self.face_boxes:
+            messagebox.showwarning("警告", "先に顔検出を実行してください")
+            return
+        
+        self.beauty_applied = True
+        self.beauty_mode = 'normal'
+        self.beauty_normal_done = True
+        self.beauty_plus_done = False
+        self.update_check_marks()
+        self.apply_beauty_effect()
+    
+    def apply_beauty_plus(self):
+        if not self.face_contours and not self.face_boxes:
+            messagebox.showwarning("警告", "先に顔検出を実行してください")
+            return
+        
+        self.beauty_applied = True
+        self.beauty_mode = 'plus'
+        self.beauty_plus_done = True
+        self.beauty_normal_done = False
+        self.update_check_marks()
+        self.apply_beauty_effect()
+    
+    def apply_beauty_effect(self):
+        if not self.face_contours and not self.face_boxes:
+            return
+        
+        try:
+            intensity = self.beauty_var.get() / 100.0
+            
+            result = self.original_image.copy()
+            h, w = result.shape[:2]
+            
+            if self.face_contours:
+                contours_to_process = self.face_contours
+            else:
+                contours_to_process = []
+                for box in self.face_boxes:
+                    x1, y1, x2, y2 = box
+                    center_x = (x1 + x2) // 2
+                    center_y = (y1 + y2) // 2
+                    width = x2 - x1
+                    height = y2 - y1
+                    
+                    ellipse_contour = []
+                    for angle in range(0, 360, 5):
+                        rad = np.radians(angle)
+                        x = int(center_x + (width / 2) * np.cos(rad))
+                        y = int(center_y + (height / 2) * np.sin(rad))
+                        ellipse_contour.append((x, y))
+                    contours_to_process.append(ellipse_contour)
+            
+            for contour in contours_to_process:
+                pts = np.array(contour, dtype=np.int32)
+                
+                if self.beauty_mode == 'plus':
+                    min_y = np.min(pts[:, 1])
+                    max_y = np.max(pts[:, 1])
+                    min_x = np.min(pts[:, 0])
+                    max_x = np.max(pts[:, 0])
+                    
+                    face_height = max_y - min_y
+                    face_width = max_x - min_x
+                    
+                    forehead_extend = int(face_height * 0.4)
+                    neck_extend = int(face_height * 0.3)
+                    side_extend = int(face_width * 0.1)
+                    
+                    extended_contour = []
+                    for x, y in contour:
+                        if y &lt; min_y + face_height * 0.3:
+                            new_y = y - forehead_extend * (1 - (y - min_y) / (face_height * 0.3))
+                        elif y &gt; max_y - face_height * 0.2:
+                            ratio = (y - (max_y - face_height * 0.2)) / (face_height * 0.2)
+                            new_y = y + neck_extend * ratio
+                        else:
+                            new_y = y
+                        
+                        if x &lt; min_x + face_width * 0.3:
+                            new_x = x - side_extend * (1 - (x - min_x) / (face_width * 0.3))
+                        elif x &gt; max_x - face_width * 0.3:
+                            new_x = x + side_extend * ((x - (max_x - face_width * 0.3)) / (face_width * 0.3))
+                        else:
+                            new_x = x
+                        
+                        extended_contour.append((int(new_x), int(new_y)))
+                    
+                    pts = np.array(extended_contour, dtype=np.int32)
+                
+                mask = np.zeros(result.shape[:2], dtype=np.uint8)
+                cv2.fillPoly(mask, [pts], 255)
+                
+                blur_size = 25 if self.beauty_mode == 'plus' else 15
+                mask = cv2.GaussianBlur(mask, (blur_size, blur_size), 0)
+                
+                kernel_size = max(5, int(5 + 10 * intensity))
+                if kernel_size % 2 == 0:
+                    kernel_size += 1
+                smoothed = cv2.bilateralFilter(result, kernel_size, 30 + 30 * intensity, 30 + 30 * intensity)
+                
+                brightness = cv2.convertScaleAbs(smoothed, alpha=1.0, beta=int(5 * intensity))
+                
+                mask_float = mask.astype(float) / 255.0 * intensity
+                mask_3ch = np.stack([mask_float] * 3, axis=2)
+                
+                result = (result * (1 - mask_3ch) + brightness * mask_3ch).astype(np.uint8)
+            
+            self.current_image = result
+            self.beauty_intensity_applied = self.beauty_var.get()
+            self.display_current_image()
+            
+        except Exception as e:
+            messagebox.showerror("エラー", f"美肌効果の適用に失敗しました:\n{str(e)}")
+    
+    def reset_beauty(self):
+        if self.original_image is not None:
+            self.current_image = self.original_image.copy()
+            self.beauty_applied = False
+            self.beauty_normal_done = False
+            self.beauty_plus_done = False
+            self.update_check_marks()
+            self.display_current_image()
+    
+    def save_image(self):
+        if self.current_image is None:
+            messagebox.showwarning("警告", "保存する画像がありません")
+            return
+        
+        # 変数の初期化
+        init_dir = os.path.expanduser("~")
+        beauty_value = self.beauty_var.get()
+        
+        # 処理状況に基づくファイル名の構成要素を決定
+        prefix = "輪郭" if self.contour_done else "顔"
+        mode_suffix = "beauty＋" if self.beauty_mode == 'plus' else "beauty"
+        
+        if self.image_path:
+            init_dir = os.path.dirname(self.image_path)
+            base_name_no_ext = os.path.splitext(os.path.basename(self.image_path))[0]
+            ext = os.path.splitext(self.image_path)[1].lower() # 拡張子を取得し小文字化
+            
+            # 1. 元のファイル名ロジックを再現（拡張子は一時的に含める）
+            try:
+                # 拡張子を含んだ初期ファイル名（ロジック用）
+                temp_initial_file = f"{base_name_no_ext}_{prefix}{mode_suffix}{beauty_value}{ext}"
+            except:
+                temp_initial_file = f"{base_name_no_ext}_{prefix}{mode_suffix}{beauty_value}.png"
+                ext = '.png'
+            
+            # 2. 拡張子とファイルタイプの優先順位を決定
+            if ext in ('.jpg', '.jpeg'):
+                default_ext = '.jpg'
+                filetypes_list = [("JPEG画像", "*.jpg"), ("PNG画像", "*.png"), ("すべてのファイル", "*.*")]
+            elif ext == '.png':
+                default_ext = '.png'
+                filetypes_list = [("PNG画像", "*.png"), ("JPEG画像", "*.jpg"), ("すべてのファイル", "*.*")]
+            else:
+                default_ext = '.png'
+                filetypes_list = [("PNG画像", "*.png"), ("JPEG画像", "*.jpg"), ("すべてのファイル", "*.*")]
+
+            # 3. initialfile には拡張子を**除去**したファイル名を渡す（ダイアログの初期選択問題を解決するため）
+            #    ただし、元ロジックの「輪郭/顔」「beautyモード」「数値」は反映させる
+            initial_filename_no_ext = os.path.splitext(temp_initial_file)[0]
+            
+        else:
+            # 画像がロードされていない場合のデフォルト
+            default_ext = ".jpg" # 元ロジックに合わせて.jpgをデフォルトに
+            initial_filename_no_ext = f"編集済み_{prefix}{mode_suffix}{beauty_value}" 
+            filetypes_list = [("JPEG画像", "*.jpg"), ("PNG画像", "*.png"), ("すべてのファイル", "*.*")]
+
+        
+        filepath = filedialog.asksaveasfilename(
+            initialdir=init_dir,
+            initialfile=initial_filename_no_ext, # 拡張子なしのファイル名を渡す
+            defaultextension=default_ext,
+            filetypes=filetypes_list
+        )
+        
+        if filepath:
+            try:
+                # numpy配列 → PIL Image（RGB）
+                img_pil = Image.fromarray(self.current_image)
+
+                # ユーザーが選択した拡張子を確認
+                save_ext = os.path.splitext(filepath)[1].lower()
+
+                # ICCプロファイルを保存オプションに含める
+                save_kwargs = {}
+                if self.icc_profile:
+                    save_kwargs['icc_profile'] = self.icc_profile
+
+                # 拡張子補完（拡張子なし or 不明な場合）
+                if save_ext not in ('.jpg', '.jpeg', '.png'):
+                    if default_ext == '.jpg':
+                        filepath += '.jpg'
+                        save_ext = '.jpg'
+                    else:
+                        filepath += '.png'
+                        save_ext = '.png'
+
+                # --- PIL で保存（日本語パス対応のため BytesIO 経由）---
+                buf = io.BytesIO()
+                if save_ext in ('.jpg', '.jpeg'):
+                    img_pil.save(buf, format='JPEG', quality=95,
+                                 subsampling=0, **save_kwargs)
+                else:
+                    img_pil.save(buf, format='PNG', **save_kwargs)
+
+                with open(filepath, 'wb') as f:
+                    f.write(buf.getvalue())
+
+            except Exception as e:
+                messagebox.showerror("エラー", f"画像の保存に失敗しました:\n{str(e)}")
+    def show_help(self):
+        help_text = """【使い方】
+        
+1. 画像の読み込み
+   「ファイル選択」ボタンから画像を選択
+   (ドラッグ&amp;ドロップも可能)
+   
+2. 顔検出
+   「顔検出」ボタンで自動的に顔を検出
+   - 緑の枠で顔を囲みます
+   - 枠をクリックで除外可能
+   - マウスドラッグで手動追加可能
+   
+3. 輪郭抽出
+   「輪郭抽出(時間かかる)」で肌領域を抽出
+   - AIが顔・首・肩まで自動検出
+   - 青い線で輪郭を表示
+   
+4. 輪郭編集
+   「範囲追加」「範囲削除」で輪郭を調整
+   - ボタンを押してマウスドラッグで範囲指定
+   - 連続して複数回範囲指定可能
+   - 輪郭抽出なしでも使用可能
+   - 独立した複数領域の追加も可能
+   - 美肌効果後も編集可能（自動再適用）
+   
+5. 美肌効果
+   「美肌効果」ボタンで肌を滑らかに
+   「美肌効果(範囲＋)」で額・首も含む
+   - スライダーで効果を調整(0-100)
+   - スライダー操作でリアルタイム更新
+   
+6. 保存
+   「保存」ボタンで加工画像を保存
+   
+※各機能に「リセット」ボタンあり"""
+        
+        messagebox.showinfo("使い方", help_text)
+    
+    def on_canvas_click(self, event):
+        if self.original_image is None:
+            return
+        
+        if self.contour_edit_mode:
+            x = (event.x - self.image_offset[0]) / self.display_scale
+            y = (event.y - self.image_offset[1]) / self.display_scale
+            self.edit_points = [(x, y)]
+            return
+        
+        if self.face_boxes and self.show_boxes:
+            x = (event.x - self.image_offset[0]) / self.display_scale
+            y = (event.y - self.image_offset[1]) / self.display_scale
+            
+            for i, box in enumerate(self.face_boxes):
+                x1, y1, x2, y2 = box
+                if x1 &lt;= x &lt;= x2 and y1 &lt;= y &lt;= y2:
+                    self.face_boxes.pop(i)
+                    self.display_current_image()
+                    return
+        
+        if not self.contour_edit_mode:
+            self.drag_start = (
+                (event.x - self.image_offset[0]) / self.display_scale,
+                (event.y - self.image_offset[1]) / self.display_scale
+            )
+    
+    def on_canvas_drag(self, event):
+        if self.original_image is None:
+            return
+        
+        if self.contour_edit_mode and self.edit_points:
+            x = (event.x - self.image_offset[0]) / self.display_scale
+            y = (event.y - self.image_offset[1]) / self.display_scale
+            self.edit_points.append((x, y))
+            self.display_current_image()
+            return
+        
+        if self.drag_start and not self.contour_edit_mode:
+            x = (event.x - self.image_offset[0]) / self.display_scale
+            y = (event.y - self.image_offset[1]) / self.display_scale
+            
+            x1, y1 = self.drag_start
+            self.temp_box = (min(x1, x), min(y1, y), max(x1, x), max(y1, y))
+            self.display_current_image()
+    
+    def on_canvas_release(self, event):
+        if self.contour_edit_mode and self.edit_points:
+            self.apply_contour_edit()
+            self.edit_points = []
+            # 編集モードは継続（リセットしない）
+            self.display_current_image()
+            return
+        
+        if self.drag_start and self.temp_box and not self.contour_edit_mode:
+            x1, y1, x2, y2 = self.temp_box
+            if abs(x2 - x1) &gt; 20 and abs(y2 - y1) &gt; 20:
+                self.face_boxes.append(self.temp_box)
+            
+            self.drag_start = None
+            self.temp_box = None
+            self.display_current_image()
+
+def main():
+    try:
+        from tkinterdnd2 import TkinterDnD
+        root = TkinterDnD.Tk()
+    except ImportError:
+        root = tk.Tk()
+    
+    app = FaceBeautyApp(root)
+    root.mainloop()
+
+if __name__ == "__main__":
+    main()</pre>
+<h5 id="サンプル画像">【サンプル画像】</h5>
+<p>※ オリジナル画像はAIで生成したもの。</p>
+<p>≪ オリジナル画像 ≫</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20251021/20251021135639.png" width="1200" height="800" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>≪ 顔検出 → 輪郭抽出 → 美肌効果(70) ≫</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20251021/20251021135652.png" width="1200" height="800" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>≪ オリジナル画像 ≫</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20251021/20251021135718.png" width="1024" height="1024" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>≪ 顔検出 → 輪郭抽出 → 美肌効果(70) ≫</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20251021/20251021135729.png" width="1024" height="1024" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>≪ オリジナル画像 ≫</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20251021/20251021135740.png" width="800" height="1200" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>≪ 顔検出 → 輪郭抽出 → 美肌効果(70) ≫</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20251021/20251021135751.png" width="800" height="1200" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p><span style="color: #ff0000;"><em>（↓）改善版。こちらがお勧め。</em></span></p>
+<p><a class="link-card" href="../../../2026/05/26/164913.html"><span class="lc-body"><span class="lc-title">Windows）Python）写真「顔検出＋AI輪郭抽出＋AI自動シミ消し＋美肌効果」アプリ作成。</span><span class="lc-desc">Pythonで、写真の人物を美肌に編集加工するWindowsアプリなどを作成してきた。 AIによる顔検出＋AI輪郭抽出も行った。 写真のオブジェクト除去も作成した。シミ消しにも使える。 今回、 「顔検出＋AI輪郭抽出＋美…</span><span class="lc-site">晴歩雨描 · <time>2026-05-26</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260528/20260528114608.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../18/132848.html"><span class="lc-body"><span class="lc-title">Claude）Python）「写真スポット編集ツール」Windowsアプリ作成。シミ消し、オブジェクト除去に使える。スポット修正＋コピー修正。ICCプロファイル維持。</span><span class="lc-desc">以前に、「写真オブジェクト除去」Windowsアプリを作成した。 これは、写真の一部をスポット的に編集するアプリ。 これに加えて、クローンコピー修正もできるようにしたバージョンをPythonで作成。 ■ スポット修正 写…</span><span class="lc-site">晴歩雨描 · <time>2025-10-18</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20251018/20251018131038.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../04/20/093458.html"><span class="lc-body"><span class="lc-title">Claude）Python）「写真オブジェクト除去」Windowsアプリ作成。シミ消しにも使える。</span><span class="lc-desc">2日前、 JavaScript で「 写真スポッティング編集ツール 」を作成した。 今回、 Python で「 写真オブジェクト除去アプリ 」を作成。AIツールClaudeに作成してもらった。 写真の中のちょっとした不要…</span><span class="lc-site">晴歩雨描 · <time>2025-04-20</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250420/20250420091047.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../04/18/215613.html"><span class="lc-body"><span class="lc-title">Claude）JavaScript）「写真スポッティング編集ツール」作成。写真のオブジェクト除去やシミ消しに。</span><span class="lc-desc">JavaScriptで、「 写真スポッティング編集ツール 」を作成。 写真の中のちょっとした不要物を除去するためのツール。除去したい不要物をマウスなどで囲んで除去し、除去した後を目立たないように背景画像で補正するなどした…</span><span class="lc-site">晴歩雨描 · <time>2025-04-18</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250418/20250418213106.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../09/25/124757.html"><span class="lc-body"><span class="lc-title">Claude）Python）ローカル）写真のシャープネス、コントラスト、明度、彩度を調整するWindowsアプリ作成。野鳥写真で、等倍高画質化をTopaz Labs、Aiarty Image Enhancerと比較。</span><span class="lc-desc">Pythonで「 写真のシャープネス、コントラスト、明度、彩度を調整する 」Windowsアプリを作成。「Claude」で作成。 【機能概略】 写真画像(JPEG,PNG)をウインドウに、ドラッグ＆ドロップで取り込み。 …</span><span class="lc-site">晴歩雨描 · <time>2025-09-25</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250925/20250925123628.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../09/12/163500.html"><span class="lc-body"><span class="lc-title">「Topaz Labs」で、アップスケーリングなしで写真の等倍高画質化が出来るかを検証。結果は優秀。野鳥写真で「Aiarty Image Enhancer」と比較。</span><span class="lc-desc">『 Topaz Labs 』の「 Upscale（Standard V2） 」で、アップスケーリングなしで等倍高画質化を検証してみた。 野鳥写真で「 Aiarty Image Enhancer 」の結果とも比較。 結果的…</span><span class="lc-site">晴歩雨描 · <time>2025-09-12</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250912/20250912162716.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../03/28/153642.html"><span class="lc-body"><span class="lc-title">写真の高画質化/鮮明化Windowsアプリ「Aiarty Image Enhancer」「Upscayl」最新版で、等倍高画質化（アップスケーリングなし）を野鳥写真で比較。</span><span class="lc-desc">先日、写真の高画質化Webツールで、アップスケーリングなしの高画質化の検証をしたが、使えるレベルのものはなかった。 今回、写真の高画質化/鮮明化Windowsアプリ「 Aiarty Image Enhancer 」「 U…</span><span class="lc-site">晴歩雨描 · <time>2025-03-28</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250328/20250328151358.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../09/20/205629.html"><span class="lc-body"><span class="lc-title">Claude）Python）写真のEXIF情報を表示するWindowsアプリ（ExifTool）を作成。</span><span class="lc-desc">Pythonで「 写真のEXIF情報を表示する 」Windowsアプリを作成。「Claude」で作成。 【機能概略】 JPEGファイルを画面にドラッグ＆ドロップすると、その写真のEXIF情報一覧を表示する。 メーカー独自…</span><span class="lc-site">晴歩雨描 · <time>2025-09-20</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250920/20250920175347.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../08/29/140141.html"><span class="lc-body"><span class="lc-title">「Gemini 2.5 Flash Image（Nano Banana）」で、写真の高画質化を試した。高画質化ツールとしては使えない。</span><span class="lc-desc">Googleが無料の超高品質な画像編集AI「 Gemini 2.5 Flash Image 」をリリース。 「 Gemini 2.5 Flash Image 」は、「 Gemini 」の中で、無料で使える。 「Gemin…</span><span class="lc-site">晴歩雨描 · <time>2025-08-29</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250829/20250829131658.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../04/08/095058.html"><span class="lc-body"><span class="lc-title">ChatGPTの画像生成AI「4o Image Generation」の写真の高画質化は凄まじい（？）。一般的なアップスケーリングツールとは一線を画す。「DALL・E」との比較も。</span><span class="lc-desc">先日、写真の高画質化/鮮明化Windowsアプリ「Aiarty Image Enhancer」「Upscayl」で、アップスケーリングなしの1倍で、野鳥写真を使って高画質化/鮮明化レベルを検証した。 ChatGPT「4o…</span><span class="lc-site">晴歩雨描 · <time>2025-04-08</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250408/20250408091610.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2024/09/09/163543.html"><span class="lc-body"><span class="lc-title">Windows無料アプリ「Upscayl」で、ノイズ除去、鮮明化を、野鳥写真で試した。「Aiarty Image Enhancer」とも比較。</span><span class="lc-desc">昨日、Windowsアプリ「 Aiarty Image Enhancer 」で、ノイズ除去、ピンボケ補正、シャープネス強化、鮮明化を、野鳥写真で試した。 今回、Windows無料アプリ「 Upscayl 」で、拡大率を1…</span><span class="lc-site">晴歩雨描 · <time>2024-09-09</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20240909/20240909162512.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2024/10/06/182845.html"><span class="lc-body"><span class="lc-title">JPEG写真の高画質化（ノイズ除去＋シャープネスなど）を無料でできるWebツールアプリ「AI Ease」。野鳥写真で試した。</span><span class="lc-desc">先程、オブジェクト除去Webツール「 AI Ease 」を試した。 「AI Ease」は、オブジェクト除去以外にも多くの機能を持っている。 AI画像編集ツール AI背景除去 AI画像高画質化（ノイズ除去、シャープネスなど…</span><span class="lc-site">晴歩雨描 · <time>2024-10-06</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20241006/20241006181719.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2024/08/20/124709.html"><span class="lc-body"><span class="lc-title">写真解像度を上げる（アップスケーリング、高画質化）無料Webツール「AnyRec AI」比較。「Adobe スーパー解像度」「Aiarty Image Enhancer」「Upscayl」と。</span><span class="lc-desc">写真解像度を上げる（アップスケーリング）ツールを色々試している。 今回、Webツール「 AnyRec AI 」を試してみた。会員登録なしで無料で使える。 「 Adobe スーパー解像度 」「 Aiarty Image E…</span><span class="lc-site">晴歩雨描 · <time>2024-08-20</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20240820/20240820135752.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2024/08/17/141230.html"><span class="lc-body"><span class="lc-title">キヤノン「EOS R1 / R5 Mark II」カメラ内アップスケーリング（高画質化）とWindows高解像度化、高画質化ツール「Aiarty Image Enhancer」「Upscayl」によるアップスケーリングを比較してみた。</span><span class="lc-desc">キヤノン「 EOS R1 / R5 Mark II 」が発表されている。「 EOS R1 / R5 Mark II」には、「カメラ内アップスケーリング 」機能がある。 このページでは、以下のように説明されている。 【カメ…</span><span class="lc-site">晴歩雨描 · <time>2024-08-17</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20240817/20240817140256.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2024/08/14/130416.html"><span class="lc-body"><span class="lc-title">「Adobe スーパー解像度」と写真解像度を上げる（アップスケーリング、高画質化）Windowsアプリ「Aiarty Image Enhancer」を比較。</span><span class="lc-desc">写真解像度を上げる（アップスケーリング、高画質化）Windowsアプリ「 Aiarty Image Enhancer 」を試してきた。 今回、「 Adobe スーパー解像度 」と比較してみた。オリジナル画像とAdobe …</span><span class="lc-site">晴歩雨描 · <time>2024-08-14</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20240814/20240814124610.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2018/11/19/153002.html"><span class="lc-body"><span class="lc-title">AIを使って写真の解像度を6倍にできる（アップスケーリング、高画質化）ソフト「Topaz A.I. Gigapixel」を試してみた。</span><span class="lc-desc">AIを使って写真の解像度を6倍にできるソフト「Topaz A.I. Gigapixel」を試してみた。 A.I. Gigapixel™ – Topaz Labs Current Version 2.0ではインストール時に…</span><span class="lc-site">晴歩雨描 · <time>2018-11-19</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20181119/20181119144056.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2022/04/03/135227.html"><span class="lc-body"><span class="lc-title">写真解像度を上げる（アップスケーリング、高画質化）Webツールアプリ「kakudaiAC」「AI Image Enlarger」「Bigjpg」「waifu2x」「Let&#x27;s Enhance」「Topaz Gigapixel AI」比較。</span><span class="lc-desc">以前、写真の解像度を上げるサービスアプリ「 Bigjpg 」「 waifu2x 」「 Let&#x27;s Enhance 」を試してみた。 今回、新たに「 kakudaiAC 」「 AI Image Enlarger 」を追加し…</span><span class="lc-site">晴歩雨描 · <time>2022-04-03</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20210330/20210330111145.jpg" alt="" loading="lazy"></span></a></p></div></article>
+</body>
+</html>

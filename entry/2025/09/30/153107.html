@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ChatGPT）Python）OTFフォント、TTFフォントをWOFF2フォントに変換するWindowsアプリ作成。 - 晴歩雨描</title>
+<link rel="stylesheet" href="../../../../style.css">
+</head>
+<body>
+<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>ChatGPT）Python）OTFフォント、TTFフォントをWOFF2フォントに変換するWindowsアプリ作成。</h1><p class="meta">2025-09-30 · <a href="../../../../category/c8.html">コンピュータ</a> <a href="../../../../category/c5.html">アート・美術</a> <a href="../../../../category/c42.html">＜AI＞</a></p><div class="entry-body"><p>フォントファイルは、拡張子が<em>OTF</em>か<em>TTF</em>。</p>
+<p>そのままでもHTML、CSSで利用できるが、<em>WOFF2</em>の方がWeb用に最適化された形式で、軽量でブラウザ互換性が高い。</p>
+<p><em>OTFフォント、TTFフォントをWOFF2フォントに変換するWindowsアプリ</em>をPythonで作成。ChatGPTで作成。</p>
+<p>【Pythonプログラム】</p>
+<p>OTFフォント、TTFフォントが入ったフォルダーを指定して、「変換」ボタンを押すと、同じフォルダー内にWOFF2ファイルが出来る。複数ファイルがあれば、一括処理する。</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250930/20250930152233.jpg" width="702" height="452" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>【Pythonライブラリインストール】</p>
+<p>次のライブラリが必要なので、インストールする。</p>
+<pre>pip install fonttools brotli</pre>
+<p>【Pythonプログラムコード】</p>
+<pre>"""
+ttf_otf_to_woff2.py
+Windows用のシンプルなGUIアプリ（tkinter）
+OTF / TTF を同じフォルダ内に WOFF2 ファイルを生成します。
+
+依存:
+  pip install fonttools brotli
+  ※fonttools が woff2 を出力するために brotli が必要です。
+  もしそれでも失敗する場合は、Google の woff2 コマンドラインツールをインストールして
+  パスに置くとフォールバックで利用します（woff2_compress）。
+
+使い方:
+  - アプリ起動 -&gt; フォルダ選択 -&gt; フォルダ内の .ttf/.otf を一覧表示
+  - 変換 ボタンを押すと、同じフォルダに同名の .woff2 を作成します
+
+注意:
+  - 元のファイルは上書きされません（別拡張子の出力）
+  - サブフォルダは探索しません（必要ならコードを拡張してください）
+
+"""
+
+import os
+import threading
+import subprocess
+import shutil
+import traceback
+from tkinter import Tk, StringVar, LEFT, END, BOTH, YES, N, S, E, W
+from tkinter import ttk, filedialog, messagebox, scrolledtext
+
+try:
+    from fontTools.ttLib import TTFont
+except Exception:
+    TTFont = None
+
+
+def convert_font_with_fonttools(src_path, dst_path):
+    """fontTools を使って .woff2 に変換する。"""
+    if TTFont is None:
+        raise RuntimeError("fontTools が import できません。pip install fonttools brotli を実行してください。")
+    # fontTools はOTF/TTFどちらも読み込める
+    font = TTFont(src_path)
+    font.flavor = 'woff2'
+    # 既存のファイルを上書きするために一時ファイルで保存してから移すのも良いが
+    # ここでは直接保存する
+    font.save(dst_path)
+
+
+def convert_font_with_woff2_binary(src_path, dst_path):
+    """woff2_compress（Googleのツール）を使って変換するフォールバック。
+    woff2_compress &lt;input&gt; -&gt; &lt;input&gt;.woff2
+    ここでは出力パスを指定するため一旦標準出力の挙動に依存せず一時ファイルを作る。
+    """
+    woff2_cmd = shutil.which('woff2_compress') or shutil.which('woff2')
+    if not woff2_cmd:
+        raise RuntimeError('woff2_compress 実行ファイルが見つかりません。')
+    # woff2_compress は通常 input -&gt; input.woff2 を出すので、同じフォルダで実行する
+    work_dir = os.path.dirname(src_path)
+    try:
+        # 実行: woff2_compress "src_path"
+        subprocess.check_call([woff2_cmd, src_path], cwd=work_dir)
+        produced = src_path + '.woff2'
+        if not os.path.exists(produced):
+            # 一部のビルドでは拡張子なし等の可能性があるが稀
+            raise RuntimeError('woff2_compress は出力ファイルを生成しませんでした')
+        # 移動（上書き）
+        if os.path.abspath(produced) != os.path.abspath(dst_path):
+            if os.path.exists(dst_path):
+                os.remove(dst_path)
+            shutil.move(produced, dst_path)
+    except subprocess.CalledProcessError as e:
+        raise RuntimeError(f'woff2_compress の実行が失敗しました: {e}')
+
+
+class ConverterApp:
+    def __init__(self, root):
+        self.root = root
+        root.title('OTF/TTF → WOFF2 変換')
+        root.geometry('700x420')
+
+        self.folder_var = StringVar()
+
+        top_frame = ttk.Frame(root, padding=8)
+        top_frame.pack(fill='x')
+
+        ttk.Label(top_frame, text='フォルダ:').pack(side=LEFT)
+        self.folder_entry = ttk.Entry(top_frame, textvariable=self.folder_var)
+        self.folder_entry.pack(side=LEFT, fill='x', expand=True, padx=6)
+        ttk.Button(top_frame, text='参照', command=self.browse_folder).pack(side=LEFT)
+        ttk.Button(top_frame, text='リフレッシュ', command=self.refresh_list).pack(side=LEFT, padx=4)
+
+        mid_frame = ttk.Frame(root, padding=(8, 6))
+        mid_frame.pack(fill='both', expand=True)
+
+        # ファイル一覧
+        self.file_list = ttk.Treeview(mid_frame, columns=('name','size'), show='headings')
+        self.file_list.heading('name', text='ファイル名')
+        self.file_list.heading('size', text='サイズ')
+        self.file_list.column('name', width=420)
+        self.file_list.column('size', width=120, anchor='e')
+        self.file_list.pack(fill='both', expand=True, side='left')
+
+        # ログ
+        right_frame = ttk.Frame(mid_frame)
+        right_frame.pack(fill='y', side='left', padx=8)
+        ttk.Label(right_frame, text='ログ').pack()
+        self.log = scrolledtext.ScrolledText(right_frame, width=40, height=15, state='disabled')
+        self.log.pack(fill='both', expand=True)
+
+        bottom_frame = ttk.Frame(root, padding=8)
+        bottom_frame.pack(fill='x')
+        self.progress = ttk.Progressbar(bottom_frame, mode='determinate')
+        self.progress.pack(fill='x', side='left', expand=True)
+        ttk.Button(bottom_frame, text='変換', command=self.start_conversion).pack(side='left', padx=8)
+
+        # 初期状態
+        self.current_files = []
+
+    def log_message(self, msg):
+        self.log.config(state='normal')
+        self.log.insert(END, msg + '\n')
+        self.log.see('end')
+        self.log.config(state='disabled')
+
+    def browse_folder(self):
+        d = filedialog.askdirectory()
+        if d:
+            self.folder_var.set(d)
+            self.refresh_list()
+
+    def refresh_list(self):
+        folder = self.folder_var.get().strip()
+        for i in self.file_list.get_children():
+            self.file_list.delete(i)
+        self.current_files = []
+        if not folder or not os.path.isdir(folder):
+            return
+        for name in sorted(os.listdir(folder)):
+            lname = name.lower()
+            if lname.endswith('.ttf') or lname.endswith('.otf'):
+                full = os.path.join(folder, name)
+                try:
+                    size = os.path.getsize(full)
+                except Exception:
+                    size = 0
+                self.file_list.insert('', 'end', values=(name, f'{size} bytes'))
+                self.current_files.append(full)
+
+    def start_conversion(self):
+        if not self.current_files:
+            messagebox.showinfo('情報', '変換する TTF/OTF ファイルが見つかりません。')
+            return
+        # Run conversion in background thread to keep UI responsive
+        t = threading.Thread(target=self.convert_all)
+        t.daemon = True
+        t.start()
+
+    def convert_all(self):
+        total = len(self.current_files)
+        self.progress['maximum'] = total
+        self.progress['value'] = 0
+        success = 0
+        for idx, src in enumerate(self.current_files, start=1):
+            try:
+                base, _ = os.path.splitext(src)
+                dst = base + '.woff2'
+                self.log_message(f'[{idx}/{total}] {os.path.basename(src)} -&gt; {os.path.basename(dst)}')
+                # 既に出力ファイルがある場合はスキップまたは上書き（ここでは上書き）
+                if os.path.exists(dst):
+                    self.log_message('  既に存在するため上書きします。')
+                    try:
+                        os.remove(dst)
+                    except Exception as e:
+                        self.log_message(f'  既存ファイルの削除に失敗: {e}')
+                # まず fonttools を試す
+                try:
+                    convert_font_with_fonttools(src, dst)
+                    self.log_message('  変換成功 (fontTools)')
+                    success += 1
+                except Exception as e1:
+                    self.log_message(f'  fontTools で失敗: {e1}')
+                    # フォールバックで woff2_compress が使えるか試す
+                    try:
+                        convert_font_with_woff2_binary(src, dst)
+                        self.log_message('  変換成功 (woff2_compress)')
+                        success += 1
+                    except Exception as e2:
+                        self.log_message(f'  woff2_compress でも失敗: {e2}')
+                        self.log_message('  ----- 変換失敗の詳細 -----')
+                        tb = traceback.format_exc()
+                        self.log_message(tb)
+                finally:
+                    self.progress['value'] = idx
+            except Exception as e:
+                self.log_message(f'予期しないエラー: {e}')
+                tb = traceback.format_exc()
+                self.log_message(tb)
+        self.log_message(f'完了: 成功 {success} / {total}')
+        messagebox.showinfo('完了', f'変換処理が終わりました。成功 {success} / {total}')
+        # 更新して結果を反映
+        self.refresh_list()
+
+
+if __name__ == '__main__':
+    root = Tk()
+    app = ConverterApp(root)
+    root.mainloop()
+</pre>
+<p><a class="link-card" href="150052.html"><span class="lc-body"><span class="lc-title">カリグラフィー・フォント（カッパープレート体）。Web（HTML、CSS）での利用。Windowsでの利用。</span><span class="lc-desc">カリグラフィー っぽい（？） カッパープレート体 の無料フォントを探したが、自分がイメージしているようなフォントはなかなか見つからない。 とりあえず、見つけたもの。 ≪ フリーフォント - カリグラフィー ≫ Hills…</span><span class="lc-site">晴歩雨描 · <time>2025-09-30</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250930/20250930141855.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="https://ok2nd.github.io/sitemap/hatena-sitemap-table.html?search=Python" target="_blank" rel="noopener noreferrer"><span class="lc-body"><span class="lc-title">晴歩雨描：記事一覧</span><span class="lc-desc"></span><span class="lc-site">ok2nd.github.io</span></span></a></p>
+<p><a class="link-card" href="../29/090826.html"><span class="lc-body"><span class="lc-title">Claude）Python）シンプルなWindows用ランチャーアプリ作成。</span><span class="lc-desc">Pythonで作成したWindows用アプリが増えてきた。 これらを起動する ランチャーアプリ が欲しいと思って、作成した。 設定できる項目を少なくして、極力シンプルなものにした。 設定できるのは、ボタンサイズと横に並べ…</span><span class="lc-site">晴歩雨描 · <time>2025-09-29</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260108/20260108141324.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../05/09/085200.html"><span class="lc-body"><span class="lc-title">Claude）Python）PowerPointに複数写真（画像）を順番に並べて貼り付けるプログラム作成（改訂版）。</span><span class="lc-desc">以前に、PowerPointに複数写真を順番に並べて貼り付けるプログラムをPythonで作成した。 今回、このプログラムの改訂版。前回と同じく、AI生成ツール「Claude」に作ってもらった。 基本機能はそのままで、オプ…</span><span class="lc-site">晴歩雨描 · <time>2025-05-09</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250509/20250509084045.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../20/205629.html"><span class="lc-body"><span class="lc-title">Claude）Python）写真のEXIF情報を表示するWindowsアプリ（ExifTool）を作成。</span><span class="lc-desc">Pythonで「 写真のEXIF情報を表示する 」Windowsアプリを作成。「Claude」で作成。 【機能概略】 JPEGファイルを画面にドラッグ＆ドロップすると、その写真のEXIF情報一覧を表示する。 メーカー独自…</span><span class="lc-site">晴歩雨描 · <time>2025-09-20</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250920/20250920175347.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../06/13/153014.html"><span class="lc-body"><span class="lc-title">Claude）Python）透過画像作成Windowsアプリ作成。</span><span class="lc-desc">Pythonで「透過画像作成」Windowsアプリ作成。画像の白に近い色を透過にする。元データはJPEGまたはPNG。白の範囲は指定できる。AIツールClaudeに作成してもらった。 【使い方】 元画像ファイルは、ドラッ…</span><span class="lc-site">晴歩雨描 · <time>2025-06-13</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250613/20250613151037.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../04/20/093458.html"><span class="lc-body"><span class="lc-title">Claude）Python）「写真オブジェクト除去」Windowsアプリ作成。シミ消しにも使える。</span><span class="lc-desc">2日前、 JavaScript で「 写真スポッティング編集ツール 」を作成した。 今回、 Python で「 写真オブジェクト除去アプリ 」を作成。AIツールClaudeに作成してもらった。 写真の中のちょっとした不要…</span><span class="lc-site">晴歩雨描 · <time>2025-04-20</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250420/20250420091047.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../25/124757.html"><span class="lc-body"><span class="lc-title">Claude）Python）ローカル）写真のシャープネス、コントラスト、明度、彩度を調整するWindowsアプリ作成。野鳥写真で、等倍高画質化をTopaz Labs、Aiarty Image Enhancerと比較。</span><span class="lc-desc">Pythonで「 写真のシャープネス、コントラスト、明度、彩度を調整する 」Windowsアプリを作成。「Claude」で作成。 【機能概略】 写真画像(JPEG,PNG)をウインドウに、ドラッグ＆ドロップで取り込み。 …</span><span class="lc-site">晴歩雨描 · <time>2025-09-25</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250925/20250925123628.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../05/25/211331.html"><span class="lc-body"><span class="lc-title">Claude＆Gemini）Python）「写真のトーンカーブ一括補正」Windowsアプリ作成。</span><span class="lc-desc">先日、Pythonで「写真の明るさ＆コントラスト一括補正」Windowsアプリを作成した。 今回、 トーンカーブを使って写真の明るさを補正するWindowsアプリ をPythonで作成。 複数画像を一括して補正できる。 …</span><span class="lc-site">晴歩雨描 · <time>2025-05-25</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250525/20250525210152.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../06/02/112022.html"><span class="lc-body"><span class="lc-title">Claude＆Gemini）Python）「写真のカラーバランス一括補正」Windowsアプリ作成。Pixel 9 Proの青被りを補正。</span><span class="lc-desc">スマホ「 Pixel 9 Pro 」を所有しているが、写真の青被りがきつい。特に人物の顔色が悪くなる。GIMP等でカラーバランスを調整することで補正できるが、枚数が多いと面倒。 複数画像を一括して補正できるツール が欲し…</span><span class="lc-site">晴歩雨描 · <time>2025-06-02</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250602/20250602110316.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../05/18/090800.html"><span class="lc-body"><span class="lc-title">Claude）Python）「写真の明るさ＆コントラスト一括補正」Windowsアプリ作成。ICCプロファイル維持。</span><span class="lc-desc">Pythonで「 写真の明るさ＆コントラスト一括補正 」Windowsアプリ作成。 複数の画像を一括して補正できる。 AIツールClaudeに作成してもらった。 ※ 【後日追記】最初のバージョンでは、元の写真に埋め込まれ…</span><span class="lc-site">晴歩雨描 · <time>2025-05-18</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250518/20250518090322.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../08/12/130210.html"><span class="lc-body"><span class="lc-title">Claude）Python）「写真をEXIF機種毎のフォルダーに分類」Windowsアプリ作成。</span><span class="lc-desc">Pythonで「写真をEXIF機種毎のフォルダーに分類」Windowsアプリを作成。 生成AI「 Claude 」「 Gemini 」「 Copilot 」で、以下のプロンプトで作成した。 【生成AI プロンプト】 Wi…</span><span class="lc-site">晴歩雨描 · <time>2025-08-12</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250812/20250812125530.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../08/12/093959.html"><span class="lc-body"><span class="lc-title">Gemini）Python）「ファイル拡張子別フォルダー移動」Windowsアプリ作成。</span><span class="lc-desc">Pythonで「ファイル拡張子別フォルダー移動」Windowsアプリを作成。 生成AI「 Gemini 」「 Claude 」「 ChatGPT GPT-5 」で、以下のプロンプトで作成してみた。 【生成AI プロンプト…</span><span class="lc-site">晴歩雨描 · <time>2025-08-12</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250812/20250812093352.jpg" alt="" loading="lazy"></span></a></p></div></article>
+</body>
+</html>

@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Leaflet地図：国土地理院のジオコーダーで住所から緯度経度検索。CSVからも。サンプルソース。 - 晴歩雨描</title>
+<link rel="stylesheet" href="../../../../style.css">
+</head>
+<body>
+<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>Leaflet地図：国土地理院のジオコーダーで住所から緯度経度検索。CSVからも。サンプルソース。</h1><p class="meta">2021-06-15 · <a href="../../../../category/c21.html">地図・マップ</a> <a href="../../../../category/c13.html">ホームページ、Web作成</a></p><div class="entry-body"><p>地図データを扱うJavaScript ライブラリ「Leaflet」を使って、地図表示を試してきた。</p>
+<p><a class="link-card" href="https://ok2nd.github.io/leaflet/" target="_blank" rel="noopener noreferrer"><span class="lc-body"><span class="lc-title">Leaflet地図 リスト by 晴歩雨描</span><span class="lc-desc"></span><span class="lc-site">ok2nd.github.io</span></span></a></p>
+<p>今回、国土地理院のジオコーダーを使って、住所から緯度経度を取得して地図にマッピングを試した。</p>
+<p><span class="link-card-plain"><a href="https://ucopendb.gsi.go.jp/ucode/help_with_API.html">https://ucopendb.gsi.go.jp/ucode/help_with_API.html</a></span></p>
+<p>【プログラムソースサンプル】</p>
+<pre>function addrSearch(address) {
+	// 国土地理院のジオコーダー利用
+	var result = $.ajax({
+		type: 'GET',
+		url: '<a href="https://msearch.gsi.go.jp/address-search/AddressSearch?q='">https://msearch.gsi.go.jp/address-search/AddressSearch?q='</a> + address,
+		async: false	// *** 同期通信 ***
+	}).responseText;
+	return result;
+}
+function getLatLng(name, address) {
+	var json = addrSearch(address);
+	var res = JSON.parse(json);
+	var latlng = res[0].geometry.coordinates;
+	return [name, latlng[1], latlng[0]];
+}
+var place = Array();
+place.push(getLatLng('有野郵便局', '神戸市北区藤原台北町６ー１９'));
+place.push(getLatLng('神戸山田郵便局', '神戸市北区松が枝町２ー１ー２'));
+place.push(getLatLng('神戸北郵便局', '神戸市北区北五葉２-１-１５'));
+.....
+.....
+</pre>
+<p>≪ place形式 ≫</p>
+<pre>place[0] = ['地点名', 緯度, 経度]
+place[1] = ['地点名', 緯度, 経度]</pre>
+<p><em>≪ サンプル：神戸市郵便局マップ ≫</em></p>
+<p><a target="_blank" href="https://ok2nd.github.io/leaflet/geo-kobe-yubinkyoku.html">https://ok2nd.github.io/leaflet/geo-kobe-yubinkyoku.html</a></p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20210615/20210615163820.jpg" alt="f:id:art2nd:20210615163820j:plain" width="758" height="486" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>マーカー表示方法については、以下のブログを参照。</p>
+<p><a class="link-card" href="../../04/28/112259.html"><span class="lc-body"><span class="lc-title">Leaflet + OpenStreetMapで、地図にマーカー＆ラベル表示。サンプルソース。</span><span class="lc-desc">地図情報を扱うサービス「 Google Maps API 」が無料では使えなくなり、「 Yahoo! JavaScript マップ API 」もサービス提供が終了し、以前「 Mapbox GL JS 」を試してみた。 今…</span><span class="lc-site">晴歩雨描 · <time>2021-04-28</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20210428/20210428102446.png" alt="" loading="lazy"></span></a></p>
+<p>CSVファイルをURLで指定する版も作成。CSV形式は［地点名,住所］。</p>
+<p>【CSVサンプル】</p>
+<pre>有野郵便局,神戸市北区藤原台北町６ー１９
+神戸山田郵便局,神戸市北区松が枝町２ー１ー２
+神戸北郵便局,神戸市北区北五葉２-１-１５
+須磨北郵便局,神戸市須磨区西落合１-１-１０
+須磨郵便局,神戸市須磨区鷹取町２ー１ー１
+垂水郵便局,神戸市垂水区星陵台１-４-２９
+神戸中央郵便局,神戸市中央区栄町通６-２-１
+長田郵便局,神戸市長田区細田町７ー１ー１
+灘郵便局,神戸市灘区大石東町３ー２ー８
+神戸西郵便局,神戸市西区糀台５ー１２ー１
+東灘郵便局,神戸市東灘区住吉東町２-２-１７
+兵庫郵便局,神戸市兵庫区大開通２-２-１９
+</pre>
+<p><em>≪ サンプル：神戸市郵便局マップ ≫</em></p>
+<p>【URL形式】geo.html?csv=CSVファイル名</p>
+<p><a target="_blank" href="https://ok2nd.github.io/leaflet/geo.html?csv=csv/kobe-yubinkyoku.csv&amp;name=神戸市郵便局マップ">https://ok2nd.github.io/leaflet/geo.html?csv=csv/kobe-yubinkyoku.csv&amp;name=神戸市郵便局マップ</a></p>
+<p>【プログラムソース一部抜粋】</p>
+<pre>function csv2map(csv) {
+	var place = Array();
+	line = csv.split("\n");
+	for (var i=0; i&lt;line.length; ++i) {
+		data = line[i].split(',');
+		if (data.length &gt;= 2) {
+			place.push(getLatLng(data[0], data[1]));
+		}
+	}
+	place2map(place);	// place[0] = ['地名', 緯度, 経度];
+}
+function getLatLng(name, address) {
+	var json = addrSearch(address);
+	var res = JSON.parse(json);
+	var latlng = res[0].geometry.coordinates;
+	return [name, latlng[1], latlng[0]];
+}
+function addrSearch(address) {
+	// 国土地理院のジオコーダー利用
+	var result = $.ajax({
+		type: 'GET',
+		url: '<a href="https://msearch.gsi.go.jp/address-search/AddressSearch?q='">https://msearch.gsi.go.jp/address-search/AddressSearch?q='</a> + address,
+		async: false	// *** 同期通信 ***
+	}).responseText;
+	return result;
+}
+function place2map(place, others) {
+	map = L.map('map');
+	var tileLayer = L.tileLayer('<a href="https://mt1.google.com/vt/lyrs=r&x=">https://mt1.google.com/vt/lyrs=r&x=</a>{x}&amp;y={y}&amp;z={z}', {
+		attribution: '&lt;a href="<a href="https://developers.google.com/maps/documentation">https://developers.google.com/maps/documentation</a>" target="_blank"&gt;Google Map&lt;/a&gt;'
+	});
+	tileLayer.addTo(map);
+	iconMarkers = L.featureGroup();
+	if (typeof others !== 'undefined') {
+		var iconBlue = L.icon({
+			iconUrl: 'icon/ltblue-dot.png',
+			iconRetinaUrl: 'icon/ltblue-dot.png',
+			iconSize: [32, 32],
+			iconAnchor: [14, 27],
+			popupAnchor: [1, -22],
+		});
+		placeMarker(others, iconBlue, '#aff');
+	}
+	if (typeof place !== 'undefined') {
+		var iconRed = L.icon({
+			iconUrl: 'icon/red-dot.png',
+			iconRetinaUrl: 'icon/red-dot.png',
+			iconSize: [32, 32],
+			iconAnchor: [14, 27],
+			popupAnchor: [1, -22],
+		});
+		placeMarker(place, iconRed, '#ff4');
+	}
+	map.fitBounds(iconMarkers.getBounds());
+	var Basic_Map = new Array();
+	Basic_Map[ 0 ] = L.tileLayer('<a href="https://mt1.google.com/vt/lyrs=r&x=">https://mt1.google.com/vt/lyrs=r&x=</a>{x}&amp;y={y}&amp;z={z}', {
+		attribution: '&lt;a href="<a href="https://developers.google.com/maps/documentation">https://developers.google.com/maps/documentation</a>" target="_blank"&gt;Google Map&lt;/a&gt;'
+	});
+	Basic_Map[ 1 ] = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+		attribution: '© &lt;a href="<a href="https://www.openstreetmap.org/copyright">https://www.openstreetmap.org/copyright</a>"&gt;OpenStreetMap&lt;/a&gt; contributors',
+		continuousWorld: false
+	});
+	Basic_Map[ 2 ] = L.tileLayer('<a href="https://cyberjapandata.gsi.go.jp/xyz/std/">https://cyberjapandata.gsi.go.jp/xyz/std/</a>{z}/{x}/{y}.png', {
+		attribution: '&lt;a href="<a href="https://maps.gsi.go.jp/development/ichiran.html">https://maps.gsi.go.jp/development/ichiran.html</a>" target="_blank"&gt;地理院タイル&lt;/a&gt;'
+	});
+	Basic_Map[ 3 ] = L.tileLayer('<a href="https://cyberjapandata.gsi.go.jp/xyz/seamlessphoto/">https://cyberjapandata.gsi.go.jp/xyz/seamlessphoto/</a>{z}/{x}/{y}.jpg', {
+		attribution: '&lt;a href="<a href="https://maps.gsi.go.jp/development/ichiran.html">https://maps.gsi.go.jp/development/ichiran.html</a>" target="_blank"&gt;地理院タイル&lt;/a&gt;'
+	});
+	Basic_Map[ 4 ] = L.tileLayer('<a href="https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/">https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/</a>{z}/{y}/{x}', {
+		attribution: 'Tiles © &lt;a href="<a href="http://www.esrij.com/">http://www.esrij.com/</a>"&gt; Esri Japan &lt;/a&gt;'
+	});
+	var baseMap = {
+		'Google マップ': Basic_Map[ 0 ],
+		'OpenStreetMap': Basic_Map[ 1 ],
+		'国土地理院 標準地図': Basic_Map[ 2 ],
+		'国土地理院 写真': Basic_Map[ 3 ],
+		'Esri World Topo Map': Basic_Map[ 4 ]
+	};
+	L.control.layers(baseMap).addTo(map);
+	map.addControl(new L.Control.Fullscreen({	// フルスクリーンボタン
+		title: {
+			'false': '最大化',
+			'true': '元に戻す'
+		}
+	}));
+	L.easyButton('fas fa-map-marker-alt', function(btn, easyMap) {
+		currentWatchReset();
+		currentWatch();
+	}).addTo(map);
+	L.easyButton('fa fa-times', function(btn, easyMap) {
+		currentWatchReset();
+	}).addTo(map);
+	L.easyButton('fa fa-reply-all', function(btn, easyMap) {
+		currentWatchReset();
+		if (currentWatchBtn) {
+			currentWatchBtn.state('current-watch');
+			currentWatchBtn = null;
+		}
+		map.fitBounds(iconMarkers.getBounds());
+	}).addTo(map);
+	map.on('click', onMapClick);
+}
+</pre>
+<p><a class="link-card" href="../14/221856.html"><span class="lc-body"><span class="lc-title">Leaflet地図：国土地理院「色別標高図」「陰影起伏図」オーバーレイ。サンプルソース。</span><span class="lc-desc">地図データを扱う JavaScript ライブラリ「Leaflet」を使って、地図表示を試してきた。 今回、地図のオーバーレイを試した。 国土地理院 の「 地理院 タイル」を使った。 国土地理院 の「色別標高図」「陰影起…</span><span class="lc-site">晴歩雨描 · <time>2021-06-14</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20210614/20210614220701.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../19/151312.html"><span class="lc-body"><span class="lc-title">Leaflet地図：「OpenWeatherMap」の天気予報（気象情報）表示。サンプルソース。</span><span class="lc-desc">地図データを扱うJavaScript ライブラリ「Leaflet」を使って、地図表示を試してきた。 今回、Leaflet地図に「 OpenWeatherMap 」の天気予報を表示してみた。 「OpenWeatherMap…</span><span class="lc-site">晴歩雨描 · <time>2021-06-19</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20210619/20210619143923.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../12/101824.html"><span class="lc-body"><span class="lc-title">Leaflet地図：オープン時に現在地表示。地点名、住所検索機能。サンプルソース。</span><span class="lc-desc">地図データを扱うJavaScriptライブラリ「Leaflet」を使って、地図表示を試してきた。 今回、Leaflet地図に2つの機能を追加する方法。 【オープン時に現在地を表示をする】 ≪プログラムソース≫ 現在地にマ…</span><span class="lc-site">晴歩雨描 · <time>2021-06-12</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20210612/20210612101002.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../05/093829.html"><span class="lc-body"><span class="lc-title">Leaflet地図：ルート検索もできる。</span><span class="lc-desc">地図データを扱うJavaScript ライブラリ「Leaflet」を使って、地図表示を試してきた。 Leafletでも、ルート検索（経路検索）ができる。ただし、ルート検索のエンジンサーバーがデモ用しかなさそうなので、公式…</span><span class="lc-site">晴歩雨描 · <time>2021-06-05</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20210605/20210605092717.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../09/155522.html"><span class="lc-body"><span class="lc-title">「Leaflet」は登山道もルート検索できる。「OpenStreetMap」は登山道も分かりやすく表示される。</span><span class="lc-desc">地図データを扱う JavaScript ライブラリ「Leaflet」を使って、地図表示を試してきた。 「Leaflet」では、ルート検索もできる。 ※ ただし、ルート検索機能を付けたページは非公開（以下に詳細）。 「Le…</span><span class="lc-site">晴歩雨描 · <time>2021-06-09</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20210609/20210609153011.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../14/221856.html"><span class="lc-body"><span class="lc-title">Leaflet地図：国土地理院「色別標高図」「陰影起伏図」オーバーレイ。サンプルソース。</span><span class="lc-desc">地図データを扱う JavaScript ライブラリ「Leaflet」を使って、地図表示を試してきた。 今回、地図のオーバーレイを試した。 国土地理院 の「 地理院 タイル」を使った。 国土地理院 の「色別標高図」「陰影起…</span><span class="lc-site">晴歩雨描 · <time>2021-06-14</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20210614/20210614220701.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../04/221956.html"><span class="lc-body"><span class="lc-title">Leaflet地図：JavaScriptライブラリを使わずにKMLを表示。URLでKMLファイル指定。サンプルソース。</span><span class="lc-desc">地図データを扱うJavaScriptライブラリ「Leaflet」を使って、地図表示を試してきた。 前回、KMLファイルのLeaflet地図表示を試した。前回はJavaScriptライブラリ「leaflet-kml」を使っ…</span><span class="lc-site">晴歩雨描 · <time>2021-06-04</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20210604/20210604215846.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../02/173532.html"><span class="lc-body"><span class="lc-title">Leaflet地図：フルスクリーン表示機能追加。requestFullscreen()版。サンプルソース。</span><span class="lc-desc">地図データを扱う JavaScript ライブラリ「Leaflet」を使って、地図表示を試してきた。 前回、ライブラリ「 Leaflet.fullscreen 」を使って、フルスクリーン表示機能を追加した。 今回、「Le…</span><span class="lc-site">晴歩雨描 · <time>2021-06-02</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20210602/20210602172756.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2018/07/07/144138.html"><span class="lc-body"><span class="lc-title">HTML(TABLE)クリッカブルマップ「日本地図」を作成。スマホ対応。</span><span class="lc-desc">HTML(TABLE)で、クリッカブルマップとしての日本地図を作成。（昔、作ったものを手直し） スマホを想定して、縦長画面の時は都道府県名を縦書きにして画面内に収まるようにした。スマホ画面を横位置にした場合の縦が狭い画面…</span><span class="lc-site">晴歩雨描 · <time>2018-07-07</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20180707/20180707224156.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2020/01/02/233132.html"><span class="lc-body"><span class="lc-title">CSS）ブラウザで縦書き表示＆印刷。PHP版。</span><span class="lc-desc">HTML、CSSで縦書き表示するWebページを作成。任意の文章に、以下のようなCSSを指定したHTMLページを生成する。 &lt;style&gt; -webkit-writing-mode: vertical-rl; -ms-wr…</span><span class="lc-site">晴歩雨描 · <time>2020-01-02</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20200102/20200102224001.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2018/03/01/180843.html"><span class="lc-body"><span class="lc-title">風速、雨、雪、気温などの天気予測を地図で確認できる「Windy.com」が凄すぎる！</span><span class="lc-desc">神戸は今日の朝3時頃から雨風が強かった。雨は明け方にはやんでいたが、風は夕方になっても強いまま。明日、船に乗る予定があるので、風が心配。風速を地図で確認できるサイトは無いかとGoogleで「風速 地図」で検索したら、「 …</span><span class="lc-site">晴歩雨描 · <time>2018-03-01</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20180301/20180301180230.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2018/09/13/155542.html"><span class="lc-body"><span class="lc-title">Googleマップの詳細かつ広い範囲の地図を印刷する方法。</span><span class="lc-desc">Googleマップ で広い地域を印刷しようとすると、詳細部分が分からなくなる。 詳細な地域の情報を維持したまま広い範囲の地図を印刷する方法を考えた。 以前は Google Maps API を使う方法もあったが、現在 A…</span><span class="lc-site">晴歩雨描 · <time>2018-09-13</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20180913/20180913151632.jpg" alt="" loading="lazy"></span></a></p></div></article>
+</body>
+</html>

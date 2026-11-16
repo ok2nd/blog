@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>備忘録：Windows 仮想メモリ ページファイル（スワップファイル）をDドライブにする。 - 晴歩雨描</title>
+<link rel="stylesheet" href="../../../../style.css">
+</head>
+<body>
+<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>備忘録：Windows 仮想メモリ ページファイル（スワップファイル）をDドライブにする。</h1><p class="meta">2023-03-16 · <a href="../../../../category/c8.html">コンピュータ</a></p><div class="entry-body"><p>備忘録として。<strong><span style="color: #dd830c;">（※ 結果としてうまくいかなかった。）</span></strong></p>
+<p><a class="keyword" href="http://d.hatena.ne.jp/keyword/Windows">Windows</a>のCドライブの<a class="keyword" href="http://d.hatena.ne.jp/keyword/SSD">SSD</a>の読込量/書込量軽減のため、<a class="keyword" href="http://d.hatena.ne.jp/keyword/%B2%BE%C1%DB%A5%E1%A5%E2%A5%EA">仮想メモリ</a>用のページファイル（<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%B9%A5%EF%A5%C3%A5%D7">スワップ</a>ファイル）をDドライブにしてみた。</p>
+<p>【<a class="keyword" href="http://d.hatena.ne.jp/keyword/Windows">Windows</a> 設定】→【システム】→【詳細情報】→【システムの詳細設定】</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20230316/20230316124537.png" width="207" height="188" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20230316/20230316122109.jpg" width="249" height="101" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20230316/20230316122617.png" width="534" height="498" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>【システムのプロパティ：設定】</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20230316/20230316122800.png" width="479" height="214" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>【パフォーマンス オプション：詳細設定 → <a class="keyword" href="http://d.hatena.ne.jp/keyword/%B2%BE%C1%DB%A5%E1%A5%E2%A5%EA">仮想メモリ</a>：変更】</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20230316/20230316123300.png" width="421" height="348" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>【<a class="keyword" href="http://d.hatena.ne.jp/keyword/%B2%BE%C1%DB%A5%E1%A5%E2%A5%EA">仮想メモリ</a>】</p>
+<p><em>「すべてのドライブのページングライフのサイズを自動的に管理する」のチェックをはずす。</em></p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20230316/20230316123350.png" width="396" height="523" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>【<a class="keyword" href="http://d.hatena.ne.jp/keyword/%B2%BE%C1%DB%A5%E1%A5%E2%A5%EA">仮想メモリ</a>】</p>
+<p>Dドライブに推奨サイズを割り当てる。</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20230316/20230316123649.png" width="396" height="523" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>【<a class="keyword" href="http://d.hatena.ne.jp/keyword/%B2%BE%C1%DB%A5%E1%A5%E2%A5%EA">仮想メモリ</a>】</p>
+<p>Cドライブを「ページング ファイルなし」にする。</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20230316/20230316124022.png" width="396" height="523" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>以下のような警告が出たが、「はい」にした。</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20230316/20230316124107.png" width="407" height="159" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>【再起動】</p>
+<p><em><a class="keyword" href="http://d.hatena.ne.jp/keyword/Windows">Windows</a> を再起動したら、以下のようなエラーメーッセージが出た。</em></p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20230316/20230316130323.png" width="413" height="159" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>うまくいっていないようなので、元に戻す。</p>
+<p><a class="link-card" href="../../../2022/05/23/144013.html"><span class="lc-body"><span class="lc-title">Windows10「デバイスのセットアップを完了しましょう」を無効にする。</span><span class="lc-desc">備忘録として。 Windows 10の「デバイスのセットアップを完了しましょう」 を出さないようにする。方法は以下に書いてある。 ［スタート］→［設定］→［システム］→［通知とアクション］の ［Windowsを最大限に活…</span><span class="lc-site">晴歩雨描 · <time>2022-05-23</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220523/20220523143045.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2021/09/27/133214.html"><span class="lc-body"><span class="lc-title">備忘録：WindowsパソコンのIPアドレス固定方法。（Windows10の場合）</span><span class="lc-desc">WindowsパソコンのIPアドレスを固定する方法。 ※ Windows11では設定画面が大きく変わっているので、以下を参照。 【以下はWindows10用】 １．「スタート」をクリックし、「設定」を開く。 ２．「ネット…</span><span class="lc-site">晴歩雨描 · <time>2021-09-27</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20210927/20210927132509.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2021/01/22/111020.html"><span class="lc-body"><span class="lc-title">iPadから(PC)Windows共有フォルダにWi-Fiでアクセスする。「ファイル」または「Documents by Readdle」で双方向に写真/ファイル転送。</span><span class="lc-desc">先日、SSDを使ってPCに保存してある写真をiPadで観る方法を試した。 今回、iPadからWindows共有フォルダーに無線（Wi-Fi）でアクセスする方法を試した。 【Windows側の手順】 １．Windowsで、…</span><span class="lc-site">晴歩雨描 · <time>2021-01-22</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20210122/20210122105545.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2020/12/21/100836.html"><span class="lc-body"><span class="lc-title">Windows10 セットアップ &amp; 使いやすくする手順の備忘録。ローカルアカウントetc.</span><span class="lc-desc">パソコンを買い替えたので、Windows 10 セットアップと使いやすくする手順の備忘録。 ■ 最初はインターネットに接続しないで、ローカルアカウントでインストール作業をする。 ■ 「デバイスのプライバシー設定の選択」で…</span><span class="lc-site">晴歩雨描 · <time>2020-12-21</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20201220/20201220165746.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2019/02/04/161306.html"><span class="lc-body"><span class="lc-title">備忘録：Windowsパソコンにインストールしているアプリケーションフリーソフト。自分にとって定番。</span><span class="lc-desc">Windowsパソコンに入れている主なアプリケーション・フリーソフトの一覧。再インストール時のための備忘録として。 ■ 写真・画像関連 FastStone Image Viewer：画像表示 JTrim：画像編集・加工、…</span><span class="lc-site">晴歩雨描 · <time>2019-02-04</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190204/20190204160808.jpg" alt="" loading="lazy"></span></a></p></div></article>
+</body>
+</html>

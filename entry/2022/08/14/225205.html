@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>WordPress）はてなブログのアイキャッチ画像をメディアライブラリを使わずに記事一覧とブログカードに反映させる。 - 晴歩雨描</title>
+<link rel="stylesheet" href="../../../../style.css">
+</head>
+<body>
+<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>WordPress）はてなブログのアイキャッチ画像をメディアライブラリを使わずに記事一覧とブログカードに反映させる。</h1><p class="meta">2022-08-14 · <a href="../../../../category/c13.html">ホームページ、Web作成</a> <a href="../../../../category/c2.html">WordPress</a> <a href="../../../../category/c4.html">はてなブログ</a></p><div class="entry-body"><p>自宅WindowsPCローカルに<a class="keyword" href="http://d.hatena.ne.jp/keyword/WordPress">WordPress</a>をインストールしている。</p>
+<p><a class="link-card" href="../06/224635.html"><span class="lc-body"><span class="lc-title">WindowsPCの古いXAMPPにWordPress（5.0.16）をインストール。</span><span class="lc-desc">※ 後日追記：ドライブやディレクトリを変える場合は注意が必要。 自宅のWindowsPCにWordPressをインストールした手順の備忘録。 自宅のWindowsPCには、古いバージョンのXAMPP（ XAMPP 1.8…</span><span class="lc-site">晴歩雨描 · <time>2022-08-06</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220806/20220806222743.png" alt="" loading="lazy"></span></a></p>
+<p>「<em><a class="keyword" href="http://d.hatena.ne.jp/keyword/%A4%CF%A4%C6%A4%CA%A5%D6%A5%ED%A5%B0">はてなブログ</a></em>」から<a class="keyword" href="http://d.hatena.ne.jp/keyword/WordPress">WordPress</a>への移行の検証をしている。</p>
+<p><span style="color: #dd830c;">※ ↓は、本対策を行う前のインポート手順。</span></p>
+<p><a class="link-card" href="../12/160116.html"><span class="lc-body"><span class="lc-title">WordPress）はてなブログから移行（インポート）する手順まとめ。メディアライブラリを使うバージョン。</span><span class="lc-desc">自宅のWindowsPCローカルに WordPress をインストールしている。 「 はてなブログ 」からエクスポートして WordPress にインポートしてみた。 ※ メディアライブラリを使わない前提の移行（インポー…</span><span class="lc-site">晴歩雨描 · <time>2022-08-12</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220807/20220807132140.png" alt="" loading="lazy"></span></a></p>
+<p>どうにか、やりたいことは出来たが、課題として<em><a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%A2%A5%A4%A5%AD%A5%E3%A5%C3%A5%C1">アイキャッチ</a>画像</em>の問題がある。 </p>
+<p>「<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A4%CF%A4%C6%A4%CA%A5%D6%A5%ED%A5%B0">はてなブログ</a>」の<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%A2%A5%A4%A5%AD%A5%E3%A5%C3%A5%C1">アイキャッチ</a>画像を、簡単には<a class="keyword" href="http://d.hatena.ne.jp/keyword/WordPress">WordPress</a>に取り込めない。いくつかのツールを組み合わせるなどして出来たが、<em><a class="keyword" href="http://d.hatena.ne.jp/keyword/WordPress">WordPress</a>では<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%A2%A5%A4%A5%AD%A5%E3%A5%C3%A5%C1">アイキャッチ</a>画像に登録するためには「メディアライブラリ」へ登録する必要がある。<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%D7%A5%E9%A5%B0%A5%A4%A5%F3">プラグイン</a>「Bulk Media Register」を使えば可能なのだが、処理時間が膨大にかかる。</em></p>
+<p><em><a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%A2%A5%A4%A5%AD%A5%E3%A5%C3%A5%C1">アイキャッチ</a>画像の使用目的は、「記事一覧」と「ブログカード」に画像（写真）を表示すること。</em></p>
+<p>メディアライブラリを使わずに実現するため、対策として、以下のことを実施。</p>
+<p>以下、外観テーマは「<em>Iconic One</em>」を使用している前提。</p>
+<h4 id="対策１メディアライブラリを使わないための方策">【対策１：メディアライブラリを使わないための方策】</h4>
+<p>■ 記事一覧</p>
+<p>１．<a class="keyword" href="http://d.hatena.ne.jp/keyword/WordPress">WordPress</a>では、<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%A2%A5%A4%A5%AD%A5%E3%A5%C3%A5%C1">アイキャッチ</a>画像を登録せずに、記事内の一番目の画像を<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%A2%A5%A4%A5%AD%A5%E3%A5%C3%A5%C1">アイキャッチ</a>画像として「記事一覧」に表示するようにする。</p>
+<p><span class="link-card-plain"><a href="https://blog.websuccess.jp/archives/3159/">https://blog.websuccess.jp/archives/3159/</a></span></p>
+<p>上記記事を参考に、以下の対策を行なう。</p>
+<p>「\wp-content\themes\iconic-one\<em>functions.<a class="keyword" href="http://d.hatena.ne.jp/keyword/php">php</a></em>」に「catch_that_image()」を追加。</p>
+<pre>function catch_that_image() {
+	global $post, $posts;
+	$first_img = '';
+	ob_start();
+	ob_end_clean();
+	$output = preg_match_all('/&lt;img.+src=[\'"]([^\'"]+)[\'"].*&gt;/i', $post-&gt;post_content, $matches);
+	$first_img = $matches [1] [0];
+	if(empty($first_img)){
+		// 記事内で画像がなかった時のための画像を指定（<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%C7%A5%A3%A5%EC%A5%AF%A5%C8">ディレクト</a>リ先や画像名称は任意）
+		$first_img = esc_url(get_template_directory_<a class="keyword" href="http://d.hatena.ne.jp/keyword/uri">uri</a>()) . "/images/common/noImage.<a class="keyword" href="http://d.hatena.ne.jp/keyword/png">png</a>";
+	}
+	return $first_img;
+}
+</pre>
+<p>「\wp-content\themes\iconic-one\<em>content.<a class="keyword" href="http://d.hatena.ne.jp/keyword/php">php</a></em>」に以下を入れる。</p>
+<pre>&lt;h2 class="entry-title"&gt;
+	&lt;a href="&lt;?<a class="keyword" href="http://d.hatena.ne.jp/keyword/php">php</a> the_<a class="keyword" href="http://d.hatena.ne.jp/keyword/permalink">permalink</a>(); ?&gt;" title="&lt;?<a class="keyword" href="http://d.hatena.ne.jp/keyword/php">php</a> echo esc_attr( sprintf( __( '<a class="keyword" href="http://d.hatena.ne.jp/keyword/Permalink">Permalink</a> to %s', 'iconic-one' ), the_title_attribute( 'echo=0' ) ) ); ?&gt;" rel="bookmark"&gt;
+<em>	&lt;?<a class="keyword" href="http://d.hatena.ne.jp/keyword/php">php</a> if (has_post_thumbnail()) : ?&gt;
+		&lt;?<a class="keyword" href="http://d.hatena.ne.jp/keyword/php">php</a> the_post_thumbnail('thumbnail'); ?&gt;
+	&lt;?<a class="keyword" href="http://d.hatena.ne.jp/keyword/php">php</a> else : ?&gt;
+		&lt;img src="&lt;?<a class="keyword" href="http://d.hatena.ne.jp/keyword/php">php</a> echo catch_that_image(); ?&gt;" alt="" /&gt;
+	&lt;?<a class="keyword" href="http://d.hatena.ne.jp/keyword/php">php</a> endif ; ?&gt;</em>
+	&lt;?<a class="keyword" href="http://d.hatena.ne.jp/keyword/php">php</a> the_title(); ?&gt;&lt;/a&gt;
+&lt;/h2&gt;
+</pre>
+<p>■ ブログカード</p>
+<p>ブログカードは、以下の記事に書いているショートコードを使用している。</p>
+<p><a class="link-card" href="../10/215653.html"><span class="lc-body"><span class="lc-title">WordPress）リンク埋め込みブログカード表示のカスタマイズ。ショートコード使用。</span><span class="lc-desc">先日、自宅のWindowsPCローカルに WordPress を入れた。 リンク埋め込みブログカード表示のカスタマイズについての備忘録。 URLを挿入すると、自動的に表示されるブログカードのデザインは以下。 はてなブログ…</span><span class="lc-site">晴歩雨描 · <time>2022-08-10</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220809/20220809142934.png" alt="" loading="lazy"></span></a></p>
+<p>このショートコードでは、ブログカードに入れる画像を個別に指定できる。</p>
+<pre>[nmblogcard url="url" image_url="画像url"]
+</pre>
+<p>これを利用する。</p>
+<h4 id="対策２エクスポートファイルの加工方法">【対策２：エクスポートファイルの加工方法】</h4>
+<p><em>対策１を利用するために、<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A4%CF%A4%C6%A4%CA%A5%D6%A5%ED%A5%B0">はてなブログ</a>のエクスポートファイルを加工する。</em></p>
+<p>■ 記事一覧</p>
+<p><a class="keyword" href="http://d.hatena.ne.jp/keyword/%A4%CF%A4%C6%A4%CA%A5%D6%A5%ED%A5%B0">はてなブログ</a>エクスポートファイルの記事先頭にダミーの画像を入れる。これによって、<a class="keyword" href="http://d.hatena.ne.jp/keyword/WordPress">WordPress</a>では、<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%A2%A5%A4%A5%AD%A5%E3%A5%C3%A5%C1">アイキャッチ</a>画像登録なしに、「記事一覧」でこの画像が使われる。</p>
+<p><a class="keyword" href="http://d.hatena.ne.jp/keyword/%A4%CF%A4%C6%A4%CA%A5%D6%A5%ED%A5%B0">はてなブログ</a>の<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%A2%A5%A4%A5%AD%A5%E3%A5%C3%A5%C1">アイキャッチ</a>画像は、エクスポートファイル内では、「IMAGE:」で定義されている。これを読みとって、「BODY:」の先頭に"display:none;"の&lt;img&gt;タグで画像を入れる。</p>
+<pre>IMAGE: /<a class="keyword" href="http://d.hatena.ne.jp/keyword/wordpress">wordpress</a>/wp-content/uploads/hatena/20180331_20180331162629.jpg
+</pre>
+<p>↓↓↓</p>
+<pre>BODY:
+&lt;img src="/<a class="keyword" href="http://d.hatena.ne.jp/keyword/wordpress">wordpress</a>/wp-content/uploads/hatena/20180331_20180331162629.jpg" style="display:none;"&gt;
+</pre>
+<p>■ ブログカード</p>
+<p><a class="keyword" href="http://d.hatena.ne.jp/keyword/%A4%CF%A4%C6%A4%CA%A5%D6%A5%ED%A5%B0">はてなブログ</a>エクスポートファイルのショートコード部分に「画像URL」を追加する。</p>
+<p><a class="keyword" href="http://d.hatena.ne.jp/keyword/%A4%CF%A4%C6%A4%CA%A5%D6%A5%ED%A5%B0">はてなブログ</a>エクスポートファイルは、以下の2つの処理実施後のファイルをインプットとして使う。</p>
+<ol>
+<li>エクスポートファイル ⇒ 画像リンクを<a class="keyword" href="http://d.hatena.ne.jp/keyword/WordPress">WordPress</a>ローカルに変える。</li>
+<li>エクスポートファイル ⇒ ローカルリンクのブログカードをショートコードに変更。</li>
+</ol>
+<p><span style="color: #dd830c;">※ 詳細は以下の記事を参照。</span></p>
+<p><a class="link-card" href="../16/105039.html"><span class="lc-body"><span class="lc-title">WordPress）はてなブログから移行（インポート）する手順まとめ。メディアライブラリを使わないバージョン。</span><span class="lc-desc">自宅WindowsPCローカルに WordPress をインストールしている。 「 はてなブログ 」からエクスポートして WordPress にインポートしてみた。 以前、移行（インポート）する手順まとめを書いた。この時…</span><span class="lc-site">晴歩雨描 · <time>2022-08-16</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220817/20220817223605.jpg" alt="" loading="lazy"></span></a></p>
+<pre>&lt;p&gt;[nmblogcard url="/<a class="keyword" href="http://d.hatena.ne.jp/keyword/wordpress">wordpress</a>/2018/02/24/2018-02-24-200206/"]&lt;/p&gt;
+</pre>
+<p>↓↓↓</p>
+<pre>&lt;p&gt;[nmblogcard url="/<a class="keyword" href="http://d.hatena.ne.jp/keyword/wordpress">wordpress</a>/2018/02/24/2018-02-24-200206/" image_url="/<a class="keyword" href="http://d.hatena.ne.jp/keyword/wordpress">wordpress</a>/wp-content/uploads/hatena/20180225_20180225174000.jpg"]&lt;/p&gt;</pre>
+<h4 id="エクスポートファイル加工スクリプト作成">【エクスポートファイル加工<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%B9%A5%AF%A5%EA%A5%D7%A5%C8">スクリプト</a>作成】</h4>
+<h5 id="-記事URLとアイキャッチ画像のCSVファイルを作成eyecatch-insertjseで使用する">■ 記事URLと<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%A2%A5%A4%A5%AD%A5%E3%A5%C3%A5%C1">アイキャッチ</a>画像の<a class="keyword" href="http://d.hatena.ne.jp/keyword/CSV">CSV</a>ファイルを作成。<br />（eyecatch-insert.jseで使用する。）</h5>
+<p>上記ブログカード対応をするために、記事URLと<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%A2%A5%A4%A5%AD%A5%E3%A5%C3%A5%C1">アイキャッチ</a>画像URL対応の<a class="keyword" href="http://d.hatena.ne.jp/keyword/CSV">CSV</a>ファイルを作成する。</p>
+<p><a class="keyword" href="http://d.hatena.ne.jp/keyword/%A4%CF%A4%C6%A4%CA%A5%D6%A5%ED%A5%B0">はてなブログ</a>エクスポートファイルの「BASENAME:」、「IMAGE:」を読み取って、記事URLと<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%A2%A5%A4%A5%AD%A5%E3%A5%C3%A5%C1">アイキャッチ</a>画像の<a class="keyword" href="http://d.hatena.ne.jp/keyword/CSV">CSV</a>ファイルを作成する。</p>
+<pre>AUTHOR: .....
+TITLE: .....
+BASENAME: 2022/08/13/124011
+.....
+.....
+IMAGE: <a href="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220813/20220813123456.jpg">https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220813/20220813123456.jpg</a>
+</pre>
+<p>↓↓↓</p>
+<p><em>≪hatena.eyecatch.<a class="keyword" href="http://d.hatena.ne.jp/keyword/csv">csv</a>≫</em></p>
+<pre>（記事URL）,（画像URL）
+<a class="keyword" href="http://d.hatena.ne.jp/keyword/wordpress">wordpress</a>/2022/08/13/2022-08-13-124011,20220813_20220813123456.jpg
+wordpress/2022/08/12/2022-08-12-160116,20220807_20220807132140.<a class="keyword" href="http://d.hatena.ne.jp/keyword/png">png</a>
+wordpress/2022/08/12/2022-08-12-153111,20220812_20220812153057.jpg
+.....
+.....
+</pre>
+<p>上記<a class="keyword" href="http://d.hatena.ne.jp/keyword/CSV">CSV</a>を作成する<a class="keyword" href="http://d.hatena.ne.jp/keyword/JScript">JScript</a>。</p>
+<p><em>≪eyecatch-<a class="keyword" href="http://d.hatena.ne.jp/keyword/csv">csv</a>.jse≫</em></p>
+<pre>var adTypeText = 2;
+var adSaveCreateOverWrite = 2;
+var adReadAll = -1;
+
+var sr = new ActiveXObject("ADODB.Stream");
+sr.Type = adTypeText;
+sr.charset = "<a class="keyword" href="http://d.hatena.ne.jp/keyword/utf-8">utf-8</a>";
+sr.Open();
+sr.LoadFromFile("2ndart.hatenablog.com.export.txt");
+var str = sr.ReadText(adReadAll);
+sr.Close();
+
+var sw = new ActiveXObject("ADODB.Stream");
+sw.type = adTypeText;
+sw.charset = "<a class="keyword" href="http://d.hatena.ne.jp/keyword/utf-8">utf-8</a>";
+sw.Open();
+
+var body = false;
+var bodyend = true;
+var out = "";
+var line_ary = str.split(/\n/);
+for (var i=0; i&lt;line_ary.length; i++) {
+	if (!body) {
+		if (line_ary[i].substring(0,10) == 'BASENAME: ') {
+			var base = line_ary[i].slice(10);
+			var spt = base .split('/');
+			var str = spt[0] + '/' + spt[1] + '/' + spt[2] + '/' + spt[0] + '-' + spt[1] + '-' + spt[2] + '-' + spt[3];
+			out = out + '<a class="keyword" href="http://d.hatena.ne.jp/keyword/wordpress">wordpress</a>/' + str + ",";
+		}
+		if (line_ary[i].substring(0,7) == 'IMAGE: ') {
+			var image = line_ary[i].slice(7);
+			var spt = image.split('/');
+			out = out + spt[7] + '_' + spt[8] + "\n";
+		}
+	}
+	if (line_ary[i].substring(0,5) == 'BODY:') {
+		body = true;
+		bodyend = false;
+	}
+	if (line_ary[i] == '-----') {
+		bodyend = true;
+		body = false;
+	}
+}
+sw.WriteText(out);
+sw.SaveToFile("hatena.eyecatch.<a class="keyword" href="http://d.hatena.ne.jp/keyword/csv">csv</a>",adSaveCreateOverWrite);
+sw.Close();
+</pre>
+<h5 id="-はてなブログエクスポートファイルを加工するJScript">■ <a class="keyword" href="http://d.hatena.ne.jp/keyword/%A4%CF%A4%C6%A4%CA%A5%D6%A5%ED%A5%B0">はてなブログ</a>エクスポートファイルを加工する<a class="keyword" href="http://d.hatena.ne.jp/keyword/JScript">JScript</a>。</h5>
+<p>以下の2つの処理を行った後のエクスポートファイルをインプットにする。</p>
+<ol>
+<li>エクスポートファイル ⇒ 画像リンクを<a class="keyword" href="http://d.hatena.ne.jp/keyword/WordPress">WordPress</a>ローカルに変える。</li>
+<li>エクスポートファイル ⇒ローカルリンクのブログカードをショートコードに変更。</li>
+</ol>
+<p>「記事一覧」と「ブログカード」の対策を行う<a class="keyword" href="http://d.hatena.ne.jp/keyword/JScript">JScript</a>。</p>
+<p><em>≪eyecatch-insert.jse≫</em></p>
+<p>※ エクスポートファイルをドラッグ＆ドロップで読み込む場合、他のインプットファイル（<a class="keyword" href="http://d.hatena.ne.jp/keyword/CSV">CSV</a>ファイル：hatena.eyecatch.<a class="keyword" href="http://d.hatena.ne.jp/keyword/csv">csv</a>）も<a class="keyword" href="http://d.hatena.ne.jp/keyword/%C0%E4%C2%D0%A5%D1%A5%B9">絶対パス</a>にしないとエラーになる。</p>
+<pre>var args = WScript.Arguments;		//　ドラッグ＆ドロップしたパス情報を取得
+var inputFile = args(0);		//　<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A4%CF%A4%C6%A4%CA%A5%D6%A5%ED%A5%B0">はてなブログ</a> エクスポート・ファイル（2，3処理済み）（<a class="keyword" href="http://d.hatena.ne.jp/keyword/%C0%E4%C2%D0%A5%D1%A5%B9">絶対パス</a>）
+
+var csvFile = "hatena.eyecatch.<a class="keyword" href="http://d.hatena.ne.jp/keyword/csv">csv</a>";
+var fso = new ActiveXObject("Scripting.FileSystemObject");
+var path = fso.getParentFolderName(WScript.ScriptFullName);	// カレント<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%C7%A5%A3%A5%EC%A5%AF%A5%C8">ディレクト</a>リ（<a class="keyword" href="http://d.hatena.ne.jp/keyword/%C0%E4%C2%D0%A5%D1%A5%B9">絶対パス</a>）
+var csvFile = path + "\\" + csvFile;	//　csvFile：<a class="keyword" href="http://d.hatena.ne.jp/keyword/%C0%E4%C2%D0%A5%D1%A5%B9">絶対パス</a>に変換
+var adTypeText = 2;
+var adSaveCreateOverWrite = 2;		// 上書き
+var adReadAll = -1;			// 全行
+// ---------------------------------
+var sr1 = new ActiveXObject("ADODB.Stream");
+sr1.Type = adTypeText;
+sr1.charset = "<a class="keyword" href="http://d.hatena.ne.jp/keyword/utf-8">utf-8</a>";
+sr1.Open();
+sr1.LoadFromFile(csvFile);
+var csvstr = sr1.ReadText(adReadAll);
+sr1.Close();
+
+var csvlines = csvstr.split(/\r?\n/);
+var eyecatch = [];
+for (var i=0; i&lt;csvlines.length; i++) {
+	eyecatch[i] = csvlines[i].split(",");
+}
+// ---------------------------------
+var sr2 = new ActiveXObject("ADODB.Stream");
+sr2.Type = adTypeText;
+sr2.charset = "<a class="keyword" href="http://d.hatena.ne.jp/keyword/utf-8">utf-8</a>";
+sr2.Open();
+sr2.LoadFromFile(inputFile);
+var str = sr2.ReadText(adReadAll);
+sr2.Close();
+
+var stw = new ActiveXObject("ADODB.Stream");
+stw.type = adTypeText;
+stw.charset = "<a class="keyword" href="http://d.hatena.ne.jp/keyword/utf-8">utf-8</a>";
+stw.Open();
+
+var out = "";
+var lines = str.split(/\r?\n/);
+var outsw = false;
+var image = "";
+for (var i=0; i&lt;lines.length; i++) {
+	outsw = false;
+	if (lines[i].substring(0,7) == 'IMAGE: ') {
+		image = lines[i].slice(7);
+	}
+	if (lines[i].substring(0,5) == 'BODY:') {
+		if (image != "") {
+			out = out + 'BODY:' + "\n" + '&lt;img src="' + image + '" style="display:none;"&gt;' + "\n";
+			outsw = true;
+			image = "";
+		}
+	}
+	if (lines[i].indexOf('&lt;p&gt;[nmblogcard url="/<a class="keyword" href="http://d.hatena.ne.jp/keyword/wordpress">wordpress</a>/') == 0) {
+		url = lines[i].substr(21).slice(0,-7);
+		if (imgfile = array2find(url, eyecatch)) {
+			out = out + lines[i].slice(0,-5) + ' image_url="/<a class="keyword" href="http://d.hatena.ne.jp/keyword/wordpress">wordpress</a>/wp-content/uploads/hatena/' + imgfile + '"]&lt;/p&gt;' + "\n";
+			outsw = true;
+		}
+	}
+	if (!outsw) {
+		out = out + lines[i] + "\n";
+	}
+}
+stw.WriteText(out);
+stw.SaveToFile(inputFile.slice(0,-4) + "-eyecatch.txt", adSaveCreateOverWrite);
+stw.Close();
+function array2find(str, ary) {
+	for (var i=0; i&lt;ary.length; i++) {
+		if (str == ary[i][0]) {
+			return ary[i][1];
+		}
+	}
+	return false;
+}
+</pre>
+<p>この<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%B9%A5%AF%A5%EA%A5%D7%A5%C8">スクリプト</a>で加工したエクスポートファイルを<a class="keyword" href="http://d.hatena.ne.jp/keyword/WordPress">WordPress</a>でインポートすることで、メディアライブラリを使わずに。<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A4%CF%A4%C6%A4%CA%A5%D6%A5%ED%A5%B0">はてなブログ</a>の<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%A2%A5%A4%A5%AD%A5%E3%A5%C3%A5%C1">アイキャッチ</a>画像をメディアライブラリを使わずに記事一覧とブログカードに反映させる事ができる。</p>
+<p><a class="link-card" href="../13/124011.html"><span class="lc-body"><span class="lc-title">WordPress）外観テーマを「Iconic One」に変更。 「Iconic One」カスタマイズ。</span><span class="lc-desc">先日、自宅のWindowsPCローカルに WordPress を入れた。 外観テーマを一旦「Semplicemente」に変更したが、 今回、外観テーマを「 Iconic One 」に変更してみた。 ※ この記事の以下の…</span><span class="lc-site">晴歩雨描 · <time>2022-08-13</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220813/20220813123456.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../11/152729.html"><span class="lc-body"><span class="lc-title">WordPress）はてなブログからダウンロードした画像を、「メディアライブラリ」に登録するプラグイン「Bulk Media Register」。</span><span class="lc-desc">自宅のWindowsPCに WordPress をインストールしている。 はてなブログ から、 WordPress のローカル ディレクト リにダウンロードした画像ファイルを、 WordPress の「メディアライブラリ…</span><span class="lc-site">晴歩雨描 · <time>2022-08-11</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220811/20220811142011.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../18/135432.html"><span class="lc-body"><span class="lc-title">WordPress）はてなブログから移行した画像をポップアップ表示するようにした。</span><span class="lc-desc">はてなブログ から WordPress への移行を検証している。 はてなブログ から WordPress へ画像を移行して記事内で画像が表示されるようになったが、この画像をクリックしてポップアップ画像を表示するようにした…</span><span class="lc-site">晴歩雨描 · <time>2022-08-18</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220818/20220818135419.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../08/122922.html"><span class="lc-body"><span class="lc-title">WordPress）画像格納ディレクトリ確認。はてなブログからのインポートテスト。</span><span class="lc-desc">先日、自宅のWindowsPCに WordPress をインストールした。 画像格納 ディレクト リ確認、 はてなブログ からのインポート、他、試しごとの備忘録。 【デザイン変更】 ダッシュ ボードの「外観」で「テーマ」…</span><span class="lc-site">晴歩雨描 · <time>2022-08-08</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220807/20220807123827.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../15/231115.html"><span class="lc-body"><span class="lc-title">WordPress）設定まとめ。メディアライブラリを使わないバージョン。</span><span class="lc-desc">自宅WindowsPCローカルに WordPress をインストールしている。 以前、 WordPress 設定まとめを書いた。この時はメディアライブラリを使う前提だった。 メディアライブラリを使わない方法が分かったので…</span><span class="lc-site">晴歩雨描 · <time>2022-08-15</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220811/20220811140646.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../16/105039.html"><span class="lc-body"><span class="lc-title">WordPress）はてなブログから移行（インポート）する手順まとめ。メディアライブラリを使わないバージョン。</span><span class="lc-desc">自宅WindowsPCローカルに WordPress をインストールしている。 「 はてなブログ 」からエクスポートして WordPress にインポートしてみた。 以前、移行（インポート）する手順まとめを書いた。この時…</span><span class="lc-site">晴歩雨描 · <time>2022-08-16</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220817/20220817223605.jpg" alt="" loading="lazy"></span></a></p></div></article>
+</body>
+</html>

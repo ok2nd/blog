@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Leaflet）eBirdのAPIを使って、「最近観察された珍鳥マップ」アプリ作成。InfinityFree。 - 晴歩雨描</title>
+<link rel="stylesheet" href="../../../../style.css">
+</head>
+<body>
+<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>Leaflet）eBirdのAPIを使って、「最近観察された珍鳥マップ」アプリ作成。InfinityFree。</h1><p class="meta">2026-03-23 · <a href="../../../../category/c38.html">野鳥</a> <a href="../../../../category/c9.html">サイエンス・物理・宇宙</a> <a href="../../../../category/c21.html">地図・マップ</a> <a href="../../../../category/c42.html">＜AI＞</a></p><div class="entry-body"><p><em>eBird</em>のAPIを使って、最近観察された珍鳥をマップ上に表示するアプリ作成。マップはLeafletを使用。Claude使用。</p>
+<p><em><span style="color: rgb(255, 0, 0);">【後日記載】CARTO地図がAPIキーが必要になったので、OpenStreetMapに変更。</span></em></p>
+<p><em>都道府県選択、または地図上で地点をクリックして半径最大50km以内で、最近観察された珍鳥を検索して地点を表示する。あくまでも、eBirdに記録された野鳥のみが対象になる。珍鳥とは言えない鳥が検索される場合もある。</em></p>
+<p>野鳥名は、極力日本語で表示。</p>
+<p><strong>《 eBird 珍鳥観察マップ 》</strong></p>
+<p><a href="https://ok2nd.great-site.net/ebird/latest-rare-bird/" target="_blank">https://ok2nd.great-site.net/ebird/latest-rare-bird/</a> （InfinityFree）</p>
+<p>※ 以下、パソコン画面。スマホでは使いづらい。</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260323/20260323141251.jpg" width="1008" height="658" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<p>都道府県を選択して検索。</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260323/20260323141254.jpg" width="1008" height="657" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<p>検索されたマークをクリックすると、野鳥名、観察場所、観察日時等が表示される。</p>
+<p>Wikipedia、Google画像検索へ飛ぶこともできる。</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260323/20260323145131.jpg" width="1024" height="742" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<p>地図上で、地点をクリックして、半径を指定して検索。</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260323/20260323141300.jpg" width="1008" height="657" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260323/20260323141303.jpg" width="1008" height="657" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<p>eBirdなので、世界中の観察記録が入っている。「地図でピン」検索なら海外の観察場所も検索できる。</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260323/20260323152346.jpg" width="1008" height="747" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<hr>
+<h5 id="-補足eBird-APIキー-取得方法">■ 補足）eBird APIキー 取得方法</h5>
+<p>サーバーサイド（PHP）で、eBird APIを使っている。</p>
+<p>１．eBird公式サイトにアクセスしてサインインする。</p>
+<p><a href="https://ebird.org/home" target="_blank">https://ebird.org/home</a></p>
+<p>２．APIリクエストページへアクセスする。</p>
+<p><a href="https://ebird.org/api/keygen" target="_blank">https://ebird.org/api/keygen</a></p>
+<p>３．必要事項を入力して申請する。</p>
+<ul>
+<li>団体：</li>
+<li>プロジェクトのタイトル：</li>
+<li>用途の説明：</li>
+<li>プロジェクトのタイプ：</li>
+</ul>
+<p><a class="link-card" href="../24/151201.html"><span class="lc-body"><span class="lc-title">Leaflet）eBirdのAPIを使って、「野鳥観察マップ（日本地図）」アプリ作成。InfinityFree。</span><span class="lc-desc">eBird のAPIを使って、「野鳥観察マップ（日本地図）」アプリを作成した。マップはLeafletを使用。Claude使用。 【後日記載】CARTO地図がAPIキーが必要になったので、OpenStreetMapに変更。…</span><span class="lc-site">晴歩雨描 · <time>2026-03-24</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260324/20260324145213.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../07/20/100726.html"><span class="lc-body"><span class="lc-title">Leaflet）eBirdのAPIを使って、「野鳥観察マップ（日本地図）」アプリ作成（２）。InfinityFree。Leaflet都道府県境界表示。</span><span class="lc-desc">以前に、 eBirdのAPI を使って、「野鳥観察マップ（日本地図）」アプリを作成した。 今回、別バージョンを作成。マップはLeafletを使用。Claude使用。 《 野鳥観察マップ 》 ※ eBirdの仕様として、今…</span><span class="lc-site">晴歩雨描 · <time>2026-07-20</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260721/20260721095927.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../31/142332.html"><span class="lc-body"><span class="lc-title">生成AI（Claude、Gemini、ChatGPT、Copilot）に、最近の野鳥情報を聴いてみた。野鳥名と場所をExcelで一覧にする。</span><span class="lc-desc">生成AI（ Claude、Gemini、ChatGPT、Copilot ）に、最近の 野鳥情報 を聴いてみた。野鳥名と場所を Excel で一覧にできるか試した。 プロンプトは、以下。 過去2週間の神戸、大阪、京都の探鳥…</span><span class="lc-site">晴歩雨描 · <time>2026-03-31</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260331/20260331135853.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2021/11/03/125741.html"><span class="lc-body"><span class="lc-title">世界最大の野鳥観察データベース（図鑑）「eBird」の日本語版「eBird Japan」公開。「Merlin野鳥識別」の野鳥名前検索レベル高い。</span><span class="lc-desc">世界最大の野鳥観察データベース「eBird」の日本語版「eBird Japan」が公開された。 「eBird」は、インターネットを介して世界中のバードウォッチャーの記録を集約する、世界最大の市民参加型の野鳥観察記録データ…</span><span class="lc-site">晴歩雨描 · <time>2021-11-03</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20211103/20211103125412.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../02/03/124042.html"><span class="lc-body"><span class="lc-title">Leaflet地図：現在の積雪を地図表示。気象庁データを使用。JavaScript＆PHP（CORS制限回避）。XAMPPでCA証明書。InfinityFree。</span><span class="lc-desc">気象庁の「 現在の積雪 」データを使って、 Leaflet で地図表示するようにした。 ■ 使用したデータ 《 気象庁：積雪観測地点情報（json）》 https://www.jma.go.jp/bosai/amedas…</span><span class="lc-site">晴歩雨描 · <time>2026-02-03</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260203/20260203120620.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2025/07/04/163328.html"><span class="lc-body"><span class="lc-title">Leaflet地図：世界地図に国別宗教構成を円グラフ（Chart.js）で表示。</span><span class="lc-desc">以前に、Leafletで「世界地図：国別宗教構成（円グラフ）」を作成した。 この時は、円グラフ生成には「Google Charts」を使っていたが、使えなくなっているので、「Chart.jsライブラリ」を使う方式に変更し…</span><span class="lc-site">晴歩雨描 · <time>2025-07-04</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250704/20250704162522.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2025/07/04/110511.html"><span class="lc-body"><span class="lc-title">Leaflet地図：任意の場所を中心とした任意の半径の円を描く。</span><span class="lc-desc">Leafletで、任意の場所を中心とした円を描くWebページを作成。 ≪ 円作成＆距離測定マップ ≫ https://ok2nd.github.io/leaflet/circle/optional.html マウスクリッ…</span><span class="lc-site">晴歩雨描 · <time>2025-07-04</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250704/20250704110050.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2022/06/25/162506.html"><span class="lc-body"><span class="lc-title">Leaflet地図：「日本）鉄道難読駅（読みが難しい、読めない駅名）マップ」を作成。CSV使用。</span><span class="lc-desc">地図データを扱うJavaScript ライブラリ「Leaflet」を使って、地図をいくつか作成してきた。 今回、「 日本）鉄道難読駅マップ 」を作成。 駅マーカーをクリックすると読みを確認できる。 難読駅データは、以下の…</span><span class="lc-site">晴歩雨描 · <time>2022-06-25</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220625/20220625160921.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="https://ok2nd.github.io/leaflet/" target="_blank" rel="noopener noreferrer"><span class="lc-body"><span class="lc-title">Leaflet地図 リスト by 晴歩雨描</span><span class="lc-desc"></span><span class="lc-site">ok2nd.github.io</span></span></a></p></div></article>
+</body>
+</html>

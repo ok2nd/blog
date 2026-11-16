@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Windows）PCのSSD認識不良対策で、SSD接続ポート交換。 - 晴歩雨描</title>
+<link rel="stylesheet" href="../../../../style.css">
+</head>
+<body>
+<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>Windows）PCのSSD認識不良対策で、SSD接続ポート交換。</h1><p class="meta">2026-10-01 · <a href="../../../../category/c8.html">コンピュータ</a></p><div class="entry-body"><p>昨年12月、PCを新しくした。SSDドライブも新しいものを1台購入した。</p>
+<p><a class="link-card" href="../../../2025/12/19/103344.html"><span class="lc-body"><span class="lc-title">Windows）PC「エプソン Endeavor SG150」、SDカードリーダー、USBハブ、パソコン切替器（KVMスイッチ）、USBケーブル、Office Home 2024（カード版）を購入。SSD CrystalDiskMark ベンチマーク。</span><span class="lc-desc">今まで使用してきたWindowsPCの問題点が大きく3つ。 SSDドライブの空き容量が少なくなってきた。 USBが3.0（5Gbps）までしか対応していない。SSD等の性能を生かせない。 GPUが付いていない。ローカル画…</span><span class="lc-site">晴歩雨描 · <time>2025-12-19</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20251208/20251208224447.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2025/12/19/102616.html"><span class="lc-body"><span class="lc-title">Windows）「SUNEAST Eclipse E40 portable SSD 4TB USB4」（最大読込4000MB/sのUSB4対応）購入。robocopyでドライブ丸ごとコピー</span><span class="lc-desc">WindowsパソコンのSSDドライブの空き容量がかなり減ってきた。 メインドライブ（D）に、4TBのSSDを使用しているが、空き容量がかなり減ってきて限界に近付きつつある。 メインドライブ（D）を8TBのSSDにしたい…</span><span class="lc-site">晴歩雨描 · <time>2025-12-19</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20251205/20251205172230.jpg" alt="" loading="lazy"></span></a></p>
+<p>購入後時々、SSDを認識できないことが起こる。認識不良が起こるのは、「<em>Thunderbolt 4</em>」ポートに接続している「<em>SSD SUNEAST Eclipse E40</em>」。PC、USBケーブル、SSDのどれが問題なのか良く分からない。USBケーブルを変えてみたが、やはり問題は発生する。</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20261001/20261001085105.jpg" width="596" height="591" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<p>そこで、PC側のSSD接続ポートを交換してみた。これでしばらく様子を見る。<a href="https://shop.epson.jp/pc/desktop/sg150/?srsltid=AfmBOorEe4EEC2Z7vrUJ3aCX2f2pk2KSbI60JOE1Q_LClZc2EjOfvaxR" target="_blank"> </a></p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20251208/20251208224447.jpg" width="670" height="551" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<h5 id="USBポート接続概略"><span style="color: #673ab7;">【USBポート接続概略】</span></h5>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250714/20250714103714.jpg" width="1200" height="529" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<h5 id="交換前">交換前（↓↓↓）</h5>
+<div style="overflow-x: auto;">
+<table class="font-small">
+<thead>
+<tr>
+<th> </th>
+<th>SG150 ポート</th>
+<th>USB 規格</th>
+<th>ケーブル</th>
+<th>USBハブ</th>
+<th>ケーブル</th>
+<th>接続機器</th>
+<th>SSD<br>使用目的</th>
+<th>SSD<br>容量</th>
+<th>SSD読込速度<br>MB/s</th>
+<th>SSD<br>USB規格</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>正面</th>
+<td>Type-A</td>
+<td><strong><span style="color: #ff0000;">10Gbps</span><br></strong>(USB 3.2 Gen2)</td>
+<td>A=C</td>
+<td> </td>
+<td> </td>
+<td>スマホ<br>一時接続用</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<th>正面</th>
+<td>Type-A</td>
+<td><strong>5Gbps<br></strong>(USB 3.2 Gen1)</td>
+<td><span style="font-size: 80%;">USBメモリ直 /</span><br><span style="font-size: 80%;">HDD専用ケーブル</span></td>
+<td> </td>
+<td> </td>
+<td>USBメモリ<br>一時接続用 /<br>WD ポータブルHDD</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<th>正面</th>
+<td><span style="color: #ff0000;">Type-C</span></td>
+<td><strong><span style="color: #ff0000;">10Gbps</span><br></strong>(USB 3.2 Gen2)</td>
+<td><span style="font-size: 80%;">カードリーダー付属</span></td>
+<td> </td>
+<td> </td>
+<td><em>SDカードリーダー</em></td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<th>正面</th>
+<td><span style="color: #ff0000;">Type-C</span></td>
+<td><strong><span style="color: #ff0000;">10Gbps</span><br></strong>(USB 3.2 Gen2)</td>
+<td>C=C</td>
+<td> </td>
+<td> </td>
+<td>SanDisk Extreme Portable</td>
+<td>●バックアップ<br>持ち出し用</td>
+<td>8TB</td>
+<td>1050</td>
+<td>USB3.2<br>Gen2</td>
+</tr>
+<tr>
+<th rowspan="3">背面</th>
+<td rowspan="3">Type-A</td>
+<td rowspan="3"><strong>5Gbps<br></strong>(USB 3.2 Gen1)</td>
+<td rowspan="3"><span style="font-size: 80%;">USB</span><br><span style="font-size: 80%;">ハブ</span><br><span style="font-size: 80%;">付属</span></td>
+<td rowspan="3"> </td>
+<td>C=C</td>
+<td>SSD Crucial X6</td>
+<td>2次BK1：写真（A-Photo）</td>
+<td>4TB</td>
+<td>800</td>
+<td>USB3.2<br>Gen2</td>
+</tr>
+<tr>
+<td>A=C</td>
+<td>SSD SanDisk Extreme Portable</td>
+<td>2次BK2：<br>写真以外</td>
+<td>2TB</td>
+<td>550</td>
+<td>USB3.1<br>Gen2</td>
+</tr>
+<tr>
+<td>A=C</td>
+<td>SSD SanDisk Portable</td>
+<td>2次BK3：写真（A-Photo以外）</td>
+<td>2TB</td>
+<td>520</td>
+<td>USB3.2<br>Gen2</td>
+</tr>
+<tr>
+<th>背面</th>
+<td><span style="color: #ff0000;">Type-C</span></td>
+<td><strong><span style="color: #ff0000;">40Gbps</span></strong><br><span style="color: #ff0000;">(Thunderbolt 4)</span></td>
+<td>
+<p><span style="color: #ff0000;">C=C</span><br><span style="color: #ff0000;">(40G)</span></p>
+</td>
+<td> </td>
+<td> </td>
+<td><em>SSD SUNEAST Eclipse E40</em></td>
+<td>◎メイン<br>（A-Photo以外）</td>
+<td>4TB</td>
+<td>4000</td>
+<td>USB4</td>
+</tr>
+<tr>
+<th>背面</th>
+<td>Type-A</td>
+<td><strong><span style="color: #ff0000;">10Gbps</span><br></strong>(USB 3.2 Gen2)</td>
+<td>A=C</td>
+<td> </td>
+<td> </td>
+<td>SSD WD ポータブル</td>
+<td>◎メイン<br>（A-Photo）</td>
+<td>4TB</td>
+<td>1050</td>
+<td>USB3.2<br>Gen2</td>
+</tr>
+<tr>
+<th>背面</th>
+<td>Type-A</td>
+<td><strong>5Gbps<br></strong>(USB 3.2 Gen1)</td>
+<td><span style="font-size: 80%;">KVM</span><br><span style="font-size: 80%;">付属</span></td>
+<td> </td>
+<td> </td>
+<td>KVMスイッチ(※4)経由キーボード＆マウス</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+</tbody>
+</table>
+</div>
+<h5 id="交換後">交換後（↓↓↓）</h5>
+<div style="overflow-x: auto;">
+<table class="font-small">
+<thead>
+<tr>
+<th> </th>
+<th>SG150 ポート</th>
+<th>USB 規格</th>
+<th>ケーブル</th>
+<th>USBハブ</th>
+<th>ケーブル</th>
+<th>接続機器</th>
+<th>SSD<br>使用目的</th>
+<th>SSD<br>容量</th>
+<th>SSD読込速度<br>MB/s</th>
+<th>SSD<br>USB規格</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>正面</th>
+<td>Type-A</td>
+<td><strong><span style="color: #ff0000;">10Gbps</span><br></strong>(USB 3.2 Gen2)</td>
+<td>A=C</td>
+<td> </td>
+<td> </td>
+<td>スマホ<br>一時接続用</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<th>正面</th>
+<td>Type-A</td>
+<td><strong>5Gbps<br></strong>(USB 3.2 Gen1)</td>
+<td><span style="font-size: 80%;">USBメモリ直 /</span><br><span style="font-size: 80%;">HDD専用ケーブル</span></td>
+<td> </td>
+<td> </td>
+<td>USBメモリ<br>一時接続用 /<br>WD ポータブルHDD</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<th>正面</th>
+<td><span style="color: #ff0000;">Type-C</span></td>
+<td><strong><span style="color: #ff0000;">10Gbps</span></strong><br>(USB 3.2 Gen2)</td>
+<td>
+<p>C=C</p>
+</td>
+<td> </td>
+<td> </td>
+<td><em>SSD SUNEAST Eclipse E40</em></td>
+<td>◎メイン<br>（A-Photo以外）</td>
+<td>4TB</td>
+<td>4000</td>
+<td>USB4</td>
+</tr>
+<tr>
+<th>正面</th>
+<td><span style="color: #ff0000;">Type-C</span></td>
+<td><strong><span style="color: #ff0000;">10Gbps</span><br></strong>(USB 3.2 Gen2)</td>
+<td>C=C</td>
+<td> </td>
+<td> </td>
+<td>SanDisk Extreme Portable</td>
+<td>●バックアップ<br>持ち出し用</td>
+<td>8TB</td>
+<td>1050</td>
+<td>USB3.2<br>Gen2</td>
+</tr>
+<tr>
+<th rowspan="3">背面</th>
+<td rowspan="3">Type-A</td>
+<td rowspan="3"><strong>5Gbps<br></strong>(USB 3.2 Gen1)</td>
+<td rowspan="3"><span style="font-size: 80%;">USB</span><br><span style="font-size: 80%;">ハブ</span><br><span style="font-size: 80%;">付属</span></td>
+<td rowspan="3"> </td>
+<td>C=C</td>
+<td>SSD Crucial X6</td>
+<td>2次BK1：写真（A-Photo）</td>
+<td>4TB</td>
+<td>800</td>
+<td>USB3.2<br>Gen2</td>
+</tr>
+<tr>
+<td>A=C</td>
+<td>SSD SanDisk Extreme Portable</td>
+<td>2次BK2：<br>写真以外</td>
+<td>2TB</td>
+<td>550</td>
+<td>USB3.1<br>Gen2</td>
+</tr>
+<tr>
+<td>A=C</td>
+<td>SSD SanDisk Portable</td>
+<td>2次BK3：写真（A-Photo以外）</td>
+<td>2TB</td>
+<td>520</td>
+<td>USB3.2<br>Gen2</td>
+</tr>
+<tr>
+<th>背面</th>
+<td><span style="color: #ff0000;">Type-C</span></td>
+<td><strong><span style="color: #ff0000;">40Gbps<br></span></strong><span style="color: #ff0000;">(Thunderbolt 4)</span></td>
+<td><span style="font-size: 80%;">カードリーダー付属</span></td>
+<td> </td>
+<td> </td>
+<td><em>SDカードリーダー</em></td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<th>背面</th>
+<td>Type-A</td>
+<td><strong><span style="color: #ff0000;">10Gbps</span><br></strong>(USB 3.2 Gen2)</td>
+<td>A=C</td>
+<td> </td>
+<td> </td>
+<td>SSD WD ポータブル</td>
+<td>◎メイン<br>（A-Photo）</td>
+<td>4TB</td>
+<td>1050</td>
+<td>USB3.2<br>Gen2</td>
+</tr>
+<tr>
+<th>背面</th>
+<td>Type-A</td>
+<td><strong>5Gbps<br></strong>(USB 3.2 Gen1)</td>
+<td><span style="font-size: 80%;">KVM</span><br><span style="font-size: 80%;">付属</span></td>
+<td> </td>
+<td> </td>
+<td>KVMスイッチ(※4)経由キーボード＆マウス</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+</tbody>
+</table>
+</div>
+<h4 id="-CrystalDiskMarkでベンチマークテストを実施">■ CrystalDiskMarkで、ベンチマークテストを実施。</h4>
+<p>やはり、USB 3.2 Gen2 接続では性能が1/3程度に落ちる。</p>
+<ul>
+<li>D: SUNEAST Eclipse E40（4TB）：4000MB/s</li>
+</ul>
+<h5 id="Thunderbolt-4-接続時">Thunderbolt 4 接続時</h5>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20261001/20261001085902.jpg" width="482" height="347" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<h5 id="USB-32-Gen2-接続時">USB 3.2 Gen2 接続時</h5>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20261001/20261001085907.png" width="482" height="347" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<h5 id="SSDドライブ運用構成"><span style="color: #673ab7;">【SSDドライブ運用構成】</span></h5>
+<div style="overflow-x: auto;">
+<table class="font-small">
+<thead>
+<tr>
+<th> </th>
+<th>名称</th>
+<th>容量</th>
+<th>最大<br>読込速度<br>MB/秒</th>
+<th>購入</th>
+</tr>
+</thead>
+<tbody style="vertical-align: top;">
+<tr>
+<td>C:</td>
+<td>PC内蔵 M.2 SSD</td>
+<td>1TB</td>
+<td>7000 ?</td>
+<td>2025.12.17</td>
+</tr>
+<tr>
+<td>D:</td>
+<td><em>SUNEAST Eclipse E40</em></td>
+<td>4TB</td>
+<td>4000</td>
+<td>2025.12.13</td>
+</tr>
+<tr>
+<td>E:</td>
+<td>WD ポータブルSSD</td>
+<td>4TB</td>
+<td>1050</td>
+<td>2023.7.3</td>
+</tr>
+<tr>
+<td>G:</td>
+<td>SanDisk Extreme Portable</td>
+<td>8TB</td>
+<td>1050</td>
+<td>2025.8.27</td>
+</tr>
+<tr>
+<td>M:</td>
+<td>SanDisk Extreme Portable</td>
+<td>2TB</td>
+<td>550</td>
+<td>2020.12.24</td>
+</tr>
+<tr>
+<td>N:</td>
+<td>SanDisk Portable</td>
+<td>2TB</td>
+<td>520</td>
+<td>2021.1.17</td>
+</tr>
+<tr>
+<td>O:</td>
+<td>Crucial X6</td>
+<td>4TB</td>
+<td>800</td>
+<td>2022.8.27</td>
+</tr>
+<tr>
+<td>R:</td>
+<td><span style="color: #95c7a4;">WD ポータブルHDD</span></td>
+<td>4TB</td>
+<td>100 ?</td>
+<td>2022.3.4</td>
+</tr>
+</tbody>
+</table>
+</div>
+<ul>
+<li>本体Cドライブ：<strong><span style="color: #cc00cc;">SSD</span></strong>：1TB</li>
+<li>Dドライブ（<strong>メイン</strong>/<span style="color: #2196f3;"><strong>A-Photo以外</strong></span>+<strong><span style="color: #ff0000;">A-Photo予備</span></strong>）：<strong><span style="color: #cc00cc;">SSD </span></strong>：<span style="color: #dd830c;"><strong>4TB（USB4）</strong></span></li>
+<li>Eドライブ（<strong>メイン</strong>/<em><strong><span style="color: #ff0000;">A-Photo</span></strong></em>）：<strong><span style="color: #cc00cc;">SSD </span></strong>：<span style="color: #dd830c;"><strong>4TB</strong></span></li>
+<li>Gドライブ（<strong>メインバックアップ</strong>/<span style="color: #ff0000;"><strong>全て</strong></span>）：<strong><span style="color: #cc00cc;">SSD </span></strong>：<strong><span style="color: #dd830c;">8TB</span></strong></li>
+<li>Mドライブ（2次バックアップ/<strong><span style="color: #2196f3;">A-Photo以外</span></strong>）：<strong><span style="color: #cc00cc;">SSD</span></strong> ：2TB</li>
+<li>Nドライブ（2次バックアップ/<strong><span style="color: #ff0000;">A-Photo予備</span></strong>）：<strong><span style="color: #cc00cc;">SSD</span></strong> ：2TB</li>
+<li>Oドライブ（2次バックアップ/<strong><span style="color: #ff0000;">A-Photo</span></strong>）：<strong><span style="color: #cc00cc;">SSD</span></strong> ：<strong><span style="color: #dd830c;">4TB</span></strong></li>
+<li>Rドライブ（<strong><span style="color: #00cccc;">2025.12.31までのフルバックアップ</span></strong>）：<span style="color: #00cc00;"><strong>HDD</strong></span> ：4TB</li>
+</ul>
+<p><a class="link-card" href="../../../2025/12/19/105155.html"><span class="lc-body"><span class="lc-title">Windows 11 Pro）セットアップ備忘録。ローカルアカウントで。使いやすくする設定も。</span><span class="lc-desc">新PCを購入した。 新PCのWindows 11 Pro のセットアップ備忘録。 ■ Windows 11 Pro セットアップ ※ アカウントは、Microsoft アカウントを使わず、ローカルアカウントを使う。 ※ …</span><span class="lc-site">晴歩雨描 · <time>2025-12-19</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20251215/20251215173700.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2025/07/14/110213.html"><span class="lc-body"><span class="lc-title">グラフィックスボード搭載でUSB Type-Cポートが複数あるコンパクトなPC「Endeavor SG150」</span><span class="lc-desc">コンパクトでグラフィックスボード搭載可能かつUSB Type-Cポートが複数あるPCの選択肢が少ない。アマゾンでは中国製の製品が色々ありそうだが、信頼性が不明。日本で販売されいる大手メーカーで探すが、なかなか見つからない…</span><span class="lc-site">晴歩雨描 · <time>2025-07-14</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250714/20250714103658.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2025/05/24/095015.html"><span class="lc-body"><span class="lc-title">「SanDisk エクストリーム ポータブル SSD 外付け 8TB」購入。</span><span class="lc-desc">WindowsパソコンのSSDドライブの空き容量がかなり減ってきた。 最近の傾向だと、1年で写真データが400GB程になっている。現在のメインドライブ、バックアップ用ドライブは、残り半年程度で一杯になる。 『 【Amaz…</span><span class="lc-site">晴歩雨描 · <time>2025-05-24</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250524/20250524110437.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2025/07/12/165741.html"><span class="lc-body"><span class="lc-title">外付けSSD「Crucial X10 Portable SSD 8TB」発売。4TBではUSB4対応製品も。</span><span class="lc-desc">「 Crucial X10 Portable SSD 8TB 」が発売されたようだ。 以下のレビューが詳しい。 外付け8TB SSDは、最近「 SanDisk エクストリーム ポータブル SSD 外付け 8TB 」を購入…</span><span class="lc-site">晴歩雨描 · <time>2025-07-12</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250712/20250712163946.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2025/07/14/112727.html"><span class="lc-body"><span class="lc-title">Thunderbolt4端子にUSB 20Gbps(USB 3.2 Gen2x2)のSSDを接続しても20Gbpsは出ない。</span><span class="lc-desc">「PCのThunderbolt4端子にUSB 20Gbps(USB 3.2 Gen2x2)のSSDを接続して20Gbpsは出るか？」をChatGPTに聞いた。 【ChatGPT 回答】 Thunderbolt 4はUSB…</span><span class="lc-site">晴歩雨描 · <time>2025-07-14</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250714/20250714112406.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2023/07/05/093501.html"><span class="lc-body"><span class="lc-title">Windows）「WD ポータブルSSD 4TB」購入。Dドライブ交換。robocopyで丸ごとコピー。（xcopyではない）</span><span class="lc-desc">WindowsメインドライブのDドライブを2GBのSSDで運用してきたが、写真が増えて空き容量が減る都度、古い写真を別ドライブに移動するなど、不便だった。 最近、Western Digital のSSDの価格が下がってき…</span><span class="lc-site">晴歩雨描 · <time>2023-07-05</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20230704/20230704112701.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2022/08/29/163104.html"><span class="lc-body"><span class="lc-title">Windows）「Crucial X6 外付け ポータブル SSD 4TB」購入。PCデータ&amp;写真フルバックアップ。</span><span class="lc-desc">今年(2022年)の3月にバックアップ用に 4TB HDD を購入した。 この時、本当は 4TB SSD が欲しかったが、高価だったためHDDにした。 最近、アマゾン（直販）で見たら、 「 Crucial X6 外付け …</span><span class="lc-site">晴歩雨描 · <time>2022-08-29</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220827/20220827101943.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2024/11/02/172836.html"><span class="lc-body"><span class="lc-title">外付け＜4TB＞SSDの価格上がっている。（2024.11時点）。PCストレージ空き容量が減ってきた。</span><span class="lc-desc">以前に、外付け＜4TB＞SSDを2台購入した。 Crucial X6 外付け ポータブル SSD 4TB：CT4000X6SSD9 （読込速度最大800MB/秒）：43,980円 WD ポータブルSSD 4TB：WDBA…</span><span class="lc-site">晴歩雨描 · <time>2024-11-02</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20241102/20241102172545.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2024/07/25/091254.html"><span class="lc-body"><span class="lc-title">外付けSSD 8TB 比較。（2024.7時点）（2025.1追加）</span><span class="lc-desc">現在、4TB SSD 2台と2TB SSD 2台で運用している。まだ、空き容量に余裕があるが、2、3年後には8TB SSDが必要になるかもしれない。 現時点の8TB SSD を調べてみた。 Amazonサクラチェッカーで…</span><span class="lc-site">晴歩雨描 · <time>2024-07-25</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20240725/20240725091359.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2021/10/23/133202.html"><span class="lc-body"><span class="lc-title">Windows10の暗号化機能「BitLocker」を使ってSSDを暗号化。</span><span class="lc-desc">外付けSSDを、Windows10の暗号化機能「 BitLocker 」で暗号化した。 【後日追記】 ※ 「BitLocker」には問題があるかもしれない。 以下のホームページを参考にした。 「 BitLocker 」の…</span><span class="lc-site">晴歩雨描 · <time>2021-10-23</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20211023/20211023124833.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2021/10/19/151720.html"><span class="lc-body"><span class="lc-title">外付けSSD（バッファロー250GB）に、XAMPP Portable + MyHome Portal を導入。</span><span class="lc-desc">サブのPCとして、新しいノートパソコンを購入。 新しいノートパソコンに「 XAMPP 」＋「 MyHome Portal 」を入れる。 パソコンのローカルディスク（C:）には直接入れず、 外付けSSD（今回はE:ドライブ…</span><span class="lc-site">晴歩雨描 · <time>2021-10-19</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20211019/20211019141314.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2021/01/19/154625.html"><span class="lc-body"><span class="lc-title">Androidスマホ、iPadに、SSDを繋ぐ。PCの写真を共有。アロケーションユニットサイズにも注意。</span><span class="lc-desc">PCに保存してある写真を Android スマホ と iPad で共有するためにポータブル SSD を使ってみた。 NAS によるオンラインでの方法も試してみたが、 Android スマホ 、 iPad からのアクセスが…</span><span class="lc-site">晴歩雨描 · <time>2021-01-19</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20210119/20210119145337.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2021/01/17/134902.html"><span class="lc-body"><span class="lc-title">最近購入したUSB関連グッズ。SSD、USBハブ、USB変換ケーブル、USBメモリ。</span><span class="lc-desc">最近購入したUSB関連グッズ。備忘録として。 ■ SanDisk エクストリーム ポータブルSSD 2TB 読出最大550MB/秒 ［SDSSDE60-2T00-J25］ ＜ヨドバシ：29,810円（2,981ポイント）…</span><span class="lc-site">晴歩雨描 · <time>2021-01-17</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20210117/20210117130528.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2024/12/13/155818.html"><span class="lc-body"><span class="lc-title">PCストレージ(SSD)容量圧縮検証。JPEG写真画像の解像度を落としたら、どの程度ファイルサイズを圧縮できるか。</span><span class="lc-desc">PCのメイン・ストレージに4TBのSSDを使用している。ストレージの空き容量が減ってきているので、8TBのSSDを購入したいが、現時点では製品の選択肢が少ない。 写真画像JPEGデータがストレージの容量の大半を占めている…</span><span class="lc-site">晴歩雨描 · <time>2024-12-13</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20241213/20241213153818.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../08/05/152532.html"><span class="lc-body"><span class="lc-title">パソコン高騰。メモリもSSDも異常に高い。</span><span class="lc-desc">最近、メモリもSSDも高騰しているというニュースをよく目にする。 昨年2025年12月に、パソコンを購入した。この時点でもすでに値上がりしていたようだが、この時に購入した構成で現在購入したら価格がどの程度になるか調べてみ…</span><span class="lc-site">晴歩雨描 · <time>2026-08-05</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260805/20260805152035.jpg" alt="" loading="lazy"></span></a></p></div></article>
+</body>
+</html>

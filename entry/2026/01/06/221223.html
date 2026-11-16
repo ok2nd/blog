@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NuitkaでPythonをexe化する。PyInstallerよりお勧め。 - 晴歩雨描</title>
+<link rel="stylesheet" href="../../../../style.css">
+</head>
+<body>
+<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>NuitkaでPythonをexe化する。PyInstallerよりお勧め。</h1><p class="meta">2026-01-06 · <a href="../../../../category/c8.html">コンピュータ</a></p><div class="entry-body"><p>PythonをPythonがインストールされていない環境でも実行可能にする方法がいくつかある。大きく分けて2つの方法がある。</p>
+<h5 id="１ツールを使ってexe化する">１．ツールを使ってexe化する。</h5>
+<div style="overflow-x: auto;">
+<table class="font-small">
+<thead>
+<tr>
+<th>ツール</th>
+<th>おすすめ度</th>
+<th style="width: 40%;">メリット</th>
+<th style="width: 40%;">デメリット</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>Nuitka</th>
+<td>★★★<br>(推奨)</td>
+<td>起動が速い。<br>コードをCに変換するため解析されにくい。</td>
+<td>ビルドに時間がかかる。<br>Cコンパイラが必要。</td>
+</tr>
+<tr>
+<th>PyInstaller</th>
+<td>★★★<br>(標準)</td>
+<td>情報が非常に多く、初心者でも使いやすい。</td>
+<td>起動が遅め。<br>ウイルス対策ソフトの誤検知が多い。</td>
+</tr>
+<tr>
+<th>cx_Freeze</th>
+<td>★★☆<br>(安定)</td>
+<td>古くからあり安定。<br>起動もPyInstallerより速い。</td>
+<td>設定ファイル（setup.py）を書く手間がかかる。</td>
+</tr>
+<tr>
+<th>py2exe</th>
+<td>★☆☆<br>(特化)</td>
+<td>Windows専用。<br>非常にシンプル。</td>
+<td>更新頻度が低く、最新ライブラリでエラーが出やすい。</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h5 id="２Python環境ごとポータブル化する">２．Python環境ごとポータブル化する。</h5>
+<ul>
+<li><strong>Python Embeddable Package</strong> (埋め込み用配布物):
+<ul>
+<li>Python公式サイトで配布されている「Windows embeddable package」を使う。</li>
+<li>方法: 最小限のPython環境をフォルダに入れ、そこにスクリプトとライブラリを同梱する。起動用のバッチファイル（.bat）を作れば、相手のPCにPythonがなくても動かせる。</li>
+<li>メリット: 変換エラーが起きにくく、動作が非常に安定している。</li>
+</ul>
+</li>
+<li><strong>WinPython</strong>:
+<ul>
+<li>インストール不要で動くPythonディストリビューション。これをUSBメモリなどに入れて配布すれば、そのまま実行環境として使える。</li>
+</ul>
+</li>
+</ul>
+<h5 id="-Nuitkaを選択">※ 「Nuitka」を選択。</h5>
+<p><em>上記の方法の中で、「PyInstaller」が定番だが、「Nuitka」の方が優れているようなので、「Nuitka」を選択して試してみる。</em></p>
+<p><em>「Nuitka」は、Cコンパイラが必須だが、Nuitkaが自動でダウンロードして設定してくれる。</em></p>
+<h5 id="-Nuitka-インストール">■ Nuitka インストール</h5>
+<pre>pip install nuitka</pre>
+<p>zstandard というライブラリも一緒に入れておくと、コンパイル（圧縮）速度が向上する。</p>
+<pre>pip install zstandard</pre>
+<h5 id="-Cコンパイラの自動セットアップ">■ Cコンパイラの自動セットアップ</h5>
+<p>テスト用のスクリプト（例：hello.py）を用意</p>
+<pre>print("Hello from Nuitka!")
+input("Press Enter to exit...")</pre>
+<p>以下のコマンドを実行する。</p>
+<pre style="white-space: pre-wrap;">python -m nuitka --standalone <span style="color: #ff0000;">--mingw64</span> hello.py
+</pre>
+<p>「--mingw64」を付けるのが確実。適切なコンパイラが見つからないと、「<span style="background-color: #eee;">Fully automatic, cached. Proceed and download? [Yes]/No :</span>」と聞いてくる。ここで「Yes」を入力すれば、Nuitka専用の「MinGW64（gcc）」というコンパイラが自動でセットアップされる。PC全体の設定を汚さず、Nuitkaの中だけで完結する。</p>
+<h5 id="-Nuitka-でPythonスクリプトをexe化する方法">■ Nuitka でPythonスクリプトをexe化する方法</h5>
+<p>※（）内は、オプション指定の一例。</p>
+<p>「--plugin-enable=tk-inter」は、ほぼ必須。</p>
+<pre style="white-space: pre-wrap;">python -m nuitka --onefile --standalone --windows-console-mode=disable --output-dir=dist <span style="color: #ff0000;">（</span>--plugin-enable=tk-inter<span style="color: #ff0000;">）</span> <span style="color: #ff0000;">（</span>--include-package-data=pptx<span style="color: #ff0000;">）</span> --mingw64 Pythonスクリプト.py</pre>
+<ul>
+<li>--onefile: 関連ファイルをすべて1つの .exe にまとめまる。<br><em>※「onefile」にすると、実行時にAppData\Local\Tempフォルダに中身を解凍して動かす。この「実行ファイルが別のプログラムを生成して実行する」という動きが、トロイの木馬などのウイルスと酷似しているため、セキュリティソフトで弾かれて削除される場合がある。</em></li>
+<li>--standalone: 実行環境にPythonがなくても動くようにする。<br><em>※ --onefileを指定しないと上記セキュリティソフトで除外されるリスクは減るが、dist フォルダの中身（大量のDLLファイルなど）を丸ごと配布する必要がある。</em></li>
+<li>--windows-console-mode=disable: 実行時に黒い画面（コンソール）を出さないようにする（GUIアプリの場合に必須）。※CUIアプリならこのオプションは不要。<br><em>※ アプリの処理が正常に行われない場合など、エラーメッセージの確認をしたい場合は、「--windows-console-mode=force」とする。</em></li>
+<li>--output-dir=dist: 完成したファイルを dist というフォルダに保存する。<br>※ 指定しなければ、カレントディレクトリ下にexeファイルが出来る。</li>
+<li>--mingw64: 確実に動くコンパイラ「MinGW64（gcc）」を使う。</li>
+<li>--plugin-enable=...: もし tkinter や numpy などを使っている場合、Nuitkaはプラグインを指定することでより確実にビルドできる。</li>
+<li>--include-package-data=...: テンプレートファイルをすべてexeの中に同梱。<br>（例）--include-package-data=pptx</li>
+<li>--collect-all=...: ライブラリに関するすべてのファイル（データ、DLL、依存関係）を強制的に含める。exeファイルのサイズが大きくなる。<br>（例）--collect-all=pptx</li>
+</ul>
+<h5 id="---plugin-enableで指定する必要がある主なライブラリ">※ 「--plugin-enable」で指定する必要がある主なライブラリ</h5>
+<ul>
+<li>Tkinter (標準GUI)<br>（例）--plugin-enable=tk-inter</li>
+<li>PySide6 / PyQt6 (高機能GUI)</li>
+<li>NumPy (数値計算)</li>
+<li>pandas (データ解析)</li>
+<li>matplotlib (グラフ描画)</li>
+<li>Torch / Tensorflow(AI・機械学習)</li>
+</ul>
+<p><em>※ 「--plugin-enable」や「--include-package-data」でオプション指定が必要かどうかを事前に完璧に予測するのは難しい。「--windows-console-mode=force」を付けてエラーメッセージを確認する方法もある。</em></p>
+<p><em>※ 生成AIにPythonアプリを渡して、Nuitkaのオプション指定を問い合わせるのが一番確実。</em></p>
+<p><a class="link-card" href="https://ok2nd.github.io/sitemap/hatena-sitemap-table.html?search=Python" target="_blank" rel="noopener noreferrer"><span class="lc-body"><span class="lc-title">晴歩雨描：記事一覧</span><span class="lc-desc"></span><span class="lc-site">ok2nd.github.io</span></span></a></p>
+<p><a class="link-card" href="../../10/24/214012.html"><span class="lc-body"><span class="lc-title">備忘録：Nuitkaでexe化したPythonアプリが、Windowsセキュリティ(Microsoft Defender)によって、ウイルスと誤認されて警告なしに削除・隔離されてしまう。</span><span class="lc-desc">Python で作成したアプリを Nuitkaでexe化 したが、それを起動しようとすると、Windowsセキュリティ（Microsoft Defender）のリアルタイム保護や「誤検知（False Positive）」…</span><span class="lc-site">晴歩雨描 · <time>2026-10-24</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20261024/20261024210136.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../10/04/082547.html"><span class="lc-body"><span class="lc-title">備忘録：Python＋SQLite）ID・パスワード管理アプリ作成。Nuitkaでexe化。</span><span class="lc-desc">WebサイトなどのID・パスワード管理を、「MyHome Portal」の「ID管理」で行ってきた。 https://ok2nd.github.io/myportal/ 「MyHome Portal」の「ID管理」は、自…</span><span class="lc-site">晴歩雨描 · <time>2026-10-04</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20261004/20261004082200.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../10/06/125158.html"><span class="lc-body"><span class="lc-title">備忘録：Python＋SQLite）住所録管理アプリ作成。＋はがき宛名書きPDF作成。Nuitkaでexe化。</span><span class="lc-desc">住所録管理を、「 MyHome Portal 」の「 住所録管理 」で行ってきた。 https://ok2nd.github.io/myportal/index.html 「MyHome Portal」の「住所録管理」は…</span><span class="lc-site">晴歩雨描 · <time>2026-10-06</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20261006/20261006125716.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../06/06/124727.html"><span class="lc-body"><span class="lc-title">Windows）Python）シンプルな電卓（数式・四則演算エディタ）アプリ作成。Nuitkaでexe化。ICOアイコン付きで。</span><span class="lc-desc">Pythonで、Windows用のシンプルな電卓アプリを作成。 よくある電卓アプリのような数字や＋－＊／のボタンはない。 四則演算しかできない。 ()は使える。 単に数式を入力してEnterキーで計算するだけ。 一度計算…</span><span class="lc-site">晴歩雨描 · <time>2026-06-06</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260606/20260606144813.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../03/31/120201.html"><span class="lc-body"><span class="lc-title">Claude）Python）Windows画像編集加工アプリ：ICCプロファイル維持対応アプリ一覧。</span><span class="lc-desc">今まで作成してきたWindows画像編集加工アプリの一部を、ICCプロファイル維持するように修正してきた。 Pythonで作成したWindows画像編集加工アプリで、ICCプロファイル維持対応したアプリの一覧。 画像一括…</span><span class="lc-site">晴歩雨描 · <time>2026-03-31</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260331/20260331120149.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2025/11/19/105207.html"><span class="lc-body"><span class="lc-title">Python）青空文庫をスマホで機内モード（オフライン）で縦書きで読むためにXHTMLを変換するWindowsアプリを作成。</span><span class="lc-desc">飛行機の機内で、スマホで青空文庫を縦書きで読みたい。 スマホの青空文庫ビューアーアプリはたくさんあるが、機能が多すぎてかえって使いづらい。オフラインに対応していないものもある。広告が表示されて煩わしいものが多い。 シンプ…</span><span class="lc-site">晴歩雨描 · <time>2025-11-19</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20251119/20251119104322.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2025/10/22/214630.html"><span class="lc-body"><span class="lc-title">Claude）Python）ローカル）写真を等倍高画質化するWindowsアプリ作成。OpenCV（疑似Real-ESRGAN）、シャープネス。SwinIR断念。</span><span class="lc-desc">※ 後日、Claude、ChatGPT、Geminiに確認したところ、今回作成したアプリでは、Real-ESRGANモデルは使われていないとのこと。中身はOpenCVの古典的な画像フィルターの組み合わせらしい（？）。ただ…</span><span class="lc-site">晴歩雨描 · <time>2025-10-22</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20251022/20251022211457.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2025/10/21/141052.html"><span class="lc-body"><span class="lc-title">Claude）Python）写真を美肌に編集加工するWindowsアプリ作成（５）。毛穴やシミを目立たなくする。AI顔検出＋AI輪郭抽出（精度向上版）。ICCプロファイル維持。</span><span class="lc-desc">先日、写真を美肌に編集加工するWindowsアプリをPythonで作成した。 輪郭抽出枠が大雑把だったので、もう少し細かく輪郭を抽出できるバージョンを作成。 課題としては、輪郭抽出の処理時間が大幅に上がったことと、抽出で…</span><span class="lc-site">晴歩雨描 · <time>2025-10-21</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20251021/20251021140459.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2025/09/29/090826.html"><span class="lc-body"><span class="lc-title">Claude）Python）シンプルなWindows用ランチャーアプリ作成。</span><span class="lc-desc">Pythonで作成したWindows用アプリが増えてきた。 これらを起動する ランチャーアプリ が欲しいと思って、作成した。 設定できる項目を少なくして、極力シンプルなものにした。 設定できるのは、ボタンサイズと横に並べ…</span><span class="lc-site">晴歩雨描 · <time>2025-09-29</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260108/20260108141324.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2025/09/20/205629.html"><span class="lc-body"><span class="lc-title">Claude）Python）写真のEXIF情報を表示するWindowsアプリ（ExifTool）を作成。</span><span class="lc-desc">Pythonで「 写真のEXIF情報を表示する 」Windowsアプリを作成。「Claude」で作成。 【機能概略】 JPEGファイルを画面にドラッグ＆ドロップすると、その写真のEXIF情報一覧を表示する。 メーカー独自…</span><span class="lc-site">晴歩雨描 · <time>2025-09-20</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250920/20250920175347.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2025/08/12/130210.html"><span class="lc-body"><span class="lc-title">Claude）Python）「写真をEXIF機種毎のフォルダーに分類」Windowsアプリ作成。</span><span class="lc-desc">Pythonで「写真をEXIF機種毎のフォルダーに分類」Windowsアプリを作成。 生成AI「 Claude 」「 Gemini 」「 Copilot 」で、以下のプロンプトで作成した。 【生成AI プロンプト】 Wi…</span><span class="lc-site">晴歩雨描 · <time>2025-08-12</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250812/20250812125530.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2025/08/12/093959.html"><span class="lc-body"><span class="lc-title">Gemini）Python）「ファイル拡張子別フォルダー移動」Windowsアプリ作成。</span><span class="lc-desc">Pythonで「ファイル拡張子別フォルダー移動」Windowsアプリを作成。 生成AI「 Gemini 」「 Claude 」「 ChatGPT GPT-5 」で、以下のプロンプトで作成してみた。 【生成AI プロンプト…</span><span class="lc-site">晴歩雨描 · <time>2025-08-12</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250812/20250812093352.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2025/06/14/093748.html"><span class="lc-body"><span class="lc-title">JavaScript＆Web、Python＆Windows）写真画像編集アプリ／ツールまとめ。</span><span class="lc-desc">写真画像編集アプリ／ツールを、JavaScriptとPythonでいくつか作成してきた。それらのツールまとめ。 ■ 画像縮小 【Webツール（JavaScript）】 https://ok2nd.github.io/to…</span><span class="lc-site">晴歩雨描 · <time>2025-06-14</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250614/20250614094138.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2025/06/13/153014.html"><span class="lc-body"><span class="lc-title">Claude）Python）透過画像作成Windowsアプリ作成。</span><span class="lc-desc">Pythonで「透過画像作成」Windowsアプリ作成。画像の白に近い色を透過にする。元データはJPEGまたはPNG。白の範囲は指定できる。AIツールClaudeに作成してもらった。 【使い方】 元画像ファイルは、ドラッ…</span><span class="lc-site">晴歩雨描 · <time>2025-06-13</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250613/20250613151037.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2025/05/09/085200.html"><span class="lc-body"><span class="lc-title">Claude）Python）PowerPointに複数写真（画像）を順番に並べて貼り付けるプログラム作成（改訂版）。</span><span class="lc-desc">以前に、PowerPointに複数写真を順番に並べて貼り付けるプログラムをPythonで作成した。 今回、このプログラムの改訂版。前回と同じく、AI生成ツール「Claude」に作ってもらった。 基本機能はそのままで、オプ…</span><span class="lc-site">晴歩雨描 · <time>2025-05-09</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250509/20250509084045.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2023/09/08/210741.html"><span class="lc-body"><span class="lc-title">Windows）「Python（Ver.3.11.5）」インストール。</span><span class="lc-desc">Windows版Pythonのインストール手順の備忘録。 ■ Pythonダウンロード 現時点の最新、Ver.3.11.5。 ■ Python インストール 「 python-3.11.5-amd64.exe 」を実行。…</span><span class="lc-site">晴歩雨描 · <time>2023-09-08</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20230908/20230908204241.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../03/31/120201.html"><span class="lc-body"><span class="lc-title">Claude）Python）Windows画像編集加工アプリ：ICCプロファイル維持対応アプリ一覧。</span><span class="lc-desc">今まで作成してきたWindows画像編集加工アプリの一部を、ICCプロファイル維持するように修正してきた。 Pythonで作成したWindows画像編集加工アプリで、ICCプロファイル維持対応したアプリの一覧。 画像一括…</span><span class="lc-site">晴歩雨描 · <time>2026-03-31</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260331/20260331120149.jpg" alt="" loading="lazy"></span></a></p></div></article>
+</body>
+</html>

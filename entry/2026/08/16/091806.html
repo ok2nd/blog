@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>関西3府県（大阪、兵庫、京都）百貨店売上高（2025年度）をLeaflet地図にしてみた。 - 晴歩雨描</title>
+<link rel="stylesheet" href="../../../../style.css">
+</head>
+<body>
+<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>関西3府県（大阪、兵庫、京都）百貨店売上高（2025年度）をLeaflet地図にしてみた。</h1><p class="meta">2026-08-16 · <a href="../../../../category/c21.html">地図・マップ</a> <a href="../../../../category/c13.html">ホームページ、Web作成</a></p><div class="entry-body"><p><em>関西3府県（大阪、兵庫、京都）の百貨店度売上高（2025年度）</em>をLeaflet地図にしてみた。</p>
+<h5 id="-関西3府県-百貨店-2025年度売上高マップ-">《 関西3府県 百貨店 2025年度売上高マップ 》</h5>
+<p><a href="https://ok2nd.github.io/leaflet/kansai_department_stores_map.html" target="_blank">https://ok2nd.github.io/leaflet/kansai_department_stores_map.html</a></p>
+<p>売り上げの大きさを円の面積で表現。</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260816/20260816123210.png" width="921" height="673" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<p>円をクリックすると、売り上げ高などの詳細を表示する。</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260816/20260816090751.png" width="915" height="599" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<p>以下、一覧表。売り上げの大きい順に並べている。大阪梅田の阪急百貨店が圧倒的に大きい。（※ジェイアール京都伊勢丹は「京都店・ルクア大阪イセタン各ショップ合計）</p>
+<style>
+table th:nth-child(2),
+table td:nth-child(2)
+{
+    text-align: left;
+}
+</style>
+<table>
+<thead>
+<tr>
+<th>府県</th>
+<th>百貨店</th>
+<th>2025年度<br>売上高(億)</th>
+<th>決算期</th>
+<th>前年比</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background-color: #ffe0d2;">
+<td>大阪</td>
+<td>阪急うめだ本店</td>
+<td>3,487.50</td>
+<td>2026年3月期</td>
+<td>▲4.5%</td>
+</tr>
+<tr style="background-color: #ffe0d2;">
+<td>大阪</td>
+<td>高島屋大阪店</td>
+<td>1,799.30</td>
+<td>2026年2月期</td>
+<td>▲0.6%</td>
+</tr>
+<tr style="background-color: #ffe0d2;">
+<td>大阪</td>
+<td>あべのハルカス近鉄本店</td>
+<td>1,313.50</td>
+<td>2026年2月期</td>
+<td>5.70%</td>
+</tr>
+<tr style="background-color: #ffe0d2;">
+<td>大阪</td>
+<td>大丸心斎橋店</td>
+<td>1,138.10</td>
+<td>2026年2月期</td>
+<td>▲1.3%</td>
+</tr>
+<tr style="background-color: #dbe7fb;">
+<td>京都</td>
+<td>高島屋京都店</td>
+<td>1,106.60</td>
+<td>2026年2月期</td>
+<td>▲0.8%</td>
+</tr>
+<tr style="background-color: #d8f0e4;">
+<td>兵庫</td>
+<td>大丸神戸店</td>
+<td>1,017.30</td>
+<td>2026年2月期</td>
+<td>3.40%</td>
+</tr>
+<tr style="background-color: #ffe0d2;">
+<td>大阪</td>
+<td>阪神梅田本店</td>
+<td>749.5</td>
+<td>2026年3月期</td>
+<td>15.70%</td>
+</tr>
+<tr style="background-color: #dbe7fb;">
+<td>京都</td>
+<td>大丸京都店</td>
+<td>736.8</td>
+<td>2026年2月期</td>
+<td>▲6.5%</td>
+</tr>
+<tr style="background-color: #dbe7fb;">
+<td>京都</td>
+<td>ジェイアール京都伊勢丹</td>
+<td>704.2※</td>
+<td>2026年3月期</td>
+<td>―</td>
+</tr>
+<tr style="background-color: #ffe0d2;">
+<td>大阪</td>
+<td>大丸梅田店</td>
+<td>626.3</td>
+<td>2026年2月期</td>
+<td>4.30%</td>
+</tr>
+<tr style="background-color: #d8f0e4;">
+<td>兵庫</td>
+<td>神戸阪急</td>
+<td>430.6</td>
+<td>2026年3月期</td>
+<td>0.20%</td>
+</tr>
+<tr style="background-color: #ffe0d2;">
+<td>大阪</td>
+<td>高槻阪急スクエア</td>
+<td>255.8</td>
+<td>2026年3月期</td>
+<td>2.90%</td>
+</tr>
+<tr style="background-color: #d8f0e4;">
+<td>兵庫</td>
+<td>西宮阪急</td>
+<td>251.1</td>
+<td>2026年3月期</td>
+<td>1.30%</td>
+</tr>
+<tr style="background-color: #ffe0d2;">
+<td>大阪</td>
+<td>上本町店</td>
+<td>199.7</td>
+<td>2026年2月期</td>
+<td>▲1.9%</td>
+</tr>
+<tr style="background-color: #ffe0d2;">
+<td>大阪</td>
+<td>高島屋泉北店</td>
+<td>144.8</td>
+<td>2026年2月期</td>
+<td>▲1.6%</td>
+</tr>
+<tr style="background-color: #ffe0d2;">
+<td>大阪</td>
+<td>千里阪急</td>
+<td>133.2</td>
+<td>2026年3月期</td>
+<td>▲1.6%</td>
+</tr>
+<tr style="background-color: #d8f0e4;">
+<td>兵庫</td>
+<td>川西阪急スクエア</td>
+<td>128.4</td>
+<td>2026年3月期</td>
+<td>3.90%</td>
+</tr>
+<tr style="background-color: #ffe0d2;">
+<td>大阪</td>
+<td>高島屋堺店</td>
+<td>90.8</td>
+<td>2026年2月期</td>
+<td>▲10.6%</td>
+</tr>
+<tr style="background-color: #d8f0e4;">
+<td>兵庫</td>
+<td>宝塚阪急</td>
+<td>72</td>
+<td>2026年3月期</td>
+<td>3.50%</td>
+</tr>
+<tr style="background-color: #d8f0e4;">
+<td>兵庫</td>
+<td>大丸須磨店</td>
+<td>63.4</td>
+<td>2026年2月期</td>
+<td>0.30%</td>
+</tr>
+<tr style="background-color: #ffe0d2;">
+<td>大阪</td>
+<td>大丸高槻店</td>
+<td>54.7</td>
+<td>2026年2月期</td>
+<td>0.10%</td>
+</tr>
+<tr style="background-color: #d8f0e4;">
+<td>兵庫</td>
+<td>大丸芦屋店</td>
+<td>43.8</td>
+<td>2026年2月期</td>
+<td>3.10%</td>
+</tr>
+<tr style="background-color: #d8f0e4;">
+<td>兵庫</td>
+<td>阪神・にしのみや</td>
+<td>43.1</td>
+<td>2026年3月期</td>
+<td>2.20%</td>
+</tr>
+<tr style="background-color: #d8f0e4;">
+<td>兵庫</td>
+<td>あまがさき阪神</td>
+<td>32</td>
+<td>2026年3月期</td>
+<td>3.30%</td>
+</tr>
+<tr style="background-color: #ffe0d2;">
+<td>大阪</td>
+<td>東大阪店</td>
+<td>31.9</td>
+<td>2026年2月期</td>
+<td>3.40%</td>
+</tr>
+</tbody>
+</table>
+<p>全国でみても、阪急うめだ本店は、伊勢丹新宿本店に次ぐ大きさ。</p>
+<style>
+#zenkoku td:nth-child(3)
+{
+    text-align: left;
+}
+</style>
+<table id="zenkoku">
+<thead>
+<tr>
+<th>順位</th>
+<th>府県</th>
+<th>百貨店</th>
+<th>2025年度<br>売上高</th>
+<th>決算期</th>
+<th>前年比</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>東京</td>
+<td>伊勢丹新宿本店</td>
+<td>4,249億円</td>
+<td>2026年3月期</td>
+<td>0.90%</td>
+</tr>
+<tr style="background-color: #ffe0d2;">
+<td>2</td>
+<td>大阪</td>
+<td><em>阪急うめだ本店</em></td>
+<td>3,487億円</td>
+<td>2026年3月期</td>
+<td>▲4.5%</td>
+</tr>
+<tr>
+<td>3</td>
+<td>愛知</td>
+<td>ジェイアール名古屋タカシマヤ</td>
+<td>2,224億円</td>
+<td>2026年2月期</td>
+<td>3.30%</td>
+</tr>
+<tr style="background-color: #ffe0d2;">
+<td>4</td>
+<td>大阪</td>
+<td><em>高島屋大阪店</em></td>
+<td>1,799億円</td>
+<td>2026年2月期</td>
+<td>▲0.6%</td>
+</tr>
+<tr>
+<td>5</td>
+<td>東京</td>
+<td>三越日本橋本店</td>
+<td>1,690億円</td>
+<td>2026年3月期</td>
+<td>4.60%</td>
+</tr>
+<tr>
+<td>6</td>
+<td>東京</td>
+<td>高島屋日本橋店</td>
+<td>1,584億円</td>
+<td>2026年2月期</td>
+<td>▲1.3%</td>
+</tr>
+<tr>
+<td>7</td>
+<td>神奈川</td>
+<td>高島屋横浜店</td>
+<td>1,436億円</td>
+<td>2026年2月期</td>
+<td>0.90%</td>
+</tr>
+<tr>
+<td>8</td>
+<td>愛知</td>
+<td>松坂屋名古屋店</td>
+<td>1,371億円</td>
+<td>2026年2月期</td>
+<td>4.10%</td>
+</tr>
+<tr style="background-color: #ffe0d2;">
+<td>9</td>
+<td>大阪</td>
+<td><em>あべのハルカス近鉄本店</em></td>
+<td>1,314億円</td>
+<td>2026年2月期</td>
+<td>5.70%</td>
+</tr>
+<tr>
+<td>10</td>
+<td>東京</td>
+<td>三越銀座店</td>
+<td>1,227億円</td>
+<td>2026年3月期</td>
+<td>▲1.2%</td>
+</tr>
+</tbody>
+</table>
+<p>大阪梅田地区では、阪神、大丸もあるが、阪急が圧倒的に大きい。梅田で百貨店といえば、やはり阪急が高級・老舗感がある。</p>
+<table>
+<thead>
+<tr>
+<th>府県</th>
+<th>百貨店</th>
+<th>2025年度<br>売上高(億)</th>
+<th>決算期</th>
+<th>前年比</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background-color: #ffe0d2;">
+<td>大阪</td>
+<td><em>阪急うめだ本店</em></td>
+<td>3,487.50</td>
+<td>2026年3月期</td>
+<td>▲4.5%</td>
+</tr>
+<tr style="background-color: #ffe0d2;">
+<td>大阪</td>
+<td>阪神梅田本店</td>
+<td>749.5</td>
+<td>2026年3月期</td>
+<td>15.70%</td>
+</tr>
+<tr style="background-color: #ffe0d2;">
+<td>大阪</td>
+<td>大丸梅田店</td>
+<td>626.3</td>
+<td>2026年2月期</td>
+<td>4.30%</td>
+</tr>
+</tbody>
+</table>
+<p>神戸では、そごうから阪急に代わった神戸阪急があるが、大丸神戸店の方がはるかに大きい。神戸で百貨店といえば、やはり大丸が高級・老舗感がある。</p>
+<table>
+<thead>
+<tr>
+<th>府県</th>
+<th>百貨店</th>
+<th>2025年度<br>売上高(億)</th>
+<th>決算期</th>
+<th>前年比</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background-color: #d8f0e4;">
+<td>兵庫</td>
+<td><em>大丸神戸店</em></td>
+<td>1,017.30</td>
+<td>2026年2月期</td>
+<td>3.40%</td>
+</tr>
+<tr style="background-color: #d8f0e4;">
+<td>兵庫</td>
+<td>神戸阪急</td>
+<td>430.6</td>
+<td>2026年3月期</td>
+<td>0.20%</td>
+</tr>
+</tbody>
+</table>
+<p><a class="link-card" href="https://ok2nd.github.io/sitemap/hatena-sitemap-table.html?search=leaflet" target="_blank" rel="noopener noreferrer"><span class="lc-body"><span class="lc-title">晴歩雨描：記事一覧</span><span class="lc-desc"></span><span class="lc-site">ok2nd.github.io</span></span></a></p>
+<p><a class="link-card" href="https://ok2nd.github.io/leaflet/" target="_blank" rel="noopener noreferrer"><span class="lc-body"><span class="lc-title">Leaflet地図 リスト by 晴歩雨描</span><span class="lc-desc"></span><span class="lc-site">ok2nd.github.io</span></span></a></p></div></article>
+</body>
+</html>

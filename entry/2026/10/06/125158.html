@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>備忘録：Python＋SQLite）住所録管理アプリ作成。＋はがき宛名書きPDF作成。Nuitkaでexe化。 - 晴歩雨描</title>
+<link rel="stylesheet" href="../../../../style.css">
+</head>
+<body>
+<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>備忘録：Python＋SQLite）住所録管理アプリ作成。＋はがき宛名書きPDF作成。Nuitkaでexe化。</h1><p class="meta">2026-10-06 · <a href="../../../../category/c8.html">コンピュータ</a></p><div class="entry-body"><p>住所録管理を、「<em>MyHome Portal</em>」の「<em>住所録管理</em>」で行ってきた。</p>
+<p><a href="https://ok2nd.github.io/myportal/index.html" target="_blank">https://ok2nd.github.io/myportal/index.html</a></p>
+<p>「MyHome Portal」の「住所録管理」は、自分で作成したシステムだが、問題なく使えていて、使い勝手も良いが、将来にわたって、PHP、MySQLの環境管理含めて維持することに不安があるため、<em>Python＋SQLite</em>で、アプリを再作成してデータ移行。</p>
+<p>アプリは、生成AI「<em>Claude</em>」にて作成。今回はデータの暗号化処理は行っていない。</p>
+<p>※ 下の画面イメージは、サンプル用のダミーデータ。念のため、モザイクかけてますが。</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20261006/20261006223609.png" width="1200" height="721" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<p>葉書あて名書きPDF作成機能も付けた。</p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20261006/20261006123006.jpg" width="270" height="400" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<h5 id="１-SQLite-データベーステーブル作成">■１． SQLite データベース：テーブル作成</h5>
+<p>データベース：<strong>data/住所録管理.db</strong></p>
+<pre>-- 住所録
+CREATE TABLE IF NOT EXISTS <span style="color: rgb(255, 0, 0);"><strong>t_address</strong></span> (
+    id_abook INTEGER PRIMARY KEY,
+    id_category INTEGER,
+    c_name1 TEXT,
+    c_name2 TEXT,
+    c_yomi1 TEXT,
+    c_yomi2 TEXT,
+    c_renmei TEXT,
+    c_zip1 TEXT,
+    c_zip2 TEXT,
+    c_kenid TEXT,
+    c_address1 TEXT,
+    c_address2 TEXT,
+    c_phone1 TEXT,
+    c_phone2 TEXT,
+    c_email TEXT,
+    c_memo TEXT,
+    c_check1 INTEGER,
+    c_check2 INTEGER,
+    c_check3 INTEGER,
+    c_check4 INTEGER,
+    c_check5 INTEGER,
+    c_check6 INTEGER,
+    c_check7 INTEGER,
+    c_check8 INTEGER
+);
+
+-- 分類
+CREATE TABLE IF NOT EXISTS <span style="color: rgb(255, 0, 0);"><strong>t_category</strong></span> (
+    id_category INTEGER PRIMARY KEY,
+    c_categoryName TEXT,
+    c_categoryDisplayOrder INTEGER
+);
+
+-- 都道府県
+CREATE TABLE IF NOT EXISTS <span style="color: rgb(255, 0, 0);"><strong>t_kenmei</strong></span> (
+    c_kenid TEXT PRIMARY KEY,
+    c_kenmei TEXT,
+    c_area TEXT
+);
+
+-- チェックカラムキャプション
+CREATE TABLE <strong><span style="color: rgb(255, 0, 0);">t_check_caption</span></strong> (
+    c_caption1 TEXT,
+    c_caption2 TEXT,
+    c_caption3 TEXT,
+    c_caption4 TEXT,
+    c_caption5 TEXT,
+    c_caption6 TEXT,
+    c_caption7 TEXT,
+    c_caption8 TEXT
+);
+
+-- 住所録ビュー
+CREATE VIEW IF NOT EXISTS <strong><span style="color: rgb(255, 0, 0);">v_address</span></strong> AS
+SELECT
+    a.id_abook,
+    a.id_category,
+    a.c_name1,
+    a.c_name2,
+    a.c_yomi1,
+    a.c_yomi2,
+    a.c_renmei,
+    a.c_zip1,
+    a.c_zip2,
+    a.c_kenid,
+    a.c_address1,
+    a.c_address2,
+    a.c_phone1,
+    a.c_phone2,
+    a.c_email,
+    a.c_memo,
+    a.c_check1,
+    a.c_check2,
+    a.c_check3,
+    a.c_check4,
+    a.c_check5,
+    a.c_check6,
+    a.c_check7,
+    a.c_check8,
+    k.c_kenmei,
+    c.c_categoryName,
+    c.c_categoryDisplayOrder
+FROM t_address AS a
+LEFT JOIN t_kenmei AS k
+    ON a.c_kenid = k.c_kenid
+LEFT JOIN t_category AS c
+    ON a.id_category = c.id_category;
+</pre>
+<h5 id="２-SQLite-データベースインポート">■２． SQLite データベース：インポート</h5>
+<p>「MyHome Portal：住所録管理」MySQLデータベースのテーブルデータをCSVファイルにエクスポートし、SQLite データベースへインポートするPythonスクリプト作成。</p>
+<pre>住所録管理_CSVインポート.py</pre>
+<h5 id="３-Nuitkaでexe化">■３． Nuitkaでexe化</h5>
+<p>Nuitkaでexe化した。</p>
+<p>アイコンファイル：address_book.ico</p>
+<pre>python -m nuitka --mode=onefile --enable-plugin=pyqt6 --windows-console-mode=disable --windows-icon-from-ico=address_book.ico --output-filename=住所録管理.exe --include-package-data=reportlab 住所録管理.pyw</pre>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20261006/20261006125716.png" width="89" height="80" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<h5 id="４-PDF葉書印刷位置定義">■４． PDF葉書印刷位置定義</h5>
+<p>「<em>PDF葉書定義.txt</em>」</p>
+<ul>
+<li>宛名、差出人の郵便番号、住所、氏名の印刷位置、文字サイズを定義。</li>
+</ul>
+<h5 id="５-PDF葉書差出人定義">■５． PDF葉書差出人定義</h5>
+<p>「<em>葉書差出人.txt</em>」</p>
+<ul>
+<li>郵便番号、住所、氏名を記載。</li>
+</ul>
+<p><a class="link-card" href="../04/082547.html"><span class="lc-body"><span class="lc-title">備忘録：Python＋SQLite）ID・パスワード管理アプリ作成。Nuitkaでexe化。</span><span class="lc-desc">WebサイトなどのID・パスワード管理を、「MyHome Portal」の「ID管理」で行ってきた。 https://ok2nd.github.io/myportal/ 「MyHome Portal」の「ID管理」は、自…</span><span class="lc-site">晴歩雨描 · <time>2026-10-04</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20261004/20261004082200.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../09/101258.html"><span class="lc-body"><span class="lc-title">備忘録：Python＋SQLite）預貯金管理アプリ作成。Nuitkaでexe化。</span><span class="lc-desc">預貯金管理を、「 MyHome Portal 」の「 預貯金管理 」で行ってきた。 https://ok2nd.github.io/myportal/index.html 「MyHome Portal」の「預貯金管理」は…</span><span class="lc-site">晴歩雨描 · <time>2026-10-09</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20261009/20261009100240.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../09/28/131336.html"><span class="lc-body"><span class="lc-title">備忘録：「DB Browser for SQLite（DB4S）」インストール。ID・パスワード管理用データベース＆テーブル作成。</span><span class="lc-desc">WebサイトなどのID・パスワード管理を、「MyHome Portal」の「ID管理」で行ってきた。 https://ok2nd.github.io/myportal/ 「MyHome Portal」の「ID管理」は、自…</span><span class="lc-site">晴歩雨描 · <time>2026-09-28</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260928/20260928124726.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../09/28/152052.html"><span class="lc-body"><span class="lc-title">備忘録：Python）CSVデータをSQLiteデータベースにインポート。一部データは暗号化して保管。ID・パスワード管理。</span><span class="lc-desc">上記（↑）の続き。 「MyHome Portal」の「ID管理」を、Python＋SQLiteの環境に移行するための作業。 「MyHome Portal」の「ID管理」データベース・データをCSVにエキスポートしたものを…</span><span class="lc-site">晴歩雨描 · <time>2026-09-28</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260928/20260928152235.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../01/06/221223.html"><span class="lc-body"><span class="lc-title">NuitkaでPythonをexe化する。PyInstallerよりお勧め。</span><span class="lc-desc">PythonをPythonがインストールされていない環境でも実行可能にする方法がいくつかある。大きく分けて2つの方法がある。 １．ツールを使ってexe化する。 ツール おすすめ度 メリット デメリット Nuitka ★★…</span><span class="lc-site">晴歩雨描 · <time>2026-01-06</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260106/20260106221126.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../06/06/124727.html"><span class="lc-body"><span class="lc-title">Windows）Python）シンプルな電卓（数式・四則演算エディタ）アプリ作成。Nuitkaでexe化。ICOアイコン付きで。</span><span class="lc-desc">Pythonで、Windows用のシンプルな電卓アプリを作成。 よくある電卓アプリのような数字や＋－＊／のボタンはない。 四則演算しかできない。 ()は使える。 単に数式を入力してEnterキーで計算するだけ。 一度計算…</span><span class="lc-site">晴歩雨描 · <time>2026-06-06</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260606/20260606144813.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../21/210055.html"><span class="lc-body"><span class="lc-title">備忘録：「ID・パスワード管理」「住所録管理」「預貯金管理」都度データ移行。</span><span class="lc-desc">Python＋SQLiteで、3つのアプリを作成した。 「 ID・パスワード管理 」「 住所録管理＋はがき宛名書きPDF作成 」「 預貯金管理 」。 これらは、元々PHP＋MySQLで自作＆運用していた「MyHome P…</span><span class="lc-site">晴歩雨描 · <time>2026-10-21</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20261021/20261021210141.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="https://ok2nd.github.io/myportal/" target="_blank" rel="noopener noreferrer"><span class="lc-body"><span class="lc-title">MyHome Portal</span><span class="lc-desc">個人または家族で使える自宅用のWebポータルシステム「MyHome Portal」をオープンソース/フリーソフトとして公開しています。</span><span class="lc-site">ok2nd.github.io</span></span></a></p></div></article>
+</body>
+</html>

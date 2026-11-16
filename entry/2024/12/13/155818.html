@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PCストレージ(SSD)容量圧縮検証。JPEG写真画像の解像度を落としたら、どの程度ファイルサイズを圧縮できるか。 - 晴歩雨描</title>
+<link rel="stylesheet" href="../../../../style.css">
+</head>
+<body>
+<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>PCストレージ(SSD)容量圧縮検証。JPEG写真画像の解像度を落としたら、どの程度ファイルサイズを圧縮できるか。</h1><p class="meta">2024-12-13 · <a href="../../../../category/c8.html">コンピュータ</a> <a href="../../../../category/c18.html">写真・カメラ</a></p><div class="entry-body"><p>PCのメイン・ストレージに4TBのSSDを使用している。ストレージの空き容量が減ってきているので、8TBのSSDを購入したいが、現時点では製品の選択肢が少ない。</p>
+<p><a class="link-card" href="../../11/02/172836.html"><span class="lc-body"><span class="lc-title">外付け＜4TB＞SSDの価格上がっている。（2024.11時点）。PCストレージ空き容量が減ってきた。</span><span class="lc-desc">以前に、外付け＜4TB＞SSDを2台購入した。 Crucial X6 外付け ポータブル SSD 4TB：CT4000X6SSD9 （読込速度最大800MB/秒）：43,980円 WD ポータブルSSD 4TB：WDBA…</span><span class="lc-site">晴歩雨描 · <time>2024-11-02</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20241102/20241102172545.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../07/25/091254.html"><span class="lc-body"><span class="lc-title">外付けSSD 8TB 比較。（2024.7時点）（2025.1追加）</span><span class="lc-desc">現在、4TB SSD 2台と2TB SSD 2台で運用している。まだ、空き容量に余裕があるが、2、3年後には8TB SSDが必要になるかもしれない。 現時点の8TB SSD を調べてみた。 Amazonサクラチェッカーで…</span><span class="lc-site">晴歩雨描 · <time>2024-07-25</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20240725/20240725091359.jpg" alt="" loading="lazy"></span></a></p>
+<p><em>写真画像JPEGデータがストレージの容量の大半を占めている。JPEGは既に圧縮されたファイルなので、ファイル圧縮ツールを使っても更なる圧縮は難しい。</em></p>
+<p>現在主に使用しているカメラとスマホの写真の解像度は以下。</p>
+<ul>
+<li>Canon R10/R50：6000×4000（有効画素：2420万画素）</li>
+<li>SONY ZV-1 II：5472×3648（有効画素：2010万画素）</li>
+<li>Xperia 1 III：4032×2688（有効画素：1220万画素）</li>
+</ul>
+<p>これらの解像度を落としたら、容量を減らせる。4K動画の解像度3840×2160ピクセル程度に画像サイズを圧縮したら、どうなるかを検証してみた。</p>
+<p>以前に、JPEGの圧縮率（品質レベル）の検証をしたことがある。</p>
+<p><a class="link-card" href="../../../2021/04/13/155625.html"><span class="lc-body"><span class="lc-title">JPEG圧縮率（品質レベル）の比較テストをしてみた。85が最適（？）</span><span class="lc-desc">JEPGは非可逆圧縮の画像フォーマット。画質を落としてファイルサイズを小さくできる。 JPEG作成時に、圧縮率「品質レベル」（一般的な表現ではないかもしれない。英語では単に「quality」と表現しているようだ。）を指定…</span><span class="lc-site">晴歩雨描 · <time>2021-04-13</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20210414/20210414085425.jpg" alt="" loading="lazy"></span></a></p>
+<p>JPEG圧縮率（品質レベル）は、一般的に85%が適当と言われていて、その通りの結果だった。</p>
+<p><em>検証として、現在主に使用しているカメラとスマホの写真画像データの大きめのものと小さめのものを、Windowsアプリ「縮小革命」で、3840×2560に圧縮。品質レベルを85%、90%、95%でテストしてみた。</em></p>
+<p><strong>【3840×2560（有効画素9MB）に圧縮】</strong></p>
+<div style="overflow-x: auto;">
+<table class="font-small">
+<tbody>
+<tr>
+<th rowspan="2">カメラ機種</th>
+<th rowspan="2">画素数</th>
+<th rowspan="2">有効<br />画素<br />(MB)</th>
+<th rowspan="2">元<br />ファイル<br />容量<br />(KB)</th>
+<th colspan="2">JPEG<br />品質レベル<br />85%</th>
+<th colspan="2">JPEG<br />品質レベル<br />90%</th>
+<th colspan="2">JPEG<br />品質レベル<br />95%</th>
+</tr>
+<tr>
+<td>ファイル<br />容量</td>
+<td>圧縮<br />率</td>
+<td>ファイル<br />容量</td>
+<td>圧縮<br />率</td>
+<td>ファイル<br />容量</td>
+<td>圧縮<br />率</td>
+</tr>
+<tr>
+<th rowspan="2">Canon R10</th>
+<td rowspan="2">6000<br />×4000</td>
+<td rowspan="2">24MB</td>
+<td>12,874</td>
+<td>1,977</td>
+<td>15</td>
+<td>2,452</td>
+<td>19</td>
+<td>3,510</td>
+<td>27</td>
+</tr>
+<tr>
+<td>6,595</td>
+<td>805</td>
+<td>12</td>
+<td>1,067</td>
+<td>16</td>
+<td>1,660</td>
+<td>25</td>
+</tr>
+<tr>
+<th rowspan="2">SONY ZV-1 II</th>
+<td rowspan="2">5472<br />×3648</td>
+<td rowspan="2">20MB</td>
+<td>10,767</td>
+<td>3,104</td>
+<td>29</td>
+<td>3,772</td>
+<td>35</td>
+<td>5,173</td>
+<td>48</td>
+</tr>
+<tr>
+<td>4,731</td>
+<td>725</td>
+<td>15</td>
+<td>984</td>
+<td>21</td>
+<td>1,559</td>
+<td>33</td>
+</tr>
+<tr>
+<th rowspan="2">Xperia 1 III</th>
+<td rowspan="2">4032<br />×2688</td>
+<td rowspan="2">12MB</td>
+<td>5,943</td>
+<td>3,426</td>
+<td>58</td>
+<td>4,098</td>
+<td>69</td>
+<td>5,479</td>
+<td>92</td>
+</tr>
+<tr>
+<td>2,325</td>
+<td>1,206</td>
+<td>52</td>
+<td>1,482</td>
+<td>64</td>
+<td>2,077</td>
+<td>89</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><em>「Xperia 1 III」では、品質レベル85%でも半分程度にしかファイルサイズが小さくならなかったが、「Canon R10」「SONY ZV-1 II」では、品質レベル85%では、ファイルサイズが5分の1程度に圧縮できた。</em></p>
+<p>ただ、オリジナルの解像度の画質は失われてしまうし、時間もかかる作業で、現実問題として実施するのは躊躇する。</p>
+<p><a class="link-card" href="../../../2018/11/06/154738.html"><span class="lc-body"><span class="lc-title">デジカメ：センサーサイズが大きければ、画質は上がるのか？</span><span class="lc-desc">先日、DSC-RX100M6を購入して、レビューを書いた。 DSC-RX100M6のセンサーサイズは1型。普及型コンデジのセンサーサイズは1/2.3型が大半。1型は面積比で1/2.3型の約4倍。 センサーサイズが大きくな…</span><span class="lc-site">晴歩雨描 · <time>2018-11-06</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20181106/20181106153158.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../10/06/204058.html"><span class="lc-body"><span class="lc-title">写真解像度を上げる（アップスケーリング、高画質化）無料Webツールアプリ「AI Ease」（AI画像高画質化）。</span><span class="lc-desc">先程、無料画像編集Webツールアプリ「 AI Ease 」の「 オブジェクト除去 」や「 高画質化（ノイズ除去＋シャープネスなど） 」を試した。 今回、「AI Ease」のAI画像拡大ツールつまりアップスケーリング（高画…</span><span class="lc-site">晴歩雨描 · <time>2024-10-06</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20241006/20241006202332.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../08/20/124709.html"><span class="lc-body"><span class="lc-title">写真解像度を上げる（アップスケーリング、高画質化）無料Webツール「AnyRec AI」比較。「Adobe スーパー解像度」「Aiarty Image Enhancer」「Upscayl」と。</span><span class="lc-desc">写真解像度を上げる（アップスケーリング）ツールを色々試している。 今回、Webツール「 AnyRec AI 」を試してみた。会員登録なしで無料で使える。 「 Adobe スーパー解像度 」「 Aiarty Image E…</span><span class="lc-site">晴歩雨描 · <time>2024-08-20</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20240820/20240820135752.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../08/13/141824.html"><span class="lc-body"><span class="lc-title">写真解像度を上げる（アップスケーリング、高画質化）Windowsアプリ「Aiarty Image Enhancer」で、古いフイルム写真をスキャンした画像の解像度を上げてみた。</span><span class="lc-desc">先程、写真解像度を上げる（アップスケーリング、高画質化）Windowsアプリ「 Aiarty Image Enhancer 」を試してみた。 今回、昔フイルムカメラで撮ってアルバムに貼ってある写真を家庭用スキャナでスキャ…</span><span class="lc-site">晴歩雨描 · <time>2024-08-13</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20240813/20240813141445.jpg" alt="" loading="lazy"></span></a></p></div></article>
+</body>
+</html>

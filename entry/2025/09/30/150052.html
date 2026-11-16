@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>カリグラフィー・フォント（カッパープレート体）。Web（HTML、CSS）での利用。Windowsでの利用。 - 晴歩雨描</title>
+<link rel="stylesheet" href="../../../../style.css">
+</head>
+<body>
+<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>カリグラフィー・フォント（カッパープレート体）。Web（HTML、CSS）での利用。Windowsでの利用。</h1><p class="meta">2025-09-30 · <a href="../../../../category/c13.html">ホームページ、Web作成</a> <a href="../../../../category/c5.html">アート・美術</a> <a href="../../../../category/c8.html">コンピュータ</a></p><div class="entry-body"><p><em>カリグラフィー</em>っぽい（？）<em>カッパープレート体</em>の無料フォントを探したが、自分がイメージしているようなフォントはなかなか見つからない。</p>
+<p>とりあえず、見つけたもの。</p>
+<p><strong>≪ フリーフォント - カリグラフィー ≫</strong></p>
+<p><a class="link-card" href="https://fontmeme.com/jfont/calligraphy-fonts/" target="_blank" rel="noopener noreferrer"><span class="lc-body"><span class="lc-title">フリーフォント - カリグラフィー</span><span class="lc-desc"></span><span class="lc-site">fontmeme.com</span></span></a></p>
+<ul>
+<li><em>Hillside Calligraphy</em></li>
+<li><em>Ballistic Script</em></li>
+<li><em>Blacglona</em></li>
+<li><em>Blacglona (Italic)</em></li>
+</ul>
+<p><strong>≪ Google Fonts ≫</strong></p>
+<p><a class="link-card" href="https://fonts.google.com/" target="_blank" rel="noopener noreferrer"><span class="lc-body"><span class="lc-title">Browse Fonts - Google Fonts</span><span class="lc-desc">Making the web more beautiful, fast, and open through great typography</span><span class="lc-site">Google Fonts</span></span><span class="lc-thumb"><img src="https://www.gstatic.com/images/icons/material/apps/fonts/1x/catalog/v5/opengraph_color.png" alt="" loading="lazy"></span></a></p>
+<ul>
+<li><em>Luxurious Script</em></li>
+</ul>
+<p><strong>≪ FontSpace ≫</strong></p>
+<p><a class="link-card" href="https://www.fontspace.com/" target="_blank" rel="noopener noreferrer"><span class="lc-body"><span class="lc-title">170,000 Free Fonts - Download Now</span><span class="lc-desc">Discover 170,000+ free fonts at FontSpace! Designer-approved downloads with verified licenses. From cursive to…</span><span class="lc-site">fontspace</span></span><span class="lc-thumb"><img src="https://images.fontspace.com/static/fontspace-all-new-1500x1500.jpg" alt="" loading="lazy"></span></a></p>
+<ul>
+<li><em>Burique Italic</em></li>
+</ul>
+<p>見つけたものを、<em>HTML（＋CSS）</em>と<em>（Windows）PowerPoint</em>で一覧にしてみた。</p>
+<h4 id="-HTMLCSSでの使用">■ HTML、CSSでの使用</h4>
+<p>フォントファイルは、拡張子が<em>OTF</em>か<em>TTF</em>。そのままでもHTML、CSSで利用できるが、<em>WOFF2</em>の方がWeb用に最適化された形式で、軽量でブラウザ互換性が高い。</p>
+<p>以下のサンプルでは、WOFF2に変換したものを利用している。</p>
+<p><strong>≪ 使用例：Ballistic Script.woff2 ≫</strong></p>
+<pre>@font-face {
+	font-family: "Ballistic";
+	src: url("fonts/Ballistic Script.woff2") format("woff2");
+}
+.Ballistic {
+	font-family: "Ballistic", sans-serif;
+}
+&lt;div&gt;
+	&lt;p class="Ballistic"&gt;Happy Birthday  /  Merry Christmas&lt;p&gt;
+&lt;/div&gt;
+</pre>
+<p><strong>≪ カリグラフィー・フォント サンプル ≫</strong></p>
+<p>⇒　<a href="https://ok2nd.github.io/tool/calligraphy/fonts.html" target="_blank">https://ok2nd.github.io/tool/calligraphy/fonts.html</a></p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250930/20250930141855.jpg" width="615" height="787" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<h4 id="-Windowsでの使用">■ Windowsでの使用</h4>
+<p>TTFまたはOTFファイルを、「<em>C:\Windows\Fonts</em>」フォルダにドラッグ&amp;ドロップで入れることでWindows環境で使えるようになる。</p>
+<p>以下は、Windowsにインストールして、PowerPointで作成した文書をJPEG化したもの。</p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250930/20250930141908.jpg" width="1004" height="1200" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p><em>※ OTFフォント、TTFフォントをWOFF2フォントに変換するWindowsアプリ作成（↓）。</em></p>
+<p><a class="link-card" href="153107.html"><span class="lc-body"><span class="lc-title">ChatGPT）Python）OTFフォント、TTFフォントをWOFF2フォントに変換するWindowsアプリ作成。</span><span class="lc-desc">フォントファイルは、拡張子が OTF か TTF 。 そのままでもHTML、CSSで利用できるが、 WOFF2 の方がWeb用に最適化された形式で、軽量でブラウザ互換性が高い。 OTFフォント、TTFフォントをWOFF2…</span><span class="lc-site">晴歩雨描 · <time>2025-09-30</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250930/20250930152233.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../08/10/143530.html"><span class="lc-body"><span class="lc-title">AI清少納言の未発表随筆を、毛筆フォント「英椎行書」で縦書きで書いて、和紙テクスチャーと合成してPDFに。</span><span class="lc-desc">昨日、生成AIのChatGPT「 GPT-5 」を使って、 AI「清少納言」 に、未発表の随筆「未聞の草子：あはれをかしの記」を発表してもらった。 ■ ステップ１：毛筆フォント「英椎行書」にする この文章を入れた縦書きH…</span><span class="lc-site">晴歩雨描 · <time>2025-08-10</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250810/20250810140543.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2023/07/01/131315.html"><span class="lc-body"><span class="lc-title">CSS）&lt;pre&gt;で等幅フォントを使う。</span><span class="lc-desc">はてなブログ の&lt;pre&gt; で 等幅フォント を使う方法の備忘録。 以下のスタイルを追加。 &lt;style&gt; pre { font-family: Consolas , &#x27;Courier New&#x27;, Courier, Mo…</span><span class="lc-site">晴歩雨描 · <time>2023-07-01</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20230701/20230701131301.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2023/03/17/222011.html"><span class="lc-body"><span class="lc-title">備忘録（Windows）PowerPoint のデフォルトフォントを変更。スライドマスター、テンプレート、デスクトップ新規作成文書にも反映。</span><span class="lc-desc">PowerPoint は、フォントの変更が思い通りにできない事が多い。 PowerPoint のデフォルトフォントを変更してみた。 【表示】を選択。 【スライドマスター】を選択。 【フォント】を選択。 フォントメニューを…</span><span class="lc-site">晴歩雨描 · <time>2023-03-17</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20230317/20230317221258.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2021/12/04/173912.html"><span class="lc-body"><span class="lc-title">はてなブログで、Webフォント（Google Fonts）を使う。</span><span class="lc-desc">先日購入した スマホ 「 Xperia 1 III 」では、ブラウザ Chrome でいくつかのホームページのフォントが、パソコンや他の スマホ と違ってしまう。「 Xperia 1 III」では、英文が固定ピッチのフォ…</span><span class="lc-site">晴歩雨描 · <time>2021-12-04</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20211204/20211204173747.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2021/08/30/153943.html"><span class="lc-body"><span class="lc-title">Google Fontsの使えそうな日本語フォントをピックアップ。</span><span class="lc-desc">Google Fontsに日本語フォントがたくさん追加されたようなので、確認した。 「祇園精舍の鐘の声、諸行無常の響きあり。娑羅双樹の花の色、盛者必衰の理をあらはす。」で確認。 → 祇園精舍の鐘の声、諸行無常の響きあり。…</span><span class="lc-site">晴歩雨描 · <time>2021-08-30</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20210830/20210830154128.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2021/07/14/182154.html"><span class="lc-body"><span class="lc-title">HTMLとCSSで点線リーダー：目次や索引で項目名とページの間を点線で結ぶ。（Googleフォント）</span><span class="lc-desc">目次や索引で、項目名とページの間を点線で結ぶ（タブリ－ダー）のをHTMLと CSS で実現する方法の備忘録。 ≪完成イメージ≫ ≪参考にさせてもらったページ≫ 他の方法を公開しているページ。 【関連：Wordで点線リーダ…</span><span class="lc-site">晴歩雨描 · <time>2021-07-14</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20210714/20210714180559.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2020/08/21/153625.html"><span class="lc-body"><span class="lc-title">はてなブログで使えるアイコンWebフォント</span><span class="lc-desc">はてなブログ の本文文章の中で、アイコンを使いたい時がある。例えば、 スマホ などで設定画面を開くためのアイコン［ ］。 はてなブログ で標準で使えるアイコンWebフォントが用意されている。 使い方は、HTML編集画面で…</span><span class="lc-site">晴歩雨描 · <time>2020-08-21</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20200821/20200821152444.jpg" alt="" loading="lazy"></span></a></p></div></article>
+</body>
+</html>

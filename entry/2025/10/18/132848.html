@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Claude）Python）「写真スポット編集ツール」Windowsアプリ作成。シミ消し、オブジェクト除去に使える。スポット修正＋コピー修正。ICCプロファイル維持。 - 晴歩雨描</title>
+<link rel="stylesheet" href="../../../../style.css">
+</head>
+<body>
+<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>Claude）Python）「写真スポット編集ツール」Windowsアプリ作成。シミ消し、オブジェクト除去に使える。スポット修正＋コピー修正。ICCプロファイル維持。</h1><p class="meta">2025-10-18 · <a href="../../../../category/c18.html">写真・カメラ</a> <a href="../../../../category/c8.html">コンピュータ</a> <a href="../../../../category/c42.html">＜AI＞</a></p><div class="entry-body"><p>以前に、「写真オブジェクト除去」Windowsアプリを作成した。</p>
+<p><a class="link-card" href="../../04/20/093458.html"><span class="lc-body"><span class="lc-title">Claude）Python）「写真オブジェクト除去」Windowsアプリ作成。シミ消しにも使える。</span><span class="lc-desc">2日前、 JavaScript で「 写真スポッティング編集ツール 」を作成した。 今回、 Python で「 写真オブジェクト除去アプリ 」を作成。AIツールClaudeに作成してもらった。 写真の中のちょっとした不要…</span><span class="lc-site">晴歩雨描 · <time>2025-04-20</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250420/20250420091047.jpg" alt="" loading="lazy"></span></a></p>
+<p>これは、写真の一部をスポット的に編集するアプリ。</p>
+<p>これに加えて、クローンコピー修正もできるようにしたバージョンをPythonで作成。</p>
+<h5 id="-スポット修正">■ スポット修正</h5>
+<p>写真の不要な部分（ゴミ、シミなど）を自動的に消す機能。</p>
+<ul>
+<li>左クリックした場所の周辺の画像を使って修復。</li>
+<li>AIが自然な感じに仕上げてくれる。</li>
+<li>小さな汚れや不要物を消すのに最適。</li>
+</ul>
+<h5 id="-コピー修正クローンコピー">■ コピー修正（クローンコピー）</h5>
+<p>写真の一部を別の場所にコピー＆貼り付けする機能。</p>
+<ul>
+<li>右クリック：コピーしたい部分を取得。</li>
+<li>左クリック：別の場所に貼り付け。</li>
+<li>周辺となじむように自動調整される。</li>
+<li>同じ模様を増やしたり、特定の部分で隠したい時に便利。</li>
+</ul>
+<h5 id="-使い方">■ 使い方</h5>
+<ul>
+<li>【画像の読み込み】<br />・画像ファイルをウィンドウにドラッグ&amp;ドロップ</li>
+<li>【スポット修正モード】<br />・不要な物を自動的に周りと馴染ませて消す<br />・左クリック：その場所を自動修正</li>
+<li>【コピー修正モード】<br />・別の場所の画像をコピーして貼り付ける<br />・右クリック：コピー元を取得<br />・左クリック：取得した画像を貼り付け</li>
+<li>【修正サイズ】<br />・スライダーで修正する範囲の大きさを調整<br />・1～100ピクセルの間で設定可能</li>
+<li>【表示モード】<br />・ウィンドウに合わせる：画面内に収まるように表示<br />・実寸表示：元の画像サイズで表示<br />  （実寸表示時はスクロールバーで移動可能）</li>
+<li>【操作の取り消し】<br />・一つ戻す：最後の操作を取り消す<br />・すべて戻す：元の画像に戻す</li>
+<li>【保存】<br />・編集した画像を保存<br />・元の画像と同じ場所に「ファイル名_編集」で保存</li>
+</ul>
+<p>※ 下の画面イメージで使用している画像は、AIで生成したもの。</p>
+<h5 id="-スポット修正画面イメージ">■ スポット修正画面イメージ</h5>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20251018/20251018131038.png" width="1096" height="644" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20251018/20251018131043.png" width="1096" height="644" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<h5 id="-コピー修正画面イメージ">■ コピー修正画面イメージ</h5>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20251018/20251018131046.png" width="1096" height="644" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>※ 牛をたくさん並べた。</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20251018/20251018131051.png" width="1096" height="644" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<h5 id="Pythonライブラリインストール">【Pythonライブラリインストール】</h5>
+<p>次のライブラリが必要なので、インストールする。</p>
+<pre>pip install tkinterdnd2 pillow opencv-python numpy
+</pre>
+<h5 id="Pythonプログラムコード">【Pythonプログラムコード】</h5>
+<p><span style="color: #dd830c;">※ 【後日追記】</span><span style="color: #dd830c;">最初のバージョンでは、元の写真に埋め込まれたICCプロファイル（sRGB、Adobe RGB、Display P3など）が保存されていなかった。そのために、鮮やかさなどの色合いが失われていた。この点を修正した。</span></p>
+<pre>import tkinter as tk
+from tkinter import filedialog, messagebox
+from tkinterdnd2 import DND_FILES, TkinterDnD
+from PIL import Image, ImageTk, ImageDraw, ImageFont
+import cv2
+import numpy as np
+import os
+
+class PhotoSpotEditor:
+    def __init__(self, root):
+        self.root = root
+        self.root.title("写真スポット編集ツール")
+        self.root.geometry("1200x800")
+        
+        # 変数の初期化
+        self.original_image = None
+        self.display_image = None
+        self.current_image = None
+        self.tk_image = None
+        self.image_path = None
+        self.history = []
+        self.clone_source = None
+        self.clone_display = None
+        self.icc_profile = None
+        
+        # 設定
+        self.mode = tk.StringVar(value="spot")
+        self.spot_size = tk.IntVar(value=30)
+        self.fit_to_window = tk.BooleanVar(value=True)
+        self.canvas_x = 0
+        self.canvas_y = 0
+        self.display_scale = 1.0
+        
+        # スポットサイズ変更時にコピー元画像表示を更新
+        self.spot_size.trace('w', lambda *args: self.update_clone_display())
+        
+        self.setup_ui()
+        
+    def setup_ui(self):
+        main_frame = tk.Frame(self.root)
+        main_frame.pack(fill=tk.BOTH, expand=True)
+        
+        # 左側コントロールパネル
+        control_frame = tk.Frame(main_frame, width=250, bg="#f0f0f0")
+        control_frame.pack(side=tk.LEFT, fill=tk.Y, padx=5, pady=5)
+        control_frame.pack_propagate(False)
+        
+        # タイトル
+        title_label = tk.Label(control_frame, text="写真スポット編集", 
+                              font=("Arial", 14, "bold"), bg="#f0f0f0")
+        title_label.pack(pady=10)
+        
+        # モード選択
+        mode_frame = tk.LabelFrame(control_frame, text="修正モード", bg="#f0f0f0")
+        mode_frame.pack(fill=tk.X, padx=10, pady=5)
+        
+        tk.Radiobutton(mode_frame, text="スポット修正", variable=self.mode, 
+                      value="spot", bg="#f0f0f0").pack(anchor=tk.W, padx=5)
+        tk.Radiobutton(mode_frame, text="コピー修正", variable=self.mode, 
+                      value="clone", bg="#f0f0f0").pack(anchor=tk.W, padx=5)
+        
+        # スポットサイズ
+        size_frame = tk.LabelFrame(control_frame, text="修正サイズ", bg="#f0f0f0")
+        size_frame.pack(fill=tk.X, padx=10, pady=5)
+        
+        size_label = tk.Label(size_frame, text="サイズ: 30 px", bg="#f0f0f0")
+        size_label.pack()
+        
+        size_slider = tk.Scale(size_frame, from_=1, to=100, orient=tk.HORIZONTAL,
+                              variable=self.spot_size, bg="#f0f0f0",
+                              command=lambda v: size_label.config(text=f"サイズ: {v} px"))
+        size_slider.pack(fill=tk.X, padx=5)
+        
+        # コピー元画像表示（円形専用）
+        clone_frame = tk.LabelFrame(control_frame, text="コピー元画像", bg="#f0f0f0")
+        clone_frame.pack(fill=tk.X, padx=10, pady=5)
+        
+        # Canvasで円形表示を実装
+        self.clone_canvas = tk.Canvas(clone_frame, width=140, height=140, 
+                                     bg="white", relief=tk.SUNKEN, bd=2)
+        self.clone_canvas.pack(padx=5, pady=5)
+        self.clone_canvas.create_text(70, 70, text="右クリックで取得", 
+                                     fill="gray", tags="placeholder")
+        
+        # 表示モード
+        display_frame = tk.LabelFrame(control_frame, text="表示モード", bg="#f0f0f0")
+        display_frame.pack(fill=tk.X, padx=10, pady=5)
+        
+        tk.Radiobutton(display_frame, text="ウィンドウに合わせる", 
+                      variable=self.fit_to_window, value=True, 
+                      bg="#f0f0f0", command=self.update_display).pack(anchor=tk.W, padx=5)
+        tk.Radiobutton(display_frame, text="実寸表示", 
+                      variable=self.fit_to_window, value=False, 
+                      bg="#f0f0f0", command=self.update_display).pack(anchor=tk.W, padx=5)
+        
+        # 操作ボタン
+        button_frame = tk.Frame(control_frame, bg="#f0f0f0")
+        button_frame.pack(fill=tk.X, padx=10, pady=10)
+        
+        tk.Button(button_frame, text="一つ戻す", command=self.undo,
+                 bg="#4CAF50", fg="white", width=20).pack(pady=2)
+        tk.Button(button_frame, text="すべて戻す", command=self.reset_all,
+                 bg="#FF9800", fg="white", width=20).pack(pady=2)
+        tk.Button(button_frame, text="保存", command=self.save_image,
+                 bg="#2196F3", fg="white", width=20).pack(pady=2)
+        
+        # 使用方法ボタン
+        help_btn = tk.Button(control_frame, text="使い方", command=self.show_help,
+                            bg="#9E9E9E", fg="white")
+        help_btn.pack(side=tk.BOTTOM, pady=10)
+        
+        # 右側キャンバスエリア
+        canvas_frame = tk.Frame(main_frame)
+        canvas_frame.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=5, pady=5)
+        
+        # スクロールバー
+        self.h_scrollbar = tk.Scrollbar(canvas_frame, orient=tk.HORIZONTAL)
+        self.v_scrollbar = tk.Scrollbar(canvas_frame, orient=tk.VERTICAL)
+        
+        # キャンバス
+        self.canvas = tk.Canvas(canvas_frame, bg="#e0e0e0", cursor="none",
+                               xscrollcommand=self.h_scrollbar.set,
+                               yscrollcommand=self.v_scrollbar.set)
+        
+        self.h_scrollbar.config(command=self.canvas.xview)
+        self.v_scrollbar.config(command=self.canvas.yview)
+        
+        # グリッド配置
+        self.canvas.grid(row=0, column=0, sticky='nsew')
+        canvas_frame.grid_rowconfigure(0, weight=1)
+        canvas_frame.grid_columnconfigure(0, weight=1)
+        
+        # ドラッグ&amp;ドロップ設定
+        self.canvas.drop_target_register(DND_FILES)
+        self.canvas.dnd_bind('&lt;&lt;Drop&gt;&gt;', self.on_drop)
+        
+        # マウスイベント
+        self.canvas.bind("&lt;Motion&gt;", self.on_mouse_move)
+        self.canvas.bind("&lt;Button-1&gt;", self.on_left_click)
+        self.canvas.bind("&lt;Button-3&gt;", self.on_right_click)
+        self.canvas.bind("&lt;Leave&gt;", self.on_mouse_leave)
+        self.canvas.bind("&lt;Configure&gt;", self.on_canvas_resize)
+        
+        # 初期メッセージ
+        self.canvas.create_text(400, 300, text="画像をここにドラッグ&amp;ドロップ", 
+                               font=("Arial", 16), fill="gray", tags="placeholder")
+    
+    def on_canvas_resize(self, event):
+        if self.current_image is not None and self.fit_to_window.get():
+            self.update_display()
+    
+    def on_drop(self, event):
+        file_path = event.data.strip('{}')
+        if file_path.lower().endswith(('.png', '.jpg', '.jpeg', '.bmp', '.tiff')):
+            self.load_image(file_path)
+    
+    def load_image(self, path):
+        try:
+            self.image_path = path
+            pil_img = Image.open(path)
+            
+            # ICCプロファイルを保持（色合い保持のため）
+            self.icc_profile = pil_img.info.get('icc_profile', None)
+            
+            if pil_img.mode != 'RGB':
+                pil_img = pil_img.convert('RGB')
+            self.original_image = np.array(pil_img)
+            self.current_image = self.original_image.copy()
+            self.history = [self.current_image.copy()]
+            self.clone_source = None
+            self.update_clone_display()
+            self.update_display()
+            self.canvas.delete("placeholder")
+        except Exception as e:
+            messagebox.showerror("エラー", f"画像の読み込みに失敗しました:\n{str(e)}")
+    
+    def update_display(self):
+        if self.current_image is None:
+            return
+        
+        canvas_width = self.canvas.winfo_width()
+        canvas_height = self.canvas.winfo_height()
+        
+        if canvas_width &lt;= 1 or canvas_height &lt;= 1:
+            self.root.after(100, self.update_display)
+            return
+        
+        img_height, img_width = self.current_image.shape[:2]
+        
+        if self.fit_to_window.get():
+            # ウィンドウに合わせる
+            scale_w = canvas_width / img_width
+            scale_h = canvas_height / img_height
+            self.display_scale = min(scale_w, scale_h, 1.0)
+            
+            # スクロールバーを非表示
+            self.h_scrollbar.grid_forget()
+            self.v_scrollbar.grid_forget()
+            
+            # 中央配置
+            new_width = int(img_width * self.display_scale)
+            new_height = int(img_height * self.display_scale)
+            self.canvas_x = (canvas_width - new_width) // 2
+            self.canvas_y = (canvas_height - new_height) // 2
+        else:
+            # 実寸表示
+            self.display_scale = 1.0
+            
+            # スクロールバーを表示
+            self.h_scrollbar.grid(row=1, column=0, sticky='ew')
+            self.v_scrollbar.grid(row=0, column=1, sticky='ns')
+            
+            # 左上配置
+            self.canvas_x = 0
+            self.canvas_y = 0
+        
+        new_width = int(img_width * self.display_scale)
+        new_height = int(img_height * self.display_scale)
+        
+        self.display_image = cv2.resize(self.current_image, (new_width, new_height), 
+                                       interpolation=cv2.INTER_AREA)
+        
+        # PIL画像に変換
+        pil_image = Image.fromarray(self.display_image)
+        self.tk_image = ImageTk.PhotoImage(pil_image)
+        
+        self.canvas.delete("all")
+        self.canvas.create_image(self.canvas_x, self.canvas_y, 
+                                anchor=tk.NW, image=self.tk_image, tags="image")
+        
+        # スクロール領域の設定
+        if not self.fit_to_window.get():
+            self.canvas.config(scrollregion=(0, 0, new_width, new_height))
+        else:
+            self.canvas.config(scrollregion=(0, 0, canvas_width, canvas_height))
+    
+    def get_image_coords(self, event_x, event_y):
+        """イベント座標を画像座標に変換（スクロール対応）"""
+        if self.fit_to_window.get():
+            # ウィンドウに合わせるモード
+            x = int((event_x - self.canvas_x) / self.display_scale)
+            y = int((event_y - self.canvas_y) / self.display_scale)
+        else:
+            # 実寸表示モード（スクロール考慮）
+            canvas_x = self.canvas.canvasx(event_x)
+            canvas_y = self.canvas.canvasy(event_y)
+            x = int((canvas_x - self.canvas_x) / self.display_scale)
+            y = int((canvas_y - self.canvas_y) / self.display_scale)
+        return x, y
+    
+    def on_mouse_move(self, event):
+        if self.display_image is None:
+            return
+        
+        # スクロールを考慮した座標取得
+        if self.fit_to_window.get():
+            canvas_x = event.x
+            canvas_y = event.y
+        else:
+            canvas_x = self.canvas.canvasx(event.x)
+            canvas_y = self.canvas.canvasy(event.y)
+        
+        x = int((canvas_x - self.canvas_x) / self.display_scale)
+        y = int((canvas_y - self.canvas_y) / self.display_scale)
+        
+        if 0 &lt;= x &lt; self.current_image.shape[1] and 0 &lt;= y &lt; self.current_image.shape[0]:
+            self.canvas.delete("cursor")
+            radius = int(self.spot_size.get() * self.display_scale / 2)
+            # スクロール位置を考慮した表示座標
+            display_x = self.canvas_x + x * self.display_scale
+            display_y = self.canvas_y + y * self.display_scale
+            self.canvas.create_oval(display_x - radius, display_y - radius,
+                                   display_x + radius, display_y + radius,
+                                   outline="red", width=2, tags="cursor")
+    
+    def on_mouse_leave(self, event):
+        self.canvas.delete("cursor")
+    
+    def on_left_click(self, event):
+        if self.current_image is None:
+            return
+        
+        x, y = self.get_image_coords(event.x, event.y)
+        
+        if self.mode.get() == "spot":
+            self.apply_spot_healing(x, y)
+        else:
+            self.apply_clone_stamp(x, y)
+    
+    def on_right_click(self, event):
+        if self.current_image is None or self.mode.get() != "clone":
+            return
+        
+        x, y = self.get_image_coords(event.x, event.y)
+        
+        radius = self.spot_size.get() // 2
+        h, w = self.current_image.shape[:2]
+        
+        if x - radius &lt; 0 or y - radius &lt; 0 or x + radius &gt;= w or y + radius &gt;= h:
+            messagebox.showwarning("警告", "画像の端に近すぎます")
+            return
+        
+        y1, y2 = y - radius, y + radius
+        x1, x2 = x - radius, x + radius
+        self.clone_source = self.current_image[y1:y2, x1:x2].copy()
+        
+        self.update_clone_display()
+    
+    def update_clone_display(self):
+        """Canvasに円形でクローン元を描画"""
+        self.clone_canvas.delete("all")
+        
+        if self.clone_source is not None:
+            size = self.spot_size.get()
+            
+            # 表示サイズの計算
+            max_display = 120
+            if size &gt; max_display:
+                display_size = max_display
+            else:
+                display_size = size
+            
+            # クローン元画像をPILに変換
+            clone_pil = Image.fromarray(self.clone_source)
+            if clone_pil.size != (display_size, display_size):
+                clone_pil = clone_pil.resize((display_size, display_size), Image.LANCZOS)
+            
+            # 円形マスクを作成
+            mask = Image.new('L', (display_size, display_size), 0)
+            draw = ImageDraw.Draw(mask)
+            draw.ellipse([0, 0, display_size-1, display_size-1], fill=255)
+            
+            # 背景画像（灰色）
+            background = Image.new('RGB', (display_size, display_size), (240, 240, 240))
+            
+            # マスクを使って円形に切り抜き
+            clone_pil_rgb = clone_pil.convert('RGB')
+            result = Image.composite(clone_pil_rgb, background, mask)
+            
+            # Tkinter用に変換
+            self.clone_display = ImageTk.PhotoImage(result)
+            
+            # Canvasの中央に配置
+            center_x = 70
+            center_y = 70
+            self.clone_canvas.create_image(center_x, center_y, image=self.clone_display)
+            
+            # サイズ表示
+            self.clone_canvas.create_text(70, 10, text=f"{size}px", 
+                                         fill="black", font=("Arial", 10, "bold"))
+        else:
+            self.clone_canvas.create_text(70, 70, text="右クリックで取得", 
+                                         fill="gray", tags="placeholder")
+    
+    def apply_spot_healing(self, x, y):
+        radius = self.spot_size.get() // 2
+        h, w = self.current_image.shape[:2]
+        
+        if x - radius &lt; 0 or y - radius &lt; 0 or x + radius &gt;= w or y + radius &gt;= h:
+            return
+        
+        self.history.append(self.current_image.copy())
+        
+        mask = np.zeros((h, w), dtype=np.uint8)
+        cv2.circle(mask, (x, y), radius, 255, -1)
+        
+        self.current_image = cv2.inpaint(self.current_image, mask, 
+                                        radius, cv2.INPAINT_TELEA)
+        
+        self.update_display()
+    
+    def apply_clone_stamp(self, x, y):
+        if self.clone_source is None:
+            messagebox.showinfo("情報", "まず右クリックでコピー元を取得してください")
+            return
+        
+        radius = self.spot_size.get() // 2
+        h, w = self.current_image.shape[:2]
+        
+        if x - radius &lt; 0 or y - radius &lt; 0 or x + radius &gt;= w or y + radius &gt;= h:
+            return
+        
+        self.history.append(self.current_image.copy())
+        
+        y1, y2 = y - radius, y + radius
+        x1, x2 = x - radius, x + radius
+        
+        clone_h, clone_w = self.clone_source.shape[:2]
+        target_h, target_w = y2 - y1, x2 - x1
+        
+        if clone_h != target_h or clone_w != target_w:
+            clone_to_paste = cv2.resize(self.clone_source, (target_w, target_h), 
+                                       interpolation=cv2.INTER_CUBIC)
+        else:
+            clone_to_paste = self.clone_source.copy()
+        
+        mask = np.zeros((target_h, target_w), dtype=np.uint8)
+        cv2.circle(mask, (radius, radius), radius, 255, -1)
+        
+        blur_size = max(3, radius // 3)
+        if blur_size % 2 == 0:
+            blur_size += 1
+        mask_blurred = cv2.GaussianBlur(mask, (blur_size, blur_size), 0)
+        
+        mask_normalized = mask_blurred.astype(float) / 255.0
+        mask_3ch = np.stack([mask_normalized] * 3, axis=2)
+        
+        result = (clone_to_paste * mask_3ch + 
+                 self.current_image[y1:y2, x1:x2] * (1 - mask_3ch)).astype(np.uint8)
+        
+        self.current_image[y1:y2, x1:x2] = result
+        
+        self.update_display()
+    
+    def undo(self):
+        if len(self.history) &gt; 1:
+            self.history.pop()
+            self.current_image = self.history[-1].copy()
+            self.update_display()
+        else:
+            messagebox.showinfo("情報", "これ以上戻せません")
+    
+    def reset_all(self):
+        if self.original_image is not None:
+            self.current_image = self.original_image.copy()
+            self.history = [self.current_image.copy()]
+            self.update_display()
+    
+    def save_image(self):
+        if self.current_image is None:
+            messagebox.showwarning("警告", "保存する画像がありません")
+            return
+        
+        # 拡張子の決定と初期ファイル名（拡張子なし）の設定
+        if self.image_path:
+            directory = os.path.dirname(self.image_path)
+            basename = os.path.basename(self.image_path)
+            name, ext = os.path.splitext(basename)
+            
+            ext_lower = ext.lower()
+            
+            # デフォルト拡張子と filetypes の順序を決定
+            if ext_lower in ('.jpg', '.jpeg'):
+                default_ext = '.jpg'
+                filetypes_list = [("JPEG画像", "*.jpg"), ("PNG画像", "*.png"), ("すべてのファイル", "*.*")]
+            else:
+                default_ext = '.png'
+                filetypes_list = [("PNG画像", "*.png"), ("JPEG画像", "*.jpg"), ("すべてのファイル", "*.*")]
+
+            try:
+                # 拡張子を除いたファイル名を設定
+                initial_filename_no_ext = f"{name}_編集"
+            except:
+                initial_filename_no_ext = f"{name}_edited"
+        else:
+            directory = os.path.expanduser("~")
+            default_ext = ".png"
+            initial_filename_no_ext = "編集済み画像" # 拡張子なし
+            filetypes_list = [("PNG画像", "*.png"), ("JPEG画像", "*.jpg"), ("すべてのファイル", "*.*")]
+
+        
+        # initialfile には拡張子を付けずに渡す
+        filepath = filedialog.asksaveasfilename(
+            initialdir=directory,
+            initialfile=initial_filename_no_ext, # ここを修正
+            defaultextension=default_ext,
+            filetypes=filetypes_list
+        )
+        
+        if filepath:
+            try:
+                img_pil = Image.fromarray(self.current_image)
+                filepath_lower = filepath.lower()
+                
+                # ICCプロファイルの設定（色合い保持のため）
+                save_kwargs = {}
+                if self.icc_profile:
+                    save_kwargs['icc_profile'] = self.icc_profile
+                
+                # ユーザーが選択した拡張子に基づいて保存形式を決定
+                if filepath_lower.endswith(('.jpg', '.jpeg')):
+                    img_pil.save(filepath, 'JPEG', quality=95, **save_kwargs)
+                elif filepath_lower.endswith('.png'):
+                    img_pil.save(filepath, 'PNG', **save_kwargs)
+                else:
+                    # ユーザーが拡張子を指定しなかった場合、defaultextensionで補完する
+                    # Tkinterが自動で補完してくれるはずだが、念のため。
+                    if default_ext == '.jpg':
+                         img_pil.save(filepath, 'JPEG', quality=95, **save_kwargs)
+                    else:
+                         img_pil.save(filepath, 'PNG', **save_kwargs)
+                         
+                # messagebox.showinfo("成功", f"画像を保存しました:\n{os.path.basename(filepath)}")
+            except Exception as e:
+                messagebox.showerror("エラー", f"保存に失敗しました:\n{str(e)}")
+    
+    def show_help(self):
+        help_window = tk.Toplevel(self.root)
+        help_window.title("使い方")
+        help_window.geometry("500x600")
+        help_window.resizable(False, False)
+        
+        text_widget = tk.Text(help_window, wrap=tk.WORD, padx=20, pady=20)
+        text_widget.pack(fill=tk.BOTH, expand=True)
+        
+        help_text = """写真スポット編集ツール - 使い方
+
+【画像の読み込み】
+・画像ファイルをウィンドウにドラッグ&amp;ドロップ
+
+【スポット修正モード】
+・不要な物を自動的に周りと馴染ませて消します
+・左クリック：その場所を自動修正
+
+【コピー修正モード】
+・別の場所の画像をコピーして貼り付けます
+・右クリック：コピー元を取得
+・左クリック：取得した画像を貼り付け
+
+【修正サイズ】
+・スライダーで修正する範囲の大きさを調整
+・1〜100ピクセルの間で設定可能
+
+【表示モード】
+・ウィンドウに合わせる：画面内に収まるように表示
+・実寸表示：元の画像サイズで表示
+  （実寸表示時はスクロールバーで移動可能）
+
+【操作の取り消し】
+・一つ戻す：最後の操作を取り消し
+・すべて戻す：元の画像に戻す
+
+【保存】
+・編集した画像を保存します
+・元の画像と同じ場所に「ファイル名_編集」で保存
+
+【ヒント】
+・細かい修正は小さいサイズで
+・大きな範囲は大きいサイズで
+・何度でもやり直せます
+"""
+        
+        text_widget.insert("1.0", help_text)
+        text_widget.config(state=tk.DISABLED)
+        
+        close_btn = tk.Button(help_window, text="閉じる", command=help_window.destroy,
+                             bg="#2196F3", fg="white")
+        close_btn.pack(pady=10)
+
+if __name__ == "__main__":
+    root = TkinterDnD.Tk()
+    app = PhotoSpotEditor(root)
+    root.mainloop()</pre>
+<p><a class="link-card" href="../../04/18/215613.html"><span class="lc-body"><span class="lc-title">Claude）JavaScript）「写真スポッティング編集ツール」作成。写真のオブジェクト除去やシミ消しに。</span><span class="lc-desc">JavaScriptで、「 写真スポッティング編集ツール 」を作成。 写真の中のちょっとした不要物を除去するためのツール。除去したい不要物をマウスなどで囲んで除去し、除去した後を目立たないように背景画像で補正するなどした…</span><span class="lc-site">晴歩雨描 · <time>2025-04-18</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250418/20250418213106.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2026/03/25/094706.html"><span class="lc-body"><span class="lc-title">Claude）Python）「写真オブジェクト除去」Windowsアプリ作成。IOPaint＋LaMa使用。ICCプロファイル維持。</span><span class="lc-desc">以前に、Pythonを使って、「写真オブジェクト除去」Windowsアプリを作成した。 これらのアプリは、周辺ピクセルだけで補完する方式なので、顔の小さいシミを消すぐらいしか使い道がなかった。 画像生成AI系でも、オブジ…</span><span class="lc-site">晴歩雨描 · <time>2026-03-25</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260325/20260325083556.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2024/05/28/171118.html"><span class="lc-body"><span class="lc-title">Windows無料アプリ「GIMP」で写真のシミ消しを試した。</span><span class="lc-desc">先程、「Windowsフォト」「Windows版 Photoshop Express」で、写真のシミ消しを試した。 今回、無料のWindowsアプリ「GIMP」で、写真のシミ消しを試した。 ※ オリジナル写真はシミではな…</span><span class="lc-site">晴歩雨描 · <time>2024-05-28</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20240528/20240528170249.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2024/05/28/152830.html"><span class="lc-body"><span class="lc-title">Windows版無料アプリ「Adobe Photoshop Express」で写真のシミ消し「しみの削除」を試した。</span><span class="lc-desc">先程、「Windowsフォト」の「消去」を使って、写真のシミ消しを試した。 今回、無料のWindowsアプリ「Adobe Photoshop Express」で、写真のシミ消し「しみの削除」を試した。 ※ オリジナル写真…</span><span class="lc-site">晴歩雨描 · <time>2024-05-28</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20240528/20240528152522.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2024/05/28/144332.html"><span class="lc-body"><span class="lc-title">「Windowsフォト」の「消去（旧：スポット修正）」で写真のシミ消しを試した。</span><span class="lc-desc">「Windowsフォト」の「消去」を使って、写真のシミ消しを試した。「Windowsフォト」の「消去」は以前「スポット修正」と呼ばれていた。 ※ オリジナル写真はシミではなく「そばかす」の写真で代用。この女性の写真の場合…</span><span class="lc-site">晴歩雨描 · <time>2024-05-28</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20240528/20240528143832.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2021/02/02/164446.html"><span class="lc-body"><span class="lc-title">SILKYPIX）ポートレート写真のシミ消し・除去（スポッティングツール）補正、しみ抜き、美肌効果、軟調効果。</span><span class="lc-desc">写真画像調整ソフト「SILKYPIX JPEG Photography 10」でポートレート写真のシミ除去や美肌効果を試してみる。 ※ オリジナル写真はシミではなく「そばかす」の写真で代用。この女性の写真の場合、このそば…</span><span class="lc-site">晴歩雨描 · <time>2021-02-02</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20210202/20210202160819.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../16/164836.html"><span class="lc-body"><span class="lc-title">Claude）Python）写真を美肌に編集加工するWindowsアプリ作成（３）。毛穴やシミを目立たなくする。AI顔認識＋手動顔指定。</span><span class="lc-desc">先日、写真を美肌に編集加工するWindowsアプリを作成した。毛穴を目立たなくする効果がある。AIによる人物の顔認識もする。 ただ、AIによる顔認識が100%正しいとは言えないので、認識した範囲を画面で確認できる機能と、…</span><span class="lc-site">晴歩雨描 · <time>2025-10-16</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20251016/20251016161723.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../09/25/124757.html"><span class="lc-body"><span class="lc-title">Claude）Python）ローカル）写真のシャープネス、コントラスト、明度、彩度を調整するWindowsアプリ作成。野鳥写真で、等倍高画質化をTopaz Labs、Aiarty Image Enhancerと比較。</span><span class="lc-desc">Pythonで「 写真のシャープネス、コントラスト、明度、彩度を調整する 」Windowsアプリを作成。「Claude」で作成。 【機能概略】 写真画像(JPEG,PNG)をウインドウに、ドラッグ＆ドロップで取り込み。 …</span><span class="lc-site">晴歩雨描 · <time>2025-09-25</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250925/20250925123628.jpg" alt="" loading="lazy"></span></a></p></div></article>
+</body>
+</html>

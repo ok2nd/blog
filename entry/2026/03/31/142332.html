@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>生成AI（Claude、Gemini、ChatGPT、Copilot）に、最近の野鳥情報を聴いてみた。野鳥名と場所をExcelで一覧にする。 - 晴歩雨描</title>
+<link rel="stylesheet" href="../../../../style.css">
+</head>
+<body>
+<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>生成AI（Claude、Gemini、ChatGPT、Copilot）に、最近の野鳥情報を聴いてみた。野鳥名と場所をExcelで一覧にする。</h1><p class="meta">2026-03-31 · <a href="../../../../category/c38.html">野鳥</a> <a href="../../../../category/c42.html">＜AI＞</a></p><div class="entry-body"><p>生成AI（<em>Claude、Gemini、ChatGPT、Copilot</em>）に、最近の<em>野鳥情報</em>を聴いてみた。野鳥名と場所を<em>Excel</em>で一覧にできるか試した。</p>
+<p>プロンプトは、以下。</p>
+<div style="border: 1px solid #ddd; padding: 5px;">過去2週間の神戸、大阪、京都の探鳥ブログやSNS、eBirdを巡回して、シギチドリに関する情報があれば、野鳥の名前と場所を一覧にして、Excelにして。</div>
+<style>table td {
+    text-align: left;
+}</style>
+<p><em>Claude</em>は、直接Excelを作成して、ファイルとしてダウンロードできる。</p>
+<p><em>Gemini</em>、<em>Copilot</em>はテーブル形式で表示され、自分でExcelに貼り付ける。<em>ChatGPT</em>はCSV形式で表示され、Excelに貼り付ける。</p>
+<p>内容的には、どれも特定のWebサイトに依存したものが多い。すべてを網羅したような結果を提供してくれるものは無かった。今回の結果では、Geminiの回答が一番広範囲の情報を拾ってきてくれている。情報が正しいかどうかは分からない。</p>
+<h5 id="-ClaudeSonnet-36-拡張思考">■ Claude（Sonnet 3.6 拡張思考）</h5>
+<p> Excelファイルを直接ダウンロードできる。（Excel画面イメージ）</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260331/20260331135853.jpg" width="873" height="636" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<div style="overflow-x: auto;">
+<table class="font-small">
+<thead>
+<tr>
+<th>観察日</th>
+<th>和名</th>
+<th>英名</th>
+<th>地域</th>
+<th>観察場所（詳細）</th>
+<th>情報源</th>
+<th>備考</th>
+<th>確実度</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2026/3/29</td>
+<td>コチドリ</td>
+<td>Little Ringed Plover</td>
+<td>大阪</td>
+<td>大阪南港野鳥園（大阪市住之江区）</td>
+<td>大阪南港野鳥園公式サイト（medaichi管理）</td>
+<td>2羽確認。春の渡り開始期</td>
+<td>◎ 確実</td>
+</tr>
+<tr>
+<td>2026/3/29</td>
+<td>シロチドリ</td>
+<td>Kentish Plover</td>
+<td>大阪</td>
+<td>大阪南港野鳥園（大阪市住之江区）</td>
+<td>大阪南港野鳥園公式サイト</td>
+<td>1羽確認</td>
+<td>◎ 確実</td>
+</tr>
+<tr>
+<td>2026/3/29</td>
+<td>イソシギ</td>
+<td>Common Sandpiper</td>
+<td>大阪</td>
+<td>大阪南港野鳥園（大阪市住之江区）</td>
+<td>大阪南港野鳥園公式サイト</td>
+<td>通年見られる留鳥・冬鳥</td>
+<td>◎ 確実</td>
+</tr>
+<tr>
+<td>2026/3/28</td>
+<td>コチドリ</td>
+<td>Little Ringed Plover</td>
+<td>大阪</td>
+<td>大阪南港野鳥園（大阪市住之江区）</td>
+<td>大阪南港野鳥園公式サイト</td>
+<td>2羽確認</td>
+<td>◎ 確実</td>
+</tr>
+<tr>
+<td>2026/3/28</td>
+<td>イソシギ</td>
+<td>Common Sandpiper</td>
+<td>大阪</td>
+<td>大阪南港野鳥園（大阪市住之江区）</td>
+<td>大阪南港野鳥園公式サイト</td>
+<td> </td>
+<td>◎ 確実</td>
+</tr>
+<tr>
+<td>2026/3/24</td>
+<td>コチドリ</td>
+<td>Little Ringed Plover</td>
+<td>大阪</td>
+<td>大阪南港野鳥園（大阪市住之江区）</td>
+<td>大阪南港野鳥園公式サイト</td>
+<td>2羽確認</td>
+<td>◎ 確実</td>
+</tr>
+<tr>
+<td>2026/3/24</td>
+<td>タシギ</td>
+<td>Common Snipe</td>
+<td>大阪</td>
+<td>大阪南港野鳥園（大阪市住之江区）</td>
+<td>大阪南港野鳥園公式サイト</td>
+<td>ホウロクシギ・ヒクイナ待ちの日に出現</td>
+<td>◎ 確実</td>
+</tr>
+<tr>
+<td>2026/3/23</td>
+<td>ホウロクシギ</td>
+<td>Far Eastern Curlew</td>
+<td>大阪</td>
+<td>大阪南港野鳥園（大阪市住之江区）</td>
+<td>大阪南港野鳥園公式サイト（K原氏提供写真）</td>
+<td>翼下面・雨覆に班紋あり（ダイシャクシギとの識別点）。お客様提供写真で確認</td>
+<td>◎ 確実</td>
+</tr>
+<tr>
+<td>2026/3/22</td>
+<td>コチドリ</td>
+<td>Little Ringed Plover</td>
+<td>大阪</td>
+<td>大阪南港野鳥園（大阪市住之江区）</td>
+<td>大阪南港野鳥園公式サイト</td>
+<td>2羽確認</td>
+<td>◎ 確実</td>
+</tr>
+<tr>
+<td>2026/3/22</td>
+<td>イソシギ</td>
+<td>Common Sandpiper</td>
+<td>大阪</td>
+<td>大阪南港野鳥園（大阪市住之江区）</td>
+<td>大阪南港野鳥園公式サイト</td>
+<td> </td>
+<td>◎ 確実</td>
+</tr>
+<tr>
+<td>2026/3/21</td>
+<td>イソシギ</td>
+<td>Common Sandpiper</td>
+<td>大阪</td>
+<td>大阪南港野鳥園（大阪市住之江区）</td>
+<td>大阪南港野鳥園公式サイト</td>
+<td> </td>
+<td>◎ 確実</td>
+</tr>
+<tr>
+<td>2026/3/21</td>
+<td>アカアシシギ</td>
+<td>Common Redshank</td>
+<td>大阪</td>
+<td>大阪南港野鳥園（大阪市住之江区）</td>
+<td>大阪南港野鳥園公式サイト</td>
+<td>今季越冬個体。徐々に夏羽に換羽中。コガモと一緒に撮影</td>
+<td>◎ 確実</td>
+</tr>
+<tr>
+<td>─</td>
+<td>（データなし）</td>
+<td>─</td>
+<td>神戸</td>
+<td>甲子園浜（西宮市枝川町）</td>
+<td>西宮市公式サイト（甲子園浜野鳥情報）</td>
+<td>2026年3月分は未掲載。最新PDF＝2026年2月分。春のピーク（4〜5月）に向けシロチドリ・キアシシギ等の渡来が期待される</td>
+<td>─ 情報なし</td>
+</tr>
+<tr>
+<td>─</td>
+<td>（データなし）</td>
+<td>─</td>
+<td>京都</td>
+<td>鴨川・桂川流域など</td>
+<td>日本野鳥の会京都支部 / eBird JP-26</td>
+<td>今回の調査期間中にオンライン公開された具体的な目撃情報は確認できず。鴨川ではイカルチドリの繁殖が例年確認される</td>
+<td>─ 情報なし</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h5 id="-Gemini思考モード">■ Gemini（思考モード）</h5>
+<p>テーブル形式で表示され、自分でExcelに張り付ける。</p>
+<div style="overflow-x: auto;">
+<table class="font-small">
+<thead>
+<tr>
+<th>野鳥の名前</th>
+<th>観察場所</th>
+<th>備考・ソース</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ホウロクシギ</td>
+<td>大阪南港野鳥園（大阪）</td>
+<td>3/23に飛来確認。翼の下面の斑紋が特徴的。</td>
+</tr>
+<tr>
+<td>コチドリ</td>
+<td>浜甲子園 / 甲子園浜（西宮・神戸エリア）</td>
+<td>3/22の探鳥会等で確認。夏鳥としての飛来が本格化。</td>
+</tr>
+<tr>
+<td>シロチドリ</td>
+<td>甲子園浜（西宮・神戸エリア）</td>
+<td>3/22確認。越冬個体と渡り個体が混在する時期。</td>
+</tr>
+<tr>
+<td>イソシギ</td>
+<td>夙川・御前浜（西宮・神戸エリア）</td>
+<td>3月後半を通じて河口付近で安定して観察。</td>
+</tr>
+<tr>
+<td>タシギ</td>
+<td>広沢の池（京都）</td>
+<td>3月後半、干潟化した池の泥地で採餌する姿が複数確認。</td>
+</tr>
+<tr>
+<td>クサシギ</td>
+<td>広沢の池（京都）</td>
+<td>3月後半、タシギと同様に池の干潟部分で観察。</td>
+</tr>
+<tr>
+<td>コチドリ</td>
+<td>桂川・鴨川（京都）</td>
+<td>3月下旬より中流域の河原にてさえずりやディスプレイ飛行を確認。</td>
+</tr>
+<tr>
+<td>キョウジョシギ</td>
+<td>甲子園浜（西宮・神戸エリア）</td>
+<td>3月中旬〜下旬にかけて、春の渡りの先遣隊が確認され始める。</td>
+</tr>
+<tr>
+<td>アオアシシギ</td>
+<td>大阪南港野鳥園（大阪）</td>
+<td>3月下旬、干潟にて少数の個体が確認。</td>
+</tr>
+<tr>
+<td>ハマシギ</td>
+<td>矢倉海岸 / 淀川河口（大阪）</td>
+<td>3/17報告（3/8〜継続）。船溜まりや護岸付近に集結。</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h5 id="-ChatGPT通常モード">■ ChatGPT（通常モード）</h5>
+<p>CSV形式で表示される。</p>
+<div style="overflow-x: auto;">
+<table class="font-small">
+<thead>
+<tr>
+<th>日付</th>
+<th>野鳥名</th>
+<th>場所</th>
+<th>地域</th>
+<th>ソース</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2026/3/23</td>
+<td>シロチドリ</td>
+<td>神戸市垂水区 海岸</td>
+<td>兵庫</td>
+<td>ZooPicker</td>
+</tr>
+<tr>
+<td>2026-03-16頃</td>
+<td>イソシギ</td>
+<td>神戸市灘区</td>
+<td>兵庫</td>
+<td>ZooPicker</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h5 id="-ChatGPTDeep-Research">■ ChatGPT（Deep Research）</h5>
+<p>長文のレポートとともにWord文書になる。一覧部分がCSVになる。</p>
+<div style="overflow-x: auto;">
+<table class="font-small">
+<thead>
+<tr>
+<th>種名（和名）</th>
+<th>Species (English)</th>
+<th>日付</th>
+<th>場所（市区町村＋地点）</th>
+<th>緯度</th>
+<th>経度</th>
+<th>観察数</th>
+<th>出典 (URL)</th>
+<th>情報源</th>
+<th>信頼度</th>
+<th>注記</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>シロチドリ</td>
+<td>Kentish Plover</td>
+<td>20260315</td>
+<td>大阪府阪南市 男里川河口</td>
+<td>34.3597</td>
+<td>135.2394</td>
+<td>2</td>
+<td>[鳥蝶蜻蛉ブログ](httpskawasemi2018.exblog.jp33912783)</td>
+<td>ブログ</td>
+<td>高</td>
+<td>写真付き</td>
+</tr>
+<tr>
+<td>シロチドリ</td>
+<td>Kentish Plover</td>
+<td>20260318</td>
+<td>大阪府阪南市 男里川河口</td>
+<td>34.3597</td>
+<td>135.2394</td>
+<td>約10</td>
+<td>[鳥蝶蜻蛉ブログ](httpskawasemi2018.exblog.jp33915846)</td>
+<td>ブログ</td>
+<td>高</td>
+<td>写真付き</td>
+</tr>
+<tr>
+<td>シロチドリ</td>
+<td>Kentish Plover</td>
+<td>20260322</td>
+<td>大阪府 (地点不明)</td>
+<td> </td>
+<td> </td>
+<td>不明</td>
+<td>[ZooPicker](httpszoopicker.comfield_notes100630)</td>
+<td>SNS(サイト)</td>
+<td>中</td>
+<td> </td>
+</tr>
+<tr>
+<td>ハマシギ</td>
+<td>Dunlin</td>
+<td>20260322</td>
+<td>大阪府阪南市 男里川河口</td>
+<td>34.3597</td>
+<td>135.2394</td>
+<td>1</td>
+<td>[野鳥さんブログ](httpsmukataka2002.blogspot.com202603blog-post.html)</td>
+<td>ブログ</td>
+<td>高</td>
+<td>写真付き</td>
+</tr>
+<tr>
+<td>ハマシギ</td>
+<td>Dunlin</td>
+<td>20260323</td>
+<td>大阪府阪南市 男里川河口</td>
+<td>34.3597</td>
+<td>135.2394</td>
+<td>数羽</td>
+<td>[鳥蝶蜻蛉ブログ](httpskawasemi2018.exblog.jp33918300)</td>
+<td>ブログ</td>
+<td>高</td>
+<td>写真付き</td>
+</tr>
+<tr>
+<td>ダイゼン</td>
+<td>Grey Plover</td>
+<td>20260323</td>
+<td>大阪府阪南市 男里川河口</td>
+<td>34.3597</td>
+<td>135.2394</td>
+<td>3</td>
+<td>[鳥蝶蜻蛉ブログ](httpskawasemi2018.exblog.jp33918310)</td>
+<td>ブログ</td>
+<td>高</td>
+<td>写真付き</td>
+</tr>
+<tr>
+<td>ホウロクシギ</td>
+<td>Bar-tailed Godwit</td>
+<td>20260320</td>
+<td>大阪府阪南市 男里川河口</td>
+<td>34.3597</td>
+<td>135.2394</td>
+<td>2</td>
+<td>[鳥蝶蜻蛉ブログ](httpskawasemi2018.exblog.jp33917832)</td>
+<td>ブログ</td>
+<td>高</td>
+<td>別投稿で1羽報告あり[7]</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h5 id="-CopilotThink-Deeper">■ Copilot（Think Deeper）</h5>
+<p>テーブル形式で表示され、自分でExcelに張り付ける。</p>
+<div style="overflow-x: auto;">
+<table class="font-small">
+<thead>
+<tr>
+<th>種名</th>
+<th>場所</th>
+<th>日付（出典）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Common Greenshank<br />（ソリハシシギに近い仲間／トリ名は英名表記）</td>
+<td>桂川（西大橋〜阪急京都線間）</td>
+<td>2026/3/26</td>
+</tr>
+<tr>
+<td>ダイゼン</td>
+<td>男里川河口（泉南〜阪南）</td>
+<td>2026/3/21</td>
+</tr>
+<tr>
+<td>シロチドリ</td>
+<td>男里川河口（泉南〜阪南）</td>
+<td>2026/3/21</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><a class="link-card" href="../24/151201.html"><span class="lc-body"><span class="lc-title">Leaflet）eBirdのAPIを使って、「野鳥観察マップ（日本地図）」アプリ作成。InfinityFree。</span><span class="lc-desc">eBird のAPIを使って、「野鳥観察マップ（日本地図）」アプリを作成した。マップはLeafletを使用。Claude使用。 【後日記載】CARTO地図がAPIキーが必要になったので、OpenStreetMapに変更。…</span><span class="lc-site">晴歩雨描 · <time>2026-03-24</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260324/20260324145213.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../23/145310.html"><span class="lc-body"><span class="lc-title">Leaflet）eBirdのAPIを使って、「最近観察された珍鳥マップ」アプリ作成。InfinityFree。</span><span class="lc-desc">eBird のAPIを使って、最近観察された珍鳥をマップ上に表示するアプリ作成。マップはLeafletを使用。Claude使用。 【後日記載】CARTO地図がAPIキーが必要になったので、OpenStreetMapに変更…</span><span class="lc-site">晴歩雨描 · <time>2026-03-23</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260323/20260323145131.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2025/06/01/083122.html"><span class="lc-body"><span class="lc-title">野鳥識別、画像生成AI）ツメナガセキレイの亜種『（キマユ）ツメナガセキレイ、マミジロツメナガセキレイ、シベリアツメナガセキレイ、キタツメナガセキレイ』の比較画像。ChatGPTで生成。</span><span class="lc-desc">5月中旬に長崎県対馬で、ツメナガセキレイの亜種と思われる鳥を複数撮影した。 亜種 （キマユ）ツメナガセキレイ 、亜種 マミジロツメナガセキレイ と、亜種 シベリアツメナガセキレイ または亜種 キタツメナガセキレイ と思わ…</span><span class="lc-site">晴歩雨描 · <time>2025-06-01</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250531/20250531210643.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2024/03/06/221605.html"><span class="lc-body"><span class="lc-title">Leaflet地図：ZooPicker探鳥地（野鳥撮影地）マップを作成。CSV使用。</span><span class="lc-desc">先程、ZooPicker探鳥地（野鳥撮影地）全国版Googleマイマップを作成した。 今回、同じデータを使って、Leaflet地図を作成した。 マーカーをクリックすると、その地点の「ZooPicker」へのリンクが表示さ…</span><span class="lc-site">晴歩雨描 · <time>2024-03-06</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20240306/20240306221307.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2024/03/06/141921.html"><span class="lc-body"><span class="lc-title">ZooPicker探鳥地（野鳥撮影地）全国版Googleマイマップ作成。</span><span class="lc-desc">以前に、関西地方のZooPicker探鳥地（野鳥撮影地）Googleマイマップを作成した。 今回、ZooPicker探鳥地（野鳥撮影地）の全国版Googleマイマップを作成した。 一部、緯度経度がはっきりしない場所は除い…</span><span class="lc-site">晴歩雨描 · <time>2024-03-06</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20240306/20240306141456.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2021/08/31/180431.html"><span class="lc-body"><span class="lc-title">神戸近辺（関西）の野鳥撮影地（探鳥地）マップ作成。Leaflet使用。</span><span class="lc-desc">神戸近辺で野鳥撮影した場所のマップを作成。 ≪神戸近辺の野鳥撮影地≫ 地図データを扱うJavaScript ライブラリ「Leaflet」を使っている。</span><span class="lc-site">晴歩雨描 · <time>2021-08-31</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20210831/20210831175646.jpg" alt="" loading="lazy"></span></a></p></div></article>
+</body>
+</html>

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>備忘録：スマホでページ全体を縮小表示したい時は、viewportのinitial-scaleで縮小値を指定する。 - 晴歩雨描</title>
+<link rel="stylesheet" href="../../../../style.css">
+</head>
+<body>
+<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>備忘録：スマホでページ全体を縮小表示したい時は、viewportのinitial-scaleで縮小値を指定する。</h1><p class="meta">2019-02-17 · <a href="../../../../category/c13.html">ホームページ、Web作成</a></p><div class="entry-body"><p><a class="link-card" href="../16/223049.html"><span class="lc-body"><span class="lc-title">CSS）影付き枠＋ビネット効果を使った写真のサムネイルアルバム(神戸散歩)をつくってみた。</span><span class="lc-desc">↑ で、CSSを使って、写真に影付き枠とビネット効果を付けてみた。 今回、これを使って、写真のサムネイルアルバムをつくってみた。写真は神戸を散歩して撮ったものの一部を使った。 サムネイルの各写真の枠は正方形とし、正方形の…</span><span class="lc-site">晴歩雨描 · <time>2019-02-16</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190216/20190216221449.jpg" alt="" loading="lazy"></span></a></p>
+<p><span class="link-card-plain"><a href="https://ok2nd.sakura.ne.jp/album/kobe1.html">https://ok2nd.sakura.ne.jp/album/kobe1.html</a></span></p>
+<p>↑ のWebページを<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%B9%A5%DE%A5%DB">スマホ</a>で単純に表示すると画面から少しはみ出てしまう。更に、<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%B9%A5%DE%A5%DB">スマホ</a>画面でサムネイルを横に2つ並べたい。ということで、<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%B9%A5%DE%A5%DB">スマホ</a>で見るときに、ページ全体を縮小して表示したい。</p>
+<p>ページの構成上、<a class="keyword" href="http://d.hatena.ne.jp/keyword/CSS">CSS</a>のメディアクエリで実現するのは難しそう。</p>
+<p><a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%B9%A5%DE%A5%DB">スマホ</a>でWebページ全体を縮小表示するために、viewportのinitial-scaleで縮小値を指定した。縮小値は、単に自分の<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%B9%A5%DE%A5%DB">スマホ</a>に合わせた。viewportは、パソコンのブラウザには影響しない。</p>
+<pre>&lt;meta name="viewport" content="width=device-width, initial-scale=0.46, maximum-scale=1.0, user-scalable=yes"&gt;
+</pre>
+<p><img class="hatena-fotolife" title="f:id:art2nd:20190217103718j:plain" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190217/20190217103718.jpg" alt="f:id:art2nd:20190217103718j:plain" /></p>
+<p><a class="link-card" href="180201.html"><span class="lc-body"><span class="lc-title">影付き枠＋ビネット効果付き写真サムネイルアルバム(神戸散歩)にポップアップ拡大画像を追加。</span><span class="lc-desc">↑ で、影付き枠＋ ビネット 効果を使った写真のWebサムネイルアルバムをつくった。 このWebページのサムネイル画像をクリックした時に画像が拡大されたモーダルウィンドウがポップアップするようにした。 以下のLightb…</span><span class="lc-site">晴歩雨描 · <time>2019-02-17</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190217/20190217175405.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="182430.html"><span class="lc-body"><span class="lc-title">影付き枠＋ビネット効果付き写真サムネイルアルバム(神戸散歩)のポップアップ拡大画像にビネット効果。</span><span class="lc-desc">↑ で、影付き枠＋ビネット効果を使った写真のWebサムネイルアルバムに、ポップアップ拡大画像を追加した。 しかし、この方法では、ポップアップ拡大画像にビネット効果はつかない。 ビネット効果付きの拡大画像1枚を表示するHT…</span><span class="lc-site">晴歩雨描 · <time>2019-02-17</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190217/20190217181044.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../12/141537.html"><span class="lc-body"><span class="lc-title">はてなブログ）スマホ等でページ横からはみ出た表&lt;table&gt;を横スクロールできるようにする最も（？）簡単な方法。</span><span class="lc-desc">はてなブログ を スマホ で閲覧する場合、テーブルが横にはみ出てしまうことがある。レスポンシブ対応含め一般的なデザインテーマでは横スクロールできない。 これを、横スクロールできるようにする最も（？）簡単な方法。 ネットで…</span><span class="lc-site">晴歩雨描 · <time>2019-02-12</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190212/20190212141216.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2021/05/18/135819.html"><span class="lc-body"><span class="lc-title">JavaScript）HTML&lt;TABLE&gt;に、ソート機能や検索機能を付けるなら、jQueryプラグイン「DataTables」が簡単。</span><span class="lc-desc">HTML&lt;TABLE&gt; に、ソート機能や検索機能を付けるなら、 jQueryプラグイン「DataTables」 が簡単で便利。 以下の「Eマウント(AF)単焦点レンズ」一覧に、「DataTables」を使って、ソート機能…</span><span class="lc-site">晴歩雨描 · <time>2021-05-18</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20210517/20210517165654.jpg" alt="" loading="lazy"></span></a></p></div></article>
+</body>
+</html>

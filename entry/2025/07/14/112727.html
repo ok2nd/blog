@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Thunderbolt4端子にUSB 20Gbps(USB 3.2 Gen2x2)のSSDを接続しても20Gbpsは出ない。 - 晴歩雨描</title>
+<link rel="stylesheet" href="../../../../style.css">
+</head>
+<body>
+<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>Thunderbolt4端子にUSB 20Gbps(USB 3.2 Gen2x2)のSSDを接続しても20Gbpsは出ない。</h1><p class="meta">2025-07-14 · <a href="../../../../category/c8.html">コンピュータ</a></p><div class="entry-body"><p>「PCのThunderbolt4端子にUSB 20Gbps(USB 3.2 Gen2x2)のSSDを接続して20Gbpsは出るか？」をChatGPTに聞いた。</p>
+<h4 id="ChatGPT-回答">【ChatGPT 回答】</h4>
+<p>Thunderbolt 4はUSB 3.2 Gen 2x2（20Gbps）をサポートしていないため、最大10Gbps止まりになる。</p>
+<div style="overflow-x: auto;">
+<table class="font-small">
+<thead>
+<tr>
+<th>SSDの規格</th>
+<th>最大速度</th>
+<th>TB4ポートとの接続時の速度</th>
+<th>備考</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>USB 3.2 Gen 1 (5Gbps)</td>
+<td>5Gbps</td>
+<td>5Gbps</td>
+<td>問題なく互換あり</td>
+</tr>
+<tr>
+<td>USB 3.2 Gen 2 (10Gbps)</td>
+<td>10Gbps</td>
+<td>10Gbps</td>
+<td>完全互換。多くのUSB-C SSDがこの規格</td>
+</tr>
+<tr>
+<td><span style="color: #2196f3;">USB 3.2 Gen 2x2 (20Gbps)</span></td>
+<td><span style="color: #2196f3;">20Gbps</span></td>
+<td><span style="color: #ff0000;">10Gbps</span><br /><span style="color: #ff0000;">（制限あり）</span></td>
+<td><span style="color: #ff0000;">TB4ポートはGen 2x2非対応のため速度が半減</span></td>
+</tr>
+<tr>
+<td>USB4（実体がGen 2x2相当）</td>
+<td>20Gbps</td>
+<td><span style="color: #ff0000;">10Gbps</span><br /><span style="color: #ff0000;">（制限あり）</span></td>
+<td><span style="color: #ff0000;">Gen 2x2コントローラを使ったUSB4製品は同様に10Gbps止まり</span></td>
+</tr>
+<tr>
+<td>USB4（20Gbpsモード）</td>
+<td>20Gbps</td>
+<td>20Gbps<br />（可能性あり）</td>
+<td>SSD・PC・ケーブルのすべてがUSB4準拠なら20Gbps出る可能性</td>
+</tr>
+<tr>
+<td>USB4（40Gbpsモード）Gen 3×2 含む</td>
+<td>40Gbps</td>
+<td>最大40Gbps<br />（可能性あり）</td>
+<td>PCIe/NVMeベースでかつUSB4完全対応ならTB4でフル性能も理論上可能</td>
+</tr>
+<tr>
+<td>Thunderbolt 3/4対応</td>
+<td>40Gbps</td>
+<td>最大40Gbps</td>
+<td>最も安定して高速。TB4と完全互換</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>USB 3.2 Gen 2x2は、「10Gbps × 2レーン」で20Gbpsを実現する規格だが、Thunderbolt 4ポートはこれをサポートしていない。 Thunderbolt 4は、USB4規格を含むものの、USB 3.2 Gen 2x2はオプション扱いのため、実装されていないのが一般的。</p>
+<p>つまり、USB 3.2 Gen 2x2対応のSSDをThunderbolt 4ポートに接続すると、SSDの速度は10Gbps（USB 3.2 Gen 2）に制限される可能性が高い。</p>
+<p><a class="link-card" href="110213.html"><span class="lc-body"><span class="lc-title">グラフィックスボード搭載でUSB Type-Cポートが複数あるコンパクトなPC「Endeavor SG150」</span><span class="lc-desc">コンパクトでグラフィックスボード搭載可能かつUSB Type-Cポートが複数あるPCの選択肢が少ない。アマゾンでは中国製の製品が色々ありそうだが、信頼性が不明。日本で販売されいる大手メーカーで探すが、なかなか見つからない…</span><span class="lc-site">晴歩雨描 · <time>2025-07-14</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250714/20250714103658.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../12/165741.html"><span class="lc-body"><span class="lc-title">外付けSSD「Crucial X10 Portable SSD 8TB」発売。4TBではUSB4対応製品も。</span><span class="lc-desc">「 Crucial X10 Portable SSD 8TB 」が発売されたようだ。 以下のレビューが詳しい。 外付け8TB SSDは、最近「 SanDisk エクストリーム ポータブル SSD 外付け 8TB 」を購入…</span><span class="lc-site">晴歩雨描 · <time>2025-07-12</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250712/20250712163946.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2022/02/10/155437.html"><span class="lc-body"><span class="lc-title">USB規格、コネクタ、ケーブル、電源アダプター（充電器）の簡単なまとめ。＋Thunderbolt。</span><span class="lc-desc">USBの規格、コネクタ、ケーブル、電源アダプター（充電器）について、詳細は省いて要点だけを備忘録として簡単にまとめた。 ■ USB規格 USB規格名については非常に分かりづらい状態になっている。 （以下、後日追記修正。）…</span><span class="lc-site">晴歩雨描 · <time>2022-02-10</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220210/20220210103543.jpg" alt="" loading="lazy"></span></a></p></div></article>
+</body>
+</html>

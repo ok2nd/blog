@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ローカル画像生成AI：RTX3050）Pinokio＋Stable Diffusion WebUI Forge＋FLUX NF4 構築。 - 晴歩雨描</title>
+<link rel="stylesheet" href="../../../../style.css">
+</head>
+<body>
+<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>ローカル画像生成AI：RTX3050）Pinokio＋Stable Diffusion WebUI Forge＋FLUX NF4 構築。</h1><p class="meta">2026-08-12 · <a href="../../../../category/c42.html">＜AI＞</a> <a href="../../../../category/c18.html">写真・カメラ</a> <a href="../../../../category/c8.html">コンピュータ</a></p><div class="entry-body"><p>先日、静止画から動画生成できる環境を、<em>Pinokio＋Wan2GP＋Fun InP image2video 1.3B</em>で構築した。</p>
+<p><a class="link-card" href="../../07/30/171912.html"><span class="lc-body"><span class="lc-title">ローカル動画生成AI：RTX3050）静止画から動画生成できる環境構築。Pinokio＋Wan2GP＋Fun InP image2video 1.3B。ComfyUI不要。</span><span class="lc-desc">先日、PCローカル Windows上で、 静止画から動画生成 できる環境構築を「 FramePack公式 One-Click版 」で検証した。結果的には、自分のPC環境では「FramePack公式 One-Click版」…</span><span class="lc-site">晴歩雨描 · <time>2026-07-30</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260730/20260730163952.png" alt="" loading="lazy"></span></a></p>
+<p>今回、<em>Pinokio</em>環境ベースで、静止画生成環境を構築。</p>
+<h5 id="-使うPCのスペック">■ 使うPCのスペック</h5>
+<p>画像生成AIをローカルで行うPCとしては最低限レベル。</p>
+<div style="overflow-x: auto;">
+<table>
+<tbody>
+<tr>
+<th>CPU</th>
+<td>インテル Core i5-14500T (14コア(6P+8E)/1.7GHz)</td>
+</tr>
+<tr>
+<th>GPU</th>
+<td><em>NVIDIA GeForce RTX 3050 LP 6GB</em></td>
+</tr>
+<tr>
+<th>メモリ</th>
+<td><em>32GB</em></td>
+</tr>
+<tr>
+<th>ストレージ</th>
+<td>1TB M.2 SSD PCI Express x4対応（Gen4対応）</td>
+</tr>
+<tr>
+<th>OS</th>
+<td>Windows 11 Pro 64bit</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h5 id="-構築する静止画像生成環境">■ 構築する静止画像生成環境</h5>
+<ul>
+<li><em>Pinokio</em>：AIアプリをインストール・管理・起動するためのランチャー／管理環境</li>
+<li><em>Stable Diffusion WebUI Forge</em>：画像生成AIを操作するためのWebブラウザー型のユーザーインターフェース（実行環境）</li>
+<li><em>FLUX NF4</em>：Forgeで使用する画像生成AIモデル。通常のFLUXより軽量な4bit量子化版で、RTX 3050 6GBのようなVRAMが少ないGPUでも動かしやすい</li>
+</ul>
+<h5 id="-Stable-Diffusion-WebUI-Forgeインストール">■ 「Stable Diffusion WebUI Forge」インストール</h5>
+<p>Pinokioは、既にインストールされている環境からスタート。</p>
+<p>※ 自分のPCでは、以下のディレクトリにPinokioがインストールされている。</p>
+<pre>D:\MyData\Pinokio</pre>
+<p><em>Pinokio</em>を起動し、「<em>Explorer</em>」をクリック。</p>
+<p>「<em>Forge</em>」を検索。</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260812/20260812151639.png" width="870" height="887" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<p>一番上の「<em>Forge</em>」をクリック。</p>
+<ul>
+<li><em>Forge pinokiofactory/stable-diffusion-webui-forge v2.0 Featured</em></li>
+</ul>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260812/20260812151910.png" width="870" height="796" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<p>画面中央の青い「<em>Install</em>」。</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260812/20260812152014.png" width="870" height="796" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<p>以下の画面が出たら、変更せずに、「Download」。</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260812/20260812152102.png" width="870" height="796" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<p>以下のディレクトに「Stable Diffusion WebUI Forge」がインストールされる。</p>
+<p>~/api<br>└─ <em>stable-diffusion-webui-forge.git</em></p>
+<p>自分のPCでは、「D:\MyData\Pinokio\api\stable-diffusion-webui-forge.git」</p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260812/20260812161256.png" width="427" height="175" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<p>Protectionは Off のままで「✓ Install」。</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260812/20260812152223.png" width="870" height="796" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<p>以下のような画面が順次表示されて、10分程度かかる。</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260812/20260812152719.png" width="870" height="796" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<p>「Stable Diffusion WebUI Forge」インストール完了すると、以下の画面になる。</p>
+<p>「<em>Forge</em>」が最初からFLUX向けの設定で起動している。「<em>FLUX NF4</em>」がすでに入っている。</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260812/20260812153955.png" width="870" height="984" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<table>
+<thead>
+<tr>
+<th>項目</th>
+<th>設定</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>Checkpoint</th>
+<td>flux1-dev-bnb-nf4-v2.safetensors</td>
+</tr>
+<tr>
+<th>GPU Weights</th>
+<td>5119 MB</td>
+</tr>
+<tr>
+<th>Swap Method</th>
+<td>Queue</td>
+</tr>
+<tr>
+<th>Swap Location</th>
+<td>CPU</td>
+</tr>
+<tr>
+<th>Sampling steps</th>
+<td>20</td>
+</tr>
+<tr>
+<th>Width</th>
+<td>896</td>
+</tr>
+<tr>
+<th>Height</th>
+<td>1152</td>
+</tr>
+<tr>
+<th>Batch count</th>
+<td>1</td>
+</tr>
+<tr>
+<th>Batch size</th>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<p>最初のテストで、Width×Height を、512×512 にして人物を生成したら、顔が崩れた。</p>
+<ul>
+<li>Width×Height：768×1024</li>
+<li>Sampling Steps：20 → 25</li>
+</ul>
+<p>設定を上記のように変えて、プロンプトに以下を入れて「<em>Generate</em>」。</p>
+<p><span style="color: rgb(221, 131, 12);">※ プロンプトは英語でないと期待通りの画像にはならない。</span></p>
+<pre>realistic photo,
+a cute Japanese girl in her 30 s,
+fashionable clothes,
+full body,
+smiling,
+walking on a old city street,
+bright daytime</pre>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260812/20260812163152.png" width="1021" height="609" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<p>数分程度で生成される。</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260812/20260812160133.png" width="870" height="984" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<figure class="figure-image figure-image-fotolife mceNonEditable" title="768 x 1024">
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260812/20260812160155.png" width="768" height="1024" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<figcaption class="mceEditable">768 x 1024</figcaption>
+</figure>
+<p>解像度を少し上げてみた。</p>
+<ul>
+<li>Width×Height：800×1200</li>
+</ul>
+<figure class="figure-image figure-image-fotolife mceNonEditable" title="800 x 1200">
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260812/20260812163501.png" width="800" height="1200" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<figcaption class="mceEditable">800 x 1200</figcaption>
+</figure>
+<p>生成AIっぽさが残る画質となった。自分のPC環境では、この程度が限界か。</p>
+<p>プロンプトを変えてみた。</p>
+<pre>A full-body shot of a woman in her 20s wearing a white dress.
+The background is a refreshing highland landscape.
+A realistic photograp.</pre>
+<figure class="figure-image figure-image-fotolife mceNonEditable" title="800 x 1200">
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260813/20260813130509.png" width="800" height="1200" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<figcaption class="mceEditable">800 x 1200</figcaption>
+</figure>
+<p>同じプロンプトで再度、試してみた。</p>
+<figure class="figure-image figure-image-fotolife mceNonEditable" title="800 x 1200">
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260814/20260814090516.png" width="800" height="1200" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<figcaption class="mceEditable">800 x 1200</figcaption>
+</figure>
+<h5 id="-Pinokio-2回目以降の使い方">■ Pinokio 2回目以降の使い方</h5>
+<p>Pinokio を起動すると、以下の画面になる。</p>
+<p>「<em>Forge</em>」クリック。</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260812/20260812165421.png" width="856" height="580" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<p>次の画面になる場合があるが、「Install」を押して大丈夫。</p>
+<p>不足している／更新が必要な依存環境をPinokioがインストール・更新する処理が始まる。</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260812/20260812165533.png" width="856" height="666" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260812/20260812165737.png" width="856" height="426" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<p>Forgeの起動画面に戻り、ForgeのWeb UIが開く。</p>
+<h5 id="-削除ファイル">■ 削除ファイル</h5>
+<p>以下のディレクトリに、生成された画像が残るので、必要なければ削除。</p>
+<pre>D:\MyData\Pinokio\api\stable-diffusion-webui-forge.git\app\outputs\txt2img-images</pre>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260813/20260813124653.png" width="515" height="247" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<p><a class="link-card" href="../../01/11/144811.html"><span class="lc-body"><span class="lc-title">ローカル画像生成AI：RTX3050）Stability Matrix＋ComfyUI＋Qwen-Image-Edit-2511を使う。</span><span class="lc-desc">ローカル画像生成AIで、 Stability Matrix＋Forge＋「FLUX FP8版」 Stability Matrix＋Forge＋「FLUX.1[dev] GGUF版」 Stability Matrix＋Fo…</span><span class="lc-site">晴歩雨描 · <time>2026-01-11</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260111/20260111134234.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2025/12/24/142809.html"><span class="lc-body"><span class="lc-title">ローカル画像生成AI：RTX3050）Stability Matrix＋Stable Diffusion WebUI Forgeで「FLUX FP8版」を使う。</span><span class="lc-desc">WindowsPCローカルで画像生成AIを試している。モデルとして、 「FLUX.1 [dev] の GGUF版」 「FLUX.1 [schnell] の GGUF版」 を試した。「FLUX.1 [dev] の GGUF…</span><span class="lc-site">晴歩雨描 · <time>2025-12-24</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20251224/20251224135757.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2025/12/23/164434.html"><span class="lc-body"><span class="lc-title">ローカル画像生成AI：RTX3050）Stability Matrix＋Stable Diffusion WebUI Forgeで「FLUX.1 [schnell] GGUF版」を使う。</span><span class="lc-desc">WindowsPCローカルで、画像生成AIのモデル「 FLUX.1 [dev] の GGUF版 」を使ったが、800x600ピクセルの画像生成に10分ほどかかった。 ※【後日追加】その後試したら、「FLUX.1 [dev…</span><span class="lc-site">晴歩雨描 · <time>2025-12-23</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20251223/20251223161527.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2025/12/21/220610.html"><span class="lc-body"><span class="lc-title">ローカル画像生成AI：RTX3050）Stability Matrix＋Stable Diffusion WebUI Forgeで「FLUX.1 [dev] GGUF版」を使う。</span><span class="lc-desc">WindowsPCローカルで画像生成AIを使う「 Fooocus（Stable Diffusion） 」を試したみたが、期待通りの画質を得られなかった。 ● 画像生成AIを使うには、以下の3つが必要。 UI（操作するため…</span><span class="lc-site">晴歩雨描 · <time>2025-12-21</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20251221/20251221213735.png" alt="" loading="lazy"></span></a></p></div></article>
+</body>
+</html>

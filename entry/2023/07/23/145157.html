@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Windows11）シャットダウン／再起動ボタンをスタートメニュー／タスクバーに配置する。 - 晴歩雨描</title>
+<link rel="stylesheet" href="../../../../style.css">
+</head>
+<body>
+<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>Windows11）シャットダウン／再起動ボタンをスタートメニュー／タスクバーに配置する。</h1><p class="meta">2023-07-23 · <a href="../../../../category/c8.html">コンピュータ</a></p><div class="entry-body"><p>昨日、Windows11にアップグレードした。</p>
+<p><a class="link-card" href="../22/160311.html"><span class="lc-body"><span class="lc-title">Windows11アップグレード）使いやすくするためのカスタマイズ設定。タスクバーで特定ファイルをクイックオープン etc。</span><span class="lc-desc">Windows11が、2021年10月5日にリリースされて、2年近く経とうとしている。 Windows10は、2025年10月14日にサポート終了予定。まだ、Windows10サポート終了まで2年あるが、 Windows…</span><span class="lc-site">晴歩雨描 · <time>2023-07-22</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20230722/20230722163749.jpg" alt="" loading="lazy"></span></a></p>
+<p>Windows10に比べて、使いにくくなった点がいくつかある。多少カスタマイズして改善できたが、もう一つあった。</p>
+<p>スタートメニュー内の電源ボタンの位置がウインドウの一番右側にあること。</p>
+<p>スタートアイコンをクリックしてから、電源ボタンのアイコンまでが遠い。そこでまた、電源ボタンを押してからシャットダウン/再起動を選択する必要がある。この位置を変更するのは難しそう。</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20230723/20230723141757.jpg" width="680" height="221" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<p>対策として、シャットダウン／再起動ボタンをスタートメニュー／タスクボタンに配置することにした。</p>
+<p><strong><span style="color: #dd830c;">（以下、試される方は自己責任でお願いします。）</span></strong></p>
+<h4 id="作成手順">【作成手順】</h4>
+<p>１．シャットダウン／再起動のバッチファイル(bat)を作成。自分の場合、「D:\MyData\script」フォルダーにテキストエディタで作成。</p>
+<p>［シャットダウン用］D:\MyData\script\shutdown.bat</p>
+<pre>shutdown.exe /s /t 0
+</pre>
+<p>［再起動用］D:\MyData\script\reboot.bat</p>
+<pre>shutdown.exe /r /t 0
+</pre>
+<p><span style="color: #dd830c;">（以下はシャットダウン用のみ記述）</span></p>
+<p>２．batファイルのショートカットを作成する。（<span style="color: #dd830c;">batファイルをそのままスタートメニュー／タスクバーに配置できないため。</span>）</p>
+<p>ショートカットのリンク先 ↓</p>
+<pre>D:\MyData\script\shutdown.bat
+</pre>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20230723/20230723143112.jpg" width="614" height="454" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20230723/20230723144035.jpg" width="614" height="454" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<p>３．ショートカットのアイコンの変更。ファイルのプロパティを開いて「アイコンの変更」を選択し、好きなアイコンを選択する。</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20230723/20230723143430.jpg" width="432" height="600" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20230723/20230723143546.jpg" width="340" height="420" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20230723/20230723143715.jpg" width="231" height="132" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<p>４．ショートカットのリンク先のbatファイル名の前に「cmd.exe /c 」を付け加える。</p>
+<p><strong><span style="color: #dd830c;">※ ショートカット作成時点で、「cmd.exe /c 」を付けてしまうとアイコンの変更がうまくいかない。</span></strong></p>
+<pre>cmd.exe /c D:\MyData\script\shutdown.bat
+</pre>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20230723/20230723143948.jpg" width="432" height="600" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<p>５．スタートメニューにピン留めする。</p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20230723/20230723144251.jpg" width="319" height="240" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<p>６．タスクバーにピン留めする。</p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20230723/20230723144309.jpg" width="330" height="371" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20230723/20230723144321.jpg" width="415" height="95" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<h5 id="スタートメニュー">【スタートメニュー】</h5>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20230723/20230723144533.jpg" width="568" height="422" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<h5 id="タスクバー">【タスクバー】</h5>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20230723/20230723144551.jpg" width="425" height="63" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<p><a class="link-card" href="../24/223854.html"><span class="lc-body"><span class="lc-title">Windows11）ネットワークに共有コンピューター名(PC名)が表示されない、共有コンピュータを開けない、ファイル共有できない時の対処。家庭内ネットワークの場合。</span><span class="lc-desc">先日、Windows11にアップグレードしたが、ネットワーク上にコンピューター名が表示されなくなった。 その対処の備忘録。以下のサイトを参考。 ■１．SMB 1.0 を有効にする。 【後日記載】※ これは間違いかもしれな…</span><span class="lc-site">晴歩雨描 · <time>2023-07-24</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20230724/20230724222333.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../08/07/125429.html"><span class="lc-body"><span class="lc-title">Windows11）デスクトップ・アイコン名（文字）の影を消す方法。</span><span class="lc-desc">Windows11で突然に、デスクトップのアイコン名に影が付いた。 このデスクトップ・アイコン名の影を消す方法の備忘録。 ［スタート］ボタンを右クリックして、［システム］を開く。 ［システムの詳細設定］を開く。 「システ…</span><span class="lc-site">晴歩雨描 · <time>2023-08-07</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20230807/20230807123851.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2025/10/20/085927.html"><span class="lc-body"><span class="lc-title">Windows11でフリーソフトExplorerPatcherを使ってタスクバーをデスクトップの上に移動する。</span><span class="lc-desc">Windowsパソコンのモニターが突然異常をきたした。画面の下5cmほどが映像が2重になって滲む状態になった。買い替えるしかないが、一時的にこのまま使用するのに、下のタスクバーが見えづらいので、操作に支障をきたす。 タス…</span><span class="lc-site">晴歩雨描 · <time>2025-10-20</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20251020/20251020085837.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2019/09/12/204449.html"><span class="lc-body"><span class="lc-title">Windows）「CrystalDiskInfo」「HWiNFO」「SSDLife」で、パソコンのHDD/SSDの健康状態をチェック。SSDのデフラグ、仮想メモリをオフ。TBWチェック。</span><span class="lc-desc">現在使っているパソコンを購入して5年以上経つので、HDDとSSDの健康診断をしてみた。 【CrystalDiskInfo】 ※ SMART情報を利用している。外付けUSB SSDは認識しないケースもあるようだ。外付けUS…</span><span class="lc-site">晴歩雨描 · <time>2019-09-12</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190912/20190912203502.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2020/12/21/100836.html"><span class="lc-body"><span class="lc-title">Windows10 セットアップ &amp; 使いやすくする手順の備忘録。ローカルアカウントetc.</span><span class="lc-desc">パソコンを買い替えたので、Windows 10 セットアップと使いやすくする手順の備忘録。 ■ 最初はインターネットに接続しないで、ローカルアカウントでインストール作業をする。 ■ 「デバイスのプライバシー設定の選択」で…</span><span class="lc-site">晴歩雨描 · <time>2020-12-21</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20201220/20201220165746.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2019/02/04/161306.html"><span class="lc-body"><span class="lc-title">備忘録：Windowsパソコンにインストールしているアプリケーションフリーソフト。自分にとって定番。</span><span class="lc-desc">Windowsパソコンに入れている主なアプリケーション・フリーソフトの一覧。再インストール時のための備忘録として。 ■ 写真・画像関連 FastStone Image Viewer：画像表示 JTrim：画像編集・加工、…</span><span class="lc-site">晴歩雨描 · <time>2019-02-04</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190204/20190204160808.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../05/093501.html"><span class="lc-body"><span class="lc-title">Windows）「WD ポータブルSSD 4TB」購入。Dドライブ交換。robocopyで丸ごとコピー。（xcopyではない）</span><span class="lc-desc">WindowsメインドライブのDドライブを2GBのSSDで運用してきたが、写真が増えて空き容量が減る都度、古い写真を別ドライブに移動するなど、不便だった。 最近、Western Digital のSSDの価格が下がってき…</span><span class="lc-site">晴歩雨描 · <time>2023-07-05</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20230704/20230704112701.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2019/09/22/133252.html"><span class="lc-body"><span class="lc-title">iPad、iPhone、Androidスマホ、PC間のファイル（写真）転送は「Send Anywhere」が簡単便利。</span><span class="lc-desc">iPad 、 iPhone とパソコン間の写真画像ファイル転送の方法を調べてテストしてみた。 iPad 、 iPhone からパソコンへの写真転送には特別なアプリは不要。 iPad 、 iPhone とパソコンをUSBケ…</span><span class="lc-site">晴歩雨描 · <time>2019-09-22</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190922/20190922125659.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2021/01/19/154625.html"><span class="lc-body"><span class="lc-title">Androidスマホ、iPadに、SSDを繋ぐ。PCの写真を共有。アロケーションユニットサイズにも注意。</span><span class="lc-desc">PCに保存してある写真を Android スマホ と iPad で共有するためにポータブル SSD を使ってみた。 NAS によるオンラインでの方法も試してみたが、 Android スマホ 、 iPad からのアクセスが…</span><span class="lc-site">晴歩雨描 · <time>2021-01-19</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20210119/20210119145337.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2021/09/27/133214.html"><span class="lc-body"><span class="lc-title">備忘録：WindowsパソコンのIPアドレス固定方法。（Windows10の場合）</span><span class="lc-desc">WindowsパソコンのIPアドレスを固定する方法。 ※ Windows11では設定画面が大きく変わっているので、以下を参照。 【以下はWindows10用】 １．「スタート」をクリックし、「設定」を開く。 ２．「ネット…</span><span class="lc-site">晴歩雨描 · <time>2021-09-27</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20210927/20210927132509.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2021/03/02/144911.html"><span class="lc-body"><span class="lc-title">WindowsパソコンのHDDドライブ・ディスクデータを完全消去（削除）。PC初期化。</span><span class="lc-desc">Windowsパソコンを廃棄する場合、ディスク（HDD）のデータを完全消去したい。 ファイルを削除するだけでは、ディレクトリ情報が消えているだけで、ファイル本体のデータは消えてない。 完全消去する手順。 ※ SSDでは、…</span><span class="lc-site">晴歩雨描 · <time>2021-03-02</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20210302/20210302164254.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2018/05/30/162821.html"><span class="lc-body"><span class="lc-title">Windows画像ビューアーフリーアプリソフト「FastStone Image Viewer」。</span><span class="lc-desc">以前「Windowsフォトビューアーの画像の表示順をフォルダの表示順に合わせる。」という記事を書いたが、 一つ問題がある。Windowsフォトビューアーで画像送りをした場合に、Windowsエクスプローラのカレントの画像…</span><span class="lc-site">晴歩雨描 · <time>2018-05-30</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20180530/20180530161751.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../01/07/214140.html"><span class="lc-body"><span class="lc-title">PowerPointでA4用紙に図形等を実寸サイズで印刷する方法。Windowsデスクトップ新規作成文書も置き換え。</span><span class="lc-desc">PowerPointで、A4用紙に図形等を実寸サイズで印刷する方法を備忘録として。 ■ １．スライドのサイズ指定 まず、PowerPointのスライドサイズを正しく「A4（297mm×210mm）」に設定する。 ［デザイ…</span><span class="lc-site">晴歩雨描 · <time>2023-01-07</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20230107/20230107212923.jpg" alt="" loading="lazy"></span></a></p></div></article>
+</body>
+</html>

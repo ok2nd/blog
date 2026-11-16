@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Claude）Python）シンプルなWindows用ランチャーアプリ作成。 - 晴歩雨描</title>
+<link rel="stylesheet" href="../../../../style.css">
+</head>
+<body>
+<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>Claude）Python）シンプルなWindows用ランチャーアプリ作成。</h1><p class="meta">2025-09-29 · <a href="../../../../category/c8.html">コンピュータ</a> <a href="../../../../category/c42.html">＜AI＞</a></p><div class="entry-body"><p>Pythonで作成したWindows用アプリが増えてきた。</p>
+<p>これらを起動する<em>ランチャーアプリ</em>が欲しいと思って、作成した。</p>
+<p>設定できる項目を少なくして、極力シンプルなものにした。</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250929/20250929085754.jpg" width="526" height="474" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>設定できるのは、ボタンサイズと横に並べるボタンの数だけ。</p>
+<p>実行するアプリは、テキスト形式で「アプリ名：アプリのWindowsフォルダーパス」で入力。</p>
+<p>Pythonで作成した以外の一般的なWindowsアプリも登録は可能。</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260108/20260108141324.jpg" width="632" height="632" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>【Pythonプログラムコード】</p>
+<p>※ 2026.1.8改訂。</p>
+<pre>import tkinter as tk
+from tkinter import ttk, messagebox, scrolledtext
+import subprocess
+import os
+import json
+
+class WindowsLauncher:
+    def __init__(self, root):
+        self.root = root
+        self.root.title("Windows ランチャー")
+
+        # 設定ファイル
+        self.config_file = "launcher_config.json"
+
+        # デフォルト設定
+        self.button_size = 100
+        self.buttons_per_row = 5
+        self.apps = []
+        self.window_x = 100
+        self.window_y = 100
+
+        # 設定読込
+        self.load_config()
+
+        # UI 作成
+        self.create_widgets()
+
+        # 起動時のみ：サイズ＋位置を設定
+        self.set_window_geometry_startup()
+
+        # 閉じる処理
+        self.root.protocol("WM_DELETE_WINDOW", self.on_closing)
+
+        # ボタン生成
+        self.update_app_buttons()
+
+    # ==================================================
+    # ウィンドウ制御（★ここが重要）
+    # ==================================================
+    def set_window_geometry_startup(self):
+        """起動時のみ：サイズ＋位置を指定"""
+        w, h = self.calculate_window_size()
+        self.root.geometry(f"{w}x{h}+{self.window_x}+{self.window_y}")
+
+    def update_window_size_only(self):
+        """サイズだけ変更（位置は触らない）"""
+        w, h = self.calculate_window_size()
+        self.root.geometry(f"{w}x{h}")
+
+    def calculate_window_size(self):
+        """現在の設定からウィンドウサイズを計算"""
+        button_pixel_width = max(self.button_size // 8 * 8, 80)
+        padding_per_button = 10
+        content_width = (button_pixel_width + padding_per_button) * self.buttons_per_row
+        ui_base_width = 100
+        window_width = max(content_width + ui_base_width, 400)
+        window_height = 600
+        return window_width, window_height
+
+    def on_closing(self):
+        """終了時に位置保存"""
+        try:
+            self.window_x = self.root.winfo_x()
+            self.window_y = self.root.winfo_y()
+        except Exception:
+            pass
+        self.save_current_config()
+        self.root.destroy()
+
+    # ==================================================
+    # 設定保存・読込
+    # ==================================================
+    def save_current_config(self):
+        config = {
+            "button_size": self.button_size,
+            "buttons_per_row": self.buttons_per_row,
+            "apps": self.apps,
+            "window_x": self.window_x,
+            "window_y": self.window_y,
+        }
+        try:
+            with open(self.config_file, "w", encoding="utf-8") as f:
+                json.dump(config, f, ensure_ascii=False, indent=2)
+        except Exception:
+            pass
+
+    def load_config(self):
+        if not os.path.exists(self.config_file):
+            return
+        try:
+            with open(self.config_file, "r", encoding="utf-8") as f:
+                config = json.load(f)
+            self.button_size = config.get("button_size", 100)
+            self.buttons_per_row = config.get("buttons_per_row", 5)
+            self.apps = config.get("apps", [])
+            self.window_x = config.get("window_x", 100)
+            self.window_y = config.get("window_y", 100)
+        except Exception as e:
+            messagebox.showerror("エラー", f"設定読み込みエラー: {e}")
+
+    # ==================================================
+    # UI
+    # ==================================================
+    def create_widgets(self):
+        main = ttk.Frame(self.root, padding=10)
+        main.pack(fill="both", expand=True)
+
+        notebook = ttk.Notebook(main)
+        notebook.pack(fill="both", expand=True)
+
+        self.launcher_frame = ttk.Frame(notebook)
+        settings_frame = ttk.Frame(notebook)
+
+        notebook.add(self.launcher_frame, text="ランチャー")
+        notebook.add(settings_frame, text="設定")
+
+        self.create_settings_tab(settings_frame)
+
+        canvas = tk.Canvas(self.launcher_frame)
+        scrollbar = ttk.Scrollbar(self.launcher_frame, orient="vertical", command=canvas.yview)
+        self.scrollable_frame = ttk.Frame(canvas)
+
+        self.scrollable_frame.bind(
+            "&lt;Configure&gt;",
+            lambda e: canvas.configure(scrollregion=canvas.bbox("all"))
+        )
+
+        canvas.create_window((0, 0), window=self.scrollable_frame, anchor="nw")
+        canvas.configure(yscrollcommand=scrollbar.set)
+
+        canvas.pack(side="left", fill="both", expand=True)
+        scrollbar.pack(side="right", fill="y")
+
+    # ==================================================
+    # 設定タブ
+    # ==================================================
+    def create_settings_tab(self, parent):
+        frame = ttk.Frame(parent, padding=10)
+        frame.pack(fill="both", expand=True)
+
+        ttk.Label(frame, text="ボタンサイズ").pack(anchor="w")
+        self.size_var = tk.StringVar(value=str(self.button_size))
+        ttk.Entry(frame, textvariable=self.size_var).pack(anchor="w")
+
+        ttk.Label(frame, text="横に並べる数").pack(anchor="w", pady=(10, 0))
+        self.row_var = tk.StringVar(value=str(self.buttons_per_row))
+        ttk.Entry(frame, textvariable=self.row_var).pack(anchor="w")
+
+        ttk.Label(frame, text="アプリ一覧（名前:パス）").pack(anchor="w", pady=(20, 5))
+        self.apps_text = scrolledtext.ScrolledText(frame, height=15)
+        self.apps_text.pack(fill="both", expand=True)
+
+        self.update_apps_text()
+
+        ttk.Button(frame, text="設定を適用", command=self.apply_settings).pack(pady=10)
+
+    def update_apps_text(self):
+        self.apps_text.delete(1.0, tk.END)
+        for app in self.apps:
+            self.apps_text.insert(tk.END, f"{app['name']}:{app['path']}\n")
+
+    def parse_apps_text(self):
+        apps = []
+        for line in self.apps_text.get(1.0, tk.END).splitlines():
+            if ":" in line:
+                name, path = line.split(":", 1)
+                apps.append({"name": name.strip(), "path": path.strip()})
+        return apps
+
+    def apply_settings(self):
+        try:
+            self.button_size = int(self.size_var.get())
+            self.buttons_per_row = int(self.row_var.get())
+            self.apps = self.parse_apps_text()
+
+            # ★位置は変えない（サイズのみ）
+            self.update_window_size_only()
+            self.update_app_buttons()
+
+        except ValueError:
+            messagebox.showerror("エラー", "数値が正しくありません")
+
+    # ==================================================
+    # ランチャー
+    # ==================================================
+    def update_app_buttons(self):
+        for w in self.scrollable_frame.winfo_children():
+            w.destroy()
+
+        for i, app in enumerate(self.apps):
+            r = i // self.buttons_per_row
+            c = i % self.buttons_per_row
+
+            btn = tk.Button(
+                self.scrollable_frame,
+                text=app["name"],
+                width=self.button_size // 8,
+                height=self.button_size // 20,
+                wraplength=self.button_size - 10,
+                justify="center",
+                font=("Arial", 9),
+                command=lambda p=app["path"]: subprocess.Popen(p, shell=True)
+            )
+            btn.grid(row=r, column=c, padx=5, pady=5, sticky="nsew")
+
+def main():
+    root = tk.Tk()
+    WindowsLauncher(root)
+    root.mainloop()
+
+if __name__ == "__main__":
+    main()
+</pre>
+<p><a class="link-card" href="https://ok2nd.github.io/sitemap/hatena-sitemap-table.html?search=Python" target="_blank" rel="noopener noreferrer"><span class="lc-body"><span class="lc-title">晴歩雨描：記事一覧</span><span class="lc-desc"></span><span class="lc-site">ok2nd.github.io</span></span></a></p>
+<p><a class="link-card" href="../../05/09/085200.html"><span class="lc-body"><span class="lc-title">Claude）Python）PowerPointに複数写真（画像）を順番に並べて貼り付けるプログラム作成（改訂版）。</span><span class="lc-desc">以前に、PowerPointに複数写真を順番に並べて貼り付けるプログラムをPythonで作成した。 今回、このプログラムの改訂版。前回と同じく、AI生成ツール「Claude」に作ってもらった。 基本機能はそのままで、オプ…</span><span class="lc-site">晴歩雨描 · <time>2025-05-09</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250509/20250509084045.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../20/205629.html"><span class="lc-body"><span class="lc-title">Claude）Python）写真のEXIF情報を表示するWindowsアプリ（ExifTool）を作成。</span><span class="lc-desc">Pythonで「 写真のEXIF情報を表示する 」Windowsアプリを作成。「Claude」で作成。 【機能概略】 JPEGファイルを画面にドラッグ＆ドロップすると、その写真のEXIF情報一覧を表示する。 メーカー独自…</span><span class="lc-site">晴歩雨描 · <time>2025-09-20</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250920/20250920175347.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../06/13/153014.html"><span class="lc-body"><span class="lc-title">Claude）Python）透過画像作成Windowsアプリ作成。</span><span class="lc-desc">Pythonで「透過画像作成」Windowsアプリ作成。画像の白に近い色を透過にする。元データはJPEGまたはPNG。白の範囲は指定できる。AIツールClaudeに作成してもらった。 【使い方】 元画像ファイルは、ドラッ…</span><span class="lc-site">晴歩雨描 · <time>2025-06-13</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250613/20250613151037.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../04/20/093458.html"><span class="lc-body"><span class="lc-title">Claude）Python）「写真オブジェクト除去」Windowsアプリ作成。シミ消しにも使える。</span><span class="lc-desc">2日前、 JavaScript で「 写真スポッティング編集ツール 」を作成した。 今回、 Python で「 写真オブジェクト除去アプリ 」を作成。AIツールClaudeに作成してもらった。 写真の中のちょっとした不要…</span><span class="lc-site">晴歩雨描 · <time>2025-04-20</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250420/20250420091047.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../25/124757.html"><span class="lc-body"><span class="lc-title">Claude）Python）ローカル）写真のシャープネス、コントラスト、明度、彩度を調整するWindowsアプリ作成。野鳥写真で、等倍高画質化をTopaz Labs、Aiarty Image Enhancerと比較。</span><span class="lc-desc">Pythonで「 写真のシャープネス、コントラスト、明度、彩度を調整する 」Windowsアプリを作成。「Claude」で作成。 【機能概略】 写真画像(JPEG,PNG)をウインドウに、ドラッグ＆ドロップで取り込み。 …</span><span class="lc-site">晴歩雨描 · <time>2025-09-25</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250925/20250925123628.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../05/25/211331.html"><span class="lc-body"><span class="lc-title">Claude＆Gemini）Python）「写真のトーンカーブ一括補正」Windowsアプリ作成。</span><span class="lc-desc">先日、Pythonで「写真の明るさ＆コントラスト一括補正」Windowsアプリを作成した。 今回、 トーンカーブを使って写真の明るさを補正するWindowsアプリ をPythonで作成。 複数画像を一括して補正できる。 …</span><span class="lc-site">晴歩雨描 · <time>2025-05-25</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250525/20250525210152.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../06/02/112022.html"><span class="lc-body"><span class="lc-title">Claude＆Gemini）Python）「写真のカラーバランス一括補正」Windowsアプリ作成。Pixel 9 Proの青被りを補正。</span><span class="lc-desc">スマホ「 Pixel 9 Pro 」を所有しているが、写真の青被りがきつい。特に人物の顔色が悪くなる。GIMP等でカラーバランスを調整することで補正できるが、枚数が多いと面倒。 複数画像を一括して補正できるツール が欲し…</span><span class="lc-site">晴歩雨描 · <time>2025-06-02</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250602/20250602110316.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../05/18/090800.html"><span class="lc-body"><span class="lc-title">Claude）Python）「写真の明るさ＆コントラスト一括補正」Windowsアプリ作成。ICCプロファイル維持。</span><span class="lc-desc">Pythonで「 写真の明るさ＆コントラスト一括補正 」Windowsアプリ作成。 複数の画像を一括して補正できる。 AIツールClaudeに作成してもらった。 ※ 【後日追記】最初のバージョンでは、元の写真に埋め込まれ…</span><span class="lc-site">晴歩雨描 · <time>2025-05-18</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250518/20250518090322.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../08/12/130210.html"><span class="lc-body"><span class="lc-title">Claude）Python）「写真をEXIF機種毎のフォルダーに分類」Windowsアプリ作成。</span><span class="lc-desc">Pythonで「写真をEXIF機種毎のフォルダーに分類」Windowsアプリを作成。 生成AI「 Claude 」「 Gemini 」「 Copilot 」で、以下のプロンプトで作成した。 【生成AI プロンプト】 Wi…</span><span class="lc-site">晴歩雨描 · <time>2025-08-12</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250812/20250812125530.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../08/12/093959.html"><span class="lc-body"><span class="lc-title">Gemini）Python）「ファイル拡張子別フォルダー移動」Windowsアプリ作成。</span><span class="lc-desc">Pythonで「ファイル拡張子別フォルダー移動」Windowsアプリを作成。 生成AI「 Gemini 」「 Claude 」「 ChatGPT GPT-5 」で、以下のプロンプトで作成してみた。 【生成AI プロンプト…</span><span class="lc-site">晴歩雨描 · <time>2025-08-12</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250812/20250812093352.jpg" alt="" loading="lazy"></span></a></p></div></article>
+</body>
+</html>

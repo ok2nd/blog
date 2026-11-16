@@ -1,0 +1,1143 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Claude）Python）ローカル）写真を等倍高画質化するWindowsアプリ作成。（CNN）Real-ESRGAN、（Transformer）DRCT使用。ICCプロファイル維持。 - 晴歩雨描</title>
+<link rel="stylesheet" href="../../../../style.css">
+</head>
+<body>
+<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>Claude）Python）ローカル）写真を等倍高画質化するWindowsアプリ作成。（CNN）Real-ESRGAN、（Transformer）DRCT使用。ICCプロファイル維持。</h1><p class="meta">2026-03-26 · <a href="../../../../category/c18.html">写真・カメラ</a> <a href="../../../../category/c38.html">野鳥</a> <a href="../../../../category/c42.html">＜AI＞</a></p><div class="entry-body"><p>以前、写真を等倍高画質化するWindowsアプリを作成した。この時、Real-ESRGANを使ったつもりだったが、その後、Claude、ChatGPT、Geminiに確認したところ、この時作成したアプリではReal-ESRGANモデルは使われていないとのこと。中身はOpenCVの古典的な画像フィルターの組み合わせとの事。</p>
+<p><a class="link-card" href="../../../2025/10/22/214630.html"><span class="lc-body"><span class="lc-title">Claude）Python）ローカル）写真を等倍高画質化するWindowsアプリ作成。OpenCV（疑似Real-ESRGAN）、シャープネス。SwinIR断念。</span><span class="lc-desc">※ 後日、Claude、ChatGPT、Geminiに確認したところ、今回作成したアプリでは、Real-ESRGANモデルは使われていないとのこと。中身はOpenCVの古典的な画像フィルターの組み合わせらしい（？）。ただ…</span><span class="lc-site">晴歩雨描 · <time>2025-10-22</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20251022/20251022211457.png" alt="" loading="lazy"></span></a></p>
+<p>今回、最新のAI技術を使って、Pythonで作成可能な等倍高画質化Windowsアプリを作成した。<strong>CNN（Convolutional Neural Network）（畳み込みニューラルネット）系「Real-ESRGAN」</strong>と、<strong>Transformer系「DRCT」</strong>2つ、合わせて3つのモデルを使用。</p>
+<ul>
+<li><strong>RealESRGAN_x4plus.pth</strong> ― 実写真向け・高速処理</li>
+<li><strong>4xRealWebPhoto_v4_drct-l.pth </strong>― 実写真向け・最高画質</li>
+<li><strong>DRCT-L_X4.pth</strong> ― クリーン画像向け・最高画質</li>
+</ul>
+<p><span style="color: #dd830c;">補足：pthファイルは、主にディープラーニングフレームワーク「PyTorch」で学習済みのモデルの重み（パラメータ）を保存するためのファイル形式。</span></p>
+<table>
+<tbody>
+<tr>
+<th>項目</th>
+<th>CNN系（畳み込みニューラルネット）</th>
+<th>Transformer系</th>
+</tr>
+<tr>
+<td><strong>代表モデル</strong></td>
+<td>Real-ESRGAN、ESRGAN</td>
+<td>DRCT、HAT、SwinIR</td>
+</tr>
+<tr>
+<td><strong>処理速度</strong></td>
+<td>⚡ 数秒（？？？）</td>
+<td>🐢 数分</td>
+</tr>
+<tr>
+<td><strong>ベンチマーク画質</strong></td>
+<td>高い</td>
+<td>最高（PSNR最大）</td>
+</tr>
+<tr>
+<td><strong>計算の特徴</strong></td>
+<td>近傍ピクセルだけを参照するフィルタ処理</td>
+<td>画像全体のピクセル間の関係を同時に計算</td>
+</tr>
+<tr>
+<td><strong>使われる場面</strong></td>
+<td>Upscayl、AI Image Enhancer など</td>
+<td>研究・最高品質が必要な用途</td>
+</tr>
+</tbody>
+</table>
+<div style="border: 1px solid #ddd; padding: 0 20px; margin: 10px 0;">
+<h5 id="CNNのしくみなぜ速いか">CNNのしくみ（なぜ速いか）</h5>
+<p>CNNは画像を小さな「フィルター」でなぞるように処理します。各ピクセルは周囲の数ピクセルしか参照しないため、計算量が画像サイズに対して線形に増えるだけで済みます。GPUが得意とする単純な乗算の繰り返しで実現でき、<strong>1024px画像なら数秒</strong>で完了します。</p>
+<h5 id="Transformerのしくみなぜ高画質で遅いか">Transformerのしくみ（なぜ高画質で遅いか）</h5>
+<p>Transformerは文章翻訳AIから派生した技術で、「画像の離れた場所にある情報も参照する」のが最大の特徴です。例えば空の色調を壁に自然につなげる、といった長距離の整合性が取れます。その代わり、ピクセル同士の全組み合わせを計算するため<strong>画像サイズの2乗に比例して計算量が増加</strong>します。これが「遅さ」の本質的な原因です。</p>
+</div>
+<h5 id="-今回作成したPythonアプリ">■ 今回作成したPythonアプリ</h5>
+<p>写真画像を左側にドラッグ＆ドロップする。</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260326/20260326173046.jpg" width="1119" height="676" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<p>モデルを選択する。</p>
+<p>「RealESRGAN_x4plus.pth」以外は処理に時間がかかりすぎて使い物にならない。</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260326/20260326173203.jpg" width="347" height="171" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<p>「高画質化」ボタンを押すと、処理が始まる。「RealESRGAN_x4plus.pth」で長辺1200ピクセルでも、自分のPCで3分程かかる。</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260326/20260326173049.jpg" width="1119" height="676" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<p>高画質化した画像が右側に表示される。</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260326/20260326173052.jpg" width="1119" height="676" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<p>元の画像と重ねて比較もできる。</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260326/20260326173055.jpg" width="1119" height="676" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<p>今回作成したアプリは、「<strong>Real-ESRGANモデル</strong>」でも、かなりの処理時間がかかる。使用しているPCには、<strong>GPU「NVIDIA GeForce RTX 3050 LP 6GB」</strong>がついているが、それでも時間がかかりすぎる。</p>
+<p>「<strong>DRCT</strong>」系2つは、使い物にならないほど時間がかかる。小さな画像で試したが、画質としても期待外れだった。</p>
+<p><strong>1200x1166ピクセル</strong>の画像で、「<strong>Real-ESRGANモデル</strong>」で試して、他のアプリと比較した。</p>
+<ul>
+<li><strong>今回作成したアプリ（Real-ESRGANモデル）：</strong>処理時間 2分50秒</li>
+<li><strong>AI. Image Enhancer</strong>：処理時間 3秒</li>
+<li><strong>Upscayl</strong>：処理時間 25秒</li>
+<li><strong>以前作成したアプリ：疑似Real-ESRGAN、OpenCV系（？）</strong>：2秒</li>
+</ul>
+<p>高画質化の出来栄えは、上位から順番に並べると以下の結果。3と4は、好みの問題（？）。</p>
+<ol>
+<li><strong>AI. Image Enhancer</strong></li>
+<li><strong>今回作成したアプリ（Real-ESRGANモデル）</strong></li>
+<li><strong>Upscayl</strong></li>
+<li><strong>以前作成したアプリ：疑似Real-ESRGAN、OpenCV系（？）</strong></li>
+</ol>
+<p>【オリジナル写真】</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260326/20260326113600.jpg" width="1200" height="1166" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<p>【今回作成したアプリ：Real-ESRGANモデル（2分50秒）】</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260326/20260326113624.jpg" width="1200" height="1166" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<p>【AI. Image Enhancer（3秒）】</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260326/20260326113653.jpg" width="1200" height="1166" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<p>【Upscayl（25秒）】</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260326/20260326114154.jpg" width="1200" height="1166" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<p>【以前作成したアプリ：疑似Real-ESRGAN、OpenCV系（？）】</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260326/20260326114209.jpg" width="1200" height="1166" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<h5 id="-Python-ライブラリモデルpthファイルのインストール">■ Python ライブラリ、モデルpthファイルのインストール</h5>
+<p>インストール用を含めてファイル一式を以下に入れた。</p>
+<p><span style="color: #dd830c;">※ 【後日追記】最初のバージョンでは、元の写真に埋め込まれたICCプロファイル（sRGB、Adobe RGB、Display P3など）が保存されていなかった。そのために、鮮やかさなどの色合いが失われていた。この点を修正した。</span></p>
+<p><a href="https://github.com/ok2nd/python/tree/main/photo_enhancer" target="_blank">https://github.com/ok2nd/python/tree/main/photo_enhancer</a></p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260326/20260326134452.png" width="676" height="457" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<p><strong>《 インストール手順 》</strong></p>
+<p>1. install.bat をダブルクリック<br>   ├─ PyTorch (CUDA 12.1) をインストール<br>   ├─ 依存ライブラリをインストール<br>   └─ モデルダウンロードを確認</p>
+<p>2. モデルを別途ダウンロードする場合:<br>   download_model.bat をダブルクリック<br>   または<br>   python download_model.py</p>
+<p>3. modelsフォルダーにダウンロードしたpthファイルを入れる。</p>
+<p>4. run.bat でアプリ（main.py）起動</p>
+<h5 id="-Python-プログラム">■ Python プログラム</h5>
+<p><span style="color: #dd830c;">※ 最新版は、以下のGitHubからダウンロードすること。</span></p>
+<p><a href="https://github.com/ok2nd/python/tree/main/photo_enhancer" target="_blank">https://github.com/ok2nd/python/tree/main/photo_enhancer</a></p>
+<p>タイルサイズは、以下で変更可能。</p>
+<pre>TILE_SIZE   = 1200 </pre>
+<pre>#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+写真等倍高画質化アプリ
+DRCT (Dense Residual Connected Transformer) / HAT (Hybrid Attention Transformer)
+CVPR 2024 DRCT は HAT-L を PSNR +0.14dB 上回る最新モデル
+
+使い方:
+  1. install.bat でセットアップ
+  2. download_model.py でモデルをダウンロード
+  3. run.bat またはこのスクリプトを直接実行
+"""
+
+import sys
+import os
+import math
+from pathlib import Path
+from typing import Optional
+
+import numpy as np
+from PIL import Image
+
+from PySide6.QtWidgets import (
+    QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout,
+    QPushButton, QLabel, QSlider, QFileDialog, QSplitter,
+    QProgressBar, QStatusBar, QGroupBox, QRadioButton, QComboBox,
+    QFrame, QSizePolicy, QMessageBox, QStackedWidget, QToolTip
+)
+from PySide6.QtCore import Qt, QThread, Signal, QRect, QPoint, QTimer, QSize
+from PySide6.QtGui import (
+    QPixmap, QImage, QPainter, QColor, QFont, QPen,
+    QDragEnterEvent, QDropEvent, QLinearGradient, QBrush, QPalette
+)
+
+# ============================================================
+# 定数・設定
+# ============================================================
+APP_TITLE   = "写真等倍高画質化"
+APP_VERSION = "1.0"
+MODELS_DIR  = Path(__file__).parent / "models"
+WINDOW_SIZE = 16    # Transformerアテンションウィンドウサイズ (16の倍数にパディング)
+# Real-ESRGAN (CNN) : 1024 推奨 → 1200x1200 画像を 4 タイルで処理
+# DRCT/HAT (Transformer): 768 推奨 → VRAM 約 4GB
+TILE_SIZE   = 1200  # CNN モデルは大きいほど速い (VRAM 約 2GB)
+# TILE_SIZE  = 1024  # CNN モデルは大きいほど速い (VRAM 約 2GB)
+# TILE_SIZE = 768   # DRCT/HAT で VRAM 不足の場合
+# TILE_SIZE = 512   # VRAM 不足時
+# TILE_SIZE = 256   # VRAM 不足時 (最小)
+USE_FP16    = False # fp16 は DRCT/HAT 非対応。CNN も float32 で十分速い
+
+
+# ============================================================
+# 高画質化処理スレッド (DRCT / HAT 共通)
+# ============================================================
+class EnhancerThread(QThread):
+    """
+    spandrel ライブラリで DRCT/HAT を自動認識・実行するスレッド
+    4xSR → 元サイズにLANCZOS縮小 = 等倍高画質化
+    """
+    progressChanged = Signal(int)   # 0〜100
+    statusChanged   = Signal(str)
+    finished        = Signal(object)   # PIL.Image
+    errorOccurred   = Signal(str)
+
+    def __init__(self, image: Image.Image, model_path: Path, intensity: float, parent=None):
+        super().__init__(parent)
+        self.image      = image
+        self.model_path = model_path
+        self.intensity  = intensity   # 0.0〜1.0
+
+    # ── メイン処理 ──────────────────────────────
+    def run(self):
+        try:
+            import torch
+            import torch.nn.functional as F
+
+            # cuDNN オートチューナー有効化 (同サイズ2回目以降が高速化)
+            torch.backends.cudnn.benchmark = True
+
+            # ---------- モデルロード ----------
+            self.statusChanged.emit("モデルを読み込み中...")
+            self.progressChanged.emit(5)
+
+            try:
+                import spandrel
+            except ImportError:
+                self.errorOccurred.emit(
+                    "spandrel がインストールされていません。\n"
+                    "install.bat を実行してください。"
+                )
+                return
+
+            device  = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+            use_fp16 = USE_FP16 and device.type == "cuda"
+            prec_str = "fp16" if use_fp16 else "fp32"
+            dev_str  = f"CUDA ({torch.cuda.get_device_name(0)})" if device.type == "cuda" else "CPU"
+            self.statusChanged.emit(f"デバイス: {dev_str} [{prec_str}] | モデル読み込み中...")
+
+            descriptor = spandrel.ModelLoader(device=device).load_from_file(str(self.model_path))
+            model = descriptor.model
+            scale = getattr(descriptor, "scale", 4)
+            model.eval()
+
+            # USE_FP16=False のため fp32 のまま使用 (DRCT/HAT は fp16 非対応)
+            model = model.float()
+
+            self.progressChanged.emit(15)
+            orig_w, orig_h = self.image.size
+            self.statusChanged.emit(
+                f"前処理中... (入力 {orig_w}×{orig_h} → ×{scale}SR → 等倍)"
+            )
+
+            # ---------- 前処理 ----------
+            img_rgb = self.image.convert("RGB")
+            img_np  = np.array(img_rgb).astype(np.float32) / 255.0
+
+            # [H,W,C] → [1,C,H,W]
+            img_t = torch.from_numpy(img_np.transpose(2, 0, 1)).unsqueeze(0).to(device)
+            # img_t は float32 のまま
+
+            self.progressChanged.emit(20)
+            self.statusChanged.emit(
+                f"高画質化処理中 (タイル {TILE_SIZE}px / {prec_str})..."
+            )
+
+            # ---------- タイル処理 ----------
+            result_t = self._tile_process(model, img_t, scale, device, F)
+
+            self.progressChanged.emit(88)
+            self.statusChanged.emit("後処理中 (等倍リサイズ)...")
+
+            # [1,C,Hs,Ws] → PIL  (.float() で fp32 に戻してから numpy 変換)
+            result_np = result_t.squeeze(0).cpu().float().numpy().transpose(1, 2, 0).clip(0, 1)
+            sr_img    = Image.fromarray((result_np * 255).astype(np.uint8))
+
+            # 等倍: 元解像度に LANCZOS で縮小
+            sr_resized = sr_img.resize((orig_w, orig_h), Image.LANCZOS)
+
+            # 強度ブレンド
+            if self.intensity &lt; 1.0:
+                sr_resized = Image.blend(img_rgb, sr_resized, self.intensity)
+
+            self.progressChanged.emit(100)
+            self.statusChanged.emit("完了")
+            self.finished.emit(sr_resized)
+
+        except torch.cuda.OutOfMemoryError:
+            self.errorOccurred.emit(
+                "GPU メモリ不足です。\n\n"
+                f"現在の設定: TILE_SIZE={TILE_SIZE}  USE_FP16={USE_FP16}\n\n"
+                "【対処方法】main.py 冒頭の値を変更してください:\n"
+                "  TILE_SIZE = 512  (または 256)\n"
+                "  USE_FP16  = True  (既に True の場合はさらに TILE_SIZE を縮小)"
+            )
+        except Exception as e:
+            import traceback
+            self.errorOccurred.emit(f"処理エラー:\n{str(e)}\n\n{traceback.format_exc()}")
+
+    # ── タイル処理 ───────────────────────────────
+    def _tile_process(self, model, img_t, scale, device, F):
+        import torch
+
+        # 入力を常に float32 に統一 (DRCT/HAT は fp16 非対応)
+        img_t = img_t.float()
+
+        _, C, H, W = img_t.shape
+
+        # WINDOW_SIZE の倍数にパディング
+        pad_h = (WINDOW_SIZE - H % WINDOW_SIZE) % WINDOW_SIZE
+        pad_w = (WINDOW_SIZE - W % WINDOW_SIZE) % WINDOW_SIZE
+        if pad_h or pad_w:
+            img_t = F.pad(img_t, (0, pad_w, 0, pad_h), mode="reflect")
+        _, _, Hp, Wp = img_t.shape
+
+        # 画像が小さければ一括処理
+        if Hp &lt;= TILE_SIZE and Wp &lt;= TILE_SIZE:
+            with torch.no_grad():
+                out = model(img_t)
+            return out[:, :, :H * scale, :W * scale].float()
+
+        # ---------- タイル分割処理 ----------
+        tiles_h = math.ceil(Hp / TILE_SIZE)
+        tiles_w = math.ceil(Wp / TILE_SIZE)
+        total   = tiles_h * tiles_w
+
+        # 結果バッファは CPU (システム RAM) に float32 で確保 → VRAM を節約
+        output = torch.zeros(1, C, Hp * scale, Wp * scale, dtype=torch.float32)
+
+        count = 0
+        for th in range(tiles_h):
+            for tw in range(tiles_w):
+                y0 = th * TILE_SIZE
+                x0 = tw * TILE_SIZE
+                y1 = min(y0 + TILE_SIZE, Hp)
+                x1 = min(x0 + TILE_SIZE, Wp)
+                ph, pw = y1 - y0, x1 - x0
+
+                patch = img_t[:, :, y0:y1, x0:x1]
+
+                # エッジタイルをフルサイズにパディング
+                if ph &lt; TILE_SIZE or pw &lt; TILE_SIZE:
+                    patch = F.pad(patch, (0, TILE_SIZE - pw, 0, TILE_SIZE - ph), "reflect").float()
+
+                with torch.no_grad():
+                    out_patch = model(patch)
+
+                # タイル完了後すぐ CPU (float32) に移動して VRAM を解放
+                oy0, ox0 = y0 * scale, x0 * scale
+                oy1 = oy0 + ph * scale
+                ox1 = ox0 + pw * scale
+                output[:, :, oy0:oy1, ox0:ox1] = (
+                    out_patch[:, :, :ph * scale, :pw * scale].cpu().float()
+                )
+                del out_patch, patch
+                torch.cuda.empty_cache()
+
+                count += 1
+                self.progressChanged.emit(20 + int(68 * count / total))
+
+        return output[:, :, :H * scale, :W * scale]
+
+
+# ============================================================
+# ドラッグ&amp;ドロップ対応 画像表示ウィジェット
+# ============================================================
+class ImageDropWidget(QWidget):
+    """画像ドロップ + フィット/実寸/パン操作"""
+
+    imageDropped = Signal(str)
+
+    ACCEPTED = {".png", ".jpg", ".jpeg", ".bmp", ".tiff", ".tif", ".webp"}
+
+    def __init__(self, placeholder: str = "ここに画像をドロップ", parent=None):
+        super().__init__(parent)
+        self.setAcceptDrops(True)
+        self._pixmap:    Optional[QPixmap] = None
+        self._fit_mode:  bool = True
+        self._placeholder = placeholder
+        self._pan_start: Optional[QPoint] = None
+        self._pan_offset = QPoint(0, 0)
+        self.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        self.setMinimumSize(200, 150)
+
+    # ── 公開メソッド ─────────────────────────────
+    def setPixmap(self, pixmap: QPixmap):
+        self._pixmap     = pixmap
+        self._pan_offset = QPoint(0, 0)
+        self.update()
+
+    def setFitMode(self, fit: bool):
+        self._fit_mode   = fit
+        self._pan_offset = QPoint(0, 0)
+        self.update()
+
+    def clear(self):
+        self._pixmap = None
+        self.update()
+
+    # ── 描画 ─────────────────────────────────────
+    def paintEvent(self, _):
+        p = QPainter(self)
+        p.setRenderHint(QPainter.SmoothPixmapTransform)
+        w, h = self.width(), self.height()
+
+        # 背景グリッド
+        p.fillRect(0, 0, w, h, QColor(16, 16, 26))
+        grid_color = QColor(26, 26, 40)
+        p.setPen(QPen(grid_color, 1))
+        step = 24
+        for x in range(0, w, step):
+            p.drawLine(x, 0, x, h)
+        for y in range(0, h, step):
+            p.drawLine(0, y, w, y)
+
+        if self._pixmap is None:
+            # ドロップゾーン
+            p.setPen(QPen(QColor(60, 80, 160, 180), 2, Qt.DashLine))
+            p.drawRoundedRect(16, 16, w - 32, h - 32, 10, 10)
+            p.setPen(QColor(120, 140, 210))
+            p.setFont(QFont("Yu Gothic UI", 11))
+            p.drawText(QRect(0, 0, w, h), Qt.AlignCenter, self._placeholder)
+        else:
+            pw, ph = self._pixmap.width(), self._pixmap.height()
+            if self._fit_mode:
+                s = min(w / pw, h / ph)
+                dw, dh = int(pw * s), int(ph * s)
+                dx, dy = (w - dw) // 2, (h - dh) // 2
+            else:
+                dw, dh = pw, ph
+                dx = (w - dw) // 2 + self._pan_offset.x()
+                dy = (h - dh) // 2 + self._pan_offset.y()
+            p.drawPixmap(QRect(dx, dy, dw, dh), self._pixmap)
+        p.end()
+
+    # ── ドラッグ&amp;ドロップ ─────────────────────────
+    def dragEnterEvent(self, e: QDragEnterEvent):
+        if e.mimeData().hasUrls():
+            for url in e.mimeData().urls():
+                if Path(url.toLocalFile()).suffix.lower() in self.ACCEPTED:
+                    e.acceptProposedAction()
+                    return
+
+    def dropEvent(self, e: QDropEvent):
+        for url in e.mimeData().urls():
+            p = url.toLocalFile()
+            if Path(p).suffix.lower() in self.ACCEPTED:
+                self.imageDropped.emit(p)
+                break
+
+    # ── パン操作 (実寸モード) ─────────────────────
+    def mousePressEvent(self, e):
+        if e.button() == Qt.LeftButton and not self._fit_mode:
+            self._pan_start = e.position().toPoint()
+            self.setCursor(Qt.ClosedHandCursor)
+
+    def mouseMoveEvent(self, e):
+        if self._pan_start is not None:
+            self._pan_offset += e.position().toPoint() - self._pan_start
+            self._pan_start   = e.position().toPoint()
+            self.update()
+
+    def mouseReleaseEvent(self, _):
+        self._pan_start = None
+        self.setCursor(Qt.ArrowCursor)
+
+
+# ============================================================
+# 重ね合わせ比較ウィジェット (スプリットビュー)
+# ============================================================
+class OverlayWidget(QWidget):
+    """ドラッグで分割線を動かして2枚を比較"""
+
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self._orig_px:  Optional[QPixmap] = None
+        self._enh_px:   Optional[QPixmap] = None
+        self._ratio:    float = 0.5
+        self._dragging: bool  = False
+        self._fit_mode: bool  = True
+        self.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        self.setMinimumSize(200, 150)
+        self.setMouseTracking(True)
+
+    def setImages(self, orig: Optional[QPixmap], enh: Optional[QPixmap]):
+        self._orig_px = orig
+        self._enh_px  = enh
+        self.update()
+
+    def setFitMode(self, fit: bool):
+        self._fit_mode = fit
+        self.update()
+
+    def _calc_rect(self, px: QPixmap) -&gt; QRect:
+        w, h  = self.width(), self.height()
+        pw, ph = px.width(), px.height()
+        if self._fit_mode:
+            s  = min(w / pw, h / ph)
+            dw, dh = int(pw * s), int(ph * s)
+        else:
+            dw, dh = pw, ph
+        return QRect((w - dw) // 2, (h - dh) // 2, dw, dh)
+
+    def paintEvent(self, _):
+        p = QPainter(self)
+        p.setRenderHint(QPainter.SmoothPixmapTransform)
+        w, h = self.width(), self.height()
+
+        # 背景
+        p.fillRect(0, 0, w, h, QColor(16, 16, 26))
+        grid_color = QColor(26, 26, 40)
+        p.setPen(QPen(grid_color, 1))
+        for x in range(0, w, 24): p.drawLine(x, 0, x, h)
+        for y in range(0, h, 24): p.drawLine(0, y, w, y)
+
+        if not self._orig_px and not self._enh_px:
+            p.setPen(QColor(120, 140, 210))
+            p.setFont(QFont("Yu Gothic UI", 11))
+            p.drawText(QRect(0, 0, w, h), Qt.AlignCenter,
+                       "画像を読み込んで高画質化してください")
+            p.end()
+            return
+
+        split_x = int(w * self._ratio)
+
+        # 左: オリジナル
+        if self._orig_px:
+            r = self._calc_rect(self._orig_px)
+            p.save()
+            p.setClipRect(0, 0, split_x, h)
+            p.drawPixmap(r, self._orig_px)
+            p.restore()
+
+        # 右: 高画質化後
+        if self._enh_px:
+            r = self._calc_rect(self._enh_px)
+            p.save()
+            p.setClipRect(split_x, 0, w - split_x, h)
+            p.drawPixmap(r, self._enh_px)
+            p.restore()
+
+        # 分割線
+        p.setPen(QPen(QColor(255, 220, 40, 230), 2))
+        p.drawLine(split_x, 0, split_x, h)
+
+        # ハンドル
+        hr = 14
+        cx, cy = split_x, h // 2
+        p.setBrush(QColor(255, 220, 40, 220))
+        p.setPen(QPen(QColor(0, 0, 0, 80), 1))
+        p.drawEllipse(cx - hr, cy - hr, hr * 2, hr * 2)
+        p.setPen(QPen(QColor(0, 0, 0, 180), 2))
+        p.drawLine(cx - 6, cy, cx + 6, cy)
+        p.drawLine(cx - 3, cy - 4, cx - 6, cy)
+        p.drawLine(cx - 3, cy + 4, cx - 6, cy)
+        p.drawLine(cx + 3, cy - 4, cx + 6, cy)
+        p.drawLine(cx + 3, cy + 4, cx + 6, cy)
+
+        # ラベル
+        p.setFont(QFont("Yu Gothic UI", 9, QFont.Bold))
+        bg = QColor(0, 0, 0, 150)
+        if split_x &gt; 90:
+            p.fillRect(8, 8, 84, 22, bg)
+            p.setPen(QColor(180, 200, 255))
+            p.drawText(QRect(8, 8, 84, 22), Qt.AlignCenter, "オリジナル")
+        if split_x &lt; w - 90:
+            p.fillRect(split_x + 8, 8, 84, 22, bg)
+            p.setPen(QColor(150, 255, 180))
+            p.drawText(QRect(split_x + 8, 8, 84, 22), Qt.AlignCenter, "高画質化後")
+        p.end()
+
+    def mousePressEvent(self, e):
+        if e.button() == Qt.LeftButton:
+            self._dragging = True
+
+    def mouseMoveEvent(self, e):
+        x = e.position().x()
+        split_x = int(self.width() * self._ratio)
+        self.setCursor(Qt.SplitHCursor if abs(x - split_x) &lt; 24 else Qt.ArrowCursor)
+        if self._dragging:
+            self._ratio = max(0.02, min(0.98, x / self.width()))
+            self.update()
+
+    def mouseReleaseEvent(self, _):
+        self._dragging = False
+
+
+# ============================================================
+# メインウィンドウ
+# ============================================================
+class MainWindow(QMainWindow):
+
+    def __init__(self):
+        super().__init__()
+        self.setWindowTitle(f"{APP_TITLE}  v{APP_VERSION}")
+        self.resize(1300, 840)
+
+        self._orig_image:  Optional[Image.Image] = None
+        self._enh_image:   Optional[Image.Image] = None
+        self._orig_path:   Optional[str]         = None
+        self._processor:   Optional[EnhancerThread] = None
+
+        self._build_ui()
+        self._apply_style()
+        self._check_env()
+
+    # ─────────────────────────────────────────────────────────
+    # UI 構築
+    # ─────────────────────────────────────────────────────────
+    def _build_ui(self):
+        root_w = QWidget()
+        self.setCentralWidget(root_w)
+        root = QVBoxLayout(root_w)
+        root.setContentsMargins(10, 8, 10, 6)
+        root.setSpacing(6)
+
+        root.addWidget(self._build_toolbar())
+
+        # ── 画像エリア (StackedWidget) ──
+        self._stack = QStackedWidget()
+
+        # Page 0: 左右並列
+        side_w = QWidget()
+        side_l = QHBoxLayout(side_w)
+        side_l.setContentsMargins(0, 0, 0, 0)
+        side_l.setSpacing(4)
+        self._splitter = QSplitter(Qt.Horizontal)
+
+        grp_orig = QGroupBox("オリジナル")
+        grp_orig.setObjectName("grpOrig")
+        ll = QVBoxLayout(grp_orig)
+        ll.setContentsMargins(4, 16, 4, 4)
+        self._drop_widget = ImageDropWidget(
+            "📂  ここに画像をドロップ\n\n"
+            "JPEG / PNG / BMP / TIFF / WebP"
+        )
+        self._drop_widget.imageDropped.connect(self._load_image)
+        ll.addWidget(self._drop_widget)
+
+        grp_enh = QGroupBox("高画質化後")
+        grp_enh.setObjectName("grpEnh")
+        rl = QVBoxLayout(grp_enh)
+        rl.setContentsMargins(4, 16, 4, 4)
+        self._enh_widget = ImageDropWidget("高画質化後の画像がここに表示されます")
+        rl.addWidget(self._enh_widget)
+
+        self._splitter.addWidget(grp_orig)
+        self._splitter.addWidget(grp_enh)
+        self._splitter.setSizes([650, 650])
+        side_l.addWidget(self._splitter)
+        self._stack.addWidget(side_w)   # index 0
+
+        # Page 1: 重ね合わせ
+        grp_ov = QGroupBox("比較ビュー  —  黄色いハンドルをドラッグして比較")
+        grp_ov.setObjectName("grpOverlay")
+        ol = QVBoxLayout(grp_ov)
+        ol.setContentsMargins(4, 16, 4, 4)
+        self._overlay = OverlayWidget()
+        ol.addWidget(self._overlay)
+        self._stack.addWidget(grp_ov)   # index 1
+
+        root.addWidget(self._stack, 1)
+
+        # プログレスバー
+        self._progress = QProgressBar()
+        self._progress.setVisible(False)
+        self._progress.setFixedHeight(12)
+        root.addWidget(self._progress)
+
+        # ステータスバー
+        sb = QStatusBar()
+        self.setStatusBar(sb)
+        self._lbl_status = QLabel("起動中...")
+        sb.addWidget(self._lbl_status, 1)
+        self._lbl_gpu = QLabel("")
+        self._lbl_gpu.setObjectName("gpuLabel")
+        sb.addPermanentWidget(self._lbl_gpu)
+
+    def _build_toolbar(self) -&gt; QFrame:
+        """上部ツールバー"""
+        bar = QFrame()
+        bar.setObjectName("toolbar")
+        bar.setFixedHeight(106)
+        lay = QHBoxLayout(bar)
+        lay.setContentsMargins(10, 6, 10, 6)
+        lay.setSpacing(10)
+
+        # ── モデル選択 ──
+        grp_model = QGroupBox("モデル選択")
+        ml = QVBoxLayout(grp_model)
+        ml.setContentsMargins(8, 4, 8, 6)
+        ml.setSpacing(3)
+        self._model_combo = QComboBox()
+        self._model_combo.setMinimumWidth(260)
+        self._model_combo.setObjectName("modelCombo")
+        self._refresh_models()
+        self._btn_reload = QPushButton("↺")
+        self._btn_reload.setFixedSize(26, 26)
+        self._btn_reload.setToolTip("models/ フォルダを再スキャン")
+        self._btn_reload.clicked.connect(self._refresh_models)
+        row_m = QHBoxLayout()
+        row_m.addWidget(self._model_combo)
+        row_m.addWidget(self._btn_reload)
+        ml.addLayout(row_m)
+        hint_m = QLabel("models/ フォルダに .pth ファイルを置く")
+        hint_m.setObjectName("hintLbl")
+        ml.addWidget(hint_m)
+        lay.addWidget(grp_model)
+
+        # ── 表示スケール ──
+        grp_scale = QGroupBox("表示スケール")
+        sl = QVBoxLayout(grp_scale)
+        sl.setContentsMargins(8, 4, 8, 4)
+        sl.setSpacing(2)
+        self._rb_fit    = QRadioButton("ウィンドウに合わせる")
+        self._rb_actual = QRadioButton("実寸 (1:1)  ドラッグでスクロール")
+        self._rb_fit.setChecked(True)
+        self._rb_fit.toggled.connect(self._on_scale_changed)
+        sl.addWidget(self._rb_fit)
+        sl.addWidget(self._rb_actual)
+        lay.addWidget(grp_scale)
+
+        # ── 比較モード ──
+        grp_cmp = QGroupBox("比較モード")
+        cl = QVBoxLayout(grp_cmp)
+        cl.setContentsMargins(8, 4, 8, 4)
+        cl.setSpacing(2)
+        self._rb_side    = QRadioButton("左右に並べる")
+        self._rb_overlay = QRadioButton("重ね合わせ比較")
+        self._rb_side.setChecked(True)
+        self._rb_side.toggled.connect(self._on_compare_changed)
+        cl.addWidget(self._rb_side)
+        cl.addWidget(self._rb_overlay)
+        lay.addWidget(grp_cmp)
+
+        # ── 強度スライダー ──
+        grp_int = QGroupBox("高画質化強度")
+        il = QVBoxLayout(grp_int)
+        il.setContentsMargins(8, 4, 8, 4)
+        il.setSpacing(3)
+        row_i = QHBoxLayout()
+        self._slider = QSlider(Qt.Horizontal)
+        self._slider.setRange(0, 100)
+        self._slider.setValue(100)
+        self._slider.setMinimumWidth(170)
+        self._lbl_int = QLabel("100%")
+        self._lbl_int.setFixedWidth(38)
+        self._lbl_int.setAlignment(Qt.AlignRight | Qt.AlignVCenter)
+        self._slider.valueChanged.connect(lambda v: self._lbl_int.setText(f"{v}%"))
+        row_i.addWidget(self._slider)
+        row_i.addWidget(self._lbl_int)
+        il.addLayout(row_i)
+        h_int = QLabel("← 元画像に近い      最大強度 →")
+        h_int.setObjectName("hintLbl")
+        il.addWidget(h_int)
+        lay.addWidget(grp_int)
+
+        # ── ボタン ──
+        grp_btn = QGroupBox("操作")
+        bl = QVBoxLayout(grp_btn)
+        bl.setContentsMargins(8, 4, 8, 4)
+        bl.setSpacing(5)
+        self._btn_enhance = QPushButton("🚀  高画質化")
+        self._btn_enhance.setObjectName("btnEnhance")
+        self._btn_enhance.setEnabled(False)
+        self._btn_enhance.setFixedHeight(32)
+        self._btn_enhance.clicked.connect(self._start_enhance)
+
+        self._btn_save = QPushButton("💾  保存")
+        self._btn_save.setObjectName("btnSave")
+        self._btn_save.setEnabled(False)
+        self._btn_save.setFixedHeight(32)
+        self._btn_save.clicked.connect(self._save)
+
+        bl.addWidget(self._btn_enhance)
+        bl.addWidget(self._btn_save)
+        lay.addWidget(grp_btn)
+
+        lay.addStretch(1)
+        return bar
+
+    # ─────────────────────────────────────────────────────────
+    # 初期化・環境チェック
+    # ─────────────────────────────────────────────────────────
+    def _check_env(self):
+        try:
+            import torch
+            if torch.cuda.is_available():
+                name = torch.cuda.get_device_name(0)
+                mem  = torch.cuda.get_device_properties(0).total_memory / 1024**3
+                self._lbl_gpu.setText(f"GPU: {name}  ({mem:.1f} GB VRAM)")
+                self._lbl_gpu.setStyleSheet("color:#55ee88; padding:0 10px;")
+            else:
+                self._lbl_gpu.setText("GPU 未検出 — CPU モード (低速)")
+                self._lbl_gpu.setStyleSheet("color:#ffaa33; padding:0 10px;")
+        except ImportError:
+            self._lbl_gpu.setText("PyTorch 未インストール")
+            self._lbl_gpu.setStyleSheet("color:#ff5555; padding:0 10px;")
+
+        model_files = list(MODELS_DIR.glob("*.pth")) if MODELS_DIR.exists() else []
+        if model_files:
+            self._lbl_status.setText(
+                f"✓ モデル {len(model_files)} 件検出 | 画像をドロップして開始"
+            )
+        else:
+            self._lbl_status.setText(
+                "⚠ models/ にモデルなし — download_model.py を実行してください"
+            )
+
+    def _refresh_models(self):
+        """models/ フォルダをスキャンしてコンボボックスを更新"""
+        # モデル名 → 速度ラベル のマッピング
+        SPEED_TAGS = {
+            "realesrgan": "⚡ 高速",
+            "esrgan":     "⚡ 高速",
+            "drct":       "🐢 低速",
+            "hat":        "🐢 低速",
+            "swinir":     "🐢 低速",
+        }
+        self._model_combo.clear()
+        MODELS_DIR.mkdir(parents=True, exist_ok=True)
+        pth_files = sorted(MODELS_DIR.glob("*.pth"))
+        if pth_files:
+            for f in pth_files:
+                tag = ""
+                name_lower = f.name.lower()
+                for key, label in SPEED_TAGS.items():
+                    if key in name_lower:
+                        tag = f"  [{label}]"
+                        break
+                self._model_combo.addItem(f"{f.name}{tag}", userData=str(f))
+        else:
+            self._model_combo.addItem("モデルなし — download_model.py を実行")
+            
+        DEFAULT_MODEL = "RealESRGAN_x4plus.pth"
+        for i in range(self._model_combo.count()):
+            if DEFAULT_MODEL in (self._model_combo.itemData(i) or ""):
+                self._model_combo.setCurrentIndex(i)
+                break
+                
+    def _get_model_path(self) -&gt; Optional[Path]:
+        idx = self._model_combo.currentIndex()
+        data = self._model_combo.itemData(idx)
+        if data and Path(data).exists():
+            return Path(data)
+        return None
+
+    # ─────────────────────────────────────────────────────────
+    # 画像操作
+    # ─────────────────────────────────────────────────────────
+    def _load_image(self, path: str):
+        try:
+            img = Image.open(path)
+            self._orig_image = img.copy()
+            self._orig_path  = path
+            self._enh_image  = None
+
+            px = _pil_to_qpixmap(img)
+            self._drop_widget.setPixmap(px)
+            self._enh_widget.clear()
+            self._overlay.setImages(px, None)
+
+            w, h = img.size
+            kb   = os.path.getsize(path) / 1024
+            self._lbl_status.setText(
+                f"読込完了: {Path(path).name}  [{w}×{h} px  {img.mode}  {kb:.0f} KB]"
+            )
+            self._btn_enhance.setEnabled(True)
+            self._btn_save.setEnabled(False)
+        except Exception as e:
+            QMessageBox.critical(self, "読み込みエラー", f"画像を開けませんでした:\n{e}")
+
+    # ─────────────────────────────────────────────────────────
+    # 高画質化
+    # ─────────────────────────────────────────────────────────
+    def _start_enhance(self):
+        if self._orig_image is None:
+            return
+
+        model_path = self._get_model_path()
+        if model_path is None:
+            QMessageBox.warning(
+                self, "モデル未選択",
+                "models/ フォルダにモデルファイル (.pth) がありません。\n"
+                "download_model.py を実行してください。"
+            )
+            return
+
+        intensity = self._slider.value() / 100.0
+        self._btn_enhance.setEnabled(False)
+        self._btn_save.setEnabled(False)
+        self._progress.setVisible(True)
+        self._progress.setValue(0)
+
+        self._processor = EnhancerThread(self._orig_image, model_path, intensity)
+        self._processor.progressChanged.connect(self._progress.setValue)
+        self._processor.statusChanged.connect(self._lbl_status.setText)
+        self._processor.finished.connect(self._on_done)
+        self._processor.errorOccurred.connect(self._on_error)
+        self._processor.start()
+
+    def _on_done(self, result: Image.Image):
+        self._enh_image = result
+        orig_px = _pil_to_qpixmap(self._orig_image)
+        enh_px  = _pil_to_qpixmap(result)
+        self._enh_widget.setPixmap(enh_px)
+        self._overlay.setImages(orig_px, enh_px)
+        self._progress.setVisible(False)
+        self._btn_enhance.setEnabled(True)
+        self._btn_save.setEnabled(True)
+        w, h = result.size
+        v = self._slider.value()
+        self._lbl_status.setText(
+            f"✓ 高画質化完了  [{w}×{h} px]  強度: {v}%  |  "
+            f"モデル: {self._model_combo.currentText()}"
+        )
+
+    def _on_error(self, msg: str):
+        self._progress.setVisible(False)
+        self._btn_enhance.setEnabled(True)
+        QMessageBox.critical(self, "処理エラー", msg)
+        self._lbl_status.setText("⚠ 処理エラー")
+
+    # ─────────────────────────────────────────────────────────
+    # 保存
+    # ─────────────────────────────────────────────────────────
+    def _save(self):
+        if self._enh_image is None or self._orig_path is None:
+            return
+
+        v     = self._slider.value()
+        orig  = Path(self._orig_path)
+        stem, suf = orig.stem, orig.suffix.lower()
+
+        # モデル名から短縮タグを生成 (例: Real_HAT_GAN_sharper → hat)
+        model_name = self._model_combo.currentText().lower()
+        if "realesrgan" in model_name and "anime" in model_name:
+            tag = "esrgan-anime"
+        elif "realesrgan" in model_name and "x2" in model_name:
+            tag = "esrgan-x2"
+        elif "realesrgan" in model_name:
+            tag = "esrgan"
+        elif "drct" in model_name:
+            tag = "drct"
+        elif "hat" in model_name:
+            tag = "hat"
+        else:
+            # .pth ファイル名のステム先頭8文字
+            raw = self._model_combo.itemData(self._model_combo.currentIndex()) or model_name
+            tag = Path(raw).stem[:12]
+
+        default = f"{stem}-{tag}{suf}" if v == 100 else f"{stem}-{tag}-{v}{suf}"
+
+        path, _ = QFileDialog.getSaveFileName(
+            self,
+            "高画質化画像を保存",
+            str(orig.parent / default),
+            "JPEG (*.jpg *.jpeg);;PNG (*.png);;WebP (*.webp);;TIFF (*.tif *.tiff);;BMP (*.bmp)"
+        )
+        if not path:
+            return
+
+        try:
+            ext = Path(path).suffix.lower()
+            img = self._enh_image.convert("RGB")
+            if ext in (".jpg", ".jpeg"):
+                img.save(path, "JPEG", quality=95, subsampling=0)
+            elif ext == ".png":
+                img.save(path, "PNG", compress_level=6)
+            elif ext == ".webp":
+                img.save(path, "WEBP", quality=95, method=6)
+            elif ext in (".tif", ".tiff"):
+                img.save(path, "TIFF", compression="lzw")
+            else:
+                img.save(path)
+            self._lbl_status.setText(f"✓ 保存完了: {path}")
+        except Exception as e:
+            QMessageBox.critical(self, "保存エラー", f"保存に失敗しました:\n{e}")
+
+    # ─────────────────────────────────────────────────────────
+    # UI イベント
+    # ─────────────────────────────────────────────────────────
+    def _on_scale_changed(self):
+        fit = self._rb_fit.isChecked()
+        self._drop_widget.setFitMode(fit)
+        self._enh_widget.setFitMode(fit)
+        self._overlay.setFitMode(fit)
+
+    def _on_compare_changed(self):
+        self._stack.setCurrentIndex(0 if self._rb_side.isChecked() else 1)
+
+    # ─────────────────────────────────────────────────────────
+    # スタイルシート
+    # ─────────────────────────────────────────────────────────
+    def _apply_style(self):
+        self.setStyleSheet("""
+        QMainWindow, QWidget {
+            background: #0f0f1a;
+            color: #c4d4f0;
+            font-family: "Yu Gothic UI", "Meiryo UI", "MS Gothic", sans-serif;
+            font-size: 10pt;
+        }
+        QFrame#toolbar {
+            background: #181828;
+            border: 1px solid #252545;
+            border-radius: 6px;
+        }
+        QGroupBox {
+            border: 1px solid #252545;
+            border-radius: 6px;
+            margin-top: 12px;
+            padding: 4px;
+        }
+        QGroupBox::title {
+            subcontrol-origin: margin;
+            left: 10px;
+            padding: 0 5px;
+            color: #7080b0;
+            font-size: 9pt;
+        }
+        QGroupBox#grpOrig::title  { color: #6688ee; font-weight: bold; }
+        QGroupBox#grpEnh::title   { color: #44cc88; font-weight: bold; }
+        QGroupBox#grpOverlay::title { color: #ddbb44; font-weight: bold; }
+
+        QPushButton#btnEnhance {
+            background: qlineargradient(x1:0,y1:0,x2:1,y2:0,
+                stop:0 #1a3a9a, stop:1 #1a6a9a);
+            color: #e8f0ff;
+            border: 1px solid #2a5acc;
+            border-radius: 5px;
+            font-weight: bold;
+            font-size: 11pt;
+            padding: 2px 10px;
+        }
+        QPushButton#btnEnhance:hover  {
+            background: qlineargradient(x1:0,y1:0,x2:1,y2:0,
+                stop:0 #2a4acc, stop:1 #2a8acc);
+        }
+        QPushButton#btnEnhance:pressed { background: #1a2a7a; }
+        QPushButton#btnEnhance:disabled { background: #222230; color: #444460; border-color: #333; }
+
+        QPushButton#btnSave {
+            background: qlineargradient(x1:0,y1:0,x2:1,y2:0,
+                stop:0 #0e4420, stop:1 #0e5830);
+            color: #ccffdd;
+            border: 1px solid #1a8840;
+            border-radius: 5px;
+            font-weight: bold;
+            font-size: 11pt;
+            padding: 2px 10px;
+        }
+        QPushButton#btnSave:hover  { background: qlineargradient(x1:0,y1:0,x2:1,y2:0, stop:0 #186630, stop:1 #188844); }
+        QPushButton#btnSave:pressed { background: #0a3018; }
+        QPushButton#btnSave:disabled { background: #222230; color: #444460; border-color: #333; }
+
+        QPushButton {
+            background: #1e1e30;
+            color: #aabbdd;
+            border: 1px solid #333355;
+            border-radius: 4px;
+            padding: 2px 6px;
+        }
+        QPushButton:hover { background: #282840; border-color: #4455aa; }
+
+        QComboBox#modelCombo {
+            background: #1a1a2e;
+            color: #aaccff;
+            border: 1px solid #334;
+            border-radius: 4px;
+            padding: 3px 8px;
+        }
+        QComboBox#modelCombo::drop-down { border: none; }
+        QComboBox QAbstractItemView {
+            background: #1a1a2e;
+            color: #aaccff;
+            selection-background-color: #2244aa;
+        }
+
+        QSlider::groove:horizontal {
+            height: 5px;
+            background: #252540;
+            border-radius: 3px;
+        }
+        QSlider::handle:horizontal {
+            background: #4488ff;
+            border: 2px solid #66aaff;
+            width: 14px; height: 14px;
+            margin: -5px 0;
+            border-radius: 7px;
+        }
+        QSlider::sub-page:horizontal {
+            background: qlineargradient(x1:0,y1:0,x2:1,y2:0,
+                stop:0 #2244cc, stop:1 #44aacc);
+            border-radius: 3px;
+        }
+
+        QProgressBar {
+            border: 1px solid #252540;
+            border-radius: 3px;
+            background: #111122;
+            color: transparent;
+        }
+        QProgressBar::chunk {
+            background: qlineargradient(x1:0,y1:0,x2:1,y2:0,
+                stop:0 #1a44cc, stop:1 #22ccaa);
+            border-radius: 2px;
+        }
+
+        QStatusBar {
+            background: #0c0c18;
+            color: #7080a0;
+            border-top: 1px solid #1a1a2e;
+            font-size: 9pt;
+        }
+
+        QRadioButton::indicator {
+            width: 13px; height: 13px;
+        }
+        QRadioButton::indicator:unchecked {
+            border: 2px solid #334466;
+            border-radius: 7px;
+            background: #141422;
+        }
+        QRadioButton::indicator:checked {
+            border: 2px solid #3366ff;
+            border-radius: 7px;
+            background: qradialgradient(cx:0.5,cy:0.5,radius:0.5,
+                stop:0 #88aaff, stop:0.5 #3366ff, stop:1 #1a44cc);
+        }
+
+        QLabel#hintLbl { color: #44445a; font-size: 8pt; }
+
+        QSplitter::handle:horizontal {
+            background: #252540;
+            width: 4px;
+        }
+        QSplitter::handle:horizontal:hover { background: #3355aa; }
+        """)
+
+
+# ============================================================
+# ユーティリティ
+# ============================================================
+def _pil_to_qpixmap(img: Image.Image) -&gt; QPixmap:
+    rgb  = img.convert("RGB")
+    data = rgb.tobytes("raw", "RGB")
+    qi   = QImage(data, rgb.width, rgb.height, rgb.width * 3, QImage.Format_RGB888)
+    return QPixmap.fromImage(qi.copy())
+
+
+# ============================================================
+# エントリーポイント
+# ============================================================
+def main():
+    QApplication.setAttribute(Qt.AA_UseHighDpiPixmaps, True)
+    app = QApplication(sys.argv)
+    app.setApplicationName(APP_TITLE)
+    win = MainWindow()
+    win.show()
+    sys.exit(app.exec())
+
+
+if __name__ == "__main__":
+    main()
+</pre>
+<p><a class="link-card" href="https://ok2nd.github.io/sitemap/hatena-sitemap-table.html?search=%E7%AD%89%E5%80%8D%E9%AB%98%E7%94%BB%E8%B3%AA%E5%8C%96" target="_blank" rel="noopener noreferrer"><span class="lc-body"><span class="lc-title">晴歩雨描：記事一覧</span><span class="lc-desc"></span><span class="lc-site">ok2nd.github.io</span></span></a></p>
+<p><a class="link-card" href="../../10/10/151741.html"><span class="lc-body"><span class="lc-title">ローカル）Python）写真を等倍高画質化するWindowsアプリを再作成。シャープネス（アンシャープマスク方式）使用。</span><span class="lc-desc">今まで、写真を 等倍高画質化 するのを、 画像生成AI でいくつか試したみた。画素数や構図がほぼ100%維持されるようになってきており、実用レベルに近づきつつあると感じている。長辺1200ピクセル程度のサイズの写真なら、…</span><span class="lc-site">晴歩雨描 · <time>2026-10-10</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20261010/20261010151120.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../29/104033.html"><span class="lc-body"><span class="lc-title">Claude）Python）ローカル）写真を等倍高画質化するWindowsアプリ。Real-ESRGAN、SwinIR、DRCTモデル比較。ICCプロファイル維持。</span><span class="lc-desc">先日、写真を等倍高画質化するPythonアプリを作成した。 モデルは、CNN系Real-ESRGAN、Transformer系DRCTを使用した。 前回の検証では、長辺1200ピクセルの画像を使って処理時間がかかりすぎた…</span><span class="lc-site">晴歩雨描 · <time>2026-03-29</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260329/20260329083504.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2025/11/25/165229.html"><span class="lc-body"><span class="lc-title">画像生成AI「Seedream 4（Dreamina）」で、写真の等倍高画質化を試した。かなり実用に近づいている。</span><span class="lc-desc">いくつかの画像生成AIで、写真の「 オブジェクト除去 」や「 背景ボケ 」を検証したが、現時点では「 Seedream 4 」が優秀。 画像生成AIでは、写真を編集するというよりは、写真全体を再描画するので、指示事項以外…</span><span class="lc-site">晴歩雨描 · <time>2025-11-25</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20251125/20251125161415.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2025/09/12/163500.html"><span class="lc-body"><span class="lc-title">「Topaz Labs」で、アップスケーリングなしで写真の等倍高画質化が出来るかを検証。結果は優秀。野鳥写真で「Aiarty Image Enhancer」と比較。</span><span class="lc-desc">『 Topaz Labs 』の「 Upscale（Standard V2） 」で、アップスケーリングなしで等倍高画質化を検証してみた。 野鳥写真で「 Aiarty Image Enhancer 」の結果とも比較。 結果的…</span><span class="lc-site">晴歩雨描 · <time>2025-09-12</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250912/20250912162716.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2025/03/28/153642.html"><span class="lc-body"><span class="lc-title">写真の高画質化/鮮明化Windowsアプリ「Aiarty Image Enhancer」「Upscayl」最新版で、等倍高画質化（アップスケーリングなし）を野鳥写真で比較。</span><span class="lc-desc">先日、写真の高画質化Webツールで、アップスケーリングなしの高画質化の検証をしたが、使えるレベルのものはなかった。 今回、写真の高画質化/鮮明化Windowsアプリ「 Aiarty Image Enhancer 」「 U…</span><span class="lc-site">晴歩雨描 · <time>2025-03-28</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250328/20250328151358.jpg" alt="" loading="lazy"></span></a></p></div></article>
+</body>
+</html>

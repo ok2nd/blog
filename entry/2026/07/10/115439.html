@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HTML+JavaScript音声読み上げWebページ生成をPythonで作成。（SF短編小説を縦書き＋音声読み上げ） - 晴歩雨描</title>
+<link rel="stylesheet" href="../../../../style.css">
+</head>
+<body>
+<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>HTML+JavaScript音声読み上げWebページ生成をPythonで作成。（SF短編小説を縦書き＋音声読み上げ）</h1><p class="meta">2026-07-10 · <a href="../../../../category/c42.html">＜AI＞</a> <a href="../../../../category/c26.html">文学</a> <a href="../../../../category/c13.html">ホームページ、Web作成</a></p><div class="entry-body"><p>以前に、生成AIのChatGPTで、SF短編小説を書いた。</p>
+<p><a class="link-card" href="../../05/19/173025.html"><span class="lc-body"><span class="lc-title">ChatGPTで、SF短編小説を書いてみた。縦書きで読める。</span><span class="lc-desc">生成AIのChatGPTで、SF短編小説をいくつか書いてみた。 それぞれのページは縦書きで読めるようにした。ページ送りもできる。 【 太陽系内 】 001 午前三時の月面コンビニ 002 月面郵便局、配達不能 003 土…</span><span class="lc-site">晴歩雨描 · <time>2026-05-19</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260519/20260519173230.jpg" alt="" loading="lazy"></span></a></p>
+<p>SF短編小説は、Webブラウザで縦書きで読めるようにしている。</p>
+<p><a class="link-card" href="https://ok2nd.github.io/tool/story/index_SF-list.html" target="_blank" rel="noopener noreferrer"><span class="lc-body"><span class="lc-title">SF短編小説</span><span class="lc-desc"></span><span class="lc-site">ok2nd.github.io</span></span></a></p>
+<p><em>このHTMLページを音声読み上げできるHTML＋CSS＋JavaScriptに変換するプログラムをPythonで作成。</em>（Claudeで作成。）</p>
+<p>指定したフォルダーに入っているSF短編小説HTMLを、読み上げ出来るHTMLに変換して「reading」フォルダーに入れる。</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260710/20260710113756.png" width="722" height="552" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<p>■ 生成されたSF短編小説（読み上げ付）一覧は、以下に。</p>
+<p><a href="https://ok2nd.github.io/tool/story/index_SF-list-reading.html" target="_blank">https://ok2nd.github.io/tool/story/index_SF-list-reading.html</a></p>
+<p>作成された音声読み上げ可能なページでは、読み上げている文章がハイライトされる。読み上げ部分は自動的にスクロールされる。画面クリックで読み上げ位置を変更できる。</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260710/20260710113807.png" width="865" height="680" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<p>読み上げ速度や読み上げる音声を変更できる。Androidスマホでは、Google音声しか選択できない。</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260710/20260710113816.png" width="611" height="186" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<p>《 Python プログラム： tts_injector_gui.pyw》</p>
+<pre># -*- coding: utf-8 -*-
+"""
+tts_injector_gui.py
+
+指定フォルダ以下の .html / .htm を再帰的に検索し、
+読み上げ機能（Web Speech API + 自動スクロール）を注入したコピーを
+「reading」フォルダ以下に、元と同じフォルダ構成・同じファイル名で出力するGUIアプリ。
+
+必要ライブラリ:
+    pip install beautifulsoup4
+
+実行:
+    python tts_injector_gui.py
+"""
+
+import os
+import sys
+import threading
+import traceback
+from pathlib import Path
+
+import tkinter as tk
+from tkinter import filedialog, messagebox, scrolledtext, ttk
+
+from tts_core import inject_tts_file
+
+READING_DIRNAME = "reading"
+
+
+class TtsInjectorApp:
+    def __init__(self, root: tk.Tk):
+        self.root = root
+        root.title("読み上げ機能 一括注入ツール")
+        root.geometry("720x520")
+        root.minsize(600, 420)
+
+        self.folder_var = tk.StringVar()
+        self.recursive_var = tk.BooleanVar(value=True)
+        self.overwrite_var = tk.BooleanVar(value=True)
+        self.is_running = False
+
+        self._build_widgets()
+
+    # ---------- UI構築 ----------
+    def _build_widgets(self):
+        pad = {"padx": 8, "pady": 6}
+
+        frame_top = ttk.Frame(self.root)
+        frame_top.pack(fill="x", **pad)
+
+        ttk.Label(frame_top, text="対象フォルダ:").pack(side="left")
+        entry = ttk.Entry(frame_top, textvariable=self.folder_var)
+        entry.pack(side="left", fill="x", expand=True, padx=6)
+        ttk.Button(frame_top, text="参照...", command=self.choose_folder).pack(side="left")
+
+        frame_opts = ttk.Frame(self.root)
+        frame_opts.pack(fill="x", **pad)
+        ttk.Checkbutton(
+            frame_opts, text="サブフォルダも再帰的に処理する", variable=self.recursive_var
+        ).pack(side="left")
+        ttk.Checkbutton(
+            frame_opts, text="出力先が既に存在する場合は上書きする", variable=self.overwrite_var
+        ).pack(side="left", padx=12)
+
+        frame_btn = ttk.Frame(self.root)
+        frame_btn.pack(fill="x", **pad)
+        self.run_button = ttk.Button(
+            frame_btn, text="読み上げ機能を注入して 'reading' フォルダへ出力", command=self.start_process
+        )
+        self.run_button.pack(side="left")
+
+        self.progress = ttk.Progressbar(frame_btn, mode="determinate")
+        self.progress.pack(side="left", fill="x", expand=True, padx=10)
+
+        ttk.Label(self.root, text="ログ:").pack(anchor="w", padx=8)
+        self.log_box = scrolledtext.ScrolledText(self.root, height=20, state="disabled", wrap="word")
+        self.log_box.pack(fill="both", expand=True, padx=8, pady=(0, 8))
+
+    # ---------- ユーティリティ ----------
+    def log(self, msg: str):
+        def _append():
+            self.log_box.configure(state="normal")
+            self.log_box.insert("end", msg + "\n")
+            self.log_box.see("end")
+            self.log_box.configure(state="disabled")
+        self.root.after(0, _append)
+
+    def choose_folder(self):
+        path = filedialog.askdirectory(title="HTMLファイルがあるフォルダを選択")
+        if path:
+            self.folder_var.set(path)
+
+    # ---------- 処理本体 ----------
+    def find_html_files(self, root_dir: Path, recursive: bool):
+        pattern_ext = (".html", ".htm")
+        files = []
+        if recursive:
+            for dirpath, dirnames, filenames in os.walk(root_dir):
+                # 出力先の reading フォルダ自身は対象から除外（無限に処理しないため）
+                dirnames[:] = [d for d in dirnames if d != READING_DIRNAME]
+                for fn in filenames:
+                    if fn.lower().endswith(pattern_ext):
+                        files.append(Path(dirpath) / fn)
+        else:
+            for fn in os.listdir(root_dir):
+                p = root_dir / fn
+                if p.is_file() and p.suffix.lower() in pattern_ext:
+                    files.append(p)
+        return sorted(files)
+
+    def start_process(self):
+        if self.is_running:
+            return
+        folder = self.folder_var.get().strip()
+        if not folder:
+            messagebox.showwarning("未指定", "対象フォルダを選択してください。")
+            return
+        root_dir = Path(folder)
+        if not root_dir.is_dir():
+            messagebox.showerror("エラー", "指定されたフォルダが見つかりません。")
+            return
+
+        self.is_running = True
+        self.run_button.configure(state="disabled")
+        self.log_box.configure(state="normal")
+        self.log_box.delete("1.0", "end")
+        self.log_box.configure(state="disabled")
+
+        t = threading.Thread(target=self._process_worker, args=(root_dir,), daemon=True)
+        t.start()
+
+    def _process_worker(self, root_dir: Path):
+        try:
+            recursive = self.recursive_var.get()
+            overwrite = self.overwrite_var.get()
+
+            files = self.find_html_files(root_dir, recursive)
+            total = len(files)
+            self.log(f"対象HTMLファイル数: {total} 件")
+            self.root.after(0, lambda: self.progress.configure(maximum=max(total, 1), value=0))
+
+            if total == 0:
+                self.log("処理対象のHTMLファイルが見つかりませんでした。")
+                return
+
+            success = 0
+            skipped = 0
+            failed = 0
+
+            for i, src in enumerate(files, start=1):
+                rel = src.relative_to(root_dir)
+                dst = root_dir / READING_DIRNAME / rel
+
+                if dst.exists() and not overwrite:
+                    self.log(f"[スキップ] {rel} （既に出力先に存在）")
+                    skipped += 1
+                else:
+                    try:
+                        inject_tts_file(src, dst, log=self.log)
+                        self.log(f"[完了] {rel} -&gt; {READING_DIRNAME}/{rel}")
+                        success += 1
+                    except Exception as e:
+                        failed += 1
+                        self.log(f"[失敗] {rel}: {e}")
+                        self.log(traceback.format_exc())
+
+                self.root.after(0, lambda v=i: self.progress.configure(value=v))
+
+            self.log("----")
+            self.log(f"完了: {success} 件 / スキップ: {skipped} 件 / 失敗: {failed} 件")
+            self.log(f"出力先: {root_dir / READING_DIRNAME}")
+
+        except Exception as e:
+            self.log(f"予期しないエラーが発生しました: {e}")
+            self.log(traceback.format_exc())
+        finally:
+            self.is_running = False
+            self.root.after(0, lambda: self.run_button.configure(state="normal"))
+
+
+def main():
+    root = tk.Tk()
+    try:
+        style = ttk.Style()
+        if "vista" in style.theme_names():
+            style.theme_use("vista")
+        elif "clam" in style.theme_names():
+            style.theme_use("clam")
+    except Exception:
+        pass
+    app = TtsInjectorApp(root)
+    root.mainloop()
+
+
+if __name__ == "__main__":
+    main()
+</pre>
+<p>《 Python プログラム：tts_core.py（tts_injector_gui.pywから呼ばれる） 》</p>
+<pre># -*- coding: utf-8 -*-
+"""
+tts_core.py
+HTMLファイルに「読み上げ機能」を注入するコアロジック。
+- 本文テキストを文単位（。！？!?＋改行）で &lt;span class="tts-sentence" id="tts-N"&gt; に分割
+- 再生中の文をハイライトし、自前計算によるスクロールで追従表示
+- Web Speech API (speechSynthesis) を使うため、追加ライブラリ不要でブラウザだけで動作
+"""
+
+import re
+import shutil
+from pathlib import Path
+from bs4 import BeautifulSoup, NavigableString, Comment
+
+# 文の区切り（。！？!? の直後で分割。区切り文字自体は前の文に残す）
+SENTENCE_SPLIT_RE = re.compile(r'(?&lt;=[。！？!?])(?=\S|\s)')
+
+SKIP_PARENT_TAGS = {'script', 'style', 'textarea', 'noscript', 'title'}
+
+# common.js の中の「独自ページャー」を検出し、TTS連携用の
+# window.__ttsReaderAPI を注入するためのアンカー文字列。
+# このアンカーが見つかった場合のみパッチする（見つからなければ
+# 元のファイルをそのままコピーし、TTS側は scrollIntoView にフォールバックする）。
+COMMON_JS_PATCH_ANCHOR = "var btnNext = document.getElementById('btn-next');"
+
+COMMON_JS_API_SNIPPET = """
+
+\t/* ==== TTS reader integration (auto-injected by tts_core.py) ====
+\t   centerElement() は、既存のページめくり機構（applyOffset / currentPage /
+\t   ページ番号表示 / ボタンの有効無効状態）と矛盾なく、
+\t   指定した要素を画面中央へ持ってくるための公開API。 */
+\twindow.__ttsReaderAPI = {
+\t\tcenterElement: function (el, animate) {
+\t\t\tcomputeMetrics();
+\t\t\tvar wrapperRect = wrapper.getBoundingClientRect();
+\t\t\tvar elRect = el.getBoundingClientRect();
+\t\t\tvar wrapperCenter = wrapperRect.left + wrapperRect.width / 2;
+\t\t\tvar elCenter = elRect.left + elRect.width / 2;
+\t\t\tvar delta = wrapperCenter - elCenter;
+\t\t\tapplyOffset(scrollOffset + delta, animate !== false);
+\t\t},
+\t\t/* TTSバーの高さが変わった(画面回転・折り返し等)後に、
+\t\t   ページ数やレイアウトを現在ページを保ったまま再計算する */
+\t\trecalculate: function () {
+\t\t\tcomputeMetrics();
+\t\t\tgoToPage(Math.min(currentPage, totalPages - 1), false);
+\t\t}
+\t};
+"""
+
+
+def patch_common_js(text: str) -&gt; str:
+    """既知の #content-wrapper 型ページャー(common.js)にTTS連携APIを追加する。
+    アンカーが見つからない場合は無加工のまま返す（別構造のサイトでも安全）。
+    """
+    if COMMON_JS_PATCH_ANCHOR in text and '__ttsReaderAPI' not in text:
+        return text.replace(COMMON_JS_PATCH_ANCHOR, COMMON_JS_PATCH_ANCHOR + COMMON_JS_API_SNIPPET, 1)
+    return text
+
+
+_URL_SCHEME_RE = re.compile(r'^[a-zA-Z][a-zA-Z0-9+.\-]*:')
+
+
+def is_local_relative_url(url: str) -&gt; bool:
+    """ローカルの相対パス参照（コピーして持ってくるべきアセット）かどうか判定する。
+    http(s):, data:, mailto:, javascript:, # 始まり、 / 始まり(絶対パス) は対象外。
+    """
+    if not url:
+        return False
+    url = url.strip()
+    if not url or url.startswith('#'):
+        return False
+    if url.startswith('//'):
+        return False
+    if url.startswith('/'):
+        return False
+    if _URL_SCHEME_RE.match(url):
+        return False
+    return True
+
+
+def collect_asset_urls(soup: BeautifulSoup):
+    """&lt;link href&gt;, &lt;script src&gt;, &lt;img src&gt; からローカル相対URLを収集する"""
+    urls = []
+    for tag_name, attr in (('link', 'href'), ('script', 'src'), ('img', 'src')):
+        for el in soup.find_all(tag_name):
+            u = el.get(attr)
+            if u and is_local_relative_url(u):
+                urls.append(u)
+    return urls
+
+
+def copy_local_assets(soup: BeautifulSoup, src_dir: Path, dst_dir: Path, log=None):
+    """HTMLが相対参照しているcss/js/img等を、出力先にも同じ相対位置でコピーする。
+    reading/ フォルダは元のHTMLより1階層深い場所に出力されるため、これをしないと
+    css/js への相対リンクが壊れて見た目・動作が崩れる。
+    common.js は既知の構造であればTTS連携APIを追加してコピーする。
+    """
+    for url in collect_asset_urls(soup):
+        clean_url = url.split('?', 1)[0].split('#', 1)[0]
+        if not clean_url:
+            continue
+        src_asset = (src_dir / clean_url).resolve()
+        try:
+            # src_dir の外を指すような不正な相対パス(../../etc)は安全のため無視
+            src_dir_resolved = src_dir.resolve()
+            src_asset.relative_to(src_dir_resolved.anchor)  # 単純な存在チェック用
+        except Exception:
+            pass
+        if not src_asset.exists() or not src_asset.is_file():
+            continue
+
+        dst_asset = dst_dir / clean_url
+        dst_asset.parent.mkdir(parents=True, exist_ok=True)
+
+        if src_asset.name.lower() == 'common.js':
+            try:
+                text = src_asset.read_text(encoding='utf-8', errors='replace')
+                patched = patch_common_js(text)
+                dst_asset.write_text(patched, encoding='utf-8')
+                if log and patched != text:
+                    log(f"  (common.js に読み上げ連携APIを追加しました)")
+            except Exception:
+                shutil.copy2(src_asset, dst_asset)
+        else:
+            shutil.copy2(src_asset, dst_asset)
+
+TTS_CSS_FILENAME = "tts-reader.css"
+TTS_JS_FILENAME = "tts-reader.js"
+
+TTS_CSS_CONTENT = """/* tts-reader.css
+   自動生成: 読み上げ機能用の共通スタイル。全HTMLから共通で読み込まれます。 */
+:root { --tts-bar-h: 44px; }
+.tts-sentence { transition: background-color 0.15s ease, box-shadow 0.15s ease; }
+.tts-sentence.tts-active {
+  background-color: rgba(255, 224, 102, 0.65);
+  box-shadow: 0 0 0 2px rgba(255, 193, 7, 0.5);
+  border-radius: 3px;
+}
+#tts-controls {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  box-sizing: border-box;
+  background: rgba(30, 30, 30, 0.92);
+  color: #fff;
+  padding: 8px 12px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  font-family: sans-serif;
+  font-size: 13px;
+  z-index: 999999;
+  writing-mode: horizontal-tb;
+}
+/* このサイト固有の縦書きページャー(#content-wrapper)がある場合、
+   下部の#page-bar(44px)は元々考慮済みだが、上部に追加した本バーの分は
+   考慮されていないため、本文エリアの上端と高さをバーの実測高さ
+   (--tts-bar-h, JS側で動的に設定)ぶんだけ調整する。
+   #content-wrapper が存在しないページではこのルールは単に無視される。 */
+#content-wrapper {
+  top: var(--tts-bar-h) !important;
+  height: calc(100vh - 44px - var(--tts-bar-h)) !important;
+}
+@supports (height: 100dvh) {
+  #content-wrapper {
+    height: calc(100dvh - 44px - var(--tts-bar-h) - env(safe-area-inset-bottom, 0px)) !important;
+  }
+}
+/* 左右のページ送りボタンも、縮んだ本文エリアの縦方向中央に合わせ直す */
+.nav-btn {
+  top: calc(50vh - 22px + var(--tts-bar-h) / 2) !important;
+}
+#tts-controls button {
+  background: #444;
+  color: #fff;
+  border: 1px solid #666;
+  border-radius: 4px;
+  padding: 6px 10px;
+  cursor: pointer;
+  font-size: 13px;
+}
+#tts-controls button:hover { background: #555; }
+#tts-controls button:disabled { opacity: 0.4; cursor: default; }
+#tts-controls select, #tts-controls input[type=range] {
+  font-size: 12px;
+}
+#tts-controls label { display: flex; align-items: center; gap: 4px; white-space: nowrap; }
+"""
+
+TTS_JS_CONTENT = """/* tts-reader.js
+   自動生成: 読み上げ機能用の共通スクリプト。全HTMLから共通で読み込まれます。 */
+(function () {
+  // コントロールUI(再生/一時停止/停止/速度/音声選択)をJSで動的生成する。
+  // HTML側には何も埋め込まず、このスクリプトが読み込まれたページに
+  // 自動的にバーを追加する。
+  function buildControls() {
+    var div = document.createElement('div');
+    div.id = 'tts-controls';
+    div.innerHTML =
+      '&lt;button id="tts-play" title="再生"&gt;▶ 再生&lt;/button&gt;' +
+      '&lt;button id="tts-pause" title="一時停止" disabled&gt;❚❚ 一時停止&lt;/button&gt;' +
+      '&lt;button id="tts-stop" title="停止" disabled&gt;■ 停止&lt;/button&gt;' +
+      '&lt;label&gt;速度' +
+      '&lt;input type="range" id="tts-rate" min="0.5" max="2" step="0.1" value="1"&gt;' +
+      '&lt;span id="tts-rate-label"&gt;1.0x&lt;/span&gt;' +
+      '&lt;/label&gt;' +
+      '&lt;label&gt;音声' +
+      '&lt;select id="tts-voice"&gt;&lt;/select&gt;' +
+      '&lt;/label&gt;';
+    document.body.insertBefore(div, document.body.firstChild);
+    return div;
+  }
+
+  var sentences = Array.prototype.slice.call(document.querySelectorAll('.tts-sentence'));
+  if (sentences.length === 0) return; // 読み上げ対象が無いページでは何もしない
+
+  var controlsEl = buildControls();
+
+  var idx = 0;
+  var isPlaying = false;
+  var rate = 1.0;
+  var selectedVoice = null;
+  var voices = [];
+  // 再生セッションID。cancel() 後に遅れて届く古い onend/onerror を
+  // 無視するために使う（これが無いと、クリックで飛んだ直後に
+  // キャンセルされたはずの前の発話の onend が発火し、
+  // ハイライトが1文余分に先へ進んでしまう）。
+  var playSession = 0;
+
+  var btnPlay = document.getElementById('tts-play');
+  var btnPause = document.getElementById('tts-pause');
+  var btnStop = document.getElementById('tts-stop');
+  var rateInput = document.getElementById('tts-rate');
+  var rateLabel = document.getElementById('tts-rate-label');
+  var voiceSelect = document.getElementById('tts-voice');
+
+  // このバー自体の実際の高さ(折り返しで2段になる場合など可変)を
+  // CSS変数 --tts-bar-h に反映する。#content-wrapper 側のCSSがこの値を
+  // 使って本文エリアの高さ・上端位置を調整し、バーが本文を隠さないようにする。
+  function updateBarHeightVar() {
+    if (!controlsEl) return;
+    var h = controlsEl.offsetHeight;
+    if (h &gt; 0) {
+      document.documentElement.style.setProperty('--tts-bar-h', h + 'px');
+    }
+  }
+  updateBarHeightVar();
+
+  var barResizeTimer = null;
+  window.addEventListener('resize', function () {
+    if (barResizeTimer) clearTimeout(barResizeTimer);
+    barResizeTimer = setTimeout(function () {
+      updateBarHeightVar();
+      if (window.__ttsReaderAPI &amp;&amp; typeof window.__ttsReaderAPI.recalculate === 'function') {
+        window.__ttsReaderAPI.recalculate();
+      }
+    }, 150);
+  });
+
+  function updateButtons() {
+    btnPlay.disabled = isPlaying;
+    btnPause.disabled = !isPlaying;
+    btnStop.disabled = !isPlaying &amp;&amp; idx === 0;
+  }
+
+  // scrollIntoView() を呼んだ直後は、フォントの非同期読み込みなどで
+  // レイアウトがまだ確定しておらず、ブラウザが「既に画面内にある」と
+  // 誤判定してスクロールをスキップすることがある（クリックで飛んだ
+  // 場所によってスクロールする/しないが切り替わって見える一因）。
+  // そこで、スクロール後に requestAnimationFrame を2回挟んで実際に
+  // 画面内に入ったか検証し、入っていなければもう一度スクロールし直す
+  // 自己修復的な仕組みにする。
+  function isElementVisible(el, margin) {
+    var rect = el.getBoundingClientRect();
+    var vw = window.innerWidth;
+    var vh = window.innerHeight;
+    return (
+      rect.top &gt;= -margin &amp;&amp;
+      rect.left &gt;= -margin &amp;&amp;
+      rect.bottom &lt;= vh + margin &amp;&amp;
+      rect.right &lt;= vw + margin &amp;&amp;
+      rect.width &gt; 0 &amp;&amp;
+      rect.height &gt; 0
+    );
+  }
+
+  function doScrollIntoView(el) {
+    el.scrollIntoView({ behavior: 'auto', block: 'center', inline: 'center' });
+  }
+
+  // このページが独自の「ページめくり」機構（transformで#contentを
+  // 動かすタイプ等）を持っている場合、common.js 側にTTS連携用の
+  // window.__ttsReaderAPI.centerElement() が注入されていればそれを使う。
+  // これなら「ページ番号表示」「前/次ボタンの有効・無効状態」など
+  // サイト本来の状態管理と矛盾なく中央寄せできる。
+  // 無ければ通常のブラウザスクロール（scrollIntoView）にフォールバックする。
+  function scrollToElement(el) {
+    if (window.__ttsReaderAPI &amp;&amp; typeof window.__ttsReaderAPI.centerElement === 'function') {
+      try {
+        window.__ttsReaderAPI.centerElement(el, true);
+        return;
+      } catch (e) {
+        // フォールバックへ続行
+      }
+    }
+    scrollToElementFallback(el);
+  }
+
+  function scrollToElementFallback(el) {
+    // 呼び出し前に強制的にレイアウトを確定させる
+    void document.body.offsetHeight;
+    doScrollIntoView(el);
+
+    // レイアウトが遅れて確定するケースに備え、2フレーム後に再検証する
+    requestAnimationFrame(function () {
+      requestAnimationFrame(function () {
+        if (!isElementVisible(el, 4)) {
+          doScrollIntoView(el);
+          // それでもダメな場合、もう一段階だけ再試行する
+          requestAnimationFrame(function () {
+            requestAnimationFrame(function () {
+              if (!isElementVisible(el, 4)) {
+                doScrollIntoView(el);
+              }
+            });
+          });
+        }
+      });
+    });
+  }
+
+  function clearHighlight() {
+    for (var i = 0; i &lt; sentences.length; i++) sentences[i].classList.remove('tts-active');
+  }
+
+  function loadVoices() {
+    var all = window.speechSynthesis.getVoices() || [];
+    voices = all.filter(function (v) { return v.lang &amp;&amp; v.lang.toLowerCase().indexOf('ja') === 0; });
+    if (voices.length === 0) voices = all; // 日本語音声が無ければ全部表示
+    voiceSelect.innerHTML = '';
+    voices.forEach(function (v, i) {
+      var opt = document.createElement('option');
+      opt.value = i;
+      opt.textContent = v.name + ' (' + v.lang + ')';
+      voiceSelect.appendChild(opt);
+    });
+    if (voices.length &gt; 0) selectedVoice = voices[0];
+  }
+
+  if (typeof window.speechSynthesis !== 'undefined') {
+    loadVoices();
+    window.speechSynthesis.onvoiceschanged = loadVoices;
+  }
+
+  voiceSelect.addEventListener('change', function () {
+    selectedVoice = voices[parseInt(voiceSelect.value, 10)];
+  });
+
+  rateInput.addEventListener('input', function () {
+    rate = parseFloat(rateInput.value);
+    rateLabel.textContent = rate.toFixed(1) + 'x';
+  });
+
+  // session: この呼び出しが発行された時点の playSession。
+  // 発話の onend/onerror が実際に発火した時点で playSession が
+  // 変わっていれば（＝途中でキャンセル/新規セッション開始済み）、
+  // 古いイベントとして無視する。
+  function speakFrom(i, session) {
+    if (session !== playSession) return; // 既に無効化されたセッション
+    if (i &gt;= sentences.length) {
+      isPlaying = false;
+      idx = 0;
+      clearHighlight();
+      updateButtons();
+      return;
+    }
+    idx = i;
+    clearHighlight();
+    var el = sentences[idx];
+    el.classList.add('tts-active');
+    scrollToElement(el);
+
+    var utter = new SpeechSynthesisUtterance(el.textContent);
+    utter.lang = (selectedVoice &amp;&amp; selectedVoice.lang) || 'ja-JP';
+    utter.rate = rate;
+    if (selectedVoice) utter.voice = selectedVoice;
+    utter.onend = function () {
+      if (session !== playSession) return;
+      if (isPlaying) speakFrom(idx + 1, session);
+    };
+    utter.onerror = function () {
+      if (session !== playSession) return;
+      if (isPlaying) speakFrom(idx + 1, session);
+    };
+    window.speechSynthesis.speak(utter);
+  }
+
+  // 新しい再生セッションを開始する（Play押下 / クリックでの位置指定 共通処理）
+  function startPlaybackFrom(i) {
+    playSession++; // 古いセッションのonend/onerrorを無効化
+    var mySession = playSession;
+    isPlaying = true;
+    window.speechSynthesis.cancel();
+    speakFrom(i, mySession);
+    updateButtons();
+  }
+
+  btnPlay.addEventListener('click', function () {
+    if (isPlaying) return;
+    startPlaybackFrom(idx);
+  });
+
+  btnPause.addEventListener('click', function () {
+    playSession++; // 以降届く古いonend/onerrorを無効化
+    isPlaying = false;
+    window.speechSynthesis.cancel();
+    updateButtons();
+  });
+
+  btnStop.addEventListener('click', function () {
+    playSession++;
+    isPlaying = false;
+    window.speechSynthesis.cancel();
+    idx = 0;
+    clearHighlight();
+    updateButtons();
+  });
+
+  sentences.forEach(function (el, i) {
+    el.style.cursor = 'pointer';
+    el.addEventListener('click', function () {
+      if (isPlaying) {
+        startPlaybackFrom(i);
+      } else {
+        playSession++; // 念のため保留中のイベントを無効化
+        window.speechSynthesis.cancel();
+        idx = i;
+        clearHighlight();
+        el.classList.add('tts-active');
+        scrollToElement(el);
+      }
+    });
+  });
+
+  updateButtons();
+})();
+"""
+
+
+def split_sentences(text: str):
+    parts = SENTENCE_SPLIT_RE.split(text)
+    return [p for p in parts if p.strip() != '']
+
+
+def inject_tts_soup(html: str) -&gt; BeautifulSoup:
+    """HTML文字列を受け取り、読み上げ機能を注入した BeautifulSoup を返す"""
+    soup = BeautifulSoup(html, 'html5lib')
+
+    body = soup.body
+    if body is None:
+        # body タグが無い断片的HTMLの場合はルートを body 扱いにする
+        body = soup
+
+    counter = [0]
+    text_nodes = [t for t in body.find_all(string=True)]
+
+    for text_node in text_nodes:
+        if isinstance(text_node, Comment):
+            continue
+        parent = text_node.parent
+        if parent is None or parent.name in SKIP_PARENT_TAGS:
+            continue
+        # 既に注入済みの span 内はスキップ（再実行対策）
+        if parent.get('class') and 'tts-sentence' in parent.get('class'):
+            continue
+        text = str(text_node)
+        if not text.strip():
+            continue
+
+        sentences = split_sentences(text)
+        if not sentences:
+            continue
+
+        new_spans = []
+        for s in sentences:
+            counter[0] += 1
+            span = soup.new_tag('span')
+            span['class'] = 'tts-sentence'
+            span['id'] = 'tts-%d' % counter[0]
+            span.string = s
+            new_spans.append(span)
+
+        # text_node を new_spans の連続に置き換え
+        text_node.replace_with(new_spans[0])
+        prev = new_spans[0]
+        for span in new_spans[1:]:
+            prev.insert_after(span)
+            prev = span
+
+    # &lt;link rel="stylesheet" href="css/tts-reader.css"&gt; を head に追加
+    link_tag = soup.new_tag('link', rel='stylesheet', href='css/' + TTS_CSS_FILENAME)
+    if soup.head:
+        soup.head.append(link_tag)
+    else:
+        if soup.html:
+            soup.html.insert(0, link_tag)
+        else:
+            soup.insert(0, link_tag)
+
+    # &lt;script src="js/tts-reader.js"&gt;&lt;/script&gt; を body 末尾に追加
+    script_tag = soup.new_tag('script', src='js/' + TTS_JS_FILENAME)
+    if soup.body:
+        soup.body.append(script_tag)
+    else:
+        soup.append(script_tag)
+
+    return soup
+
+
+def inject_tts_html(html: str) -&gt; str:
+    """HTML文字列を受け取り、読み上げ機能を注入したHTML文字列を返す"""
+    return str(inject_tts_soup(html))
+
+
+def write_shared_tts_assets(dst_dir: Path, log=None):
+    """全HTML共通の tts-reader.css / tts-reader.js を、指定ディレクトリ配下の
+    css/ , js/ フォルダへ書き出す（既存の同名ファイルには常に最新内容で上書き）。
+    """
+    css_path = dst_dir / 'css' / TTS_CSS_FILENAME
+    js_path = dst_dir / 'js' / TTS_JS_FILENAME
+    css_path.parent.mkdir(parents=True, exist_ok=True)
+    js_path.parent.mkdir(parents=True, exist_ok=True)
+    css_path.write_text(TTS_CSS_CONTENT, encoding='utf-8')
+    js_path.write_text(TTS_JS_CONTENT, encoding='utf-8')
+
+
+def inject_tts_file(src_path: Path, dst_path: Path, encoding: str = 'utf-8', log=None):
+    """1ファイルを読み込み→注入→書き出し。
+    同時に、そのHTMLが相対参照しているcss/js/img等のローカルアセットも
+    出力先の同じ相対位置へコピーする（reading/フォルダは1階層深くなるため、
+    これをしないと相対リンクが壊れる）。
+    読み上げ機能自体の共通css/jsは、各HTMLの隣にある css/ js/ フォルダへ
+    tts-reader.css / tts-reader.js として書き出す（全HTML共通の1ファイル）。
+    """
+    with open(src_path, 'r', encoding=encoding, errors='replace') as f:
+        html = f.read()
+
+    soup = inject_tts_soup(html)
+
+    dst_path.parent.mkdir(parents=True, exist_ok=True)
+    with open(dst_path, 'w', encoding='utf-8') as f:
+        f.write(str(soup))
+
+    # アセットコピーは元のHTML基準で相対URLを解決するため、
+    # 注入前のsoupではなく同じURL集合を再パースして取得する
+    # （inject_tts_soup内で構造は変わるが href/src の値自体は変化しないため
+    #   注入後のsoupからでも同じ結果になる）
+    copy_local_assets(soup, src_path.parent, dst_path.parent, log=log)
+
+    # 読み上げ機能自体の共通css/jsを書き出す（複数HTMLで同じフォルダを
+    # 共有している場合は毎回同じ内容で上書きされるだけなので安全）
+    write_shared_tts_assets(dst_path.parent, log=log)
+</pre>
+<p><a class="link-card" href="https://ok2nd.github.io/sitemap/hatena-sitemap-table.html?search=Python" target="_blank" rel="noopener noreferrer"><span class="lc-body"><span class="lc-title">晴歩雨描：記事一覧</span><span class="lc-desc"></span><span class="lc-site">ok2nd.github.io</span></span></a></p>
+<p><a class="link-card" href="../../06/06/124727.html"><span class="lc-body"><span class="lc-title">Windows）Python）シンプルな電卓（数式・四則演算エディタ）アプリ作成。Nuitkaでexe化。ICOアイコン付きで。</span><span class="lc-desc">Pythonで、Windows用のシンプルな電卓アプリを作成。 よくある電卓アプリのような数字や＋－＊／のボタンはない。 四則演算しかできない。 ()は使える。 単に数式を入力してEnterキーで計算するだけ。 一度計算…</span><span class="lc-site">晴歩雨描 · <time>2026-06-06</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260606/20260606144813.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../06/05/142048.html"><span class="lc-body"><span class="lc-title">Windows）Pythonで、極力シンプルなデスクトップ付箋アプリ作成。</span><span class="lc-desc">Windows標準の付箋アプリが微妙に使いにくかったので、極力シンプルな付箋アプリをPythonで作成。 付箋は一個だけ。 入力できるのは文字だけ。 付箋内容は保存され、次回起動時に表示される。 付箋のデスクトップ上の表…</span><span class="lc-site">晴歩雨描 · <time>2026-06-05</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260605/20260605141300.jpg" alt="" loading="lazy"></span></a></p></div></article>
+</body>
+</html>

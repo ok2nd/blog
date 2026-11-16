@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>備忘録：Nuitkaでexe化したPythonアプリが、Windowsセキュリティ(Microsoft Defender)によって、ウイルスと誤認されて警告なしに削除・隔離されてしまう。 - 晴歩雨描</title>
+<link rel="stylesheet" href="../../../../style.css">
+</head>
+<body>
+<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>備忘録：Nuitkaでexe化したPythonアプリが、Windowsセキュリティ(Microsoft Defender)によって、ウイルスと誤認されて警告なしに削除・隔離されてしまう。</h1><p class="meta">2026-10-24 · <a href="../../../../category/c8.html">コンピュータ</a></p><div class="entry-body"><p><em>Python</em>で作成したアプリを<em>Nuitkaでexe化</em>したが、それを起動しようとすると、Windowsセキュリティ（Microsoft Defender）のリアルタイム保護や「誤検知（False Positive）」により、<em>ウイルスと誤認され、警告なしに削除・隔離されてしまう。</em></p>
+<p><span style="color: rgb(221, 131, 12);">※ 個人で作ったフリーソフトや自作スクリプトには署名がないため、Windows Defenderやブラウザ（EdgeやChrome）の「SmartScreen」に危険なファイルと判定されやすくなる。</span></p>
+<p><span style="color: rgb(221, 131, 12);">今回検出された「Trojan:Win32/Wacatac.C!ml」の末尾に「!ml」が付いているのは、機械学習による推測検出という意味。特定のウイルスのコードが見つかったわけではない。</span></p>
+<p>以下は、その対策。</p>
+<h4 id="-Microsoft-Defenderの保護の履歴で確認復元する">■ Microsoft Defenderの「保護の履歴」で確認・復元する</h4>
+<ol>
+<li>スタートメニューを開き、「<em>Windows セキュリティ</em>」を検索し開く。</li>
+<li>「<em>保護の履歴</em>」をクリック。
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20261024/20261024210136.png" width="1069" height="803" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+</li>
+<li>
+<p>「<em>操作</em>」で、「<em>復元</em>」を選択。<br><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20261024/20261024210240.png" width="1069" height="847" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+</li>
+</ol>
+<h4 id="-特定のフォルダやファイルを除外に登録する">■ 特定のフォルダやファイルを「除外」に登録する</h4>
+<ol>
+<li>「<em>Windows セキュリティ</em>」を開き、「<em>ウイルスと脅威の防止</em>」に進む。</li>
+<li>「<em>ウイルスと脅威の防止の設定</em>」にある「<em>設定の管理</em>」をクリック。<br>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20261024/20261024212407.png" width="1050" height="751" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20261024/20261024212517.png" width="1050" height="640" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></li>
+<li>「<em>ウイルスと脅威の防止の設定</em>」ページ下部にある「<em>除外</em>」の「<em>除外の追加または削除</em>」をクリック。<br>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20261024/20261024212604.png" width="1050" height="502" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+</li>
+<li>「<em>＋除外の追加</em>」で、フォルダやファイルを指定。<br>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20261024/20261024212842.png" width="1050" height="582" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+</li>
+</ol>
+<p><a class="link-card" href="../../07/15/123746.html"><span class="lc-body"><span class="lc-title">JScriptが、Windowsセキュリティ(Microsoft Defender)に、突然、不審なファイル（ウイルス）として検疫・ブロックされた。</span><span class="lc-desc">自分で作成し、長く正常に使えていたJScriptスクリプトを実行したら、以下のエラーが出た。 原因を生成AI「Claude」に聞いてみた。 JScriptファイル自体には、悪意のあるコードは見当たらず問題ない。 「Win…</span><span class="lc-site">晴歩雨描 · <time>2026-07-15</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260715/20260715111348.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../01/06/221223.html"><span class="lc-body"><span class="lc-title">NuitkaでPythonをexe化する。PyInstallerよりお勧め。</span><span class="lc-desc">PythonをPythonがインストールされていない環境でも実行可能にする方法がいくつかある。大きく分けて2つの方法がある。 １．ツールを使ってexe化する。 ツール おすすめ度 メリット デメリット Nuitka ★★…</span><span class="lc-site">晴歩雨描 · <time>2026-01-06</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260106/20260106221126.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../21/210055.html"><span class="lc-body"><span class="lc-title">備忘録：「ID・パスワード管理」「住所録管理」「預貯金管理」都度データ移行。</span><span class="lc-desc">Python＋SQLiteで、3つのアプリを作成した。 「 ID・パスワード管理 」「 住所録管理＋はがき宛名書きPDF作成 」「 預貯金管理 」。 これらは、元々PHP＋MySQLで自作＆運用していた「MyHome P…</span><span class="lc-site">晴歩雨描 · <time>2026-10-21</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20261021/20261021210141.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../04/082547.html"><span class="lc-body"><span class="lc-title">備忘録：Python＋SQLite）ID・パスワード管理アプリ作成。Nuitkaでexe化。</span><span class="lc-desc">WebサイトなどのID・パスワード管理を、「MyHome Portal」の「ID管理」で行ってきた。 https://ok2nd.github.io/myportal/ 「MyHome Portal」の「ID管理」は、自…</span><span class="lc-site">晴歩雨描 · <time>2026-10-04</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20261004/20261004082200.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../06/125158.html"><span class="lc-body"><span class="lc-title">備忘録：Python＋SQLite）住所録管理アプリ作成。＋はがき宛名書きPDF作成。Nuitkaでexe化。</span><span class="lc-desc">住所録管理を、「 MyHome Portal 」の「 住所録管理 」で行ってきた。 https://ok2nd.github.io/myportal/index.html 「MyHome Portal」の「住所録管理」は…</span><span class="lc-site">晴歩雨描 · <time>2026-10-06</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20261006/20261006125716.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../09/101258.html"><span class="lc-body"><span class="lc-title">備忘録：Python＋SQLite）預貯金管理アプリ作成。Nuitkaでexe化。</span><span class="lc-desc">預貯金管理を、「 MyHome Portal 」の「 預貯金管理 」で行ってきた。 https://ok2nd.github.io/myportal/index.html 「MyHome Portal」の「預貯金管理」は…</span><span class="lc-site">晴歩雨描 · <time>2026-10-09</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20261009/20261009100240.png" alt="" loading="lazy"></span></a></p></div></article>
+</body>
+</html>

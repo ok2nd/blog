@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Windows11）PC動作が異常に遅くなったので、色々と対策をやってみた。→全て効果なし。 - 晴歩雨描</title>
+<link rel="stylesheet" href="../../../../style.css">
+</head>
+<body>
+<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>Windows11）PC動作が異常に遅くなったので、色々と対策をやってみた。→全て効果なし。</h1><p class="meta">2025-01-19 · <a href="../../../../category/c8.html">コンピュータ</a></p><div class="entry-body"><p>Windows11の我が家のパソコン1台の動作が異常に遅くなった。マウス操作、キーボード入力、ウインドウの移動などすべてがおかしい。</p>
+<p>遅くなった原因は、不明。直前にWindows Updateがあったので、それが原因という気がしたが、調べた限りでは違いそう。</p>
+<p>ネットで検索しながら、色々と対策をやってみた。</p>
+<h5 id="やってみた事">【やってみた事】</h5>
+<p>■ セーフモードで、起動</p>
+<p>セーフモードで起動してみると、とくに遅くはない。H/Wに問題はないと推測。</p>
+<p>■ スタートアップアプリを無効にする <span style="color: #dd830c;">&lt;※ → 効果なし&gt;</span></p>
+<p>［Ctrl＋Alt＋Delete］→［タスクマネージャー］→［スタートアップ アプリ］で有効になっているものをすべて無効にする。</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250119/20250119154507.jpg" width="770" height="593" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>■ 不要なアプリの削除 <span style="color: #dd830c;">&lt;※ → 効果なし&gt;</span></p>
+<p>［設定］→［アプリ］→［インストールされているアプリ］で、不要そうなものをアンインストール。</p>
+<ul>
+<li>Copilot</li>
+<li>Microsoft 365 Copilot</li>
+<li>Microsoft Bing Service</li>
+<li>リモートデスクトップ接続</li>
+</ul>
+<p>■ 「<span style="white-space: normal;">メモリ整合性</span>」をONにする <span style="color: #dd830c;">&lt;※ → 効果なし&gt;</span></p>
+<div>［スタートボタン］→［すべてのアプリ］→［Windows セキュリティ］→［デバイス セキュリティ］→［コア分離］→［コア分離の詳細］</div>
+<ul>
+<li><span style="white-space: normal;">［メモリ整合性］=&gt;ON</span></li>
+</ul>
+<p>■ デバイスドライバーを更新する <span style="color: #dd830c;">&lt;※ → 効果なし&gt;</span></p>
+<p>［スタートボタン］右クリック→［デバイスマネージャー］</p>
+<ul>
+<li>ディスプレイアダプター</li>
+<li>マウスドライバー</li>
+<li>キーボードドライバー</li>
+</ul>
+<p>■ Windows Update 削除 <span style="color: #dd830c;">&lt;※ → 効果なし&gt;</span></p>
+<div>直前のWindows Updateが原因の可能性があると思い、Windows Updateを削除。</div>
+<div>［設定］→［Windows Update］→［更新の履歴］→［更新プログラミングをアンインストールする］</div>
+<ul>
+<li><span style="white-space: normal;"><span style="white-space: pre;"> </span>KB5049622</span></li>
+<li><span style="white-space: normal;"><span style="white-space: pre;"> </span>KB5050009</span></li>
+</ul>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250119/20250119154344.jpg" width="615" height="331" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>■ Windows Updateで再インストール <span style="color: #dd830c;">&lt;※ → 効果なし&gt;</span></p>
+<p>［設定］→［システム］→［回復］</p>
+<p>→［Windows Updateで問題を解決する］=&gt;「今すぐ再インストール」</p>
+<ul>
+<li>Windows 11 version 24H2(修復バージョン)</li>
+</ul>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250119/20250119154656.jpg" width="588" height="310" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>■ サービスを一旦無効にする <span style="color: #dd830c;">&lt;※ → 効果なし&gt;</span></p>
+<p>［スタートボタン］右クリック→［ファイル名を指定して実行］</p>
+<ul>
+<li>msconfig を実行。</li>
+</ul>
+<p>［サービス］タブで、［Microsoftのサービスをすべて隠す］にして、実行中のものを一旦すべて無効にして再起動。</p>
+<p>「Microsoftのサービス」は数が多すぎて、確認しようがないので、諦める。</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250119/20250119155026.jpg" width="665" height="437" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p><span style="color: #dd830c;">※ ここまで、やってみたが、全て効果がないので、PCを初期化してみることに。</span></p>
+<p>■ PCを初期状態に戻す <span style="color: #dd830c;">&lt;※ → 効果なし&gt;</span></p>
+<p><span style="color: #dd830c;">※ 事前にユーザーデータは全てバックアップしておく。</span></p>
+<p><span style="color: #dd830c;">※ 電源のスリープモードはなしにしておく。</span></p>
+<p>［設定］→［システム］→［回復］→［この PC をリセット］</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250119/20250119160525.jpg" width="604" height="424" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>［<em>個人用ファイルを保持する</em>］［<em>すべて削除する</em>］両方試したが結果的に効果なかった。</p>
+<p>［個人用ファイルを保持する］では、プレインストールされているOfficeアプリは残る。ユーザーデータも残る。ユーザーがインストールしたアプリは消える。</p>
+<p>Windows10のPCをWindows11にアップグレードしたPCだが、初期化でWindows11に戻る。</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250119/20250119160522.jpg" width="682" height="456" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>［クラウドからダウンロード］を選択。</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250119/20250119170529.jpg" width="642" height="456" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p><em>※ 結局、新しいPCを購入することに。</em></p>
+<p><a class="link-card" href="../../../2023/12/13/123718.html"><span class="lc-body"><span class="lc-title">Windows）PCのキーボード、マウスが異常に遅くなった原因は「OneDrive」だった。</span><span class="lc-desc">パソコンのキーボード、マウスなどの反応が使い物にならないくらい異常に遅くなった。ウインドウなどの動きも時々フリーズする。 別のキーボード、マウスなどに交換しても効果なし。 CPUやディスクを占有しているアプリもない。 色…</span><span class="lc-site">晴歩雨描 · <time>2023-12-13</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20231213/20231213123034.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2024/12/13/135032.html"><span class="lc-body"><span class="lc-title">Windows11パソコンのIPアドレス固定方法。</span><span class="lc-desc">以前に「WindowsパソコンのIPアドレス固定方法。」という記事を書いた。 Windows11で、Windows10とは設定画面が大きく変わっているようなので、Windows11用の設定手順を以下に示す。 １．「スター…</span><span class="lc-site">晴歩雨描 · <time>2024-12-13</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20241213/20241213134502.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2023/07/24/223854.html"><span class="lc-body"><span class="lc-title">Windows11）ネットワークに共有コンピューター名(PC名)が表示されない、共有コンピュータを開けない、ファイル共有できない時の対処。家庭内ネットワークの場合。</span><span class="lc-desc">先日、Windows11にアップグレードしたが、ネットワーク上にコンピューター名が表示されなくなった。 その対処の備忘録。以下のサイトを参考。 ■１．SMB 1.0 を有効にする。 【後日記載】※ これは間違いかもしれな…</span><span class="lc-site">晴歩雨描 · <time>2023-07-24</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20230724/20230724222333.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2023/07/24/214123.html"><span class="lc-body"><span class="lc-title">Windows11）アップグレード後、共有フォルダ・ファイルにアクセスできない時の対処。《間違い情報》</span><span class="lc-desc">先日、Windows11にアップグレードしたが、別PCから共有フォルダにアクセスできなくなった。 その対処の備忘録。以下のサイトを参考。 【後日記載】 以下の情報は正しくない可能性があるので、全面的に削除。 通常、「パス…</span><span class="lc-site">晴歩雨描 · <time>2023-07-24</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20230724/20230724213500.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2024/11/12/155548.html"><span class="lc-body"><span class="lc-title">Windows）フォルダー内のファイル数一覧を取得するツールアプリ「TreeSize Free」。</span><span class="lc-desc">Windowsで特定のフォルダー内のファイル数やディスク容量を知りたい時には「TreeSize Free」が便利。階層構造で表示できる。 「TreeSize Free」をダウンロードする。</span><span class="lc-site">晴歩雨描 · <time>2024-11-12</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20241112/20241112154723.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2023/12/21/130821.html"><span class="lc-body"><span class="lc-title">Windows11「フォトアプリ」で、背景ぼかしや画像切り抜きができる。</span><span class="lc-desc">Windows11標準の「フォトアプリ」の最新版で、写真の背景ぼかしや画像切り抜きができる。 「フォトアプリ」で写真を開き、編集を選ぶ。 「背景ぼかし」を選択すると、画像の背景部分を自動認識する。 写真によっては、結構正…</span><span class="lc-site">晴歩雨描 · <time>2023-12-21</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20231221/20231221112058.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2023/07/23/145157.html"><span class="lc-body"><span class="lc-title">Windows11）シャットダウン／再起動ボタンをスタートメニュー／タスクバーに配置する。</span><span class="lc-desc">昨日、Windows11にアップグレードした。 Windows10に比べて、使いにくくなった点がいくつかある。多少カスタマイズして改善できたが、もう一つあった。 スタートメニュー内の電源ボタンの位置がウインドウの一番右側…</span><span class="lc-site">晴歩雨描 · <time>2023-07-23</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20230723/20230723143715.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2021/01/22/151511.html"><span class="lc-body"><span class="lc-title">Androidスマホから(PC)Windows共有フォルダにWi-Fiでアクセスする。ファイルマネージャーで。（SMB）</span><span class="lc-desc">先日、 SSD を使ってPCに保存してある写真を iPad で観る方法を試した。 今回、 Android スマホ から Windows 共有フォルダーに無線でアクセスする方法を試した。 【 Windows 側の手順】 １…</span><span class="lc-site">晴歩雨描 · <time>2021-01-22</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20210122/20210122150129.jpg" alt="" loading="lazy"></span></a></p></div></article>
+</body>
+</html>

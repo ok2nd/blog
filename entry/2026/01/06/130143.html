@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Windows：Python）特定のフォルダー（ディレクトリ）以下のフォルダー名一覧作成。→写真フォルダー名検索。 - 晴歩雨描</title>
+<link rel="stylesheet" href="../../../../style.css">
+</head>
+<body>
+<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>Windows：Python）特定のフォルダー（ディレクトリ）以下のフォルダー名一覧作成。→写真フォルダー名検索。</h1><p class="meta">2026-01-06 · <a href="../../../../category/c8.html">コンピュータ</a></p><div class="entry-body"><p>以前に、PowerShellで、特定のフォルダー（ディレクトリ）以下のフォルダー名一覧をテキストファイルに書き出すスクリプトを作成。</p>
+<p><a class="link-card" href="../../../2025/01/25/221612.html"><span class="lc-body"><span class="lc-title">Windows：PowerShell）特定のフォルダー（ディレクトリ）以下のフォルダー名一覧をテキストファイルに書き出す方法。UTF-8指定も。</span><span class="lc-desc">Windowsの特定のフォルダー（ディレクトリ）以下のフォルダー名一覧をテキストファイルに書き出す方法の備忘録。 スタートボタン右クリックで、「ファイル名を指定して実行」で、「 PowerShell 」を起動する。 「 …</span><span class="lc-site">晴歩雨描 · <time>2025-01-25</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250211/20250211220505.jpg" alt="" loading="lazy"></span></a></p>
+<p>同等の機能を実現するプログラムを、Pythonで作成。</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260106/20260106124942.jpg" width="652" height="432" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<h5 id="Pythonプログラムコード">【Pythonプログラムコード】</h5>
+<pre>import os
+import tkinter as tk
+from tkinter import filedialog, messagebox, ttk, IntVar
+import sys
+
+def select_directory():
+    directory = filedialog.askdirectory(initialdir=source_dir_var.get())
+    if directory:
+        source_dir_var.set(directory)
+
+def select_output_file():
+    output_file = filedialog.asksaveasfilename(
+        initialdir=os.path.dirname(output_file_var.get()),
+        initialfile=os.path.basename(output_file_var.get()),
+        defaultextension=".txt",
+        filetypes=[("テキストファイル", "*.txt"), ("すべてのファイル", "*.*")]
+    )
+    if output_file:
+        output_file_var.set(output_file)
+
+def update_depth_label(value):
+    int_value = int(float(value))
+    depth_var.set(int_value)  # 整数値に固定
+    
+    if int_value == 0:
+        depth_label_var.set(f"深さ: {int_value} (トップディレクトリのみ)")
+    elif int_value == 10:
+        depth_label_var.set(f"深さ: {int_value} (すべてのサブフォルダ)")
+    else:
+        depth_label_var.set(f"深さ: {int_value}")
+
+def get_folder_depth(folder, base_folder):
+    """ベースフォルダからの相対的な深さを計算"""
+    rel_path = os.path.relpath(folder, base_folder)
+    depth = len(rel_path.split(os.sep))
+    # ベースフォルダ自体は深さ0、その直下は深さ1
+    return depth if rel_path != '.' else 0
+
+def get_subdirectories(base_dir, max_depth, current_depth=0):
+    """指定された深さまでの全サブディレクトリを取得"""
+    if current_depth &gt; max_depth:
+        return []
+    
+    result = []
+    try:
+        for item in os.listdir(base_dir):
+            full_path = os.path.join(base_dir, item)
+            if os.path.isdir(full_path):
+                result.append((full_path, current_depth))
+                if current_depth &lt; max_depth:
+                    result.extend(get_subdirectories(full_path, max_depth, current_depth + 1))
+    except (PermissionError, FileNotFoundError):
+        # アクセス権限のないディレクトリやファイルが見つからない場合はスキップ
+        pass
+    return result
+
+def generate_folder_list():
+    source_dir = source_dir_var.get()
+    output_file = output_file_var.get()
+    max_depth = depth_var.get()
+    exact_depth_only = exact_depth_var.get()
+    
+    if not source_dir or not os.path.isdir(source_dir):
+        messagebox.showerror("エラー", "有効なフォルダを選択してください。")
+        return
+    
+    if not output_file:
+        messagebox.showerror("エラー", "出力ファイルを指定してください。")
+        return
+    
+    try:
+        # Get subdirectories with depth information
+        if max_depth == 0:
+            # Only get immediate subdirectories if depth is 0
+            subdirectories = [(os.path.join(source_dir, item), 1) 
+                             for item in os.listdir(source_dir) 
+                             if os.path.isdir(os.path.join(source_dir, item))]
+        else:
+            # Get all subdirectories up to the specified depth
+            subdirectories = get_subdirectories(source_dir, max_depth)
+        
+        # Filter directories based on exact depth option
+        if exact_depth_only:
+            # Only keep directories at exactly the specified depth
+            subdirectories = [(path, depth) for path, depth in subdirectories if depth == max_depth]
+        
+        # Extract just the paths and convert backslashes to forward slashes
+        directory_paths = [path.replace('\\', '/') for path, _ in subdirectories]
+        
+        # Create the directory for the output file if it doesn't exist
+        output_dir = os.path.dirname(output_file)
+        if output_dir and not os.path.exists(output_dir):
+            os.makedirs(output_dir)
+            
+        # Write to the output file
+        with open(output_file, 'w', encoding='utf-8') as f:
+            for directory in directory_paths:
+                f.write(f"{directory}\n")
+        
+        # 抽出条件のテキスト作成
+        if exact_depth_only:
+            extraction_condition = f"深さが{max_depth}の"
+        else:
+            extraction_condition = f"深さ{max_depth}までの"
+        
+        messagebox.showinfo("完了", f"{extraction_condition}{len(directory_paths)}個のフォルダを {output_file} に保存しました。")
+    except Exception as e:
+        messagebox.showerror("エラー", f"処理中にエラーが発生しました: {str(e)}")
+
+# Determine default directories
+default_source_dir = "E:/A-Photos"  # バックスラッシュをフォワードスラッシュに変更
+default_output_file = "D:/Temp/temp2/name-list.txt"  # バックスラッシュをフォワードスラッシュに変更
+
+# Make sure output directory exists
+output_dir = os.path.dirname(default_output_file)
+if not os.path.exists(output_dir):
+    # If default output directory doesn't exist, use Desktop
+    default_output_file = os.path.join(os.path.expanduser("~"), "Desktop", "name-list.txt").replace('\\', '/')
+
+# Create the main window
+root = tk.Tk()
+root.title("フォルダリスト生成ツール")
+root.geometry("650x400")
+root.resizable(True, True)
+
+# Create variables to store the directory and output file paths
+source_dir_var = tk.StringVar(value=default_source_dir)
+output_file_var = tk.StringVar(value=default_output_file)
+depth_var = tk.IntVar(value=1)  # Default depth = 1 (整数値)
+depth_label_var = tk.StringVar(value="深さ: 1")
+exact_depth_var = tk.BooleanVar(value=False)  # 指定した階層のみ抽出するオプション
+
+# Create the widgets
+frame = tk.Frame(root, padx=20, pady=20)
+frame.pack(fill=tk.BOTH, expand=True)
+
+# Source directory
+tk.Label(frame, text="対象フォルダ:").grid(row=0, column=0, sticky=tk.W, pady=5)
+tk.Entry(frame, textvariable=source_dir_var, width=50).grid(row=0, column=1, pady=5, padx=5, sticky=tk.EW)
+tk.Button(frame, text="参照...", command=select_directory).grid(row=0, column=2, pady=5)
+
+# Output file
+tk.Label(frame, text="出力ファイル:").grid(row=1, column=0, sticky=tk.W, pady=5)
+tk.Entry(frame, textvariable=output_file_var, width=50).grid(row=1, column=1, pady=5, padx=5, sticky=tk.EW)
+tk.Button(frame, text="参照...", command=select_output_file).grid(row=1, column=2, pady=5)
+
+# Depth slider
+tk.Label(frame, text="フォルダ階層の深さ:").grid(row=2, column=0, sticky=tk.W, pady=5)
+depth_frame = tk.Frame(frame)
+depth_frame.grid(row=2, column=1, pady=5, sticky=tk.EW)
+
+depth_slider = ttk.Scale(
+    depth_frame, 
+    from_=0, 
+    to=10, 
+    variable=depth_var, 
+    orient=tk.HORIZONTAL, 
+    command=update_depth_label,
+    length=300
+)
+depth_slider.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=(0, 10))
+
+# Depth display label
+depth_display = tk.Label(depth_frame, textvariable=depth_label_var, width=20)
+depth_display.pack(side=tk.RIGHT)
+
+# Depth explanation
+depth_explanation = tk.Label(
+    frame, 
+    text="0: トップレベルのフォルダのみ、1: 1階層下まで、10: すべてのサブフォルダ",
+    font=("Arial", 8)
+)
+depth_explanation.grid(row=3, column=0, columnspan=3, sticky=tk.W, pady=(0, 10))
+
+# Exact depth checkbox
+exact_depth_check = tk.Checkbutton(
+    frame,
+    text="指定した階層のフォルダのみを抽出（それより浅い階層は除外）",
+    variable=exact_depth_var,
+    onvalue=True,
+    offvalue=False
+)
+exact_depth_check.grid(row=4, column=0, columnspan=3, sticky=tk.W, pady=5)
+
+# Generate button
+generate_button = tk.Button(
+    frame, 
+    text="フォルダリストを生成", 
+    command=generate_folder_list, 
+    bg="#4CAF50", 
+    fg="white", 
+    padx=10, 
+    pady=5, 
+    font=("Arial", 11, "bold")
+)
+generate_button.grid(row=5, column=0, columnspan=3, pady=10)
+
+# Add some instructions
+instructions = tk.Label(
+    frame, 
+    text="指定したフォルダ内のサブフォルダをテキストファイルに保存します。\n"
+         "階層の深さを指定して、取得するフォルダの範囲を調整できます。\n"
+         "「指定した階層のみ」をチェックすると、その深さのフォルダだけを抽出します。\n"
+         "すべてのパスは「/」記号を使用して保存されます。",
+    justify=tk.LEFT
+)
+instructions.grid(row=6, column=0, columnspan=3, pady=10, sticky=tk.W)
+
+# Make the grid cells expandable
+frame.grid_columnconfigure(1, weight=1)
+for i in range(7):
+    frame.grid_rowconfigure(i, weight=1)
+
+# Start the GUI event loop
+if __name__ == "__main__":
+    root.mainloop()</pre>
+<h5 id="出力結果サンプル">【出力結果サンプル】</h5>
+<ul>
+<li>フォルダー階層の深さ：「1」</li>
+<li>指定した階層のフォルダのみを抽出を：「ON」</li>
+</ul>
+<pre>E:/A-Photos/2024/2024-04-07-神戸森林植物園
+E:/A-Photos/2024/2024-04-10-王子公園
+E:/A-Photos/2024/2024-04-11-1-沖縄-名護-21世紀の森公園
+E:/A-Photos/2024/2024-04-11-2-沖縄-比地大滝キャンプ場
+E:/A-Photos/2024/2024-04-12-沖縄-国頭村森林公園
+E:/A-Photos/2024/2024-04-13-沖縄-やんばる学びの森
+E:/A-Photos/2024/2024-04-14-沖縄-やんばる学びの森
+E:/A-Photos/2024/2024-04-15-沖縄-末吉公園
+E:/A-Photos/2024/2024-04-16-沖縄-漫湖公園
+E:/A-Photos/2024/2024-04-18-奄美大島-大瀬海岸
+E:/A-Photos/2024/2024-04-19-奄美大島-1-奄美自然観察の森
+E:/A-Photos/2024/2024-04-19-奄美大島-2-奄美大島紬村
+E:/A-Photos/2024/2024-04-20-奄美大島-大瀬海岸
+E:/A-Photos/2024/2024-04-25-加古大池-いなみ野水辺の里公園
+E:/A-Photos/2024/2024-04-26-大阪城公園
+E:/A-Photos/2024/2024-04-28-神戸森林植物園
+E:/A-Photos/2024/2024-04-30-瀬戸川河口
+E:/A-Photos/2024/2024-05-02-大阪市立長居植物園
+E:/A-Photos/2024/2024-05-03-日岡山公園＋明石公園
+E:/A-Photos/2024/2024-05-04-有馬富士公園
+E:/A-Photos/2024/2024-05-05-甲子園浜
+E:/A-Photos/2024/2024-05-08-佐賀県立森林公園
+E:/A-Photos/2024/2024-05-09-東よか干潟
+E:/A-Photos/2024/2024-05-11-京都御苑
+E:/A-Photos/2024/2024-05-15-清里高原
+E:/A-Photos/2024/2024-05-16-清里高原-1-朝
+E:/A-Photos/2024/2024-05-16-清里高原-2-甲斐大泉
+E:/A-Photos/2024/2024-05-17-清里高原</pre>
+<h5 id="-フォルダー名一覧ファイルの使い道">■ 「フォルダー名一覧」ファイルの使い道</h5>
+<p>１．1行目に以下の行を追加。</p>
+<pre>写真フォルダー</pre>
+<p>２．HTMLアプリで「写真フォルダー名検索」に使う。</p>
+<p>Windowsエクスプローラーでも出来るが、こちらの方が高速。</p>
+<p><strong>《 HTML アプリ「写真フォルダー名検索」》</strong></p>
+<p><a href="http://localhost/2nd_tool/photo-folder/list.html?csv=name-list.txt">http://localhost/2nd_tool/photo-folder/list.html?csv=name-list.txt</a></p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260428/20260428210927.jpg" width="822" height="507" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>《 list.html 》</p>
+<pre>&lt;!DOCTYPE html&gt;
+&lt;html lang="ja"&gt;
+&lt;head&gt;
+&lt;meta charset="UTF-8"&gt;
+&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+&lt;title&gt;写真フォルダー名検索&lt;/title&gt;
+&lt;!-- DataTables CSS --&gt;
+&lt;link rel="stylesheet" href="<a href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css</a>"&gt;
+&lt;style&gt;
+body { margin: 10px; }
+h1 { font-size: 16px; }
+.category { width: 100px; }
+table {
+	font-size: 14px;
+	border-collapse: collapse;
+}
+th, td {
+	border: 1px solid #ddd;
+	padding: 2px;
+	text-align: left;
+}
+th {
+	background-color: #f4f4f4;
+}
+mark { background: gold; color: black; }
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h1&gt;写真フォルダー名検索&lt;/h1&gt;
+&lt;div id="csv-table-container"&gt;&lt;/div&gt;
+&lt;script src="<a href="https://code.jquery.com/jquery-3.6.4.min.js">https://code.jquery.com/jquery-3.6.4.min.js</a>"&gt;&lt;/script&gt;
+&lt;script src="<a href="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js">https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js</a>"&gt;&lt;/script&gt;
+&lt;script src="<a href="https://cdn.jsdelivr.net/g/mark.js(jquery.mark.min.js),datatables.mark.js">https://cdn.jsdelivr.net/g/mark.js(jquery.mark.min.js),datatables.mark.js</a>"&gt;&lt;/script&gt;
+&lt;script&gt;
+// URL引数からパラメータを取得する関数
+function getQueryParam(param) {
+	const urlParams = new URLSearchParams(window.location.search);
+	return urlParams.get(param);
+}
+// CSVを読み込んでテーブルに表示する関数
+async function loadCsvAndDisplay(csvFileName) {
+	try {
+		if (!csvFileName) {
+			throw new Error("CSVファイル名が指定されていません。");
+		}
+		// CSVファイルを取得
+		const response = await fetch(csvFileName);
+		if (!response.ok) {
+			throw new Error(`HTTPエラー: ${response.status}`);
+		}
+		// CSVテキストデータを取得
+		const csvText = await response.text();
+		// CSVを配列に変換
+		const rows = csvText.split('\n').filter(row =&gt; row.trim() !== '');
+		const tableData = rows.map(row =&gt; row.split(','));
+		// HTMLテーブルを生成
+		const table = document.createElement('table');
+		table.id = 'dataTable';
+		// &lt;thead&gt;を生成
+		const thead = document.createElement('thead');
+		const headerRow = document.createElement('tr');
+		tableData[0].forEach(header =&gt; {
+			const th = document.createElement('th');
+			th.textContent = header.trim();
+			headerRow.appendChild(th);
+		});
+		thead.appendChild(headerRow);
+		table.appendChild(thead);
+		// &lt;tbody&gt;を生成
+		const tbody = document.createElement('tbody');
+		for (let i = 1; i &lt; tableData.length; i++) {
+			const row = document.createElement('tr');
+			tableData[i].forEach(cell =&gt; {
+				const td = document.createElement('td');
+				td.textContent = cell.trim();
+				row.appendChild(td);
+			});
+			tbody.appendChild(row);
+		}
+		table.appendChild(tbody);
+		// コンテナにテーブルを追加
+		document.getElementById('csv-table-container').appendChild(table);
+		// DataTablesを初期化
+		$('#dataTable').DataTable({
+			language: {	// 日本語化
+				url: "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Japanese.json"
+			},
+			paging: false,		// ページングしない。
+			ordering: true,
+			mark: true		// 検索文字列ハイライト (by mark.js)
+		});
+	} catch (error) {
+		console.error('エラー:', error);
+		document.getElementById('csv-table-container').textContent = `エラー: ${error.message}`;
+	}
+}
+// URL引数 "csv" からファイル名を取得してロード
+const csvFileName = getQueryParam('csv');
+loadCsvAndDisplay(csvFileName);
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</pre>
+<p><a class="link-card" href="../../../2025/11/19/105207.html"><span class="lc-body"><span class="lc-title">Python）青空文庫をスマホで機内モード（オフライン）で縦書きで読むためにXHTMLを変換するWindowsアプリを作成。</span><span class="lc-desc">飛行機の機内で、スマホで青空文庫を縦書きで読みたい。 スマホの青空文庫ビューアーアプリはたくさんあるが、機能が多すぎてかえって使いづらい。オフラインに対応していないものもある。広告が表示されて煩わしいものが多い。 シンプ…</span><span class="lc-site">晴歩雨描 · <time>2025-11-19</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20251119/20251119104322.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../02/01/131820.html"><span class="lc-body"><span class="lc-title">Windows）Python）2ペイン（2画面左右表示）画像ビューアー作成。</span><span class="lc-desc">PythonでWindows用「 2ペイン画像ビューアー 」を作成した。 2つのフォルダーを指定して画面左右で画像を比較表示できる。 左右のペインそれぞれに、画像を見たいフォルダーを指定して「表示」ボタンを押すとサムネイ…</span><span class="lc-site">晴歩雨描 · <time>2026-02-01</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260201/20260201120620.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2025/10/22/214630.html"><span class="lc-body"><span class="lc-title">Claude）Python）ローカル）写真を等倍高画質化するWindowsアプリ作成。OpenCV（疑似Real-ESRGAN）、シャープネス。SwinIR断念。</span><span class="lc-desc">※ 後日、Claude、ChatGPT、Geminiに確認したところ、今回作成したアプリでは、Real-ESRGANモデルは使われていないとのこと。中身はOpenCVの古典的な画像フィルターの組み合わせらしい（？）。ただ…</span><span class="lc-site">晴歩雨描 · <time>2025-10-22</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20251022/20251022211457.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2025/10/21/141052.html"><span class="lc-body"><span class="lc-title">Claude）Python）写真を美肌に編集加工するWindowsアプリ作成（５）。毛穴やシミを目立たなくする。AI顔検出＋AI輪郭抽出（精度向上版）。ICCプロファイル維持。</span><span class="lc-desc">先日、写真を美肌に編集加工するWindowsアプリをPythonで作成した。 輪郭抽出枠が大雑把だったので、もう少し細かく輪郭を抽出できるバージョンを作成。 課題としては、輪郭抽出の処理時間が大幅に上がったことと、抽出で…</span><span class="lc-site">晴歩雨描 · <time>2025-10-21</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20251021/20251021140459.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2025/09/29/090826.html"><span class="lc-body"><span class="lc-title">Claude）Python）シンプルなWindows用ランチャーアプリ作成。</span><span class="lc-desc">Pythonで作成したWindows用アプリが増えてきた。 これらを起動する ランチャーアプリ が欲しいと思って、作成した。 設定できる項目を少なくして、極力シンプルなものにした。 設定できるのは、ボタンサイズと横に並べ…</span><span class="lc-site">晴歩雨描 · <time>2025-09-29</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260108/20260108141324.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2025/09/20/205629.html"><span class="lc-body"><span class="lc-title">Claude）Python）写真のEXIF情報を表示するWindowsアプリ（ExifTool）を作成。</span><span class="lc-desc">Pythonで「 写真のEXIF情報を表示する 」Windowsアプリを作成。「Claude」で作成。 【機能概略】 JPEGファイルを画面にドラッグ＆ドロップすると、その写真のEXIF情報一覧を表示する。 メーカー独自…</span><span class="lc-site">晴歩雨描 · <time>2025-09-20</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250920/20250920175347.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2025/08/12/130210.html"><span class="lc-body"><span class="lc-title">Claude）Python）「写真をEXIF機種毎のフォルダーに分類」Windowsアプリ作成。</span><span class="lc-desc">Pythonで「写真をEXIF機種毎のフォルダーに分類」Windowsアプリを作成。 生成AI「 Claude 」「 Gemini 」「 Copilot 」で、以下のプロンプトで作成した。 【生成AI プロンプト】 Wi…</span><span class="lc-site">晴歩雨描 · <time>2025-08-12</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250812/20250812125530.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2025/08/12/093959.html"><span class="lc-body"><span class="lc-title">Gemini）Python）「ファイル拡張子別フォルダー移動」Windowsアプリ作成。</span><span class="lc-desc">Pythonで「ファイル拡張子別フォルダー移動」Windowsアプリを作成。 生成AI「 Gemini 」「 Claude 」「 ChatGPT GPT-5 」で、以下のプロンプトで作成してみた。 【生成AI プロンプト…</span><span class="lc-site">晴歩雨描 · <time>2025-08-12</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250812/20250812093352.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2025/06/14/093748.html"><span class="lc-body"><span class="lc-title">JavaScript＆Web、Python＆Windows）写真画像編集アプリ／ツールまとめ。</span><span class="lc-desc">写真画像編集アプリ／ツールを、JavaScriptとPythonでいくつか作成してきた。それらのツールまとめ。 ■ 画像縮小 【Webツール（JavaScript）】 https://ok2nd.github.io/to…</span><span class="lc-site">晴歩雨描 · <time>2025-06-14</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250614/20250614094138.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2025/06/13/153014.html"><span class="lc-body"><span class="lc-title">Claude）Python）透過画像作成Windowsアプリ作成。</span><span class="lc-desc">Pythonで「透過画像作成」Windowsアプリ作成。画像の白に近い色を透過にする。元データはJPEGまたはPNG。白の範囲は指定できる。AIツールClaudeに作成してもらった。 【使い方】 元画像ファイルは、ドラッ…</span><span class="lc-site">晴歩雨描 · <time>2025-06-13</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250613/20250613151037.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2025/05/09/085200.html"><span class="lc-body"><span class="lc-title">Claude）Python）PowerPointに複数写真（画像）を順番に並べて貼り付けるプログラム作成（改訂版）。</span><span class="lc-desc">以前に、PowerPointに複数写真を順番に並べて貼り付けるプログラムをPythonで作成した。 今回、このプログラムの改訂版。前回と同じく、AI生成ツール「Claude」に作ってもらった。 基本機能はそのままで、オプ…</span><span class="lc-site">晴歩雨描 · <time>2025-05-09</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250509/20250509084045.jpg" alt="" loading="lazy"></span></a></p></div></article>
+</body>
+</html>

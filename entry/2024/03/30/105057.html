@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>JavaScript）無料で使えるAIツール Gemini、ChatGPT、Copilot、リートンでプログラム作成（コード生成）能力を比較。 - 晴歩雨描</title>
+<link rel="stylesheet" href="../../../../style.css">
+</head>
+<body>
+<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>JavaScript）無料で使えるAIツール Gemini、ChatGPT、Copilot、リートンでプログラム作成（コード生成）能力を比較。</h1><p class="meta">2024-03-30 · <a href="../../../../category/c42.html">＜AI＞</a> <a href="../../../../category/c13.html">ホームページ、Web作成</a></p><div class="entry-body"><p>昨日、無料で使えるAIツール <em>Gemini</em>、<em>ChatGPT</em>、<em>Copilot</em>、<em>リートン</em>に同じ質問をして回答を比較してみた。</p>
+<p><a class="link-card" href="../29/165758.html"><span class="lc-body"><span class="lc-title">無料で使えるAIツール Gemini、ChatGPT、Copilot、リートンに同じ質問をしてみた（野鳥識別など）。大きく間違った回答も。回答を鵜呑みにしてはいけない。</span><span class="lc-desc">昨日、GPT-4や画像生成などのAIツールが無料で使える「リートン」を試してみた。 以下のAIツールに同じ質問を投げかけてみた。 Google Gemini ChatGPT 3.5 Micosoft Copilot リー…</span><span class="lc-site">晴歩雨描 · <time>2024-03-29</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20240329/20240329164226.jpg" alt="" loading="lazy"></span></a></p>
+<p>今回、これらのツールでJavaScriptプログラム作成能力を比較してみた。</p>
+<ul>
+<li><em>Google Gemini：〇 OK</em></li>
+<li><em>ChatGPT 3.5：〇 OK</em></li>
+<li><em>Micosoft Copilot：▲</em></li>
+<li><em>リートン：AI検索：△→〇 OK</em></li>
+<li><em>リートン：ChatGPT GPT-3.5：▲</em></li>
+<li><em>リートン：GPT-4 Tubo：〇 OK</em></li>
+<li><em>リートン：Claude Instant：△</em></li>
+<li><em>リートン：Claude 2.1：△</em></li>
+<li><em>リートン：Google PaLM2：△</em></li>
+</ul>
+<h5 id="-HTMLテキストボックスに入力されている文字列をリアルタイムにURLのパラメーターに反映する方法を教えて">■ <em>HTMLテキストボックスに入力されている文字列をリアルタイムにURLのパラメーターに反映する方法を教えて。</em></h5>
+<p><strong>【 Google Gemini 】</strong></p>
+<p>Google Geminiでは、3つの方法が示された。</p>
+<p><span style="color: #dd830c;">※ 期待したプログラムコードが提供された。</span></p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20240329/20240329223202.png" width="527" height="562" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>【これを使ったサンプル】</p>
+<p><span style="color: #dd830c;">※ 正常動作する。</span></p>
+<p><a target="_blank" href="https://ok2nd.github.io/Test/input2url/gemini.html">https://ok2nd.github.io/Test/input2url/gemini.html</a></p>
+<pre>&lt;!DOCTYPE html&gt;
+&lt;html lang="ja"&gt;
+&lt;head&gt;
+&lt;meta charset="UTF-8"&gt;
+&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+&lt;title&gt;Input to URL : Google Gemini&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h4&gt;Input to URL : Google Gemini&lt;/h4&gt;
+&lt;input type="text" id="text-box" oninput="updateUrl()"&gt;
+&lt;script&gt;
+function updateUrl() {
+	const text = document.getElementById("text-box").value;
+	const url = new URL(window.location.href);
+	url.searchParams.set("param", text);
+	window.history.replaceState({}, "", url.toString());
+}
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</pre>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20240329/20240329223232.png" width="524" height="533" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20240329/20240329223305.png" width="542" height="698" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p><strong>【 ChatGPT 3.5 】</strong></p>
+<p><span style="color: #dd830c;">※ 期待したプログラムコードが提供された。</span></p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20240329/20240329224730.png" width="720" height="664" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>　　　----- ※ 以下省略。</p>
+<p>【これを使ったサンプル】</p>
+<p><span style="color: #dd830c;">※ 正常動作する。</span></p>
+<p><a target="_blank" href="https://ok2nd.github.io/Test/input2url/chatgpt3.5.html">https://ok2nd.github.io/Test/input2url/chatgpt3.5.html</a></p>
+<pre>&lt;!DOCTYPE html&gt;
+&lt;html lang="ja"&gt;
+&lt;head&gt;
+&lt;meta charset="UTF-8"&gt;
+&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+&lt;title&gt;Input to URL : ChatGPT 3.5&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h4&gt;Input to URL : ChatGPT 3.5&lt;/h4&gt;
+&lt;label for="inputText"&gt;Text Input:&lt;/label&gt;
+&lt;input type="text" id="inputText" oninput="updateURLParameter()"&gt;
+&lt;script&gt;
+function updateURLParameter() {
+	// 入力されたテキストを取得
+	var inputTextValue = document.getElementById('inputText').value;
+	// 現在のURLを取得
+	var currentURL = window.location.href;
+	// URLにパラメーターが含まれている場合と含まれていない場合で処理を分ける
+	if (currentURL.indexOf('?') !== -1) {
+		// パラメーターがすでに存在する場合は置き換える
+		var updatedURL = currentURL.replace(/(\?|&amp;)text=.*?(&amp;|$)/, '$1text=' + encodeURIComponent(inputTextValue) + '$2');
+	} else {
+		// パラメーターが存在しない場合は新しく追加する
+		var updatedURL = currentURL + '?text=' + encodeURIComponent(inputTextValue);
+	}
+	// ブラウザの履歴を変更せずにURLを更新
+	window.history.replaceState({ path: updatedURL }, '', updatedURL);
+}
+// ページロード時にURLからパラメーターを読み取ってテキストボックスに反映
+window.onload = function () {
+	var urlParams = new URLSearchParams(window.location.search);
+	var textParam = urlParams.get('text');
+	if (textParam !== null) {
+		document.getElementById('inputText').value = decodeURIComponent(textParam);
+	}
+};
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</pre>
+<p><strong>【 Microsoft Copilot 】</strong></p>
+<p><span style="color: #dd830c;">※ 期待したプログラムコードではなかった。</span></p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20240330/20240330092134.jpg" width="757" height="429" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20240330/20240330092137.jpg" width="727" height="691" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>【これを使ったサンプル】</p>
+<p><span style="color: #dd830c;">※ この方式ではボタンを押さないといけない。期待したものとは違う。</span></p>
+<p><a href="https://ok2nd.github.io/Test/input2url/copilot.html" target="_blank">https://ok2nd.github.io/Test/input2url/copilot.html</a></p>
+<pre>&lt;!DOCTYPE html&gt;
+&lt;html lang="ja"&gt;
+&lt;head&gt;
+&lt;meta charset="UTF-8"&gt;
+&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+&lt;title&gt;Input to URL : Microsoft Copilot&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h4&gt;Input to URL : Microsoft Copilot&lt;/h4&gt;
+&lt;input type="text" id="myInput" placeholder="テキストを入力"&gt;
+&lt;button onclick="updateURL()"&gt;URLに反映&lt;/button&gt;
+&lt;script&gt;
+	function updateURL() {
+	const inputValue = document.getElementById("myInput").value;
+	const encodedValue = encodeURIComponent(inputValue);
+	const currentURL = location.href.split("?")[0]; // Remove existing parameters
+	const newURL = `${currentURL}?myParam=${encodedValue}`;
+	window.history.replaceState({}, "", newURL); // Update URL without reloading
+}
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</pre>
+<p><strong>【 リートン：AI検索 】</strong></p>
+<p><span style="color: #dd830c;">※ 実際のサンプルコードが提示されなかった。</span></p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20240330/20240330093326.png" width="610" height="663" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p><span style="color: #dd830c;">※ 追加で「実際のサンプルコードを提供して。」と指示したら、提示された。しかし、期待したプログラムコードではなかった。</span></p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20240330/20240330111216.png" width="603" height="506" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>【これを使ったサンプル】</p>
+<p><span style="color: #dd830c;">※ ブラウザの履歴が更新されてしまう。期待したものとは違う。</span></p>
+<p><a href="https://ok2nd.github.io/Test/input2url/wrtn-ai.html" target="_blank">https://ok2nd.github.io/Test/input2url/wrtn-ai.html</a></p>
+<pre>&lt;!DOCTYPE html&gt;
+&lt;html lang="ja"&gt;
+&lt;head&gt;
+&lt;meta charset="UTF-8"&gt;
+&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+&lt;title&gt;Input to URL : リートン：AI検索 &lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;body&gt;
+&lt;h4&gt;Input to URL : リートン：AI検索 &lt;/h4&gt;
+&lt;input type="text" id="inputText" placeholder="テキストを入力してください"&gt;
+&lt;!--&lt;button onclick="updateURL()"&gt;URLを更新&lt;/button&gt;--&gt;
+&lt;script&gt;
+// URLパラメータを更新する関数
+function updateURL() {
+	const inputValue = document.getElementById('inputText').value;
+	const url = new URL(window.location.href);
+	url.searchParams.set('inputValue', inputValue);
+	window.history.pushState({}, '', url);
+}
+// テキストボックスの入力が変更されたときにURLを更新
+document.getElementById('inputText').addEventListener('input', updateURL);
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</pre>
+<p><span style="color: #dd830c;">※ さらに追加で、「ブラウザの履歴を更新しない方式のサンプルコードを提供して。」と指示したら、期待したコードが提供された。</span></p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20240330/20240330114707.png" width="612" height="500" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>【これを使ったサンプル】</p>
+<p><span style="color: #dd830c;">※ 正常動作する。</span></p>
+<p><a href="https://ok2nd.github.io/Test/input2url/wrtn-ai2.html" target="_blank">https://ok2nd.github.io/Test/input2url/wrtn-ai2.html</a></p>
+<pre>&lt;!DOCTYPE html&gt;
+&lt;html lang="ja"&gt;
+&lt;head&gt;
+&lt;meta charset="UTF-8"&gt;
+&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+&lt;title&gt;Input to URL : リートン：AI検索 &lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;body&gt;
+&lt;h4&gt;Input to URL : リートン：AI検索 &lt;/h4&gt;
+&lt;input type="text" id="inputText" placeholder="テキストを入力してください"&gt;
+&lt;script&gt;
+// URLパラメータを更新する関数
+function updateURL() {
+	const inputValue = document.getElementById('inputText').value;
+	const url = new URL(window.location.href);
+	url.searchParams.set('inputValue', inputValue);
+	const newUrl = url.toString();
+	window.history.replaceState({}, '', newUrl);
+}
+// テキストボックスの入力が変更されたときにURLを更新
+document.getElementById('inputText').addEventListener('input', updateURL);
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</pre>
+<p><strong>【 リートン：ChatGPT GPT-3.5 】</strong></p>
+<p><span style="color: #dd830c;">※ Aタグのリンク先のURLを変更するもので、期待しているコードではない。</span></p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20240330/20240330093554.png" width="665" height="627" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p><strong>【 リートン：GPT-4 Turbo 】</strong></p>
+<p><span style="color: #dd830c;">※ 期待したプログラムコードが提供された。</span></p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20240330/20240330094627.png" width="702" height="721" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>【これを使ったサンプル】</p>
+<p><span style="color: #dd830c;">※ 正常動作する。</span></p>
+<p><a href="https://ok2nd.github.io/Test/input2url/wrtn-gpt4.html" target="_blank">https://ok2nd.github.io/Test/input2url/wrtn-gpt4.html</a></p>
+<pre>&lt;!DOCTYPE html&gt;
+&lt;html lang="ja"&gt;
+&lt;head&gt;
+&lt;meta charset="UTF-8"&gt;
+&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+&lt;title&gt;Input to URL : リートン：GPT-4 Turbo&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h4&gt;Input to URL : リートン：GPT-4 Turbo&lt;/h4&gt;
+&lt;input type="text" id="textInput" placeholder="ここに入力"&gt;
+&lt;!--&lt;p&gt;URL: &lt;span id="urlDisplay"&gt;ここにURLが表示されます&lt;/span&gt;&lt;/p&gt;--&gt;
+&lt;script&gt;
+document.addEventListener('DOMContentLoaded', function() {
+	const textInput = document.getElementById('textInput');
+	const urlDisplay = document.getElementById('urlDisplay');
+	textInput.addEventListener('input', function() {
+		const encodedValue = encodeURIComponent(textInput.value);
+		const newUrl = `<a href="http://example.com/?param=$">http://example.com/?param=$</a>{encodedValue}`;
+	//	urlDisplay.textContent = newUrl;
+		// URLの更新を実際に行いたい場合は、下記のコメントを解除
+		history.replaceState(null, null, `?param=${encodedValue}`);
+	});
+});
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</pre>
+<p><strong>【 リートン：Claude Instant 】</strong></p>
+<p><span style="color: #dd830c;">※ 期待したプログラムコードではなかった。</span></p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20240330/20240330095456.png" width="725" height="628" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>【これを使ったサンプル】</p>
+<p><span style="color: #dd830c;">※ ブラウザの履歴が更新されてしまう。期待したものとは違う。</span></p>
+<p><a href="https://ok2nd.github.io/Test/input2url/wrtn-instant.html" target="_blank">https://ok2nd.github.io/Test/input2url/wrtn-instant.html</a></p>
+<pre>&lt;!DOCTYPE html&gt;
+&lt;html lang="ja"&gt;
+&lt;head&gt;
+&lt;meta charset="UTF-8"&gt;
+&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+&lt;title&gt;Input to URL : リートン：Claude Instant&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h4&gt;Input to URL : リートン：Claude Instant&lt;/h4&gt;
+&lt;input type="text" id="textbox"&gt;
+&lt;script&gt;
+const textbox = document.getElementById('textbox');
+textbox.addEventListener('keyup', updateUrl); 
+function updateUrl() {
+	const value = textbox.value;
+	// URL更新
+	window.history.pushState({}, '', `?query=${value}`);
+}
+window.addEventListener('popstate', () =&gt; {
+	const query = new URLSearchParams(location.search).get('query');
+	textbox.value = query;
+});
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</pre>
+<p><strong>【 リートン：Claude 2.1 】</strong></p>
+<p><span style="color: #dd830c;">※ 期待したプログラムコードではなかった。</span></p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20240330/20240330100145.png" width="548" height="488" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>【これを使ったサンプル】</p>
+<p><span style="color: #dd830c;">※ ブラウザの履歴が更新されてしまう。期待したものとは違う。</span></p>
+<p><a href="https://ok2nd.github.io/Test/input2url/wrtn-claude2.1.html" target="_blank">https://ok2nd.github.io/Test/input2url/wrtn-claude2.1.html</a></p>
+<pre>&lt;!DOCTYPE html&gt;
+&lt;html lang="ja"&gt;
+&lt;head&gt;
+&lt;meta charset="UTF-8"&gt;
+&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+&lt;title&gt;Input to URL : リートン：Claude 2.1&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h4&gt;Input to URL : リートン：Claude 2.1&lt;/h4&gt;
+&lt;input type="text" id="inputText" oninput="updateURL()"&gt;
+&lt;script&gt;
+function updateURL() {
+	var input = document.getElementById("inputText").value;
+	history.pushState(null, null, "?text=" + encodeURIComponent(input));
+}
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</pre>
+<p><strong>【 リートン：Google PaLM2 】</strong></p>
+<p><span style="color: #dd830c;">※ 期待したものとは違う。</span></p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20240330/20240330100748.png" width="590" height="580" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p><a class="link-card" href="../../01/26/204226.html"><span class="lc-body"><span class="lc-title">JavaScript）HTML&lt;INPUT&gt;テキストボックスに入力されている文字列を、リアルタイムにURLのパラメーターに反映する方法。ChatGPT(3.5)に教えてもらった。（コード生成）</span><span class="lc-desc">HTML&lt;INPUT&gt;テキストボックスに入力されている文字列を、リアルタイムにURLのパラメーターに反映する方法。 方法は、ChatGPT（無料版3.5）に教えてもらった。ググって、自分で考えるより速い。 ≪サンプル≫ …</span><span class="lc-site">晴歩雨描 · <time>2024-01-26</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20240126/20240126173516.jpg" alt="" loading="lazy"></span></a></p></div></article>
+</body>
+</html>

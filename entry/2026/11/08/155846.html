@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>JavaScript、Leaflet）地図から探せる「潮汐、潮見表・タイドグラフ」を作成。 - 晴歩雨描</title>
+<link rel="stylesheet" href="../../../../style.css">
+</head>
+<body>
+<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>JavaScript、Leaflet）地図から探せる「潮汐、潮見表・タイドグラフ」を作成。</h1><p class="meta">2026-11-08 · <a href="../../../../category/c21.html">地図・マップ</a> <a href="../../../../category/c9.html">サイエンス・物理・宇宙</a> <a href="../../../../category/c23.html">天気予報</a> <a href="../../../../category/c42.html">＜AI＞</a></p><div class="entry-body"><p><em>JavaScriptで、「潮見表・タイドグラフ」を作成。</em>Claudeで作成。</p>
+<p><em>Leaflet地図で潮見表データ地点（239観測地点）をマーカー表示する。</em></p>
+<p><strong>参考：《 気象庁 | 潮汐・海面水位のデータ 潮位表掲載地点一覧表（2026年）239地点》</strong></p>
+<p><a href="https://www.data.jma.go.jp/kaiyou/db/tide/suisan/station.php" target="_blank">https://www.data.jma.go.jp/kaiyou/db/tide/suisan/station.php</a></p>
+<p><strong>《 潮見表マップ 》</strong></p>
+<p><a href="https://ok2nd.github.io/tool/tide/graph.html" target="_blank">https://ok2nd.github.io/tool/tide/graph.html</a></p>
+<p>マーカーをクリックして、「潮見表（タイドグラフ）を表示」をクリックすると、潮見表・タイドグラフが表示される。</p>
+<p>マーカー表示以外の場所をクリックしても、緯度経度から推測して潮見表（タイドグラフ）を表示する。</p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20261108/20261108152948.png" width="940" height="653" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<p>地図左上の 🔍 を押すと、地名で検索もできる。</p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20261108/20261108152953.png" width="940" height="653" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<p>潮見表・タイドグラフでは、「前日」「今日」「翌日」のボタン、または日付欄で、見たい日に移動できる。日付の横に「大潮」「中潮」「小潮」「長潮」「若潮」が表示される。</p>
+<p>表示中のページのURLは、そのままブックマークしたり、メールで送ったりできる。その地点の当日の潮見表（タイドグラフ）が表示される。</p>
+<p><a href="https://ok2nd.github.io/tool/tide/graph.html#/tide/j_AK" target="_blank">https://ok2nd.github.io/tool/tide/graph.html#/tide/j_AK</a></p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20261108/20261108152957.png" width="827" height="724" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<p>以下はスマホ画面。</p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20261108/20261108153001.png" width="657" height="1200" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<h5 id="-注意">※ 注意</h5>
+<p><strong>予測値です</strong>　表示される潮位は、気象庁が計算した予測値です。天気、気圧、風による実際の海面の変化は含まれません。</p>
+<p><strong>場所による違い</strong>　同じ海域でも、場所によって満潮・干潮の時刻は少し違います。特に瀬戸内海などでは差が出やすくなります。</p>
+<p><strong>安全のために</strong>　船の運航や、釣り・磯遊びなど安全に関わる判断には、海上保安庁や気象庁の公式情報もあわせてご確認ください。</p>
+<p><strong>見られる期間</strong>　気象庁の潮位表は、今年と来年の分だけ見られます。</p>
+<h5 id="-データの出典">※ データの出典</h5>
+<p>潮位：気象庁「潮位表」<s>（米国の地点は NOAA）</s>。港の位置・地図：OpenStreetMap。</p>
+<p><span style="color: rgb(221, 131, 12);">潮汐データを取得するには、気象庁データではなく、海上保安庁が運用している「海しる（海洋状況表示システム）」のAPIを使う方が適切かもしれないが、APIサブスクリプションキーが必要になるので、JavaScriptだけでAPIサブスクリプションキーを非公開でのツール構築は難しいと判断した。</span></p>
+<p><strong>参考：《 海洋状況表示システム公開「海しる」API 》</strong></p>
+<p><a href="https://portal.msil.go.jp/" target="_blank">https://portal.msil.go.jp/</a></p>
+<p><a class="link-card" href="https://ok2nd.github.io/sitemap/hatena-sitemap-table.html?search=leaflet" target="_blank" rel="noopener noreferrer"><span class="lc-body"><span class="lc-title">晴歩雨描：記事一覧</span><span class="lc-desc"></span><span class="lc-site">ok2nd.github.io</span></span></a></p>
+<p><a class="link-card" href="https://ok2nd.github.io/leaflet/" target="_blank" rel="noopener noreferrer"><span class="lc-body"><span class="lc-title">Leaflet地図 リスト by 晴歩雨描</span><span class="lc-desc"></span><span class="lc-site">ok2nd.github.io</span></span></a></p>
+<p><a class="link-card" href="../../09/05/151901.html"><span class="lc-body"><span class="lc-title">LeafletでなくOpenLayersで、「イコールアース図法」マップ作成。日本が大きく歪む。「メルカトル図法」との比較。</span><span class="lc-desc">9月4日、国連総会が、「メルカトル図法」の世界地図ではなく「イコールアース図法」の地図を採用するよう促す決議案を採択。 アフリカ大陸などがより正確な大きさで示されるため、アフリカ各国が強く支持していた。 アフリカ各国の気…</span><span class="lc-site">晴歩雨描 · <time>2026-09-05</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260905/20260905150400.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../03/172318.html"><span class="lc-body"><span class="lc-title">JavaScript）パソコンローカルの複数の写真/画像をドラッグ＆ドロップして画像比較するWebツール。並べて/重ねて表示。縮小表示/等倍表示。</span><span class="lc-desc">以前に、パソコンローカルの2枚の写真/画像をドラッグ＆ドロップして画像比較するWebツールをJavaScriptで作成した。 また、Pythonでも複数の写真/画像をドラッグ＆ドロップして画像比較するツールを作成した。こ…</span><span class="lc-site">晴歩雨描 · <time>2026-11-03</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20261103/20261103171619.png" alt="" loading="lazy"></span></a></p></div></article>
+</body>
+</html>

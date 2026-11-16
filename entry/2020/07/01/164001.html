@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mapbox GL JS）現在地表示、マーカー表示、地点検索、ルート検索。 - 晴歩雨描</title>
+<link rel="stylesheet" href="../../../../style.css">
+</head>
+<body>
+<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>Mapbox GL JS）現在地表示、マーカー表示、地点検索、ルート検索。</h1><p class="meta">2020-07-01 · <a href="../../../../category/c21.html">地図・マップ</a> <a href="../../../../category/c13.html">ホームページ、Web作成</a></p><div class="entry-body"><p><a class="link-card" href="163810.html"><span class="lc-body"><span class="lc-title">Mapbox GL JS）トークン取得と地点名の日本語表記。</span><span class="lc-desc">「 Yahoo! JavaScript マップ API 」が、2020年10月31日にサービス提供を終了する。 代替サービスとして「 Mapbox 」が紹介されているので、「 Mapbox GL JS 」を使ってみた。 …</span><span class="lc-site">晴歩雨描 · <time>2020-07-01</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20200701/20200701103650.jpg" alt="" loading="lazy"></span></a></p>
+<p>↑の続き。</p>
+<p>「<strong>Mapbox GL JS</strong>」を使って、簡単なWebマップを作ってみた。</p>
+<p>「<strong><a class="keyword" href="http://d.hatena.ne.jp/keyword/Yahoo%21">Yahoo!</a> <a class="keyword" href="http://d.hatena.ne.jp/keyword/JavaScript">JavaScript</a>マップ<a class="keyword" href="http://d.hatena.ne.jp/keyword/API">API</a></strong>」や「<strong><a class="keyword" href="http://d.hatena.ne.jp/keyword/Google%20Maps">Google Maps</a> <a class="keyword" href="http://d.hatena.ne.jp/keyword/JavaScript">JavaScript</a> <a class="keyword" href="http://d.hatena.ne.jp/keyword/API">API</a></strong>」に比べて、簡単な事をするだけならシンプルで使いやすい。地図そのものは、慣れの問題かもしれないが、<a class="keyword" href="http://d.hatena.ne.jp/keyword/Google%A5%DE%A5%C3%A5%D7">Googleマップ</a>に比べて見づらい。</p>
+<p>とりあえず、シンプルなマップページを作成してみた。</p>
+<p>以下のような機能を付けた。</p>
+<ul>
+<li>初期画面で現在地表示</li>
+<li>初期画面の現在地にマーカーを表示</li>
+<li>地点検索コン<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%C8%A5%ED%A1%BC%A5%EB">トロール</a></li>
+<li>現在位置表示コン<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%C8%A5%ED%A1%BC%A5%EB">トロール</a></li>
+<li>ルート検索コン<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%C8%A5%ED%A1%BC%A5%EB">トロール</a></li>
+<li>地図拡大縮小コン<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%C8%A5%ED%A1%BC%A5%EB">トロール</a></li>
+</ul>
+<p>パソコン画面イメージは以下。</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20200701/20200701113010.jpg" alt="f:id:art2nd:20200701113010j:plain" title="f:id:art2nd:20200701113010j:plain" class="hatena-fotolife" itemprop="image" /></p>
+<p><a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%B9%A5%DE%A5%DB">スマホ</a>画面。</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20200701/20200701113558.jpg" alt="f:id:art2nd:20200701113558j:plain" title="f:id:art2nd:20200701113558j:plain" class="hatena-fotolife" itemprop="image" /></p>
+<h4>■ <a class="keyword" href="http://d.hatena.ne.jp/keyword/JavaScript">JavaScript</a>、<a class="keyword" href="http://d.hatena.ne.jp/keyword/CSS">CSS</a>、アクセス<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%C8%A1%BC%A5%AF">トーク</a>ン</h4>
+<p>「Mapbox GL JS」の基本的な<a class="keyword" href="http://d.hatena.ne.jp/keyword/JavaScript">JavaScript</a>と<a class="keyword" href="http://d.hatena.ne.jp/keyword/CSS">CSS</a>を読み込み、アクセス<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%C8%A1%BC%A5%AF">トーク</a>ンを設定する。</p>
+<pre>&lt;!DOCTYPE html&gt;
+&lt;html lang="ja"&gt;
+&lt;head&gt;
+&lt;meta charset='<a class="keyword" href="http://d.hatena.ne.jp/keyword/utf-8">utf-8</a>'&gt;
+&lt;title&gt;mapboxマップ&lt;/title&gt;
+&lt;meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no'&gt;
+&lt;script src='<a href="https://api.tiles.mapbox.com/mapbox-gl-js/v1.6.1/mapbox-gl.js'></script>">https://api.tiles.mapbox.com/mapbox-gl-js/v1.6.1/mapbox-gl.js'></script></a>
+&lt;link rel='stylesheet' href='<a href="https://api.tiles.mapbox.com/mapbox-gl-js/v1.6.1/mapbox-gl.css'>">https://api.tiles.mapbox.com/mapbox-gl-js/v1.6.1/mapbox-gl.css'></a>
+&lt;script src='<a href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v3.1.1/mapbox-gl-directions.js'></script>">https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v3.1.1/mapbox-gl-directions.js'></script></a>
+&lt;link rel='stylesheet' href='<a href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v3.1.1/mapbox-gl-directions.css'>">https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v3.1.1/mapbox-gl-directions.css'></a>
+&lt;script src='<a href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v2.2.0/mapbox-gl-geocoder.min.js'></script>">https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v2.2.0/mapbox-gl-geocoder.min.js'></script></a>
+&lt;link rel='stylesheet' href='<a href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v2.2.0/mapbox-gl-geocoder.css'>">https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v2.2.0/mapbox-gl-geocoder.css'></a>
+&lt;style&gt;
+body { margin:0; padding:0; }
+#map { position:absolute; top:0; bottom:0; width:100%; }
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div id='map'&gt;&lt;/div&gt;<br />&lt;script&gt;
+	mapboxgl.accessToken = 'アクセス<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%C8%A1%BC%A5%AF">トーク</a>ン';
+	...
+	（ここに以下の<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%B9%A5%AF%A5%EA%A5%D7%A5%C8">スクリプト</a>を入れる）
+	...
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</pre>
+<h4>■ 初期画面で現在地表示</h4>
+<pre>navigator.geolocation.getCurrentPosition(function(position){ // 現在地取得
+	var <a class="keyword" href="http://d.hatena.ne.jp/keyword/lng">lng</a> = position.coords.longitude;
+	var lat = position.coords.latitude;
+	mapView(<a class="keyword" href="http://d.hatena.ne.jp/keyword/lng">lng</a>, lat);
+});
+function mapView(<a class="keyword" href="http://d.hatena.ne.jp/keyword/lng">lng</a>, lat) {
+	var map = new mapboxgl.Map({
+		container: 'map',
+		style: 'mapbox://styles/xxx/xxxxx', // 日本語スタイル
+		center: [<a class="keyword" href="http://d.hatena.ne.jp/keyword/lng">lng</a>, lat],
+		zoom: 14
+	});
+	...
+	（ここに以下の<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%B9%A5%AF%A5%EA%A5%D7%A5%C8">スクリプト</a>を入れる）
+	...
+}</pre>
+<p>↑ エラー処理は省略している。</p>
+<h4>■ 初期画面の現在地にマーカーを表示</h4>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20200701/20200701162305.jpg" alt="f:id:art2nd:20200701162305j:plain" title="f:id:art2nd:20200701162305j:plain" class="hatena-fotolife" itemprop="image" /></p>
+<pre>new mapboxgl.Marker().setLngLat([<a class="keyword" href="http://d.hatena.ne.jp/keyword/lng">lng</a>, lat]).addTo(map);
+</pre>
+<h4>■ 地点検索コン<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%C8%A5%ED%A1%BC%A5%EB">トロール</a></h4>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20200701/20200701113207.jpg" alt="f:id:art2nd:20200701113207j:plain" title="f:id:art2nd:20200701113207j:plain" class="hatena-fotolife" itemprop="image" /></p>
+<pre>map.addControl(new MapboxGeocoder({accessToken: mapboxgl.accessToken}), 'top-left');
+</pre>
+<p>単純な地点検索だけなら、これだけで出来る。検索結果の緯度経度情報を取得して、そこに地点名を付けたマーカーを表示する方法がよく分からない。</p>
+<h4>■ 現在位置表示コン<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%C8%A5%ED%A1%BC%A5%EB">トロール</a></h4>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20200701/20200701113221.jpg" alt="f:id:art2nd:20200701113221j:plain" title="f:id:art2nd:20200701113221j:plain" class="hatena-fotolife" itemprop="image" /></p>
+<pre>map.addControl(new mapboxgl.GeolocateControl({
+	positionOptions: {enableHighAccuracy: false},
+	trackUserLocation: true,
+	showUserLocation: true
+}));
+</pre>
+<h4>■ ルート検索コン<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%C8%A5%ED%A1%BC%A5%EB">トロール</a></h4>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20200701/20200701113233.jpg" alt="f:id:art2nd:20200701113233j:plain" title="f:id:art2nd:20200701113233j:plain" class="hatena-fotolife" itemprop="image" /></p>
+<pre>map.addControl(new MapboxDirections({accessToken: mapboxgl.accessToken}), 'bottom-left');</pre>
+<p>これだけで、ルート検索機能が付く。始点、終点それぞれ地点名入力と地図上クリックによる場所指定ができる。ただ、これ以外の特殊なことをしようと思うと難しい。</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20200701/20200701162904.jpg" alt="f:id:art2nd:20200701162904j:plain" title="f:id:art2nd:20200701162904j:plain" class="hatena-fotolife" itemprop="image" /></p>
+<figure class="figure-image figure-image-fotolife mceNonEditable" title="スマホ画面">
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20200703/20200703133552.jpg" alt="f:id:art2nd:20200703133552j:plain" title="f:id:art2nd:20200703133552j:plain" class="hatena-fotolife" itemprop="image" /></p>
+<figcaption class="mceEditable"><a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%B9%A5%DE%A5%DB">スマホ</a>画面</figcaption>
+</figure>
+<p><a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%B9%A5%DE%A5%DB">スマホ</a>画面では、ルートのナビウインドウが画面一杯に広がって使い物にならない。ルートのナビウインドウを表示しないようにできるかどうかは不明。</p>
+<h4>■ 地図拡大縮小コン<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%C8%A5%ED%A1%BC%A5%EB">トロール</a></h4>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20200701/20200701113245.jpg" alt="f:id:art2nd:20200701113245j:plain" title="f:id:art2nd:20200701113245j:plain" class="hatena-fotolife" itemprop="image" /></p>
+<pre>map.addControl(new mapboxgl.NavigationControl(), 'bottom-right');
+</pre>
+<p><a class="link-card" href="https://docs.mapbox.com/jp/yolp-to-mapbox/javascript/" target="_blank" rel="noopener noreferrer"><span class="lc-body"><span class="lc-title">Mapbox Docs</span><span class="lc-desc"></span><span class="lc-site">Mapbox</span></span></a></p>
+<p><a class="link-card" href="https://docs.mapbox.com/jp/mapbox-gl-js/example/" target="_blank" rel="noopener noreferrer"><span class="lc-body"><span class="lc-title">サンプル | Mapbox GL JS</span><span class="lc-desc">Mapbox GL JSのコード例。</span><span class="lc-site">Mapbox</span></span><span class="lc-thumb"><img src="https://static-assets.mapbox.com/branding/social/social-1200x630.v4.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="https://docs.mapbox.com/mapbox-gl-js/examples/" target="_blank" rel="noopener noreferrer"><span class="lc-body"><span class="lc-title">https://docs.mapbox.com/mapbox-gl-js/examples/</span><span class="lc-desc"></span><span class="lc-site">docs.mapbox.com</span></span></a></p>
+<p><a class="link-card" href="https://docs.mapbox.com/jp/help/tutorials/google-to-mapbox/" target="_blank" rel="noopener noreferrer"><span class="lc-body"><span class="lc-title">チュートリアル | Help</span><span class="lc-desc">ステップバイステップのガイドを見つけて、プロジェクトの開始や次のステップに進むのに役立てましょう。</span><span class="lc-site">Mapbox</span></span><span class="lc-thumb"><img src="https://static-assets.mapbox.com/branding/social/social-1200x630.v4.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="https://docs.mapbox.com/jp/help/troubleshooting/how-to-use-mapbox-securely/" target="_blank" rel="noopener noreferrer"><span class="lc-body"><span class="lc-title">トラブルシューティング | Help</span><span class="lc-desc">Mapbox製品に共通する問題を解決します。</span><span class="lc-site">Mapbox</span></span><span class="lc-thumb"><img src="https://static-assets.mapbox.com/branding/social/social-1200x630.v4.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="https://qiita.com/niwasawa/items/c465f25d1c188dc454f6" target="_blank" rel="noopener noreferrer"><span class="lc-body"><span class="lc-title">Mapbox GL JS で地図上に Hello World を表示する - Qiita</span><span class="lc-desc">Mapbox とは モバイルや Web アプリケーションのための位置情報データプラットフォーム 位置情報系のモジュール (地図、検索、ナビゲーション) を提供する About | Mapbox Mapbox is the…</span><span class="lc-site">Qiita</span></span><span class="lc-thumb"><img src="https://qiita-user-contents.imgix.net/https%3A%2F%2Fqiita-user-contents.imgix.net%2Fhttps%253A%252F%252Fcdn.qiita.com%252Fassets%252Fpublic%252Farticle-ogp-background-afbab5eb44e0b055cce1258705637a91.png%3Fixlib%3Drb-4.1.1%26w%3D1200%26blend64%3DaHR0cHM6Ly9xaWl0YS11c2VyLXByb2ZpbGUtaW1hZ2VzLmltZ2l4Lm5ldC9odHRwcyUzQSUyRiUyRnFpaXRhLWltYWdlLXN0b3JlLnMzLmFwLW5vcnRoZWFzdC0xLmFtYXpvbmF3cy5jb20lMkYwJTJGMTM5MzY1JTJGcHJvZmlsZS1pbWFnZXMlMkYxNTYzMDY3MzQ0P2l4bGliPXJiLTQuMS4xJmFyPTElM0ExJmZpdD1jcm9wJm1hc2s9ZWxsaXBzZSZiZz1GRkZGRkYmZm09cG5nMzImcz01ZWIxOGQ3M2M1MTlmYzkzYzJmYTgxY2UwYjMwZmRjOQ%26blend-x%3D120%26blend-y%3D467%26blend-w%3D82%26blend-h%3D82%26blend-mode%3Dnormal%26s%3D6ed7ba2c1ef0e5b46a061754b861ee08?ixlib=rb-4.1.1&amp;w=1200&amp;fm=jpg&amp;mark64=aHR0cHM6Ly9xaWl0YS11c2VyLWNvbnRlbnRzLmltZ2l4Lm5ldC9-dGV4dD9peGxpYj1yYi00LjEuMSZ3PTk2MCZoPTMyNCZ0eHQ9TWFwYm94JTIwR0wlMjBKUyUyMCVFMyU4MSVBNyVFNSU5QyVCMCVFNSU5QiVCMyVFNCVCOCU4QSVFMyU4MSVBQiUyMEhlbGxvJTIwV29ybGQlMjAlRTMlODIlOTIlRTglQTElQTglRTclQTQlQkElRTMlODElOTklRTMlODIlOEImdHh0LWFsaWduPWxlZnQlMkN0b3AmdHh0LWNvbG9yPSUyMzFFMjEyMSZ0eHQtZm9udD1IaXJhZ2lubyUyMFNhbnMlMjBXNiZ0eHQtc2l6ZT01NiZ0eHQtcGFkPTAmcz0wOWMwMmUzZjc2YWUyNzhlODRmNmIzNzY0MWFiNjI4ZA&amp;mark-x=120&amp;mark-y=112&amp;blend64=aHR0cHM6Ly9xaWl0YS11c2VyLWNvbnRlbnRzLmltZ2l4Lm5ldC9-dGV4dD9peGxpYj1yYi00LjEuMSZ3PTgzOCZoPTU4JnR4dD0lNDBuaXdhc2F3YSZ0eHQtY29sb3I9JTIzMUUyMTIxJnR4dC1mb250PUhpcmFnaW5vJTIwU2FucyUyMFc2JnR4dC1zaXplPTM2JnR4dC1wYWQ9MCZzPTBmYzg1MTVkYjRkNzQ5YjdkZWVlOTdmYjc0NjkwMTBl&amp;blend-x=242&amp;blend-y=480&amp;blend-w=838&amp;blend-h=46&amp;blend-fit=crop&amp;blend-crop=left%2Cbottom&amp;blend-mode=normal&amp;s=c58fde5ce31df6b271517afd59c566f3" alt="" loading="lazy"></span></a></p>
+<p><em>【後日追記】MapboxよりLeafletの方が使いやすいかも。</em></p>
+<p><a class="link-card" href="../../../2022/06/26/113337.html"><span class="lc-body"><span class="lc-title">Leaflet地図、作成記事「まとめ」。</span><span class="lc-desc">地図データを扱うJavaScript ライブラリ「Leaflet」を使って、地図をいくつか作成してきた。 Leaflet地図作成記事をまとめてみた。</span><span class="lc-site">晴歩雨描 · <time>2022-06-26</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20210428/20210428102446.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2021/04/28/112259.html"><span class="lc-body"><span class="lc-title">Leaflet + OpenStreetMapで、地図にマーカー＆ラベル表示。サンプルソース。</span><span class="lc-desc">地図情報を扱うサービス「 Google Maps API 」が無料では使えなくなり、「 Yahoo! JavaScript マップ API 」もサービス提供が終了し、以前「 Mapbox GL JS 」を試してみた。 今…</span><span class="lc-site">晴歩雨描 · <time>2021-04-28</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20210428/20210428102446.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2021/04/29/143307.html"><span class="lc-body"><span class="lc-title">Leaflet地図：クリックした地点の緯度・経度、標高を表示。サンプルソース。</span><span class="lc-desc">昨日から「Leaflet」を使って「 Google マップ 」「 OpenStreetMap 」「 国土地理院 」「 Esri World Topo Map」の地図表示を試している。 この地図に以下の機能を追加。 地図上…</span><span class="lc-site">晴歩雨描 · <time>2021-04-29</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20210429/20210429143245.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2018/09/13/155542.html"><span class="lc-body"><span class="lc-title">Googleマップの詳細かつ広い範囲の地図を印刷する方法。</span><span class="lc-desc">Googleマップ で広い地域を印刷しようとすると、詳細部分が分からなくなる。 詳細な地域の情報を維持したまま広い範囲の地図を印刷する方法を考えた。 以前は Google Maps API を使う方法もあったが、現在 A…</span><span class="lc-site">晴歩雨描 · <time>2018-09-13</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20180913/20180913151632.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2018/07/13/144317.html"><span class="lc-body"><span class="lc-title">PHP）シンプルなHTMLカレンダー。Google Calendar API v3で祝日表示。コードサンプル。</span><span class="lc-desc">先日作成したスマホ&amp;PC用検索ポータル「2nd Sch」にカレンダー表示のため、シンプルなHTMLカレンダーを作成。 祝日表示に「Google Calendar API v3」を使用。 ただ、祝日は当年の前後合わせて3年…</span><span class="lc-site">晴歩雨描 · <time>2018-07-13</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20180713/20180713143522.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2018/07/07/144138.html"><span class="lc-body"><span class="lc-title">HTML(TABLE)クリッカブルマップ「日本地図」を作成。スマホ対応。</span><span class="lc-desc">HTML(TABLE)で、クリッカブルマップとしての日本地図を作成。（昔、作ったものを手直し） スマホを想定して、縦長画面の時は都道府県名を縦書きにして画面内に収まるようにした。スマホ画面を横位置にした場合の縦が狭い画面…</span><span class="lc-site">晴歩雨描 · <time>2018-07-07</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20180707/20180707224156.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2019/06/24/002655.html"><span class="lc-body"><span class="lc-title">検索機能付き「はてなブログ記事一覧」HTML生成スクリプト(JScript)を作成。</span><span class="lc-desc">先日、はてなブログのHTMLサイトマップ（はてなブログ記事一覧）を生成するスクリプト(JScript)を作成した。 これは、Googleクローラーに読み込んでもらうのが目的だったが、今回は人間が利用するための「はてなブロ…</span><span class="lc-site">晴歩雨描 · <time>2019-06-24</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190623/20190623234257.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../06/08/103814.html"><span class="lc-body"><span class="lc-title">「ふりがな文庫」がおもしろい。例文がなかなか良い。</span><span class="lc-desc">たまたま見つけたWebサイト「ふりがな文庫」がおもしろい。 トップページには、以下のような欄がある。 いま見られている語句（漢字） いま見られている語句（よみ） 夏の季語（たぶん、シーズンで変わる） 四字熟語 植物の漢字…</span><span class="lc-site">晴歩雨描 · <time>2020-06-08</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20200608/20200608091416.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../05/05/225915.html"><span class="lc-body"><span class="lc-title">はてなブログで文字列に蛍光ペン（マーカー）風のアンダーラインをつける方法。&lt;em&gt;タグで。（カスタマイズCSS）</span><span class="lc-desc">はてなブログ で、強調したいハイライト文字列に蛍光マーカーペンっぽい色付きのアンダーラインをつける方法。 【サンプル】 強調したいハイライト文字列 はてなブログ で使える文字の装飾には、太字/ボールド、斜体/イタリック、…</span><span class="lc-site">晴歩雨描 · <time>2020-05-05</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20200505/20200505230106.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../02/06/173021.html"><span class="lc-body"><span class="lc-title">デジカメ写真補正・加工関連ノウハウ（？）ブログ記事一覧作成。</span><span class="lc-desc">Windowsアプリ「GIMP」、「ImageMagick」等を使って写真補正や写真加工をいくつか試してきた。 備忘録としてブログ記事一覧を作成。ノウハウという程ではないが、タイトルは「ノウハウ記事一覧」。</span><span class="lc-site">晴歩雨描 · <time>2020-02-06</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20200206/20200206164948.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../01/02/233132.html"><span class="lc-body"><span class="lc-title">CSS）ブラウザで縦書き表示＆印刷。PHP版。</span><span class="lc-desc">HTML、CSSで縦書き表示するWebページを作成。任意の文章に、以下のようなCSSを指定したHTMLページを生成する。 &lt;style&gt; -webkit-writing-mode: vertical-rl; -ms-wr…</span><span class="lc-site">晴歩雨描 · <time>2020-01-02</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20200102/20200102224001.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2019/06/15/112639.html"><span class="lc-body"><span class="lc-title">CSSのflexbox（display:flex;）で、写真/画像を横並びにする。inline-blockやfloat:leftは使わない。＋ &lt;div&gt;の横幅一杯に画像を並べてリサイザブル（レスポンシブ）にする。</span><span class="lc-desc">Webページで写真/画像を横並びにする方法として、以前は display: inline-block; display: table-cell; float: left; などを使っていた。どれもあまり使いやすいとは言え…</span><span class="lc-site">晴歩雨描 · <time>2019-06-15</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190615/20190615110247.jpg" alt="" loading="lazy"></span></a></p></div></article>
+</body>
+</html>

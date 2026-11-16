@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Windows）JPEG画像の白色部分を透過にしたPNG画像生成方法。ImageMagickで複数ファイルを一括バッチ処理。 - 晴歩雨描</title>
+<link rel="stylesheet" href="../../../../style.css">
+</head>
+<body>
+<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>Windows）JPEG画像の白色部分を透過にしたPNG画像生成方法。ImageMagickで複数ファイルを一括バッチ処理。</h1><p class="meta">2025-02-05 · <a href="../../../../category/c8.html">コンピュータ</a></p><div class="entry-body"><p>Windowsで、JPEG画像の白色部分を透過にしたPNG画像の生成方法。</p>
+<p>ImageMagickを使用。</p>
+<p><a class="link-card" href="https://imagemagick.org/" target="_blank" rel="noopener noreferrer"><span class="lc-body"><span class="lc-title">ImageMagick | Mastering Digital Image Alchemy</span><span class="lc-desc">ImageMagick is a powerful open-source software suite for creating, editing, converting, and manipulating image…</span><span class="lc-site">imagemagick.org</span></span><span class="lc-thumb"><img src="https://imagemagick.org/image/logo.png" alt="" loading="lazy"></span></a></p>
+<p><em><span style="color: #ff0000;">※注：ImageMagick7以降では、「convert」コマンドが「magick」に変更されている。以下の記述はImageMagick7以降の方法。</span></em></p>
+<p>JPEG画像ファイル1つなら、以下のコマンドを実行。outputフォルダーは事前に作成。</p>
+<p>「-fuzz 10%」は白色の許容範囲（しきい値）。</p>
+<pre>magick input.jpg -fuzz 10% -transparent white output/output.png
+</pre>
+<p>JPEG画像ファイルを複数まとめて一括処理するなら、「mogrify」オプションを付けて、以下のコマンドを実行。outputフォルダーは事前に作成。</p>
+<pre>magick mogrify -path output -format png -fuzz 10% -transparent white *.jpg
+</pre>
+<p><a class="link-card" href="../12/100342.html"><span class="lc-body"><span class="lc-title">JavaScript）JPEG画像の白色部分を透過にしたPNG画像生成Webツール。Google Geminiで作成。</span><span class="lc-desc">以前に、ImageMagickを使って、JPEG画像の白色部分を透過にしたPNG画像を生成した。 今回、JavaScriptを使って、ブラウザにJPEG画像をアップロードして、白色部分を透過にしたPNG画像をダウンロード…</span><span class="lc-site">晴歩雨描 · <time>2025-02-12</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250212/20250212095643.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2019/07/28/175049.html"><span class="lc-body"><span class="lc-title">複数の写真/画像をまとめて一括でモノクロ（グレースケール）に変換する方法。「縮小専用」「縮小革命」「JTrim」「ImageMagick」</span><span class="lc-desc">複数の写真をまとめて一括（バッチ）でモノクロ（グレースケール）画像に変換する方法。 Windowsアプリ「 縮小専用 」「 JTrim 」「 ImageMagick 」 それぞれを使う方法。 後日追加＞ 「 縮小革命 」…</span><span class="lc-site">晴歩雨描 · <time>2019-07-28</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190726/20190726120816.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2019/03/22/111636.html"><span class="lc-body"><span class="lc-title">過去の桜の写真を、「ImageMagick」のヒストグラム平坦化で明るい感じにしてみた。</span><span class="lc-desc">過去の桜の写真を、 Windows アプリ「 ImageMagick 」の ヒストグラム 平坦化（equalize）で明るい感じにしてみた。 Windows アプリ「 ImageMagick 」の使い方は以下を参照。 オ…</span><span class="lc-site">晴歩雨描 · <time>2019-03-22</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190322/20190322110209.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2019/02/08/224853.html"><span class="lc-body"><span class="lc-title">「ImageMagick」で写真のヒストグラム平坦化（equalize）を試してみた。ImageMagickで一括バッチ処理。</span><span class="lc-desc">撮った写真をもう少し明るく鮮やかな印象にしたい場合、画像処理ソフトを使って明度やコントラストを補正することで可能だが、補正の程度の調整が結構面倒。 ヒストグラムの平坦化で簡単に補正できる場合がある。（あくまでも、「できる…</span><span class="lc-site">晴歩雨描 · <time>2019-02-08</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190208/20190208224351.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2017/07/15/160351.html"><span class="lc-body"><span class="lc-title">ImageMagick(magick)とAdobe Photoshop CS2でアート作品作成。レイヤー使用。</span><span class="lc-desc">「 8cm×12cmの小さなアート 」の作品#261は、ドライフラワーを写真に撮ったものを加工して作成。以下、備忘録。 ※注：ImageMagick7以降では、「convert」コマンドが「magick」に変更されている…</span><span class="lc-site">晴歩雨描 · <time>2017-07-15</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20170715/20170715155657.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2020/06/01/122253.html"><span class="lc-body"><span class="lc-title">写真をGIMP/G&#x27;MIC［Freaky B&amp;W］でレトロっぽくモノクロ化。</span><span class="lc-desc">写真を GIMP プラグイン 「G&#x27;MIC」フィルターを使って加工。 「G&#x27;MIC」については以下を参照。 今回は、以下の「G&#x27;MIC」フィルターを使ってレトロっぽい雰囲気のモノクロ化。 ［Black &amp; White］→…</span><span class="lc-site">晴歩雨描 · <time>2020-06-01</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20200601/20200601112701.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../01/05/131859.html"><span class="lc-body"><span class="lc-title">JavaScript）白黒（モノクロ）画像をブラウザにアップロードして、色（カラー）変換するWebツール作成。アンチエイリアシング対応。カラーピッカー使用。Copilotで作成。</span><span class="lc-desc">白黒（モノクロ）画像をブラウザにアップロードして、色（カラー）変換するWebツールをJavaScriptで作成。 白黒画像を簡単な手順でカラー変換できるツールは意外と見つからない。 なので、カラー変換できるツールを、HT…</span><span class="lc-site">晴歩雨描 · <time>2025-01-05</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250105/20250105131043.png" alt="" loading="lazy"></span></a></p></div></article>
+</body>
+</html>

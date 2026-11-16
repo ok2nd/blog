@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>「XAMPP」「MyHome Portal」DドライブからCドライブへ変更。XAMPPインストール備忘録。SSDドライブ現状構成。 - 晴歩雨描</title>
+<link rel="stylesheet" href="../../../../style.css">
+</head>
+<body>
+<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>「XAMPP」「MyHome Portal」DドライブからCドライブへ変更。XAMPPインストール備忘録。SSDドライブ現状構成。</h1><p class="meta">2026-08-01 · <a href="../../../../category/c8.html">コンピュータ</a> <a href="../../../../category/c13.html">ホームページ、Web作成</a></p><div class="entry-body"><p>「<em>XAMPP（Apache、PHP、MySQL）</em>」を入れているDドライブが最近2度ほど認識しなくなることがあった。原因がPC本体なのか、SSDなのか、USBケーブルなのか不明。不安定な状態を回避するため、<em>XAMPPをCドライブに移行</em>することに。</p>
+<p>以下、「XAMPP」をDドライブからCドライブへ変更した作業の備忘録。</p>
+<p>Windowsで、XAMPPを別ドライブへ移動させたり、ディレクトリ変更する場合は、注意が必要。</p>
+<p>xamppディレクトリ丸ごとコピーして立ち上げると、古い環境（ドライブやディレクトリ）をそのまま継続して使おうとしてしまう可能性あり。</p>
+<p>例えば、以下のファイルの中に、直接、ドライブやディレクトリが書かれていたりする。</p>
+<p><strong>【\xampp\mysql\bin\my.ini】</strong></p>
+<pre>socket = "D:/xampp/mysql/mysql.sock"
+plugin_dir = "D:/xampp/mysql/lib/plugin/"
+innodb_data_home_dir = "D:/xampp/mysql/data"
+innodb_data_file_path = ibdata1:10M:autoextend
+innodb_log_group_home_dir = "D:/xampp/mysql/data"</pre>
+<p><strong>【\xampp\apache\conf\httpd.conf】</strong></p>
+<pre>ServerRoot "D:/xampp/apache"
+DocumentRoot "D:/xampp/htdocs"</pre>
+<h4 id="-DドライブからCドライブへ移行の基本方針">■ DドライブからCドライブへ移行の基本方針</h4>
+<p><em>XAMPP環境をDドライブからCドライブへ丸ごとコピーするのではなく、CドライブへXAMPPのZIP版を新規インストールした上で、「htdocs」「mysql\data」などの実データのみCドライブへコピーする。</em></p>
+<h4 id="-Dドライブでの既存環境の停止">■ Dドライブでの既存環境の停止</h4>
+<h5 id="-既存のXAMPP環境の停止">● 既存のXAMPP環境の停止</h5>
+<ul>
+<li><em>XAMPPコントロールパネルで、Apache、MySQLを停止する。</em></li>
+<li><em>Apache、MySQLのサービスのチェックをはずす。</em></li>
+</ul>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260801/20260801084015.png" width="730" height="471" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<h5 id="-既存のXAMPP環境の実データをバックアップしておく">● 既存のXAMPP環境の実データを、バックアップしておく。</h5>
+<ul>
+<li>D:\xampp\htdocs</li>
+<li>D:\xampp\mysql\data</li>
+</ul>
+<h4 id="-CドライブでのXAMPP立ち上げ">■ CドライブでのXAMPP立ち上げ</h4>
+<p><strong>●「XAMPP」インストール</strong></p>
+<p><em>インストーラー版を使わず</em>に、ZIP版「<span style="color: #ff0000;"><em>xampp-win32-1.8.3-5-VC11.zip</em></span>」を使う。</p>
+<p>「XAMPP 1.8.3」の場合、以下から「xampp-win32-1.8.3-5-VC11.zip」を入手して、展開したファイルをそのままディレクトリに配置する。</p>
+<p><a href="https://sourceforge.net/projects/xampp/files/XAMPP%20Windows/1.8.3/" target="_blank">https://sourceforge.net/projects/xampp/files/XAMPP%20Windows/1.8.3/</a></p>
+<ul>
+<li>C:\xampp</li>
+</ul>
+<p><strong>● 運用していたHTMLファイルとMySQLデータベースをコピー</strong></p>
+<ul>
+<li><em>D:\xampp\htdocs → C:\xampp\htdocs</em></li>
+<li><em>D:\xampp\mysql\data → C:\xampp\mysql\data</em></li>
+</ul>
+<p><strong>● PHPタイムゾーンを確認/変更</strong></p>
+<p>「\xampp\php\php.ini」</p>
+<pre>date.timezone = Europe/Berlin
+↓↓↓<br />date.timezone = Asia/Tokyo</pre>
+<p><strong>● phpMyAdminが使えるようにする</strong></p>
+<p><strong>【\xampp\phpMyAdmin\config.inc.php】</strong></p>
+<ul>
+<li>'user'や'password'を環境に合わせて修正する。</li>
+<li>「phpMyAdmin」を開く時に、ログイン画面を出すために、['auth_type']を'config'から'cookie'に変更する。</li>
+</ul>
+<pre>/* Authentication type and info */
+<span style="color: #ff0000;">$cfg['Servers'][$i]['auth_type'] = 'cookie';
+$cfg['Servers'][$i]['user'] = 'xxx';
+$cfg['Servers'][$i]['password'] = 'xxx';</span>
+$cfg['Servers'][$i]['extension'] = 'mysqli';
+$cfg['Servers'][$i]['AllowNoPassword'] = true;
+$cfg['Lang'] = '';</pre>
+<p><strong>● XAMPPコントロールパネルを管理者で実行するように設定</strong></p>
+<p>「xampp/xampp-control.exe」のプロパティを開いて、「管理者としてこのプログラムを実行する」にチェックを入れる。</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250614/20250614223143.png" width="470" height="580" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p><strong>● XAMPPコントロールパネル</strong></p>
+<p>ApacheとMySQLをサービスとして実行するように設定する。</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260801/20260801091831.png" width="730" height="471" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>ApacheとMySQLを、Startする。</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260801/20260801091856.png" width="730" height="471" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<h5 id="-FileZillaとTomcatを表示から外す">● FileZillaとTomcatを表示から外す</h5>
+<p>FileZillaとTomcat は使わないので、XAMPPコントロールパネルにStartが表示されないようにする。</p>
+<p>「C:\xampp\xampp-control.ini」を以下のように変更する。</p>
+<pre>[EnableModules]
+Apache=1
+MySQL=1
+FileZilla=0
+Mercury=0
+Tomcat=0
+
+[EnableServices]
+Apache=1
+MySQL=1
+FileZilla=0
+Tomcat=0</pre>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260801/20260801140754.png" width="730" height="471" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p><strong>● XAMPP動作確認</strong></p>
+<p>ブラウザで、「<a href="http://localhost/">http://localhost/</a>」と入れて初期画面を表示。表示されたページで「日本語」を選択。</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250614/20250614223457.png" width="938" height="750" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<h5 id="-phpMyAdmin-確認">● phpMyAdmin 確認</h5>
+<p>「phpMyAdmin」でログイン画面が出るのを確認＋ログインできることを確認。</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260801/20260801110731.png" width="861" height="681" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<h5 id="-MyHome-Portal立ち上げ確認">● 「MyHome Portal」立ち上げ確認</h5>
+<p>自分用に作成運用しているローカルサービスの立ち上げ確認。</p>
+<p><a href="http://localhost/_myhome/index/index.php" target="_blank">http://localhost/_myhome/index/index.php</a></p>
+<p>参考：</p>
+<p><a class="link-card" href="https://ok2nd.github.io/myportal/" target="_blank" rel="noopener noreferrer"><span class="lc-body"><span class="lc-title">MyHome Portal</span><span class="lc-desc">個人または家族で使える自宅用のWebポータルシステム「MyHome Portal」をオープンソース/フリーソフトとして公開しています。</span><span class="lc-site">ok2nd.github.io</span></span></a></p>
+<h4 id="-XAMPPでCA証明書を設定">■ XAMPPでCA証明書を設定</h4>
+<p>外部のHTTPSサーバーへリクエストを送信する際、相手のSSL/TLS証明書が信頼できるものか検証するためにCA証明書が必要になる。</p>
+<p>ローカルPCのXAMPP上のPHPアプリから、気象庁のAPIにアクセスするため、XAMPPでCA証明書を設定。</p>
+<p><a class="link-card" href="../../02/03/124042.html"><span class="lc-body"><span class="lc-title">Leaflet地図：現在の積雪を地図表示。気象庁データを使用。JavaScript＆PHP（CORS制限回避）。XAMPPでCA証明書。InfinityFree。</span><span class="lc-desc">気象庁の「 現在の積雪 」データを使って、 Leaflet で地図表示するようにした。 ■ 使用したデータ 《 気象庁：積雪観測地点情報（json）》 https://www.jma.go.jp/bosai/amedas…</span><span class="lc-site">晴歩雨描 · <time>2026-02-03</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260203/20260203120620.png" alt="" loading="lazy"></span></a></p>
+<p>① CA証明書をダウンロード：公式（curl推奨）</p>
+<ul>
+<li><a href="https://curl.se/ca/cacert.pem" target="_blank">https://curl.se/ca/cacert.pem</a></li>
+</ul>
+<p>② 保存先（例）：フォルダがなければ作ってOK</p>
+<ul>
+<li>\xampp\php\extras\ssl\cacert.pem</li>
+</ul>
+<p>③ \xampp\php\php.ini に、以下を追加。環境に合わせてパスを変更。</p>
+<pre>[curl]
+curl.cainfo="C:\xampp\php\extras\ssl\cacert.pem"
+[openssl]
+openssl.cafile="C:\xampp\php\extras\ssl\cacert.pem"</pre>
+<p>④ C:\xampp\php\php.iniの以下のコメントアウトを外して、OpenSSLを有効にする。</p>
+<pre>;extension=php_openssl.dll</pre>
+<p>　　　↓↓↓</p>
+<pre>extension=php_openssl.dll</pre>
+<p>⑤ コントロールパネルで、Apache を一旦停止して起動する。</p>
+<p>⑥ OpenSSLが有効になっていることの確認。</p>
+<p>　　<a href="http://localhost/xampp/phpinfo.php" target="_blank">http://localhost/xampp/phpinfo.php</a><br />　　で、OpenSSL support が enabled になっていることを確認。</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260801/20260801131739.png" width="652" height="162" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<h4 id="-GitHub-Desktop">■ GitHub Desktop</h4>
+<p>GitHub のディレクトリもCドライブ「C:\xampp\htdocs\github」に移動したため、「<em>GitHub Desktop</em>」でリポジトリの変更をする必要がある。複数をまとめて、変更する手段がないため、リポジトリ毎に「Locate...」でディレクトリパスを変更する必要あり。</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260801/20260801135026.jpg" width="946" height="653" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<h4 id="-現時点でのSSDドライブ運用状況">■ 現時点でのSSDドライブ運用状況</h4>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260801/20260801104336.jpg" width="517" height="245" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<div style="overflow-x: auto;">
+<table class="font-small">
+<thead>
+<tr>
+<th> </th>
+<th>名称</th>
+<th>容量</th>
+<th>最大<br />読込速度<br />MB/秒</th>
+<th>購入</th>
+</tr>
+</thead>
+<tbody style="vertical-align: top;">
+<tr>
+<td>C:</td>
+<td>PC内蔵 M.2 SSD</td>
+<td>1TB</td>
+<td>7000 ?</td>
+<td>2025.12.17</td>
+</tr>
+<tr>
+<td>D:</td>
+<td>SUNEAST Eclipse E40</td>
+<td>4TB</td>
+<td>4000</td>
+<td>2025.12.13</td>
+</tr>
+<tr>
+<td>E:</td>
+<td>WD ポータブルSSD</td>
+<td>4TB</td>
+<td>1050</td>
+<td>2023.7.3</td>
+</tr>
+<tr>
+<td>G:</td>
+<td>SanDisk Extreme Portable</td>
+<td>8TB</td>
+<td>1050</td>
+<td>2025.8.27</td>
+</tr>
+<tr>
+<td>M:</td>
+<td>SanDisk Extreme Portable</td>
+<td>2TB</td>
+<td>550</td>
+<td>2020.12.24</td>
+</tr>
+<tr>
+<td>N:</td>
+<td>SanDisk Portable</td>
+<td>2TB</td>
+<td>520</td>
+<td>2021.1.17</td>
+</tr>
+<tr>
+<td>O:</td>
+<td>Crucial X6</td>
+<td>4TB</td>
+<td>800</td>
+<td>2022.8.27</td>
+</tr>
+<tr>
+<td>-</td>
+<td><span style="color: #62c7c9;">WD ポータブルHDD</span></td>
+<td>4TB</td>
+<td>100 ?</td>
+<td>2022.3.4</td>
+</tr>
+</tbody>
+</table>
+</div>
+<ul>
+<li>本体Cドライブ（<span style="color: #ff0000;"><em>XAMPP</em></span>）：<strong><span style="color: #cc00cc;">SSD</span></strong>：1TB</li>
+<li>Dドライブ（<strong>メイン</strong>/<strong><span style="color: #2196f3;">A-Photo以外</span></strong>+<strong><span style="color: #ff0000;">A-Photo予備:2028年以降？</span></strong>）：<strong><span style="color: #cc00cc;">SSD </span></strong>：<span style="color: #dd830c;"><strong>4TB（USB4）</strong></span></li>
+<li>Eドライブ（<strong>メイン</strong>/<em><strong><span style="color: #ff0000;">A-Photo</span></strong></em>）：<strong><span style="color: #cc00cc;">SSD </span></strong>：<span style="color: #dd830c;"><strong>4TB</strong></span></li>
+<li>Gドライブ（<strong>メインバックアップ</strong>/<span style="color: #ff0000;"><strong>全て</strong></span>）：<strong><span style="color: #cc00cc;">SSD </span></strong>：<strong><span style="color: #dd830c;">8TB</span></strong></li>
+<li>Mドライブ（2次バックアップ/<strong><span style="color: #2196f3;">A-Photo以外</span></strong>）：<strong><span style="color: #cc00cc;">SSD</span></strong> ：2TB</li>
+<li>Nドライブ（2次バックアップ/<strong><span style="color: #ff0000;">A-Photo予備:2028年以降？</span></strong>）：<strong><span style="color: #cc00cc;">SSD</span></strong> ：2TB<br /><span style="color: #b388dd;">現時点では、古いデータの仮保存に使用</span></li>
+<li>Oドライブ（2次バックアップ/<strong><span style="color: #ff0000;">A-Photo</span></strong>）：<strong><span style="color: #cc00cc;">SSD</span></strong> ：<strong><span style="color: #dd830c;">4TB</span></strong></li>
+<li><span style="color: #62c7c9;">[WD ポータブルHDD (4TB)] ：古いPCに接続：旧データ保管</span></li>
+</ul>
+<h5 id="-USBポート接続概略">● USBポート接続概略</h5>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250714/20250714103714.jpg" width="1200" height="529" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<div style="overflow-x: auto;">
+<table class="font-small" style="width: 108.889%;">
+<thead>
+<tr>
+<th style="width: 4.81492%;"> </th>
+<th style="width: 9.48394%;">SG150 ポート</th>
+<th style="width: 15.9038%;">USB 規格</th>
+<th style="width: 8.02487%;">ケーブル</th>
+<th style="width: 7.00352%;">USBハブ</th>
+<th style="width: 7.00352%;">ケーブル</th>
+<th style="width: 12.2562%;">接続機器</th>
+<th style="width: 10.943%;">SSD<br />使用目的</th>
+<th style="width: 6.85762%;">SSD<br />容量</th>
+<th style="width: 8.31668%;">SSD読込速度<br />MB/s</th>
+<th style="width: 9.62984%;">SSD<br />USB規格</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th style="width: 4.81492%;">正面</th>
+<td style="width: 9.48394%;">Type-A</td>
+<td style="width: 15.9038%;"><strong><span style="color: #ff0000;">10Gbps</span><br /></strong>(USB 3.2 Gen2)</td>
+<td style="width: 8.02487%;">A=C</td>
+<td style="width: 7.00352%;"> </td>
+<td style="width: 7.00352%;"> </td>
+<td style="width: 12.2562%;">スマホ<br />一時接続用</td>
+<td style="width: 10.943%;"> </td>
+<td style="width: 6.85762%;"> </td>
+<td style="width: 8.31668%;"> </td>
+<td style="width: 9.62984%;"> </td>
+</tr>
+<tr>
+<th style="width: 4.81492%;">正面</th>
+<td style="width: 9.48394%;">Type-A</td>
+<td style="width: 15.9038%;"><strong>5Gbps<br /></strong>(USB 3.2 Gen1)</td>
+<td style="width: 8.02487%;"><span style="font-size: 80%;">USBメモリ直 /</span><br /><span style="font-size: 80%;">HDD専用ケーブル</span></td>
+<td style="width: 7.00352%;"> </td>
+<td style="width: 7.00352%;"> </td>
+<td style="width: 12.2562%;">USBメモリ<br />一時接続用 /<br />WD ポータブルHDD</td>
+<td style="width: 10.943%;"> </td>
+<td style="width: 6.85762%;"> </td>
+<td style="width: 8.31668%;"> </td>
+<td style="width: 9.62984%;"> </td>
+</tr>
+<tr>
+<th style="width: 4.81492%;">正面</th>
+<td style="width: 9.48394%;"><span style="color: #ff0000;">Type-C</span></td>
+<td style="width: 15.9038%;"><strong><span style="color: #ff0000;">10Gbps</span><br /></strong>(USB 3.2 Gen2)</td>
+<td style="width: 8.02487%;"><span style="font-size: 80%;">カードリーダー付属</span></td>
+<td style="width: 7.00352%;"> </td>
+<td style="width: 7.00352%;"> </td>
+<td style="width: 12.2562%;">SDカードリーダー※2</td>
+<td style="width: 10.943%;"> </td>
+<td style="width: 6.85762%;"> </td>
+<td style="width: 8.31668%;"> </td>
+<td style="width: 9.62984%;"> </td>
+</tr>
+<tr>
+<th style="width: 4.81492%;">正面</th>
+<td style="width: 9.48394%;"><span style="color: #ff0000;">Type-C</span></td>
+<td style="width: 15.9038%;"><strong><span style="color: #ff0000;">10Gbps</span><br /></strong>(USB 3.2 Gen2)</td>
+<td style="width: 8.02487%;">C=C</td>
+<td style="width: 7.00352%;"> </td>
+<td style="width: 7.00352%;"> </td>
+<td style="width: 12.2562%;">SanDisk Extreme Portable</td>
+<td style="width: 10.943%;">●バックアップ<br />持ち出し用</td>
+<td style="width: 6.85762%;">8TB</td>
+<td style="width: 8.31668%;">1050</td>
+<td style="width: 9.62984%;">USB3.2<br />Gen2</td>
+</tr>
+<tr>
+<th style="width: 4.81492%;" rowspan="3">背面</th>
+<td style="width: 9.48394%;" rowspan="3">Type-A</td>
+<td style="width: 15.9038%;" rowspan="3"><strong>5Gbps<br /></strong>(USB 3.2 Gen1)</td>
+<td style="width: 8.02487%;" rowspan="3"><span style="font-size: 80%;">USB</span><br /><span style="font-size: 80%;">ハブ</span><br /><span style="font-size: 80%;">付属</span></td>
+<td style="width: 7.00352%;" rowspan="3">※3</td>
+<td style="width: 7.00352%;">C=C</td>
+<td style="width: 12.2562%;">SSD Crucial X6</td>
+<td style="width: 10.943%;">2次BK1：写真（A-Photo）</td>
+<td style="width: 6.85762%;">4TB</td>
+<td style="width: 8.31668%;">800</td>
+<td style="width: 9.62984%;">USB3.2<br />Gen2</td>
+</tr>
+<tr>
+<td style="width: 7.00352%;">A=C</td>
+<td style="width: 12.2562%;">SSD SanDisk Extreme Portable</td>
+<td style="width: 10.943%;">2次BK2：<br />写真以外</td>
+<td style="width: 6.85762%;">2TB</td>
+<td style="width: 8.31668%;">550</td>
+<td style="width: 9.62984%;">USB3.1<br />Gen2</td>
+</tr>
+<tr>
+<td style="width: 7.00352%;">A=C</td>
+<td style="width: 12.2562%;">SSD SanDisk Portable</td>
+<td style="width: 10.943%;">2次BK3：写真（A-Photo以外）</td>
+<td style="width: 6.85762%;">2TB</td>
+<td style="width: 8.31668%;">520</td>
+<td style="width: 9.62984%;">USB3.2<br />Gen2</td>
+</tr>
+<tr>
+<th style="width: 4.81492%;">背面</th>
+<td style="width: 9.48394%;"><span style="color: #ff0000;">Type-C</span></td>
+<td style="width: 15.9038%;"><strong><span style="color: #ff0000;">40Gbps</span></strong><br /><span style="color: #ff0000;">(Thunderbolt 4)</span></td>
+<td style="width: 8.02487%;">
+<p><span style="color: #ff0000;">C=C</span><br /><span style="color: #ff0000;">(40G)</span></p>
+</td>
+<td style="width: 7.00352%;"> </td>
+<td style="width: 7.00352%;"> </td>
+<td style="width: 12.2562%;">SSD SUNEAST Eclipse E40</td>
+<td style="width: 10.943%;">◎メイン<br />（A-Photo以外）</td>
+<td style="width: 6.85762%;">4TB</td>
+<td style="width: 8.31668%;">4000</td>
+<td style="width: 9.62984%;">USB4</td>
+</tr>
+<tr>
+<th style="width: 4.81492%;">背面</th>
+<td style="width: 9.48394%;">Type-A</td>
+<td style="width: 15.9038%;"><strong><span style="color: #ff0000;">10Gbps</span><br /></strong>(USB 3.2 Gen2)</td>
+<td style="width: 8.02487%;">A=C</td>
+<td style="width: 7.00352%;"> </td>
+<td style="width: 7.00352%;"> </td>
+<td style="width: 12.2562%;">SSD WD ポータブル</td>
+<td style="width: 10.943%;">◎メイン<br />（A-Photo）</td>
+<td style="width: 6.85762%;">4TB</td>
+<td style="width: 8.31668%;">1050</td>
+<td style="width: 9.62984%;">USB3.2<br />Gen2</td>
+</tr>
+<tr>
+<th style="width: 4.81492%;">背面</th>
+<td style="width: 9.48394%;">Type-A</td>
+<td style="width: 15.9038%;"><strong>5Gbps<br /></strong>(USB 3.2 Gen1)</td>
+<td style="width: 8.02487%;"><span style="font-size: 80%;">KVM</span><br /><span style="font-size: 80%;">付属</span></td>
+<td style="width: 7.00352%;"> </td>
+<td style="width: 7.00352%;"> </td>
+<td style="width: 12.2562%;">KVMスイッチ(※4)経由キーボード＆マウス</td>
+<td style="width: 10.943%;"> </td>
+<td style="width: 6.85762%;"> </td>
+<td style="width: 8.31668%;"> </td>
+<td style="width: 9.62984%;"> </td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><a class="link-card" href="https://ok2nd.github.io/sitemap/hatena-sitemap-table.html?search=xampp" target="_blank" rel="noopener noreferrer"><span class="lc-body"><span class="lc-title">晴歩雨描：記事一覧</span><span class="lc-desc"></span><span class="lc-site">ok2nd.github.io</span></span></a></p>
+<p><a class="link-card" href="../../../2025/06/14/225535.html"><span class="lc-body"><span class="lc-title">Windows11）MyHome Portal が立ち上がらなくなったので、XAMPPを再インストール。</span><span class="lc-desc">※ 後日追記：ドライブやディレクトリを変える場合は注意が必要。 今日、自分が作成したWebシステム「MyHome Portal」が立ち上がらなくなった。 XAMPPコントロールパネルを見るとエラーが出ている。原因を探して…</span><span class="lc-site">晴歩雨描 · <time>2025-06-14</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250614/20250614222301.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2025/07/28/213747.html"><span class="lc-body"><span class="lc-title">XAMPP）phpMyAdminを開く時にログイン画面を出して、rootのパスワードを入力させる。（セキュリティ）</span><span class="lc-desc">備忘録として。 「phpMyAdmin」 http://localhost/phpmyadmin/ を開く時にログイン画面を出して、パスワード入力させる方法。 XAMPPの環境で、MySQLの管理者（root）にパスワー…</span><span class="lc-site">晴歩雨描 · <time>2025-07-28</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250728/20250728212523.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../01/23/165212.html"><span class="lc-body"><span class="lc-title">Windows）XAMPPのインストールドライブやディレクトリの移動は注意が必要。</span><span class="lc-desc">Windowsで、XAMPPを別ドライブへ移動させたり、ディレクトリ変更する場合は、注意が必要。 xamppディレクトリ丸ごとコピーして立ち上げると、古い環境（ドライブやディレクトリ）をそのまま継続して使おうとしてしまう…</span><span class="lc-site">晴歩雨描 · <time>2026-01-23</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250614/20250614223457.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../02/03/124042.html"><span class="lc-body"><span class="lc-title">Leaflet地図：現在の積雪を地図表示。気象庁データを使用。JavaScript＆PHP（CORS制限回避）。XAMPPでCA証明書。InfinityFree。</span><span class="lc-desc">気象庁の「 現在の積雪 」データを使って、 Leaflet で地図表示するようにした。 ■ 使用したデータ 《 気象庁：積雪観測地点情報（json）》 https://www.jma.go.jp/bosai/amedas…</span><span class="lc-site">晴歩雨描 · <time>2026-02-03</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260203/20260203120620.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2025/12/19/103344.html"><span class="lc-body"><span class="lc-title">Windows）PC「エプソン Endeavor SG150」、SDカードリーダー、USBハブ、パソコン切替器（KVMスイッチ）、USBケーブル、Office Home 2024（カード版）を購入。SSD CrystalDiskMark ベンチマーク。</span><span class="lc-desc">今まで使用してきたWindowsPCの問題点が大きく3つ。 SSDドライブの空き容量が少なくなってきた。 USBが3.0（5Gbps）までしか対応していない。SSD等の性能を生かせない。 GPUが付いていない。ローカル画…</span><span class="lc-site">晴歩雨描 · <time>2025-12-19</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20251208/20251208224447.jpg" alt="" loading="lazy"></span></a></p></div></article>
+</body>
+</html>

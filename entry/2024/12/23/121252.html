@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HTML/JavaScriptカレンダーに「Holidays JP API 」で祝日表示。AIツールChatGPT、Copilotで作成。 - 晴歩雨描</title>
+<link rel="stylesheet" href="../../../../style.css">
+</head>
+<body>
+<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>HTML/JavaScriptカレンダーに「Holidays JP API 」で祝日表示。AIツールChatGPT、Copilotで作成。</h1><p class="meta">2024-12-23 · <a href="../../../../category/c13.html">ホームページ、Web作成</a> <a href="../../../../category/c42.html">＜AI＞</a></p><div class="entry-body"><p>先程、JavaScriptでシンプルなHTMLカレンダーを作成した。</p>
+<p><a class="link-card" href="093802.html"><span class="lc-body"><span class="lc-title">JavaScriptで、シンプルなHTMLカレンダーを作成。AIツールCopilotで作成。</span><span class="lc-desc">以前に、PHPでHTMLカレンダーを作成した。 今回、JavaScriptで、シンプルなHTMLカレンダーを作成。 JavaScriptを使ったHTMLカレンダーはネットで探すといくつも出てくる。今回、AIツール「Cha…</span><span class="lc-site">晴歩雨描 · <time>2024-12-23</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20241223/20241223092959.jpg" alt="" loading="lazy"></span></a></p>
+<p>これは、祝日表示対応していない。</p>
+<p>これに、祝日表示を追加した。「Google Calendar API 」を使う方法もあるが、Google API KEYが必要だし、大晦日なども祝日扱いになってしまうので、問題がある。</p>
+<p><a class="link-card" href="../22/085926.html"><span class="lc-body"><span class="lc-title">Google Calendar API）HTMLカレンダーの七五三やクリスマスが祝日扱いに。</span><span class="lc-desc">以前、シンプルなHTMLカレンダーを作成した。 Google Calendar API を使って、祝日表示できるようにした。 Google Calendar APIの仕様が勝手に変わってしまったようで、七五三やクリスマス…</span><span class="lc-site">晴歩雨描 · <time>2024-12-22</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20241222/20241222084003.jpg" alt="" loading="lazy"></span></a></p>
+<p>ということで、今回、「<em>Holidays JP API (日本の祝日API)</em>」を使うことにした。</p>
+<p><a class="link-card" href="https://holidays-jp.github.io/" target="_blank" rel="noopener noreferrer"><span class="lc-body"><span class="lc-title">Holidays JP API (日本の祝日API)</span><span class="lc-desc">Holidays JP API は、日本の祝日一覧をJSONで返却するAPIです (CSV形式もサポート)</span><span class="lc-site">holidays-jp.github.io</span></span><span class="lc-thumb"><img src="https://avatars1.githubusercontent.com/u/24262823?v=3&amp;s=400" alt="" loading="lazy"></span></a></p>
+<p>Googleカレンダーの情報を使っているらしいが、Google API KEYは不要で、JSON形式で祝日データを取得できる。JSONデータのURLは以下。</p>
+<p><a href="https://holidays-jp.github.io/api/v1/date.json" target="_blank">https://holidays-jp.github.io/api/v1/date.json</a></p>
+<p><em>去年・今年・来年の3年分のデータが取得できる。</em></p>
+<p><em>JSONデータは、GitHub Actionsにて定期的にビルドされて、内容は自動更新されるらしい。</em></p>
+<p>【date.json サンプル】</p>
+<pre>{
+    "2023-01-01": "元日",
+    "2023-01-02": "休日 元日",
+    "2023-01-09": "成人の日",
+    "2023-02-11": "建国記念の日",
+    "2023-02-23": "天皇誕生日",
+    "2023-03-21": "春分の日",
+    .....（省略）.....
+    "2025-09-15": "敬老の日",
+    "2025-09-23": "秋分の日",
+    "2025-10-13": "スポーツの日",
+    "2025-11-03": "文化の日",
+    "2025-11-23": "勤労感謝の日",
+    "2025-11-24": "勤労感謝の日 振替休日"
+}
+</pre>
+<p>先に作成したHTMLカレンダー</p>
+<p><a href="https://ok2nd.github.io/tool/calendar/month.html" target="_blank">https://ok2nd.github.io/tool/calendar/month.html</a></p>
+<p>に、上記JSONデータを使って祝日表示をするようにした。</p>
+<p>AIツール「ChatGPT」と<span style="color: #454545; font-family: 'Noto Sans JP', sans-serif; font-size: 15.2px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; background-color: #ffffff; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;">「Microsoft Copilot」</span>でロジックを追加してもらった。基本のカレンダー部分のソースコードは<span style="color: #454545; font-family: 'Noto Sans JP', sans-serif; font-size: 15.2px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; background-color: #ffffff; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;">「Microsoft Copilot」で作成したもの。</span></p>
+<p>前月、翌月へのリンク機能も追加した。</p>
+<p>CSSなど、デザインの細かい部分で手修正した。</p>
+<p><a href="https://ok2nd.github.io/tool/calendar/month-holidays-chatgpt.html" target="_blank">https://ok2nd.github.io/tool/calendar/month-holidays-chatgpt.html</a></p>
+<p><a href="https://ok2nd.github.io/tool/calendar/month-holidays-chatgpt.html?y=2025&amp;m=2" target="_blank">https://ok2nd.github.io/tool/calendar/month-holidays-chatgpt.html?y=2025&amp;m=2</a></p>
+<p><a href="https://ok2nd.github.io/tool/calendar/month-holidays-copilot.html?y=2025&amp;m=2" target="_blank">https://ok2nd.github.io/tool/calendar/month-holidays-copilot.html?y=2025&amp;m=2</a></p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20241223/20241223120707.jpg" width="789" height="412" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>Copilot版をベースに、A4横印刷用も作成。</p>
+<p>日付枠が4行、5行、6行で&lt;td&gt;の高さを変えるように調整。</p>
+<p><a href="https://ok2nd.github.io/tool/calendar/month-holidays-print.html?y=2025&amp;m=2" target="_blank">https://ok2nd.github.io/tool/calendar/month-holidays-print.html?y=2025&amp;m=2</a></p>
+<p>≪ 印刷例 ≫</p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20241231/20241231170210.jpg" width="1200" height="848" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>≪ ChatGPT版（印刷用でない）ソースコード ：month-holidays-chatgpt.html≫</p>
+<pre>&lt;!DOCTYPE html&gt;
+&lt;html lang="ja"&gt;
+&lt;head&gt;
+&lt;meta charset="UTF-8"&gt;
+&lt;title&gt;カレンダー&lt;/title&gt;
+&lt;style&gt;
+h2 {
+	text-align: center;
+}
+.current-month {
+	font-size: 2em;
+}
+table {
+	border-collapse: collapse;
+	width: 100%;
+}
+th, td {
+	border: 1px solid #ddd;
+	padding: 8px;
+	text-align: center;
+	width: 14%;
+}
+.sunday {
+	color: red;
+}
+.saturday {
+	color: blue;
+}
+.holiday {
+	background-color: #fee;;
+	color: red;
+}
+.holiday-name {
+	font-size: 0.7em;
+}
+.prev-month, .next-month {
+	color: #aaa;
+}
+nav a {
+	text-decoration: none;
+	font-size: 1em;
+	margin: 0 10px;
+	color: #00f;
+}
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div id="calendar"&gt;&lt;/div&gt;
+&lt;script&gt;
+async function fetchHolidays() {
+	const response = await fetch('<a href="https://holidays-jp.github.io/api/v1/date.json');">https://holidays-jp.github.io/api/v1/date.json');</a>
+	if (!response.ok) {
+		console.error('Failed to fetch holiday data');
+		return {};
+	}
+	return await response.json();
+}
+async function createCalendar(year, month) {
+	document.title = 'カレンダー：' + year + '年' + (month+1) + '月'
+	const holidays = await fetchHolidays();
+	const calendarDiv = document.getElementById('calendar');
+	calendarDiv.innerHTML = ''; // Clear previous calendar
+	// Navigation for previous and next month
+	const header = document.createElement('h2');
+	const prevMonth = month === 0 ? 11 : month - 1;
+	const nextMonth = month === 11 ? 0 : month + 1;
+	const prevYear = month === 0 ? year - 1 : year;
+	const nextYear = month === 11 ? year + 1 : year;
+	header.innerHTML = `
+		&lt;nav&gt;
+			&lt;a href="?y=${prevYear}&amp;m=${prevMonth + 1}"&gt;＜＜&lt;/a&gt;
+			 ${year} &lt;span class="current-month"&gt;${month + 1}&lt;/span&gt; 月 
+			&lt;a href="?y=${nextYear}&amp;m=${nextMonth + 1}"&gt;＞＞&lt;/a&gt;
+		&lt;/nav&gt;
+	`;
+	calendarDiv.appendChild(header);
+	const firstDay = new Date(year, month, 1);
+	const lastDay = new Date(year, month + 1, 0);
+	const prevLastDay = new Date(year, month, 0);
+	const table = document.createElement('table');
+	const headerRow = document.createElement('tr');
+	const days = ['日', '月', '火', '水', '木', '金', '土'];
+	for (const day of days) {
+		const th = document.createElement('th');
+		th.textContent = day;
+		headerRow.appendChild(th);
+	}
+	table.appendChild(headerRow);
+	let row = document.createElement('tr');
+	for (let i = 0; i &lt; firstDay.getDay(); i++) {
+		const cell = document.createElement('td');
+		cell.textContent = prevLastDay.getDate() - firstDay.getDay() + 1 + i;
+		cell.classList.add('prev-month');
+		row.appendChild(cell);
+	}
+	for (let date = 1; date &lt;= lastDay.getDate(); date++) {
+		const cell = document.createElement('td');
+		const dayOfWeek = new Date(year, month, date).getDay();
+		const dateString = `${year}-${String(month + 1).padStart(2, '0')}-${String(date).padStart(2, '0')}`;
+		cell.textContent = date;
+		// Add holiday class and name if the date is a holiday
+		if (holidays[dateString]) {
+			cell.classList.add('holiday');
+			cell.innerHTML += `&lt;br&gt;&lt;span class="holiday-name"&gt;${holidays[dateString]}&lt;/span&gt;`;
+		}
+		if (dayOfWeek === 0) {
+			cell.classList.add('sunday');
+		}
+		if (dayOfWeek === 6) {
+			cell.classList.add('saturday');
+		}
+		row.appendChild(cell);
+		if (dayOfWeek === 6 || date === lastDay.getDate()) {
+			table.appendChild(row);
+			if (date !== lastDay.getDate()) {
+				row = document.createElement('tr');
+			}
+		}
+	}
+	let nextDate = 1;
+	while (row.childNodes.length &lt; 7) {
+		const cell = document.createElement('td');
+		cell.textContent = nextDate;
+		cell.classList.add('next-month');
+		row.appendChild(cell);
+		nextDate++;
+	}
+	if (row.childNodes.length &gt; 0 &amp;&amp; row.childNodes.length &lt; 7) {
+		table.appendChild(row);
+	}
+	calendarDiv.appendChild(table);
+}
+function getQueryParams() {
+	const params = new URLSearchParams(window.location.search);
+	return {
+		year: params.get('y'),
+		month: params.get('m')
+	};
+}
+function init() {
+	const { year, month } = getQueryParams();
+	const today = new Date();
+	const y = year ? parseInt(year) : today.getFullYear();
+	const m = month ? parseInt(month) - 1 : today.getMonth();
+	createCalendar(y, m);
+}
+document.addEventListener('DOMContentLoaded', init);
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;    
+</pre>
+<p>≪ Copilot版（印刷用でない）ソースコード：month-holidays-copilot.html ≫</p>
+<pre>&lt;!DOCTYPE html&gt;
+&lt;html lang="ja"&gt;
+&lt;head&gt;
+&lt;meta charset="UTF-8"&gt;
+&lt;title&gt;カレンダー&lt;/title&gt;
+&lt;style&gt;
+h2 {
+	text-align: center;
+}
+.current-month {
+	font-size: 2em;
+}
+table {
+	border-collapse: collapse;
+	width: 100%;
+}
+th, td {
+	border: 1px solid #ddd;
+	padding: 8px;
+	text-align: center;
+	width: 14%;
+}
+.sunday {
+	color: red;
+}
+.saturday {
+	color: blue;
+}
+.prev-month, .next-month {
+	color: #aaa;
+}
+.holiday {
+	background-color: #fee;
+	color: red;
+}
+.holiday-name {
+	font-size: 0.7em;
+}
+.month-navigation {
+	cursor: pointer;
+	color: blue;
+	text-decoration: none;
+}
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div id="calendar"&gt;&lt;/div&gt;
+&lt;script&gt;
+async function fetchHolidays() {
+	const response = await fetch('<a href="https://holidays-jp.github.io/api/v1/date.json');">https://holidays-jp.github.io/api/v1/date.json');</a>
+	const holidays = await response.json();
+	return holidays;
+}
+function createCalendar(year, month) {
+	return fetchHolidays().then(holidays =&gt; {
+		document.title = 'カレンダー：' + year + '年' + (month+1) + '月'
+		const calendarDiv = document.getElementById('calendar');
+		calendarDiv.innerHTML = ''; // Clear previous calendar
+		const header = document.createElement('h2');
+		const prevMonth = new Date(year, month - 1);
+		const nextMonth = new Date(year, month + 1);
+		header.innerHTML = `
+			&lt;a class="month-navigation" href="?y=${prevMonth.getFullYear()}&amp;m=${prevMonth.getMonth() + 1}"&gt;＜＜　&lt;/a&gt;
+			${year} &lt;span class="current-month"&gt;${month + 1}&lt;/span&gt; 月
+			&lt;a class="month-navigation" href="?y=${nextMonth.getFullYear()}&amp;m=${nextMonth.getMonth() + 1}"&gt;　＞＞&lt;/a&gt;
+		`;
+		calendarDiv.appendChild(header);
+		const firstDay = new Date(year, month, 1);
+		const lastDay = new Date(year, month + 1, 0);
+		const prevLastDay = new Date(year, month, 0);
+		const table = document.createElement('table');
+		const headerRow = document.createElement('tr');
+		const days = ['日', '月', '火', '水', '木', '金', '土'];
+		for (const day of days) {
+			const th = document.createElement('th');
+			th.textContent = day;
+			headerRow.appendChild(th);
+		}
+		table.appendChild(headerRow);
+		let row = document.createElement('tr');
+		for (let i = 0; i &lt; firstDay.getDay(); i++) {
+			const cell = document.createElement('td');
+			cell.textContent = prevLastDay.getDate() - firstDay.getDay() + 1 + i;
+			cell.classList.add('prev-month');
+			row.appendChild(cell);
+		}
+		for (let date = 1; date &lt;= lastDay.getDate(); date++) {
+			const cell = document.createElement('td');
+			cell.textContent = date;
+			const dayOfWeek = new Date(year, month, date).getDay();
+			if (dayOfWeek === 0) {
+				cell.classList.add('sunday');
+			}
+			if (dayOfWeek === 6) {
+				cell.classList.add('saturday');
+			}
+			const formattedDate = `${year}-${String(month + 1).padStart(2, '0')}-${String(date).padStart(2, '0')}`;
+			if (holidays[formattedDate]) {
+				cell.classList.add('holiday');
+				cell.innerHTML += `&lt;br&gt;&lt;span class="holiday-name"&gt;${holidays[formattedDate]}&lt;/span&gt;`;
+			}
+			row.appendChild(cell);
+			if (dayOfWeek === 6 || date === lastDay.getDate()) {
+				table.appendChild(row);
+				if (date !== lastDay.getDate()) {
+					row = document.createElement('tr');
+				}
+			}
+		}
+		let nextDate = 1;
+		while (row.childNodes.length &lt; 7) {
+			const cell = document.createElement('td');
+			cell.textContent = nextDate;
+			cell.classList.add('next-month');
+			row.appendChild(cell);
+			nextDate++;
+		}
+		if (row.childNodes.length &gt; 0 &amp;&amp; row.childNodes.length &lt; 7) {
+			table.appendChild(row);
+		}
+		calendarDiv.appendChild(table);
+	});
+}
+function getQueryParams() {
+	const params = new URLSearchParams(window.location.search);
+	return {
+		year: params.get('y'),
+		month: params.get('m')
+	};
+}
+function init() {
+	const { year, month } = getQueryParams();
+	const today = new Date();
+	const y = year ? parseInt(year) : today.getFullYear();
+	const m = month ? parseInt(month) - 1 : today.getMonth();
+	createCalendar(y, m);
+}
+document.addEventListener('DOMContentLoaded', init);
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</pre>
+<p><span style="color: #dd830c;">※ 12か月カレンダーは以下。（↓）</span></p>
+<p><a class="link-card" href="../../../2025/01/26/085411.html"><span class="lc-body"><span class="lc-title">JavaScriptで、HTML12か月カレンダーを作成。ChatGPTで作成。</span><span class="lc-desc">今まで、HTMLカレンダーをいくつか作成してきた。 ≪ PHPで作成したカレンダー≫ ≪ JavaScriptで作成した1か月カレンダー ≫ 今回、JavaScriptで、HTML「 12か月 」カレンダーを作成。 ht…</span><span class="lc-site">晴歩雨描 · <time>2025-01-26</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250126/20250126084550.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../22/085926.html"><span class="lc-body"><span class="lc-title">Google Calendar API）HTMLカレンダーの七五三やクリスマスが祝日扱いに。</span><span class="lc-desc">以前、シンプルなHTMLカレンダーを作成した。 Google Calendar API を使って、祝日表示できるようにした。 Google Calendar APIの仕様が勝手に変わってしまったようで、七五三やクリスマス…</span><span class="lc-site">晴歩雨描 · <time>2024-12-22</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20241222/20241222084003.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../11/16/141613.html"><span class="lc-body"><span class="lc-title">AI検索エンジン「Google Gemini」「Perplexity」「Genspark」「Felo」「Microsoft Copilot」「リートン」「ChatGPT」のプログラム作成能力を試した。Web（JavaScript）でモノクロ画像変換。</span><span class="lc-desc">最近、無料で使えるAI検索エンジンが増えてきた。 「 Google Gemini 」「 Perplexity 」「 Genspark 」「 Felo 」「 Microsoft Copilot 」「 リートン 」「 Cha…</span><span class="lc-site">晴歩雨描 · <time>2024-11-16</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20241116/20241116135204.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../03/30/105057.html"><span class="lc-body"><span class="lc-title">JavaScript）無料で使えるAIツール Gemini、ChatGPT、Copilot、リートンでプログラム作成（コード生成）能力を比較。</span><span class="lc-desc">昨日、無料で使えるAIツール Gemini 、 ChatGPT 、 Copilot 、 リートン に同じ質問をして回答を比較してみた。 今回、これらのツールでJavaScriptプログラム作成能力を比較してみた。 Goo…</span><span class="lc-site">晴歩雨描 · <time>2024-03-30</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20240329/20240329223202.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../06/20/144127.html"><span class="lc-body"><span class="lc-title">JScript）リンクURL入りのテキストファイルをHTMLファイルに変換するスクリプト。（ChatGPTコード生成）</span><span class="lc-desc">リンクURLが入ったテキストファイルをHTMLファイルに変換するJScriptスクリプトを作成。 仕様：以下の例のようなテキストファイル（Shift-JIS）を読み込んで、下のようなHTMLファイル（UTF-8）を出力す…</span><span class="lc-site">晴歩雨描 · <time>2024-06-20</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20240620/20240620143806.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../01/26/204226.html"><span class="lc-body"><span class="lc-title">JavaScript）HTML&lt;INPUT&gt;テキストボックスに入力されている文字列を、リアルタイムにURLのパラメーターに反映する方法。ChatGPT(3.5)に教えてもらった。（コード生成）</span><span class="lc-desc">HTML&lt;INPUT&gt;テキストボックスに入力されている文字列を、リアルタイムにURLのパラメーターに反映する方法。 方法は、ChatGPT（無料版3.5）に教えてもらった。ググって、自分で考えるより速い。 ≪サンプル≫ …</span><span class="lc-site">晴歩雨描 · <time>2024-01-26</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20240126/20240126173516.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2022/07/12/091148.html"><span class="lc-body"><span class="lc-title">JavaScript）HTML&lt;TABLE&gt;の&lt;TD&gt;に、セルの数値に合わせて、背景色を付ける。</span><span class="lc-desc">昨日、不快指数一覧図表を作成した。 このテーブルの背景色は、JavaScriptを使って、HTML&lt;TABLE&gt;の&lt;TD&gt;に、セル内の数値に合わせて付けている。 jQueryを使う方法もあるが、jQueryを使わないでJ…</span><span class="lc-site">晴歩雨描 · <time>2022-07-12</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220711/20220711220539.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2021/05/18/135819.html"><span class="lc-body"><span class="lc-title">JavaScript）HTML&lt;TABLE&gt;に、ソート機能や検索機能を付けるなら、jQueryプラグイン「DataTables」が簡単。</span><span class="lc-desc">HTML&lt;TABLE&gt; に、ソート機能や検索機能を付けるなら、 jQueryプラグイン「DataTables」 が簡単で便利。 以下の「Eマウント(AF)単焦点レンズ」一覧に、「DataTables」を使って、ソート機能…</span><span class="lc-site">晴歩雨描 · <time>2021-05-18</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20210517/20210517165654.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2019/07/27/164241.html"><span class="lc-body"><span class="lc-title">JavaScript）パソコンローカルの2枚の写真/画像をドラッグ＆ドロップして横並びに表示して比較するWebツール作成。</span><span class="lc-desc">2つの写真/画像を横に並べて比較したい時がある。似たような写真でどちらが良いかを確認したい時など。 画像を横に並べて比較できるツールはあるが、似たような写真がたくさんある場合、比較相手をとっかえひっかえしながら比べたい場…</span><span class="lc-site">晴歩雨描 · <time>2019-07-27</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190727/20190727160638.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2018/07/07/144138.html"><span class="lc-body"><span class="lc-title">HTML(TABLE)クリッカブルマップ「日本地図」を作成。スマホ対応。</span><span class="lc-desc">HTML(TABLE)で、クリッカブルマップとしての日本地図を作成。（昔、作ったものを手直し） スマホを想定して、縦長画面の時は都道府県名を縦書きにして画面内に収まるようにした。スマホ画面を横位置にした場合の縦が狭い画面…</span><span class="lc-site">晴歩雨描 · <time>2018-07-07</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20180707/20180707224156.jpg" alt="" loading="lazy"></span></a></p></div></article>
+</body>
+</html>

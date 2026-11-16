@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>任意のサイトの写真で宙玉(そらたま)写真が作れるサイトを作ってみた。 - 晴歩雨描</title>
+<link rel="stylesheet" href="../../../../style.css">
+</head>
+<body>
+<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>任意のサイトの写真で宙玉(そらたま)写真が作れるサイトを作ってみた。</h1><p class="meta">2018-08-16 · <a href="../../../../category/c13.html">ホームページ、Web作成</a> <a href="../../../../category/c18.html">写真・カメラ</a></p><div class="entry-body"><p>昨日、JavaScriptで宙玉(そらたま)写真を作れる「SORA-TAMA Transform (Fish-Eye)」を試してみた。</p>
+<p><a class="link-card" href="../15/154253.html"><span class="lc-body"><span class="lc-title">JavaScriptで宙玉(そらたま)写真を作れる「SORA-TAMA Transform (Fish-Eye)」を試してみた。</span><span class="lc-desc">先日、宙玉というものの存在を知った。 レンズの前に透明な玉を置いて写真を撮ると、独特の不思議な写真が撮れるというもの。詳しくは、以下を参照。 ラップフィルムなどを使って作る方法が紹介されているが、実際に自分で作るのは難し…</span><span class="lc-site">晴歩雨描 · <time>2018-08-15</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20180815/20180815145546.png" alt="" loading="lazy"></span></a></p>
+<p>この機能を、写真のアップロードではなく、任意のサイトの写真のURLを直接指定して使えるものを作ってみた。</p>
+<p><em><span style="color: rgb(255, 0, 0);">※ 以下、<a href="https://ok2nd.sakura.ne.jp/">https://ok2nd.sakura.ne.jp/</a> で始まるWebページは現在使えなくなっている。</span></em></p>
+<p><a href="https://ok2nd.sakura.ne.jp/soratama/" target="_blank">https://ok2nd.sakura.ne.jp/soratama/</a></p>
+<p>以下のようにして使う。JPEG画像のみ対応。<span style="color: #ff0000;">指定した画像の取り込みにかなり時間がかかります。極力小さな画像でお試しください。下の例で使っている画像は320x214ピクセルです。指定したURLの画像ファイルの有無チェック等エラー処理はしていません。</span></p>
+<p><a href="https://ok2nd.sakura.ne.jp/soratama/get.php?img=" target="_blank">https://ok2nd.sakura.ne.jp/soratama/get.php?img=（画像ファイルのURL）</a></p>
+<p>以下は使用例。</p>
+<p><a href="https://ok2nd.sakura.ne.jp/soratama/get.php?img=https://ok2nd.sakura.ne.jp/soratama/photo/320.jpg" target="_blank">https://ok2nd.sakura.ne.jp/soratama/get.php?img=https://ok2nd.sakura.ne.jp/soratama/photo/320.jpg</a></p>
+<p><img class="hatena-fotolife" title="f:id:art2nd:20180816122316j:plain" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20180816/20180816122316.jpg" alt="f:id:art2nd:20180816122316j:plain"></p>
+<p><span style="color: #1464b3;">【技術的な補足】</span></p>
+<p>HTMLの&lt;img&gt;タグのsrcに直接別サイトの画像のURLを入れて処理しようとすると、クロスドメイン（CORS：Cross-Origin Resource Sharing）の制約にはじかれる。なので、PHPのfile_get_contents()で取り込む方式でこれを回避。そのために、画像の取り込みに時間がかかる。</p>
+<p>PHPコードサンプル：エラー処理は省略。</p>
+<p>≪hoge.php?img=hoge.ipeg≫</p>
+<pre>	&lt;img src="image.php?img=&lt;?= $_GET['img'] ?&gt;"&gt;
+</pre>
+<p>≪image.php≫</p>
+<pre>&lt;?php
+	$img = file_get_contents($_GET['img']);
+	header('Content-type: image/jpeg');
+	echo $img;
+?&gt;
+</pre>
+<p><a class="link-card" href="../27/142854.html"><span class="lc-body"><span class="lc-title">オリンパス Tough TG-5用の宙玉レンズを作ってみた。</span><span class="lc-desc">先日、宙玉写真をソフト的に作れるものを試してみた。↓ 今回、宙玉レンズを自作してみた。宙玉の作り方は以下のページにある。このページでは、 チップスター の空き箱を利用している。 今回、 オリンパス Tough TG-5用…</span><span class="lc-site">晴歩雨描 · <time>2018-08-27</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20180827/20180827141603.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2019/03/08/225539.html"><span class="lc-body"><span class="lc-title">オリンパス Tough TG-5用の宙玉レンズ「GIZMON x ZENJIX soratama 55 for TG」を購入。</span><span class="lc-desc">オリンパス Tough TG-5用の宙玉レンズ「GIZMON x ZENJIX soratama 55 for TG」が売り切れ状態だったのが、新しく入荷したので購入してみた。5,980円。 レンズキャップが付いていて欲…</span><span class="lc-site">晴歩雨描 · <time>2019-03-08</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190308/20190308225057.jpg" alt="" loading="lazy"></span></a></p></div></article>
+</body>
+</html>

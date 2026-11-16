@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ローカル）Python）写真を等倍高画質化するWindowsアプリを再作成。シャープネス（アンシャープマスク方式）使用。 - 晴歩雨描</title>
+<link rel="stylesheet" href="../../../../style.css">
+</head>
+<body>
+<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>ローカル）Python）写真を等倍高画質化するWindowsアプリを再作成。シャープネス（アンシャープマスク方式）使用。</h1><p class="meta">2026-10-10 · <a href="../../../../category/c18.html">写真・カメラ</a> <a href="../../../../category/c42.html">＜AI＞</a></p><div class="entry-body"><p>今まで、写真を<em>等倍高画質化</em>するのを、<em>画像生成AI</em>でいくつか試したみた。画素数や構図がほぼ100%維持されるようになってきており、実用レベルに近づきつつあると感じている。長辺1200ピクセル程度のサイズの写真なら、画像生成AIによる処理速度も速い。</p>
+<p>しかしまだ、実際に画像生成AIで写真の編集加工を行うには抵抗感がある。</p>
+<p>画像生成AIでなく、<em>WindowsPCローカル</em>で動くアプリとして、「<em>Aiarty Image Enhancer</em>」等も試している。現時点で、自分が試した中では、等倍高画質化については「<em>Aiarty Image Enhancer</em>」が最強だと思っている。</p>
+<p>写真を等倍高画質化するために、<em>WindowsPCローカル</em>で動くアプリを<em>Python</em>でいくつか作成した。WindowsPCローカルで生成AIに頼ると膨大な処理時間が必要となり、生成AIを使わないと、基本的に<em>シャープネス（アンシャープマスク方式）</em>を使うしかなく、成果として得られる画質としては、満足度は落ちる。</p>
+<p>今回、画質的には高いレベルは望めないが、シャープネス（アンシャープマスク方式）を使ったアプリを、操作性など使いやすさを求めて再度作成した。今回は<em>ChatGPT</em>を使用。</p>
+<p><em>今まで作成したアプリに比べると、WindowsPCローカルで動くアプリとして、実用レベルのものが出来たような気がする。</em></p>
+<ul>
+<li>複数写真を一括してドラッグ＆ドロップで取り込んでまとめて処理できる。</li>
+<li>複数写真を左右ボタンで処理前後の画像を確認できる。</li>
+<li>処理後の画像を一括保存できる。</li>
+<li>「お勧め」ボタンで、シャープネス（半径、量、しきい値）、コントラスト、ノイズ除去をとりあえず、まとめて設定できる。</li>
+<li>表示モードとして、「縮小表示」「等倍サイズ」を選択できる。</li>
+<li>元画像と処理後画像を、「並べて表示」「重ねて表示」を選択できる。</li>
+<li>処理の順番は、内部的に「ノイズ除去→コントラスト調整→シャープネス」としている。</li>
+<li>このアプリでは、明度や彩度の編集は行わない。</li>
+</ul>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20261010/20261010145442.png" width="1174" height="852" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20261010/20261010145446.png" width="1174" height="852" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20261010/20261010145451.png" width="1174" height="852" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<h4 id="-結果サンプル">■ 結果サンプル</h4>
+<p>なるべくシャープネスが過度にならないようにした。何が最適なのか難しい。</p>
+<ul>
+<li>シャープネス（半径）：1.2px</li>
+<li>シャープネス（量）：0.8（これでも強すぎるかもしれない）</li>
+<li>シャープネス（しきい値）：2</li>
+<li>コントラスト：+5</li>
+<li>ノイズ除去：10</li>
+</ul>
+<p>【オリジナル写真】</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20261010/20261010150706.jpg" width="1200" height="1085" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<p>【アプリによる処理後画像】</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20261010/20261010151108.jpg" width="1200" height="1085" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<p>【アプリによる処理後画像：シャープネス（量）：0.4に半減】</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20261010/20261010154806.jpg" width="1200" height="1085" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<p>【オリジナル写真】</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20261010/20261010150714.jpg" width="1200" height="987" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<p>【アプリによる処理後画像】</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20261010/20261010151120.jpg" width="1200" height="987" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<p>【オリジナル写真】</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20261010/20261010151004.jpg" width="1200" height="892" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<p>【アプリによる処理後画像】</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20261010/20261010151130.jpg" width="1200" height="892" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<p>【オリジナル写真】</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20261010/20261010151012.jpg" width="1200" height="1000" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<p>【アプリによる処理後画像】</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20261010/20261010151140.jpg" width="1200" height="1000" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<p>【オリジナル写真】</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20261010/20261010151315.jpg" width="1200" height="900" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<p>【アプリによる処理後画像】</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20261010/20261010151401.jpg" width="1200" height="900" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<p>【アプリによる処理後画像：シャープネス（量）：0.4に半減】</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20261010/20261010154636.jpg" width="1200" height="900" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<p>【オリジナル写真】</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20261010/20261010151324.jpg" width="1200" height="900" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<p>【アプリによる処理後画像】</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20261010/20261010151411.jpg" width="1200" height="900" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<p>【アプリによる処理後画像：シャープネス（量）：0.4に半減】</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20261010/20261010154653.jpg" width="1200" height="900" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<p>【オリジナル写真】</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20261010/20261010151332.jpg" width="1200" height="900" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<p>【アプリによる処理後画像】</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20261010/20261010151422.jpg" width="1200" height="900" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<p>【オリジナル写真】</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20261010/20261010151343.jpg" width="1200" height="900" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<p>【アプリによる処理後画像】</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20261010/20261010151431.jpg" width="1200" height="900" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<p><a class="link-card" href="https://ok2nd.github.io/sitemap/hatena-sitemap-table.html?search=%E7%AD%89%E5%80%8D%E9%AB%98%E7%94%BB%E8%B3%AA%E5%8C%96" target="_blank" rel="noopener noreferrer"><span class="lc-body"><span class="lc-title">晴歩雨描：記事一覧</span><span class="lc-desc"></span><span class="lc-site">ok2nd.github.io</span></span></a></p>
+<p><a class="link-card" href="../../03/29/104033.html"><span class="lc-body"><span class="lc-title">Claude）Python）ローカル）写真を等倍高画質化するWindowsアプリ。Real-ESRGAN、SwinIR、DRCTモデル比較。ICCプロファイル維持。</span><span class="lc-desc">先日、写真を等倍高画質化するPythonアプリを作成した。 モデルは、CNN系Real-ESRGAN、Transformer系DRCTを使用した。 前回の検証では、長辺1200ピクセルの画像を使って処理時間がかかりすぎた…</span><span class="lc-site">晴歩雨描 · <time>2026-03-29</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260329/20260329083504.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../03/26/141400.html"><span class="lc-body"><span class="lc-title">Claude）Python）ローカル）写真を等倍高画質化するWindowsアプリ作成。（CNN）Real-ESRGAN、（Transformer）DRCT使用。ICCプロファイル維持。</span><span class="lc-desc">以前、写真を等倍高画質化するWindowsアプリを作成した。この時、Real-ESRGANを使ったつもりだったが、その後、Claude、ChatGPT、Geminiに確認したところ、この時作成したアプリではReal-ES…</span><span class="lc-site">晴歩雨描 · <time>2026-03-26</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260326/20260326173052.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2025/10/22/214630.html"><span class="lc-body"><span class="lc-title">Claude）Python）ローカル）写真を等倍高画質化するWindowsアプリ作成。OpenCV（疑似Real-ESRGAN）、シャープネス。SwinIR断念。</span><span class="lc-desc">※ 後日、Claude、ChatGPT、Geminiに確認したところ、今回作成したアプリでは、Real-ESRGANモデルは使われていないとのこと。中身はOpenCVの古典的な画像フィルターの組み合わせらしい（？）。ただ…</span><span class="lc-site">晴歩雨描 · <time>2025-10-22</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20251022/20251022211457.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2025/09/25/124757.html"><span class="lc-body"><span class="lc-title">Claude）Python）ローカル）写真のシャープネス、コントラスト、明度、彩度を調整するWindowsアプリ作成。野鳥写真で、等倍高画質化をTopaz Labs、Aiarty Image Enhancerと比較。</span><span class="lc-desc">Pythonで「 写真のシャープネス、コントラスト、明度、彩度を調整する 」Windowsアプリを作成。「Claude」で作成。 【機能概略】 写真画像(JPEG,PNG)をウインドウに、ドラッグ＆ドロップで取り込み。 …</span><span class="lc-site">晴歩雨描 · <time>2025-09-25</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250925/20250925123628.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../09/25/161029.html"><span class="lc-body"><span class="lc-title">画像生成AI）写真の等倍高画質化で比較、Part2。風景写真で。Gemini、Grok、Meta AI。Meta AIとGeminiが一長一短。</span><span class="lc-desc">先日、Webブラウザで無料で使える画像生成AI、 Gemini、Grok、Meta AI、ChatGPT、Copilot の「 写真の等倍高画質化 」を、 野鳥写真 で比較した。 今回、前回の検証で上位3位に入った 「 …</span><span class="lc-site">晴歩雨描 · <time>2026-09-25</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260925/20260925151324.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../09/22/154158.html"><span class="lc-body"><span class="lc-title">画像生成AI）写真の等倍高画質化で比較（野鳥写真で）。Gemini、Grok、Meta AI、ChatGPT、Copilot。Geminiが一番自然で構図も維持される。</span><span class="lc-desc">先日、「 ChatGPT Images 2.5 」がリリースされたので、「写真の等倍高画質化」を試したが、不自然な仕上がりで「 ChatGPT Images 2.0 」より劣化していると感じた。 そこで今回、Webブラウ…</span><span class="lc-site">晴歩雨描 · <time>2026-09-22</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260922/20260922152557.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2025/09/12/163500.html"><span class="lc-body"><span class="lc-title">「Topaz Labs」で、アップスケーリングなしで写真の等倍高画質化が出来るかを検証。結果は優秀。野鳥写真で「Aiarty Image Enhancer」と比較。</span><span class="lc-desc">『 Topaz Labs 』の「 Upscale（Standard V2） 」で、アップスケーリングなしで等倍高画質化を検証してみた。 野鳥写真で「 Aiarty Image Enhancer 」の結果とも比較。 結果的…</span><span class="lc-site">晴歩雨描 · <time>2025-09-12</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250912/20250912162716.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../18/123330.html"><span class="lc-body"><span class="lc-title">Windows）Python）写真のピンボケを修復・補正するWindowsアプリを作成。</span><span class="lc-desc">写真のピンボケを修復・補正する Windowsアプリを Python で作成。 写真のピンボケを修復・補正する方法にはいくつかあるようで、生成AIの Gemini 、 ChatGPT 、 Claude にそれぞれお勧めの…</span><span class="lc-site">晴歩雨描 · <time>2026-10-18</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20261018/20261018121220.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../19/111009.html"><span class="lc-body"><span class="lc-title">Python）Windows）2枚の写真/画像比較ツール作成。複数画像のドラッグ＆ドロップ対応。並べて表示、重ねて表示の切り替え可能。縮小表示、等倍表示の切り替え可能。</span><span class="lc-desc">以前に、2枚の写真/画像を比較するツールをJavaScriptで作成した。 今回、Pythonで 2枚の写真/画像を比較するツール を作成。 Claude で作成。 並べて表示、重ねて表示（スライダー付）の切り替え可能。…</span><span class="lc-site">晴歩雨描 · <time>2026-10-19</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20261019/20261019110110.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../21/130812.html"><span class="lc-body"><span class="lc-title">Python）Windows）写真の「色調補正」（カラーグレーディング）アプリ作成。「ティール&amp;オレンジ」などワンクリックで補正できる。</span><span class="lc-desc">Python で、写真の「 色調補正 」（ カラーグレーディング ）アプリを作成。 生成AI「 Claude 」「 Gemini 」「 ChatGPT 」で作成して、一番出来の良かった「Claude」版を採用。 複数写真…</span><span class="lc-site">晴歩雨描 · <time>2026-10-21</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20261021/20261021124537.png" alt="" loading="lazy"></span></a></p></div></article>
+</body>
+</html>

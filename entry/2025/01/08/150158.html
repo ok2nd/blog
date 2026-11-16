@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CSS）印刷時に特定のクラスの背景色を適用しないようにする。HTMLカレンダーの当日色を消す。 - 晴歩雨描</title>
+<link rel="stylesheet" href="../../../../style.css">
+</head>
+<body>
+<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>CSS）印刷時に特定のクラスの背景色を適用しないようにする。HTMLカレンダーの当日色を消す。</h1><p class="meta">2025-01-08 · <a href="../../../../category/c13.html">ホームページ、Web作成</a></p><div class="entry-body"><p>備忘録として。</p>
+<p>印刷時に特定のクラスの背景色を適用しないようにする方法。</p>
+<h5 id="-うまくいかない方法-">≪ うまくいかない方法 ≫</h5>
+<p>※ この方法では、元の要素に別の色が定義されていても、透明になってしまう。例えば、カレンダーの土日の背景で色指定をしていて、当日には別の色を指定している場合、この方法では、印刷で土日の背景が透明になってしまう。</p>
+<pre>/* 画面表示用スタイル */
+.some-class {
+	background-color: #ffcb93;
+}
+
+/* 印刷用スタイル */
+@media print {
+	.some-class {
+		background-color: transparent !important; /* 背景を透明に */
+	}
+}
+</pre>
+<h5 id="-正解の方法-">≪ 正解の方法 ≫</h5>
+<p>※ 要素の背景色を「@media screen」で、定義する。これなら、印刷時には適用されない。</p>
+<pre>/* 画面表示用スタイル */
+@media screen {
+	.some-class {
+		background-color: #ffcb93;
+	}
+}
+</pre>
+<h5 id="-利用例-">≪ 利用例 ≫</h5>
+<p>以下のカレンダーで、当日を背景オレンジ色にしているが、印刷では通常の白色で表示する。</p>
+<p><em><span style="color: rgb(255, 0, 0);">※ 以下、<a href="https://ok2nd.sakura.ne.jp/">https://ok2nd.sakura.ne.jp/</a> で始まるWebページは現在使えなくなっている。</span></em></p>
+<p><a href="https://ok2nd.sakura.ne.jp/index/sch/calendar/" target="_blank">https://ok2nd.sakura.ne.jp/index/sch/calendar/</a></p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250108/20250108145657.jpg" width="592" height="305" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250126/20250126083430.png" width="596" height="308" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<pre>td.sunday {
+	background: #fff0f0;
+	color: #f00;
+}
+td.weekday {
+	background: #fff;
+}
+td.saturday {
+	background: #edf3ff;
+	color: #045acc;
+}
+td.holiday {
+	background: #ffc4c4;
+	color: #f00;
+}
+<span style="color: #dd830c;">@media screen {
+	td.today {
+		background: #ffcb93;
+	}
+}
+</span></pre>
+<p><a class="link-card" href="../../../2024/12/23/121252.html"><span class="lc-body"><span class="lc-title">HTML/JavaScriptカレンダーに「Holidays JP API 」で祝日表示。AIツールChatGPT、Copilotで作成。</span><span class="lc-desc">先程、JavaScriptでシンプルなHTMLカレンダーを作成した。 これは、祝日表示対応していない。 これに、祝日表示を追加した。「Google Calendar API 」を使う方法もあるが、Google API K…</span><span class="lc-site">晴歩雨描 · <time>2024-12-23</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20241223/20241223215858.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2024/12/23/093802.html"><span class="lc-body"><span class="lc-title">JavaScriptで、シンプルなHTMLカレンダーを作成。AIツールCopilotで作成。</span><span class="lc-desc">以前に、PHPでHTMLカレンダーを作成した。 今回、JavaScriptで、シンプルなHTMLカレンダーを作成。 JavaScriptを使ったHTMLカレンダーはネットで探すといくつも出てくる。今回、AIツール「Cha…</span><span class="lc-site">晴歩雨描 · <time>2024-12-23</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20241223/20241223092959.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2024/12/22/085926.html"><span class="lc-body"><span class="lc-title">Google Calendar API）HTMLカレンダーの七五三やクリスマスが祝日扱いに。</span><span class="lc-desc">以前、シンプルなHTMLカレンダーを作成した。 Google Calendar API を使って、祝日表示できるようにした。 Google Calendar APIの仕様が勝手に変わってしまったようで、七五三やクリスマス…</span><span class="lc-site">晴歩雨描 · <time>2024-12-22</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20241222/20241222084003.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2018/07/13/144317.html"><span class="lc-body"><span class="lc-title">PHP）シンプルなHTMLカレンダー。Google Calendar API v3で祝日表示。コードサンプル。</span><span class="lc-desc">先日作成したスマホ&amp;PC用検索ポータル「2nd Sch」にカレンダー表示のため、シンプルなHTMLカレンダーを作成。 祝日表示に「Google Calendar API v3」を使用。 ただ、祝日は当年の前後合わせて3年…</span><span class="lc-site">晴歩雨描 · <time>2018-07-13</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20180713/20180713143522.jpg" alt="" loading="lazy"></span></a></p></div></article>
+</body>
+</html>

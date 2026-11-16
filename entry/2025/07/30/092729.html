@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gemini）PHP＋MySQLを使ったカレンダー＆スケジューラを作った。 - 晴歩雨描</title>
+<link rel="stylesheet" href="../../../../style.css">
+</head>
+<body>
+<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>Gemini）PHP＋MySQLを使ったカレンダー＆スケジューラを作った。</h1><p class="meta">2025-07-30 · <a href="../../../../category/c42.html">＜AI＞</a> <a href="../../../../category/c13.html">ホームページ、Web作成</a></p><div class="entry-body"><p>夫婦のスケジュール共有に「<em>Lifebear</em>」無料版を使ってきたが、Web版サービスが2025年12月中旬に終了すると発表されたので、無料でPCとスマホ両方で使えるスケジュール共有カレンダーアプリを探したが、良いものが見つからない。「<em>Googleカレンダー</em>」は使いたくない。「<em>TimeTree</em>」も試したが、自分にとっては使いづらかった。</p>
+<p>そこで、<em>PHP＋MySQLを使ったカレンダー＆スケジューラを作った。</em></p>
+<p>PHP＋MySQLが使えるインターネット上のサーバーが必要になるが、元々使用しているサーバーがあるので、それを使う。</p>
+<p><span style="color: #dd830c;">※ 【後日追記】サーバーは、その後、「x10hosting.com」に変更。</span></p>
+<p><a class="link-card" href="../../../2026/01/21/152702.html"><span class="lc-body"><span class="lc-title">無料でPHP＋MySQLが使えるWebホスティングサーバー「x10Hosting」を使ってみた。既存サービスからの移行検証。</span><span class="lc-desc">先日、無料でPHP＋MySQLが使えるWebホスティングサーバー「 InfinityFree 」を使ってみた。 「InfinityFree」は、レスポンスが遅い。 （※ 後日追記：「InfinityFree」で無料で立ち…</span><span class="lc-site">晴歩雨描 · <time>2026-01-21</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260121/20260121132031.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2026/06/19/171209.html"><span class="lc-body"><span class="lc-title">備忘録）PHP+MySQLカレンダー（スケジューラー）システム：MySQLデータコピー「x10Hosting」→「InfinityFree」。</span><span class="lc-desc">自分用のカレンダー（スケジューラー）システムを、PHP+MySQLで作成して利用している。 無料でPHP＋MySQLが使えるWebホスティングサーバーの以下2つをメイン・サブとして使っている。 メイン：「 x10Host…</span><span class="lc-site">晴歩雨描 · <time>2026-06-19</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260619/20260619163543.png" alt="" loading="lazy"></span></a></p>
+<p>開発は「<em>Google Gemini</em>」を使った。プログラム作成では「<em>Claude</em>」が優秀だが、1日に使えるメッセージ（？）制限がある。何回も手直しが必要になるような一定の規模以上のプログラム作成には使えない。「Google Gemini」は、無料枠でも制限は無さそう。</p>
+<p>「Google Gemini」の無料枠内で、今回のようなある程度の規模のアプリケーションが出来るか不安だったが、期待した程度のものはできた。</p>
+<h5 id="仕様概略">【仕様概略】</h5>
+<p>● PHPとMySQLを使う。</p>
+<p>● シンプルなカレンダー＆スケジューラ。時間などは入れない。日付単位のスケジュール管理。スケジュール項目の数種類の色分けが出来る。</p>
+<p>● データベースは1つのシンプルなテーブルを使う。</p>
+<pre>CREATE TABLE IF NOT EXISTS tbl_schedule (
+    id_schedule INT(10) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    id_account VARCHAR(20) NOT NULL,
+    c_date DATETIME NOT NULL,
+    c_date2 DATETIME,
+    c_color VARCHAR(20) NOT NULL,
+    c_memo VARCHAR(256) NOT NULL,
+    c_delete INT(10) UNSIGNED,
+    c_registtime DATETIME  NOT NULL
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+</pre>
+<p>● 1か月単位のカレンダーを表示。初期値は当月。クエリパラメータで、id=ユーザーアカウント指定。id=ユーザーアカウントは年月やスケジュールインプット画面にも全てのPHP画面に引き継がれる。パスワードやログインは使わない。</p>
+<p>● 前月、翌月移動ボタンと当月ボタンが必要。移動後のURLには、クエリパラメータでy=年&amp;m=月表示。</p>
+<p>● カレンダーの日付空白部分をクリックしたら、ポップアップウインドウで、スケジュール入力画面を出す。<br />日付：クリックした日付を表示（変更可とする）<br />日付2：スケジュール最終日（変更可とする）<br />色：ラジオボタンで、赤、ピンク、オレンジ、青、緑、紫、グレー（初期値）<br />件名：テキストエリア（スケジュール内容：日本語可）<br />登録ボタン：押したら、データベースにスケジュールが入力される。<br />id_accountには、id=ユーザーアカウントを入れる。<br />c_deleteは0にする。<br />c_registtimeにタイムスタンプを入れる。</p>
+<p>● スケジュールが登録されたら、該当の日付にスケジュール表示する。指定した色で文字全体の背景色として、文字は白色とする。&lt;td&gt;枠内の横一杯に広がるように表示する。</p>
+<p>● スケジュールは、クエリパラメータのid=ユーザーアカウントのものだけを表示する。</p>
+<p>● 日付2（c_date2）があるデータは、&lt;td&gt;を跨ってスケジュール表示する。（※ これは実現が難しく断念。）</p>
+<p>● 既存のスケジュールをクリックすると、スケジュール入力画面と同様の修正画面が出る。「修正」ボタンと「削除」ボタンを表示。</p>
+<p>● 「削除」ボタン実行時には、c_deleteに「999」を入れる。</p>
+<p>● カレンダー表示で、c_delete=999のデータは除外する。</p>
+<p>● 「<a href="https://holidays-jp.github.io/" target="_blank">Holidays JP API (日本の祝日API)</a>」を使って、祝日表示する。<br />　　<a href="https://holidays-jp.github.io/api/v1/date.json" target="_blank">https://holidays-jp.github.io/api/v1/date.json</a></p>
+<p>以上の要求仕様で、ほぼ期待通りのものが出来上がった。データベースはテーブル構造を示しただけで、MySQLへのアクセス方法については、何も指示していない。修正依頼は、大半が細かいデザインに関すること。</p>
+<p>プログラムコードファイルは、以下の4つ。コメントや空白行を含んで、合計1,000ステップほど。</p>
+<ul>
+<li>config.php（60ステップ）</li>
+<li>index.php（620ステップ）</li>
+<li>schedule_form.php（340ステップ）</li>
+<li>process_schedule.php（120ステップ）</li>
+</ul>
+<p>「Google Gemini」は、レスポンスも速いし、何度でも修正要求に応えてくれる。この程度の規模のアプリが、アバウトな要求仕様で、無料で出来てしまうのは驚き。</p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250730/20250730084219.png" width="703" height="551" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250730/20250730084227.png" width="649" height="548" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>日付ピッカーは、要求していていないが、付けられていた。</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250730/20250730155003.png" width="566" height="506" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>スマホ画面。マージンをなるべく省いて、スケジュール全体が見えるようにした。</p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250803/20250803090248.png" width="1028" height="1200" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>スマホでは、スワイプ操作でも、前月、翌月へ画面遷移できるようにした。</p>
+<p><a class="link-card" href="../../08/03/110524.html"><span class="lc-body"><span class="lc-title">JavaScript）HTMLカレンダー）スマホのスワイプ操作で、前月、翌月へ画面遷移できるようにした。</span><span class="lc-desc">先日、PHP＋MySQLを使ったHTMLカレンダー＆スケジューラを作った。 ＜ スマホ画面 ＞ このHTMLカレンダーは、前月、翌月へ画面遷移できるが、スマホのスワイプ操作でも、前月、翌月へ画面遷移できるようにした。 【…</span><span class="lc-site">晴歩雨描 · <time>2025-08-03</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250805/20250805123315.png" alt="" loading="lazy"></span></a></p>
+<p><span style="color: #dd830c;">※ ログイン認証など省いているので、実際のWebページのURLは非公開。</span></p>
+<hr /><hr />
+<p><a class="link-card" href="../../01/26/085411.html"><span class="lc-body"><span class="lc-title">JavaScriptで、HTML12か月カレンダーを作成。ChatGPTで作成。</span><span class="lc-desc">今まで、HTMLカレンダーをいくつか作成してきた。 ≪ PHPで作成したカレンダー≫ ≪ JavaScriptで作成した1か月カレンダー ≫ 今回、JavaScriptで、HTML「 12か月 」カレンダーを作成。 ht…</span><span class="lc-site">晴歩雨描 · <time>2025-01-26</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250126/20250126084550.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../09/17/112330.html"><span class="lc-body"><span class="lc-title">CSSレスポンシブ対応）スマホの機種によらず、画面横の文字数を同じにしたければ、font-sizeにvwを使う。</span><span class="lc-desc">スマホは、機種によって画面の横幅のサイズが違う。ブラウザのpixelサイズも違う。 ＜ ブラウザの表示幅・ピクセル(pixel)チェック ＞ https://ok2nd.github.io/tool/html/pixel…</span><span class="lc-site">晴歩雨描 · <time>2025-09-17</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250917/20250917105139.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2024/12/23/121252.html"><span class="lc-body"><span class="lc-title">HTML/JavaScriptカレンダーに「Holidays JP API 」で祝日表示。AIツールChatGPT、Copilotで作成。</span><span class="lc-desc">先程、JavaScriptでシンプルなHTMLカレンダーを作成した。 これは、祝日表示対応していない。 これに、祝日表示を追加した。「Google Calendar API 」を使う方法もあるが、Google API K…</span><span class="lc-site">晴歩雨描 · <time>2024-12-23</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20241223/20241223215858.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2024/12/23/093802.html"><span class="lc-body"><span class="lc-title">JavaScriptで、シンプルなHTMLカレンダーを作成。AIツールCopilotで作成。</span><span class="lc-desc">以前に、PHPでHTMLカレンダーを作成した。 今回、JavaScriptで、シンプルなHTMLカレンダーを作成。 JavaScriptを使ったHTMLカレンダーはネットで探すといくつも出てくる。今回、AIツール「Cha…</span><span class="lc-site">晴歩雨描 · <time>2024-12-23</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20241223/20241223092959.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2018/07/13/144317.html"><span class="lc-body"><span class="lc-title">PHP）シンプルなHTMLカレンダー。Google Calendar API v3で祝日表示。コードサンプル。</span><span class="lc-desc">先日作成したスマホ&amp;PC用検索ポータル「2nd Sch」にカレンダー表示のため、シンプルなHTMLカレンダーを作成。 祝日表示に「Google Calendar API v3」を使用。 ただ、祝日は当年の前後合わせて3年…</span><span class="lc-site">晴歩雨描 · <time>2018-07-13</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20180713/20180713143522.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../03/20/115145.html"><span class="lc-body"><span class="lc-title">AIツール「ChatGPT、Gemini、Copilot、Perplexity、リートン、Claude」＋JavaScriptライブラリ「p5.js」で「物理シミュレーション」アプリ作成。Claudeはアプリケーション作成能力が高い。</span><span class="lc-desc">昨日、 JavaScriptライブラリ「p5.js」 を使った「魚の群れのシミュレーション」を、AIツール「ChatGPT、Gemini、Copilot、Perplexity、リートン、Claude」で作った。 今回、J…</span><span class="lc-site">晴歩雨描 · <time>2025-03-20</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250320/20250320114142.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2024/10/14/094422.html"><span class="lc-body"><span class="lc-title">JavaScriptで、複数のWEBPファイルをアップロードして、JPEGに変換して一括ダウンロードするWebページ。Geminiで作成。</span><span class="lc-desc">先日、JavaScriptで、複数のPNGファイルをアップロードして、JPEGに変換して一括ダウンロードするWebページを作成。 今回、JavaScriptで、複数のWEBPファイルをアップロードして、JPEGに変換して…</span><span class="lc-site">晴歩雨描 · <time>2024-10-14</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20241014/20241014093757.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2026/06/19/171209.html"><span class="lc-body"><span class="lc-title">備忘録）PHP+MySQLカレンダー（スケジューラー）システム：MySQLデータコピー「x10Hosting」→「InfinityFree」。</span><span class="lc-desc">自分用のカレンダー（スケジューラー）システムを、PHP+MySQLで作成して利用している。 無料でPHP＋MySQLが使えるWebホスティングサーバーの以下2つをメイン・サブとして使っている。 メイン：「 x10Host…</span><span class="lc-site">晴歩雨描 · <time>2026-06-19</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260619/20260619163543.png" alt="" loading="lazy"></span></a></p></div></article>
+</body>
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Web写真アルバム「神戸散歩(2)」「大阪散歩(2)」作成。JPEG画像一覧HTMLはPHPで自動生成。 - 晴歩雨描</title>
+<link rel="stylesheet" href="../../../../style.css">
+</head>
+<body>
+<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>Web写真アルバム「神戸散歩(2)」「大阪散歩(2)」作成。JPEG画像一覧HTMLはPHPで自動生成。</h1><p class="meta">2022-04-26 · <a href="../../../../category/c33.html">神戸</a> <a href="../../../../category/c13.html">ホームページ、Web作成</a> <a href="../../../../category/c18.html">写真・カメラ</a></p><div class="entry-body"><p>以前作成したWeb写真アルバム「<a href="https://ok2nd.github.io/index/photo/kobe1-v2.html" target="_blank">神戸散歩 2017.5 ～ 2019.3</a>」「<a href="https://ok2nd.github.io/index/photo/osaka1-v2.html" target="_blank">大阪散歩 2017.6 ～ 2019.3</a>」の続編「神戸散歩(2) 2019.4 ～ 2022.3」「大阪散歩(2) 2019.4 ～ 2022.3」を作成。</p>
+<p><a class="link-card" href="https://ok2nd.github.io/index/photo/kobe2-v2.html" target="_blank" rel="noopener noreferrer"><span class="lc-body"><span class="lc-title">神戸散歩(2) 2019.4 ～ 2022.3</span><span class="lc-desc">影付き枠＋ビネット効果付き写真サムネイルアルバム</span><span class="lc-site">ok2nd.github.io</span></span></a></p>
+<p><a href="https://ok2nd.github.io/index/photo/kobe2-v2.html" target="_blank"><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220426/20220426205804.jpg" width="881" height="632" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></a></p>
+<p><a class="link-card" href="https://ok2nd.github.io/index/photo/osaka2-v2.html" target="_blank" rel="noopener noreferrer"><span class="lc-body"><span class="lc-title">大阪散歩(2) 2019.4 ～ 2022.3</span><span class="lc-desc">影付き枠＋ビネット効果付き写真サムネイルアルバム</span><span class="lc-site">ok2nd.github.io</span></span></a></p>
+<p><a href="https://ok2nd.github.io/index/photo/osaka2-v2.html" target="_blank"><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220426/20220426205812.jpg" width="881" height="632" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></a></p>
+<p>PHPプログラム「thumbnail-create.php」で、自動生成している。 例として、ディレクトリ「kobe2」の下に2つの解像度のJPEG画像を入れておき、</p>
+<pre>kobe2 &gt; 320
+kobe2 &gt; 800
+</pre>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220426/20220426164105.jpg" width="423" height="127" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>以下のようにディレクトリ「kobe2」を指定してPHPプログラムを開くと、HTMLが自動生成される。</p>
+<pre><a href="http://localhost/2nd/album/thumbnail-create.php?dir=kobe2">http://localhost/2nd/album/thumbnail-create.php?dir=kobe2</a>
+</pre>
+<p>【thumbnail-create.php の PHPプログラム部分抜粋】</p>
+<pre>&lt;div id="gallery"&gt;
+&lt;?php
+	$cwd = getcwd();
+	$dir = $_GET['dir'];
+	$open_path = $cwd.'/'.$dir.'/320';
+	if ($opendir = @opendir($open_path)) {		// @ : エラー制御演算子 (E_WARNINGを出さないため)
+		$files = scandir($open_path);
+		natcasesort($files);
+		$order = 0;
+		foreach ($files as $file) {
+			if (!is_dir($open_path.'/'.$file)) {
+?&gt;
+	&lt;a href="photo.html?photo=&lt;?= $dir ?&gt;/800/&lt;?= $file ?&gt;"&gt;
+		&lt;div class="box-frame"&gt;&lt;div class="vignette"&gt;&lt;img src="&lt;?= $dir ?&gt;/320/&lt;?= $file ?&gt;"&gt;&lt;/div&gt;&lt;/div&gt;
+	&lt;/a&gt;
+&lt;?php
+			}
+		}
+		closedir($opendir);
+	}
+?&gt;
+&lt;/div&gt;
+</pre>
+<p><a class="link-card" href="152137.html"><span class="lc-body"><span class="lc-title">Web写真アルバム「神戸散歩」「大阪散歩」「京都散歩」ポップアップ画像表示ページを、JavaScriptを使う方法に変更。</span><span class="lc-desc">以前に作成したWeb写真アルバム「 神戸散歩 」「 大阪散歩 」「 京都散歩 」のポップアップ画像表示ページを、JavaScriptを使う方法に変更。 方法の詳細は以下の「My 野鳥図鑑」と同じ。</span><span class="lc-site">晴歩雨描 · <time>2022-04-26</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220426/20220426151258.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2020/11/06/231247.html"><span class="lc-body"><span class="lc-title">PHP）多次元連想配列のソート。array_multisort()。「My野鳥図鑑」の野鳥の並びを五十音順に。</span><span class="lc-desc">備忘録として。PHPの多次元連想配列のソート。 「My 野鳥図鑑」の野鳥の並びを五十音順にした。 以下、PHPソースの抜粋（説明のため、実際よりはシンプルにしてある）。野鳥データは適時順番を考えずに多次元連想配列に。 $…</span><span class="lc-site">晴歩雨描 · <time>2020-11-06</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20201106/20201106230805.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2018/07/13/144317.html"><span class="lc-body"><span class="lc-title">PHP）シンプルなHTMLカレンダー。Google Calendar API v3で祝日表示。コードサンプル。</span><span class="lc-desc">先日作成したスマホ&amp;PC用検索ポータル「2nd Sch」にカレンダー表示のため、シンプルなHTMLカレンダーを作成。 祝日表示に「Google Calendar API v3」を使用。 ただ、祝日は当年の前後合わせて3年…</span><span class="lc-site">晴歩雨描 · <time>2018-07-13</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20180713/20180713143522.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../01/16/173047.html"><span class="lc-body"><span class="lc-title">はてなブログで、&lt;TABLE&gt;のセル（TH,TD）の余白（padding）を変更するには、「!important」が必要。（カスタマイズCSS）</span><span class="lc-desc">はてなブログ で、&lt;TABLE&gt;の&lt;TH&gt;&lt;TD&gt;の余白（padding）を変更するには、「 !important 」が必要。 ■ 特定の記事ページのみ変更する場合は、記事編集の「HTML編集」で、&lt;style&gt;～&lt;/s…</span><span class="lc-site">晴歩雨描 · <time>2022-01-16</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220116/20220116172327.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2021/07/14/182154.html"><span class="lc-body"><span class="lc-title">HTMLとCSSで点線リーダー：目次や索引で項目名とページの間を点線で結ぶ。（Googleフォント）</span><span class="lc-desc">目次や索引で、項目名とページの間を点線で結ぶ（タブリ－ダー）のをHTMLと CSS で実現する方法の備忘録。 ≪完成イメージ≫ ≪参考にさせてもらったページ≫ 他の方法を公開しているページ。 【関連：Wordで点線リーダ…</span><span class="lc-site">晴歩雨描 · <time>2021-07-14</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20210714/20210714180559.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2020/12/06/103609.html"><span class="lc-body"><span class="lc-title">はてなブログで横並びにした画像の縦位置を上揃えにする。（カスタマイズCSS）</span><span class="lc-desc">はてなブログ で、画像を横並びにした場合、縦位置が中央揃えになってしまう。 これを、上揃えにする方法。 【個別にする方法】 「HTML編集」で、「div class=&quot;images-row&quot;」に、 style=&quot;disp…</span><span class="lc-site">晴歩雨描 · <time>2020-12-06</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20201206/20201206101843.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2020/05/05/225915.html"><span class="lc-body"><span class="lc-title">はてなブログで文字列に蛍光ペン（マーカー）風のアンダーラインをつける方法。&lt;em&gt;タグで。（カスタマイズCSS）</span><span class="lc-desc">はてなブログ で、強調したいハイライト文字列に蛍光マーカーペンっぽい色付きのアンダーラインをつける方法。 【サンプル】 強調したいハイライト文字列 はてなブログ で使える文字の装飾には、太字/ボールド、斜体/イタリック、…</span><span class="lc-site">晴歩雨描 · <time>2020-05-05</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20200505/20200505230106.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2019/06/15/112639.html"><span class="lc-body"><span class="lc-title">CSSのflexbox（display:flex;）で、写真/画像を横並びにする。inline-blockやfloat:leftは使わない。＋ &lt;div&gt;の横幅一杯に画像を並べてリサイザブル（レスポンシブ）にする。</span><span class="lc-desc">Webページで写真/画像を横並びにする方法として、以前は display: inline-block; display: table-cell; float: left; などを使っていた。どれもあまり使いやすいとは言え…</span><span class="lc-site">晴歩雨描 · <time>2019-06-15</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190615/20190615110247.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2017/03/15/092041.html"><span class="lc-body"><span class="lc-title">CSSで画像を正方形枠内で上下左右中央揃え（センタリング）するシンプルな方法</span><span class="lc-desc">前回の「 写真/画像をサムネイル一覧するHTMLサンプル 」で紹介したHTMLサンプルでは、画像を正方形枠内で上下左右中央揃えする方法として、&lt;span&gt;タグのbackground-imageとbackground-si…</span><span class="lc-site">晴歩雨描 · <time>2017-03-15</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20170315/20170315085112.jpg" alt="" loading="lazy"></span></a></p></div></article>
+</body>
+</html>

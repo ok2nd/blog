@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>WordPressのデータベース変更。 - 晴歩雨描</title>
+<link rel="stylesheet" href="../../../../style.css">
+</head>
+<body>
+<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>WordPressのデータベース変更。</h1><p class="meta">2022-08-07 · <a href="../../../../category/c13.html">ホームページ、Web作成</a> <a href="../../../../category/c2.html">WordPress</a></p><div class="entry-body"><p>昨日、自宅のWindowsPCに<a class="keyword" href="http://d.hatena.ne.jp/keyword/WordPress">WordPress</a>をインストールした。</p>
+<p><a class="link-card" href="../06/224635.html"><span class="lc-body"><span class="lc-title">WindowsPCの古いXAMPPにWordPress（5.0.16）をインストール。</span><span class="lc-desc">※ 後日追記：ドライブやディレクトリを変える場合は注意が必要。 自宅のWindowsPCにWordPressをインストールした手順の備忘録。 自宅のWindowsPCには、古いバージョンのXAMPP（ XAMPP 1.8…</span><span class="lc-site">晴歩雨描 · <time>2022-08-06</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220806/20220806222743.png" alt="" loading="lazy"></span></a></p>
+<p><a class="keyword" href="http://d.hatena.ne.jp/keyword/WordPress">WordPress</a>用のデータベースを切り替えてみる。</p>
+<ul>
+<li><a target="_blank" href="http://localhost/xampp/">http://localhost/xampp/</a></li>
+</ul>
+<p>で、「<a class="keyword" href="http://d.hatena.ne.jp/keyword/phpMyAdmin">phpMyAdmin</a>」を開いて、切り替え用データベースを作成する。</p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220806/20220806221112.png" width="630" height="579" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220807/20220807110458.png" width="748" height="235" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>「wp-config.<a class="keyword" href="http://d.hatena.ne.jp/keyword/php">php</a>」ファイル</p>
+<pre>\xampp\htdocs\<a class="keyword" href="http://d.hatena.ne.jp/keyword/wordpress">wordpress</a>\wp-config.<a class="keyword" href="http://d.hatena.ne.jp/keyword/php">php</a>
+</pre>
+<p>の「DB_NAME」を変更する。</p>
+<pre>/** <a class="keyword" href="http://d.hatena.ne.jp/keyword/WordPress">WordPress</a> のためのデータベース名 */
+define('DB_NAME', 'wp_test');
+
+/** <a class="keyword" href="http://d.hatena.ne.jp/keyword/MySQL">MySQL</a> データベースのユーザー名 */
+define('DB_USER', 'root');
+
+/** <a class="keyword" href="http://d.hatena.ne.jp/keyword/MySQL">MySQL</a> データベースのパスワード */
+define('DB_PASSWORD', '*****');
+</pre>
+<ul>
+<li><a target="_blank" href="http://localhost/wordpress/">http://localhost/wordpress/</a></li>
+</ul>
+<p>を開くと、以下のような初期画面が出るので、設定してログインする。</p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220807/20220807110954.png" width="756" height="829" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>以下のような<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%C0%A5%C3%A5%B7%A5%E5">ダッシュ</a>ボード画面が表示される。</p>
+<ul>
+<li><a target="_blank" href="http://localhost/wordpress/wp-admin/">http://localhost/wordpress/wp-admin/</a></li>
+</ul>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220807/20220807111717.png" width="1019" height="453" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p><a class="link-card" href="../15/231115.html"><span class="lc-body"><span class="lc-title">WordPress）設定まとめ。メディアライブラリを使わないバージョン。</span><span class="lc-desc">自宅WindowsPCローカルに WordPress をインストールしている。 以前、 WordPress 設定まとめを書いた。この時はメディアライブラリを使う前提だった。 メディアライブラリを使わない方法が分かったので…</span><span class="lc-site">晴歩雨描 · <time>2022-08-15</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220811/20220811140646.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../12/153111.html"><span class="lc-body"><span class="lc-title">WordPress）設定まとめ。メディアライブラリを使うバージョン。</span><span class="lc-desc">自宅のWindowsPCローカルに WordPress をインストールしている。 設定をいくつかやってみたので、備忘録としてまとめ。 ※ メディアライブラリを使わない前提の設定まとめは以下。 １－Ａ．外観テーマを「 Se…</span><span class="lc-site">晴歩雨描 · <time>2022-08-12</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220812/20220812153057.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2021/01/19/154625.html"><span class="lc-body"><span class="lc-title">Androidスマホ、iPadに、SSDを繋ぐ。PCの写真を共有。アロケーションユニットサイズにも注意。</span><span class="lc-desc">PCに保存してある写真を Android スマホ と iPad で共有するためにポータブル SSD を使ってみた。 NAS によるオンラインでの方法も試してみたが、 Android スマホ 、 iPad からのアクセスが…</span><span class="lc-site">晴歩雨描 · <time>2021-01-19</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20210119/20210119145337.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2021/01/17/134902.html"><span class="lc-body"><span class="lc-title">最近購入したUSB関連グッズ。SSD、USBハブ、USB変換ケーブル、USBメモリ。</span><span class="lc-desc">最近購入したUSB関連グッズ。備忘録として。 ■ SanDisk エクストリーム ポータブルSSD 2TB 読出最大550MB/秒 ［SDSSDE60-2T00-J25］ ＜ヨドバシ：29,810円（2,981ポイント）…</span><span class="lc-site">晴歩雨描 · <time>2021-01-17</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20210117/20210117130528.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2019/06/24/002655.html"><span class="lc-body"><span class="lc-title">検索機能付き「はてなブログ記事一覧」HTML生成スクリプト(JScript)を作成。</span><span class="lc-desc">先日、はてなブログのHTMLサイトマップ（はてなブログ記事一覧）を生成するスクリプト(JScript)を作成した。 これは、Googleクローラーに読み込んでもらうのが目的だったが、今回は人間が利用するための「はてなブロ…</span><span class="lc-site">晴歩雨描 · <time>2019-06-24</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190623/20190623234257.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2018/02/06/171857.html"><span class="lc-body"><span class="lc-title">はてなブログ、はてなフォトライフの写真画像一括バックアップ/ダウンロードツール修正。</span><span class="lc-desc">「はてなブログ」や「はてなフォトライフ」の 写真、画像を一括してバックアップ（ダウンロード）するツールを1月17日にリリースしたが、今日試したところ、正常動作しなかった。 調べてみたら、「はてなフォトライフ」の各画像表示…</span><span class="lc-site">晴歩雨描 · <time>2018-02-06</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20180206/20180206171152.jpg" alt="" loading="lazy"></span></a></p></div></article>
+</body>
+</html>

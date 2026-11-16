@@ -1,0 +1,974 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Claude）Python）画像フォーマット変換Windowsアプリ。JPEG,PNG,WebP,AVIF,GIF,SVG,TIFF,BMP,HEIC/HEIF → JPEG,PNG,WebP,AVIF。複数一括も可。サイズ比較。 - 晴歩雨描</title>
+<link rel="stylesheet" href="../../../../style.css">
+</head>
+<body>
+<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>Claude）Python）画像フォーマット変換Windowsアプリ。JPEG,PNG,WebP,AVIF,GIF,SVG,TIFF,BMP,HEIC/HEIF → JPEG,PNG,WebP,AVIF。複数一括も可。サイズ比較。</h1><p class="meta">2026-04-02 · <a href="../../../../category/c18.html">写真・カメラ</a></p><div class="entry-body"><p>画像フォーマットを変換するWindowsアプリ作成。複数ファイル一括も可。</p>
+<p>変換できるフォーマット形式は以下。</p>
+<ul>
+<li><em>インプット形式：JPEG、PNG、WebP、AVIF、GIF、SVG、TIFF、BMP、HEIC/HEIF</em></li>
+<li><em>アウトプット形式：JPEG、PNG、WebP、AVIF</em></li>
+</ul>
+<h5 id="-Pythonアプリ">■ Pythonアプリ</h5>
+<ul>
+<li>変換したい画像ファイル（複数も可）をドラッグ＆ドロップでウインドウに入れる。</li>
+<li>サムネイルで画像一覧が表示される。画像を選択すると、現在の情報が表示される。</li>
+<li>出力フォーマットを選択する。JPEG、WebP、AVIFは品質レベルを選択できる。初期値は、そのフォーマットで一般的に推奨される品質レベル。<em>AVIFは品質レベルを上げてもファイルサイズがあまり大きくならないので、80にしても良いかも。</em>
+<ul>
+<li><em>JPEG：70～95（初期値：85）</em></li>
+<li><em>PNG</em></li>
+<li><em>WebP：65～90（初期値：80）</em></li>
+<li><em>AVIF：65～90（初期値：70）</em></li>
+</ul>
+</li>
+<li>「フォーマット変換」ボタンで変換され、それぞれのフォーマット名のフォルダーに格納される。品質レベルもフォルダー名に付与される。</li>
+</ul>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260402/20260402160928.png" width="886" height="760" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<h5 id="-フォーマット別ファイルサイズ比較">■ フォーマット別ファイルサイズ比較</h5>
+<p><em>今回作成したアプリでフォーマット変換すると、WebPとAVIFは、元のJPEGと比較してかなり小さくなる。画質の違いは、よく分からない。</em></p>
+<p><em>しかし、これらの変換後ファイルを、はてなブログにアップロードすると、サイズが変わる。JPEGは変わらないが、PNGは若干増える。WebPは何故か6倍ほど大きくなる。AVIFは半分近くに小さくなる。はてなブログにアップロードするには、WebPは向いていない。</em></p>
+<table>
+<thead>
+<tr>
+<th>フォーマット</th>
+<th>品質レベル</th>
+<th>サイズ（KB）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>JPEG</td>
+<td>元ファイル</td>
+<td>406</td>
+</tr>
+<tr>
+<td><em>JPEG</em></td>
+<td><em>85</em></td>
+<td><em>292</em></td>
+</tr>
+<tr>
+<td>JPEG</td>
+<td>90</td>
+<td>332</td>
+</tr>
+<tr>
+<td><em>PNG</em></td>
+<td>---</td>
+<td><em>1,775 (→ はてなブログ 1,783)</em></td>
+</tr>
+<tr>
+<td><em>WebP</em></td>
+<td><em>80</em></td>
+<td><em>173 (→ はてなブログ 1,051)</em></td>
+</tr>
+<tr>
+<td>WebP</td>
+<td>85</td>
+<td>217</td>
+</tr>
+<tr>
+<td>WebP</td>
+<td>90</td>
+<td>286</td>
+</tr>
+<tr>
+<td><em>AVIF</em></td>
+<td><em>70</em></td>
+<td><em>195 (→ はてなブログ 100)</em></td>
+</tr>
+<tr>
+<td>AVIF</td>
+<td>80</td>
+<td>215</td>
+</tr>
+<tr>
+<td>AVIF</td>
+<td>85</td>
+<td>243</td>
+</tr>
+</tbody>
+</table>
+<h5 id="-JPEGWebPAVIF-比較" style="overflow-x: auto;">■ JPEG、WebP、AVIF 比較</h5>
+<p>※ 技術的には、AVIFが優れている。</p>
+<table class="font-small">
+<thead>
+<tr>
+<th>項目</th>
+<th>JPEG</th>
+<th>WebP</th>
+<th>AVIF</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>開発元</th>
+<td>Joint Photographic Experts Group</td>
+<td>Google</td>
+<td>Alliance for Open Media (AOMedia)</td>
+</tr>
+<tr>
+<th>主な圧縮方式</th>
+<td>有損失圧縮<br />（DCT: 離散コサイン変換）</td>
+<td>有損失・無損失<br />（VP8ビデオ技術の応用）</td>
+<td>有損失・無損失<br />（AV1ビデオコーデック技術）</td>
+</tr>
+<tr>
+<th>圧縮効率</th>
+<td>標準<br />（データ量は大きめ）</td>
+<td>高い<br />（JPEGより25～34%削減）</td>
+<td>極めて高い<br />（WebPよりさらに高効率）</td>
+</tr>
+<tr>
+<th>透明度の表現</th>
+<td>× 不可</td>
+<td>○ 可能<br />（アルファチャンネル）</td>
+<td>○ 可能</td>
+</tr>
+<tr>
+<th>アニメーション</th>
+<td>× 不可</td>
+<td>○ 可能</td>
+<td>○ 可能</td>
+</tr>
+<tr>
+<th>HDR対応</th>
+<td>× 不可</td>
+<td>× 不可（基本8bit）</td>
+<td>○ 可能（10/12bit対応）</td>
+</tr>
+<tr>
+<th>ブラウザ対応</th>
+<td>ほぼ全ての環境</td>
+<td>主要ブラウザで対応済み</td>
+<td>主要ブラウザで対応<br />（古い環境は注意）</td>
+</tr>
+</tbody>
+</table>
+<h5 id="-変換サンプル">■ 変換サンプル</h5>
+<p>【 元画像（1200x901ピクセル）：JPEG：406 KB 】</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260402/20260402163037.jpg" width="901" height="1200" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>【 変換画像：JPEG：品質レベル（85）： 292 KB】</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260402/20260402163051.jpg" width="901" height="1200" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>【 変換画像：PNG ： 1,775 KB →（はてなブログ）1,783 KB】</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260402/20260402163101.png" width="901" height="1200" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>【 変換画像：WebP：品質レベル（80）： 173 KB →（はてなブログ）1,051 KB】</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260402/20260402163115.webp" width="901" height="1200" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>【 変換画像：AVIF：品質レベル（70）：195 KB →（はてなブログ）100 KB】</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260402/20260402163130.avif" width="901" height="1200" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<h5 id="-Pythonソースコード">■ Pythonソースコード</h5>
+<pre>#!/usr/bin/env python3
+"""
+Image Format Converter
+Windows Python Desktop Application
+Supports: JPEG, PNG, WebP, AVIF, GIF, SVG, TIFF, BMP, HEIC/HEIF → JPEG / PNG / WebP / AVIF
+"""
+
+import io
+import os
+import sys
+import threading
+import tkinter as tk
+from tkinter import ttk, messagebox
+from pathlib import Path
+
+# ── PIL ─────────────────────────────────────────────────────────────────────
+try:
+    from PIL import Image, ImageTk, ImageDraw
+except ImportError:
+    import subprocess
+    subprocess.check_call([sys.executable, "-m", "pip", "install", "Pillow"])
+    from PIL import Image, ImageTk, ImageDraw
+
+# ── Drag &amp; Drop ──────────────────────────────────────────────────────────────
+try:
+    from tkinterdnd2 import DND_FILES, TkinterDnD
+    HAS_DND = True
+except ImportError:
+    HAS_DND = False
+
+# ── HEIC / HEIF ──────────────────────────────────────────────────────────────
+try:
+    import pillow_heif
+    pillow_heif.register_heif_opener()
+    HAS_HEIF = True
+except ImportError:
+    HAS_HEIF = False
+
+# ── SVG ──────────────────────────────────────────────────────────────────────
+HAS_CAIROSVG = False
+HAS_SVGLIB   = False
+try:
+    import cairosvg
+    HAS_CAIROSVG = True
+except ImportError:
+    try:
+        from svglib.svglib import svg2rlg
+        from reportlab.graphics import renderPM
+        HAS_SVGLIB = True
+    except ImportError:
+        pass
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
+#  Constants
+# ═══════════════════════════════════════════════════════════════════════════════
+
+SUPPORTED_EXT = {
+    ".jpg", ".jpeg", ".png", ".webp", ".avif",
+    ".gif", ".svg", ".tiff", ".tif", ".bmp",
+    ".heic", ".heif",
+}
+
+EXT_TO_FORMAT = {
+    ".jpg": "JPEG", ".jpeg": "JPEG",
+    ".png": "PNG",  ".webp": "WebP",
+    ".avif": "AVIF", ".gif": "GIF",
+    ".svg": "SVG",  ".tiff": "TIFF", ".tif": "TIFF",
+    ".bmp": "BMP",  ".heic": "HEIC", ".heif": "HEIF",
+}
+
+OUTPUT_FORMATS = ["JPEG", "PNG", "WebP", "AVIF"]
+
+FORMAT_EXT = {"JPEG": ".jpg", "PNG": ".png", "WebP": ".webp", "AVIF": ".avif"}
+
+QUALITY_CONFIG = {
+    "JPEG": {"min": 70, "max": 95, "default": 85},
+    "WebP": {"min": 65, "max": 90, "default": 80},
+    "AVIF": {"min": 65, "max": 90, "default": 70},
+}
+
+THUMB_W    = 108
+THUMB_H    = 80
+CELL_W     = 128
+CELL_H     = 118
+THUMB_COLS = 4
+
+# ── Palette ──────────────────────────────────────────────────────────────────
+C = {
+    "bg":          "#F2F2F7",
+    "surface":     "#FFFFFF",
+    "surface2":    "#F8F8FC",
+    "border":      "#D8D8E8",
+    "accent":      "#3B7BF5",
+    "accent_dark": "#2C5FD0",
+    "accent_bg":   "#EBF0FE",
+    "text":        "#1A1A2E",
+    "subtext":     "#6B6B80",
+    "placeholder": "#B0B0C4",
+    "success":     "#2EA877",
+    "error":       "#E8524A",
+    "card_head":   "#F4F4FA",
+    "thumb_sel":   "#D8E5FD",
+    "thumb_hover": "#EBEBF5",
+    "slider_bg":   "#E0E4F8",
+    "header_bg":   "#1F2B5E",
+    "header_fg":   "#FFFFFF",
+    "status_bg":   "#E8E8F2",
+}
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
+#  ImageEntry  – holds one input file
+# ═══════════════════════════════════════════════════════════════════════════════
+
+class ImageEntry:
+    def __init__(self, path: Path):
+        self.path    = path
+        self.name    = path.name
+        self.ext     = path.suffix.lower()
+        self.format  = EXT_TO_FORMAT.get(self.ext, "Unknown")
+        self._thumb: ImageTk.PhotoImage | None = None
+        self._dims:  tuple[int, int] | None    = None
+
+    # ── thumbnail ──────────────────────────────────────────────────────────
+    def get_thumbnail(self) -&gt; "ImageTk.PhotoImage | None":
+        if self._thumb is not None:
+            return self._thumb
+        try:
+            img = self._open()
+            if img is None:
+                return None
+            if not self._dims:
+                self._dims = img.size
+            img.thumbnail((THUMB_W, THUMB_H), Image.LANCZOS)
+            self._thumb = ImageTk.PhotoImage(img)
+            return self._thumb
+        except Exception:
+            return None
+
+    # ── dimensions ────────────────────────────────────────────────────────
+    def get_dims(self) -&gt; "tuple[int,int] | None":
+        if self._dims:
+            return self._dims
+        try:
+            img = self._open()
+            if img:
+                self._dims = img.size
+        except Exception:
+            pass
+        return self._dims
+
+    # ── file size string ───────────────────────────────────────────────────
+    def file_size_str(self) -&gt; str:
+        try:
+            n = self.path.stat().st_size
+            if n &gt;= 1_048_576:
+                return f"{n/1_048_576:.1f} MB"
+            elif n &gt;= 1_024:
+                return f"{n/1_024:.1f} KB"
+            return f"{n} B"
+        except Exception:
+            return "—"
+
+    # ── image opening ──────────────────────────────────────────────────────
+    def _open(self) -&gt; "Image.Image | None":
+        if self.ext == ".svg":
+            return _open_svg(self.path)
+        img = Image.open(self.path)
+        img.load()
+        return img
+
+
+def _open_svg(path: Path) -&gt; "Image.Image | None":
+    if HAS_CAIROSVG:
+        data = cairosvg.svg2png(url=str(path), output_width=800)
+        return Image.open(io.BytesIO(data))
+    if HAS_SVGLIB:
+        drawing = svg2rlg(str(path))
+        if drawing:
+            data = renderPM.drawToString(drawing, fmt="PNG")
+            return Image.open(io.BytesIO(data))
+    return None
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
+#  ThumbnailCard  – a single thumbnail tile
+# ═══════════════════════════════════════════════════════════════════════════════
+
+class ThumbnailCard(tk.Frame):
+    def __init__(self, parent, entry: ImageEntry, index: int, on_select, **kw):
+        super().__init__(parent, bg=C["surface"], cursor="hand2",
+                         highlightthickness=2,
+                         highlightbackground=C["border"],
+                         width=CELL_W, height=CELL_H, **kw)
+        self.pack_propagate(False)
+        self.entry     = entry
+        self.index     = index
+        self.on_select = on_select
+        self.selected  = False
+        self._build()
+        self._setup_bindings()
+
+    def _build(self):
+        # ── image area ───────────────────────────────────────────────────
+        img_frame = tk.Frame(self, bg=C["surface2"], width=THUMB_W+8, height=THUMB_H+6)
+        img_frame.pack(pady=(8, 3))
+        img_frame.pack_propagate(False)
+
+        thumb = self.entry.get_thumbnail()
+        if thumb:
+            self.img_lbl = tk.Label(img_frame, image=thumb, bg=C["surface2"])
+            self.img_lbl.image = thumb
+        else:
+            self.img_lbl = tk.Label(img_frame, text="?",
+                                    font=("Segoe UI", 20), fg=C["placeholder"],
+                                    bg=C["surface2"])
+        self.img_lbl.place(relx=0.5, rely=0.5, anchor="center")
+
+        # ── filename ─────────────────────────────────────────────────────
+        name = self.entry.name
+        if len(name) &gt; 17:
+            name = name[:14] + "…"
+        self.name_lbl = tk.Label(self, text=name, bg=C["surface"],
+                                 fg=C["subtext"], font=("Segoe UI", 8),
+                                 wraplength=CELL_W - 8)
+        self.name_lbl.pack()
+
+        # ── format badge ─────────────────────────────────────────────────
+        self.badge = tk.Label(self, text=self.entry.format,
+                              bg=C["accent_bg"], fg=C["accent"],
+                              font=("Segoe UI", 7, "bold"),
+                              padx=4, pady=1)
+        self.badge.pack(pady=(1, 0))
+
+        self._all = [self, img_frame, self.img_lbl, self.name_lbl, self.badge]
+
+    def _setup_bindings(self):
+        for w in self._all:
+            w.bind("&lt;Button-1&gt;", lambda e: self.on_select(self.index))
+            w.bind("&lt;Enter&gt;",    lambda e: self._hover(True))
+            w.bind("&lt;Leave&gt;",    lambda e: self._hover(False))
+
+    def set_selected(self, sel: bool):
+        self.selected = sel
+        bg = C["thumb_sel"] if sel else C["surface"]
+        hl = C["accent"]    if sel else C["border"]
+        self.config(bg=bg, highlightbackground=hl,
+                    highlightthickness=2 if sel else 2)
+        self.name_lbl.config(bg=bg)
+        self.badge.config(bg=C["accent_bg"] if not sel else C["accent"],
+                          fg=C["accent"]    if not sel else "#FFFFFF")
+
+    def _hover(self, on: bool):
+        if self.selected:
+            return
+        bg = C["thumb_hover"] if on else C["surface"]
+        self.config(bg=bg)
+        self.name_lbl.config(bg=bg)
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
+#  Main Application
+# ═══════════════════════════════════════════════════════════════════════════════
+
+class App:
+    def __init__(self, root: tk.Tk):
+        self.root = root
+        self.root.title("Image Format Converter")
+        self.root.geometry("1020x680")
+        self.root.minsize(820, 540)
+        self.root.configure(bg=C["bg"])
+
+        self.entries:      list[ImageEntry]      = []
+        self.cards:        list[ThumbnailCard]   = []
+        self.selected_idx: int                   = -1
+
+        self.out_format  = tk.StringVar(value="JPEG")
+        self.quality_var = tk.IntVar(value=85)
+        self._converting = False
+
+        self._build_ui()
+        self._setup_dnd()
+        self.out_format.trace_add("write", self._on_format_change)
+
+    # ═══════════════════════════════════════════════════════════════════════
+    #  UI construction
+    # ═══════════════════════════════════════════════════════════════════════
+
+    def _build_ui(self):
+        self._build_header()
+        body = tk.Frame(self.root, bg=C["bg"])
+        body.pack(fill=tk.BOTH, expand=True, padx=14, pady=12)
+        self._build_left(body)
+        self._build_right(body)
+        self._build_statusbar()
+
+    def _build_header(self):
+        h = tk.Frame(self.root, bg=C["header_bg"], height=52)
+        h.pack(fill=tk.X)
+        h.pack_propagate(False)
+        tk.Label(h, text="🖼  Image Format Converter",
+                 bg=C["header_bg"], fg=C["header_fg"],
+                 font=("Segoe UI", 15, "bold")).pack(side=tk.LEFT, padx=20, pady=12)
+        # feature badges
+        feats = []
+        if HAS_HEIF:      feats.append("HEIC ✓")
+        if HAS_CAIROSVG or HAS_SVGLIB: feats.append("SVG ✓")
+        if not HAS_DND:   feats.append("※ DnD要 tkinterdnd2")
+        if feats:
+            tk.Label(h, text="  ".join(feats),
+                     bg=C["header_bg"], fg="#8899DD",
+                     font=("Segoe UI", 8)).pack(side=tk.RIGHT, padx=16)
+
+    # ── Left panel ─────────────────────────────────────────────────────────
+
+    def _build_left(self, parent):
+        left = tk.Frame(parent, bg=C["surface"],
+                        highlightthickness=1, highlightbackground=C["border"])
+        left.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=(0, 12))
+
+        # title bar
+        tbar = tk.Frame(left, bg=C["card_head"], height=38)
+        tbar.pack(fill=tk.X)
+        tbar.pack_propagate(False)
+        self._count_lbl = tk.Label(tbar, text="ファイル一覧  (0件)",
+                                   bg=C["card_head"], fg=C["text"],
+                                   font=("Segoe UI", 10, "bold"))
+        self._count_lbl.pack(side=tk.LEFT, padx=12, pady=8)
+        self._clear_btn = tk.Button(tbar, text="クリア",
+                                    bg=C["card_head"], fg=C["subtext"],
+                                    relief=tk.FLAT, font=("Segoe UI", 9),
+                                    cursor="hand2", padx=6,
+                                    command=self._clear_all,
+                                    activebackground=C["bg"])
+        self._clear_btn.pack(side=tk.RIGHT, padx=8)
+        tk.Frame(left, bg=C["border"], height=1).pack(fill=tk.X)
+
+        # scroll area
+        self._scroll_host = tk.Frame(left, bg=C["surface"])
+        self._scroll_host.pack(fill=tk.BOTH, expand=True)
+
+        # drop hint
+        self._drop_hint = tk.Frame(self._scroll_host, bg=C["surface"])
+        self._drop_hint.place(relx=0, rely=0, relwidth=1, relheight=1)
+        tk.Label(self._drop_hint, text="⬇", font=("Segoe UI", 40),
+                 bg=C["surface"], fg=C["border"]).pack(expand=True, pady=(40, 4))
+        tk.Label(self._drop_hint,
+                 text="画像ファイルをここにドラッグ＆ドロップ",
+                 bg=C["surface"], fg=C["placeholder"],
+                 font=("Segoe UI", 11)).pack()
+        tk.Label(self._drop_hint,
+                 text="JPEG • PNG • WebP • AVIF • GIF • SVG • TIFF • BMP • HEIC/HEIF",
+                 bg=C["surface"], fg=C["border"],
+                 font=("Segoe UI", 8)).pack(pady=(4, 0))
+
+        # canvas + scrollbar
+        self._canvas = tk.Canvas(self._scroll_host, bg=C["surface"],
+                                 highlightthickness=0)
+        self._vbar = ttk.Scrollbar(self._scroll_host, orient=tk.VERTICAL,
+                                   command=self._canvas.yview)
+        self._canvas.configure(yscrollcommand=self._vbar.set)
+
+        self._thumb_host = tk.Frame(self._canvas, bg=C["surface"], padx=8, pady=8)
+        self._cwin = self._canvas.create_window(0, 0, window=self._thumb_host,
+                                                 anchor="nw")
+        self._thumb_host.bind(
+            "&lt;Configure&gt;",
+            lambda e: self._canvas.configure(scrollregion=self._canvas.bbox("all")))
+        self._canvas.bind(
+            "&lt;Configure&gt;",
+            lambda e: self._canvas.itemconfig(self._cwin, width=e.width))
+        self._canvas.bind(
+            "&lt;MouseWheel&gt;",
+            lambda e: self._canvas.yview_scroll(int(-e.delta / 120), "units"))
+
+    # ── Right panel ────────────────────────────────────────────────────────
+
+    def _build_right(self, parent):
+        right = tk.Frame(parent, bg=C["bg"], width=242)
+        right.pack(side=tk.RIGHT, fill=tk.Y)
+        right.pack_propagate(False)
+
+        def card(title: str):
+            outer = tk.Frame(right, bg=C["surface"],
+                             highlightthickness=1, highlightbackground=C["border"])
+            outer.pack(fill=tk.X, pady=(0, 10))
+            tk.Label(outer, text=title, bg=C["card_head"], fg=C["subtext"],
+                     font=("Segoe UI", 8, "bold"), anchor="w",
+                     padx=12).pack(fill=tk.X, pady=5)
+            tk.Frame(outer, bg=C["border"], height=1).pack(fill=tk.X)
+            inner = tk.Frame(outer, bg=C["surface"], padx=12, pady=10)
+            inner.pack(fill=tk.X)
+            return inner
+
+        # ── File info ──────────────────────────────────────────────────
+        info = card("📄  選択ファイル情報")
+        self._info_name = tk.Label(info, text="(未選択)", bg=C["surface"],
+                                   fg=C["text"], font=("Segoe UI", 9, "bold"),
+                                   wraplength=210, justify="left", anchor="w")
+        self._info_name.pack(fill=tk.X, pady=(0, 6))
+
+        for attr in ("_info_fmt", "_info_sz", "_info_dim"):
+            lbl = tk.Label(info, text="—", bg=C["surface"],
+                           fg=C["subtext"], font=("Segoe UI", 9), anchor="w")
+            lbl.pack(fill=tk.X, pady=1)
+            setattr(self, attr, lbl)
+
+        # ── Output format ──────────────────────────────────────────────
+        fmt_inner = card("🎨  出力フォーマット")
+        for f in OUTPUT_FORMATS:
+            rb = tk.Radiobutton(fmt_inner, text=f"  {f}", value=f,
+                                variable=self.out_format,
+                                bg=C["surface"], fg=C["text"],
+                                selectcolor=C["accent_bg"],
+                                activebackground=C["surface"],
+                                font=("Segoe UI", 10),
+                                cursor="hand2",
+                                indicatoron=True)
+            rb.pack(anchor="w", pady=2)
+
+        # ── Quality ────────────────────────────────────────────────────
+        self._q_outer = tk.Frame(right, bg=C["surface"],
+                                 highlightthickness=1, highlightbackground=C["border"])
+        self._q_outer.pack(fill=tk.X, pady=(0, 10))
+        tk.Label(self._q_outer, text="⚙  品質レベル", bg=C["card_head"],
+                 fg=C["subtext"], font=("Segoe UI", 8, "bold"), anchor="w",
+                 padx=12).pack(fill=tk.X, pady=5)
+        tk.Frame(self._q_outer, bg=C["border"], height=1).pack(fill=tk.X)
+
+        q_inner = tk.Frame(self._q_outer, bg=C["surface"], padx=12, pady=10)
+        q_inner.pack(fill=tk.X)
+
+        top_row = tk.Frame(q_inner, bg=C["surface"])
+        top_row.pack(fill=tk.X)
+        tk.Label(top_row, text="品質:", bg=C["surface"], fg=C["subtext"],
+                 font=("Segoe UI", 9)).pack(side=tk.LEFT)
+        self._q_val = tk.Label(top_row, text="85", bg=C["surface"],
+                               fg=C["accent"], font=("Segoe UI", 14, "bold"))
+        self._q_val.pack(side=tk.RIGHT)
+
+        self._q_scale = tk.Scale(q_inner, from_=70, to=95,
+                                 orient=tk.HORIZONTAL,
+                                 variable=self.quality_var,
+                                 showvalue=False, resolution=1,
+                                 command=self._on_quality_drag,
+                                 bg=C["surface"], troughcolor=C["slider_bg"],
+                                 highlightthickness=0, sliderlength=22,
+                                 activebackground=C["accent"])
+        self._q_scale.pack(fill=tk.X, pady=(6, 2))
+
+        range_row = tk.Frame(q_inner, bg=C["surface"])
+        range_row.pack(fill=tk.X)
+        self._q_min = tk.Label(range_row, text="70", bg=C["surface"],
+                               fg=C["placeholder"], font=("Segoe UI", 8))
+        self._q_min.pack(side=tk.LEFT)
+        self._q_max = tk.Label(range_row, text="95", bg=C["surface"],
+                               fg=C["placeholder"], font=("Segoe UI", 8))
+        self._q_max.pack(side=tk.RIGHT)
+
+        # ── Convert button ─────────────────────────────────────────────
+        self._cvt_btn = tk.Button(right, text="フォーマット変換",
+                                  bg=C["accent"], fg="#FFFFFF",
+                                  font=("Segoe UI", 11, "bold"),
+                                  relief=tk.FLAT, padx=8, pady=13,
+                                  cursor="hand2",
+                                  command=self._convert_all,
+                                  activebackground=C["accent_dark"],
+                                  activeforeground="#FFFFFF")
+        self._cvt_btn.pack(fill=tk.X, pady=(0, 8))
+
+        # ── Progress ───────────────────────────────────────────────────
+        self._prog_frame = tk.Frame(right, bg=C["bg"])
+        self._prog_frame.pack(fill=tk.X)
+        self._prog_bar = ttk.Progressbar(self._prog_frame, mode="determinate")
+        self._prog_lbl = tk.Label(self._prog_frame, text="", bg=C["bg"],
+                                  fg=C["subtext"], font=("Segoe UI", 8))
+
+    def _build_statusbar(self):
+        sb = tk.Frame(self.root, bg=C["status_bg"], height=28)
+        sb.pack(fill=tk.X, side=tk.BOTTOM)
+        sb.pack_propagate(False)
+        self._status = tk.StringVar(value="ファイルをドラッグ＆ドロップしてください")
+        tk.Label(sb, textvariable=self._status, bg=C["status_bg"],
+                 fg=C["subtext"], font=("Segoe UI", 9),
+                 anchor="w").pack(fill=tk.BOTH, padx=12, pady=5)
+
+    # ═══════════════════════════════════════════════════════════════════════
+    #  Drag &amp; Drop
+    # ═══════════════════════════════════════════════════════════════════════
+
+    def _setup_dnd(self):
+        if not HAS_DND:
+            return
+        for w in [self.root, self._canvas, self._drop_hint, self._thumb_host]:
+            try:
+                w.drop_target_register(DND_FILES)
+                w.dnd_bind("&lt;&lt;Drop&gt;&gt;", self._on_drop)
+            except Exception:
+                pass
+
+    def _on_drop(self, event):
+        raw = self.root.tk.splitlist(event.data)
+        self._add_files([Path(p) for p in raw])
+
+    # ═══════════════════════════════════════════════════════════════════════
+    #  File management
+    # ═══════════════════════════════════════════════════════════════════════
+
+    def _add_files(self, paths: list[Path]):
+        added = 0
+        skipped_fmt = 0
+        for p in paths:
+            if not p.is_file():
+                continue
+            if p.suffix.lower() not in SUPPORTED_EXT:
+                skipped_fmt += 1
+                continue
+            if not any(e.path == p for e in self.entries):
+                self.entries.append(ImageEntry(p))
+                added += 1
+
+        if added == 0:
+            if skipped_fmt:
+                self._status.set(f"サポート外のファイル形式です ({skipped_fmt}件)")
+            return
+
+        self.entries.sort(key=lambda e: e.name.lower())
+        self._refresh_grid()
+
+        if self.selected_idx &lt; 0:
+            self._select(0)
+
+        self._status.set(f"{len(self.entries)} 件のファイルを読み込みました")
+
+    def _clear_all(self):
+        self.entries.clear()
+        self.selected_idx = -1
+        self._refresh_grid()
+        self._info_name.config(text="(未選択)")
+        self._info_fmt.config(text="—")
+        self._info_sz.config(text="—")
+        self._info_dim.config(text="—")
+        self._status.set("ファイルをドラッグ＆ドロップしてください")
+
+    # ═══════════════════════════════════════════════════════════════════════
+    #  Thumbnail grid
+    # ═══════════════════════════════════════════════════════════════════════
+
+    def _refresh_grid(self):
+        for c in self.cards:
+            c.destroy()
+        self.cards.clear()
+
+        n = len(self.entries)
+        self._count_lbl.config(text=f"ファイル一覧  ({n}件)")
+
+        if n == 0:
+            self._show_hint(True)
+            return
+
+        self._show_hint(False)
+
+        for i, entry in enumerate(self.entries):
+            card = ThumbnailCard(self._thumb_host, entry, i,
+                                 on_select=self._select)
+            card.grid(row=i // THUMB_COLS, column=i % THUMB_COLS,
+                      padx=5, pady=5)
+            self.cards.append(card)
+
+        for i, card in enumerate(self.cards):
+            card.set_selected(i == self.selected_idx)
+
+        self._canvas.update_idletasks()
+        self._canvas.configure(scrollregion=self._canvas.bbox("all"))
+
+    def _show_hint(self, show: bool):
+        if show:
+            self._canvas.pack_forget()
+            self._vbar.pack_forget()
+            self._drop_hint.place(relx=0, rely=0, relwidth=1, relheight=1)
+        else:
+            self._drop_hint.place_forget()
+            self._vbar.pack(side=tk.RIGHT, fill=tk.Y)
+            self._canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+
+    def _select(self, index: int):
+        if index &lt; 0 or index &gt;= len(self.entries):
+            return
+        old = self.selected_idx
+        self.selected_idx = index
+
+        if 0 &lt;= old &lt; len(self.cards):
+            self.cards[old].set_selected(False)
+        if 0 &lt;= index &lt; len(self.cards):
+            self.cards[index].set_selected(True)
+
+        e = self.entries[index]
+        self._info_name.config(text=e.name)
+        self._info_fmt.config(text=f"フォーマット:  {e.format}")
+        self._info_sz.config(text=f"ファイルサイズ:  {e.file_size_str()}")
+        dims = e.get_dims()
+        self._info_dim.config(
+            text=f"解像度:  {dims[0]} × {dims[1]} px" if dims else "解像度:  —")
+
+    # ═══════════════════════════════════════════════════════════════════════
+    #  Format / Quality controls
+    # ═══════════════════════════════════════════════════════════════════════
+
+    def _on_format_change(self, *_):
+        fmt = self.out_format.get()
+        if fmt in QUALITY_CONFIG:
+            cfg = QUALITY_CONFIG[fmt]
+            self._q_scale.config(from_=cfg["min"], to=cfg["max"])
+            q = cfg["default"]
+            self.quality_var.set(q)
+            self._q_val.config(text=str(q))
+            self._q_min.config(text=str(cfg["min"]))
+            self._q_max.config(text=str(cfg["max"]))
+            self._q_outer.pack(fill=tk.X, pady=(0, 10))
+        else:
+            self._q_outer.pack_forget()
+
+    def _on_quality_drag(self, raw):
+        # snap to multiples of 5
+        v = round(float(raw) / 5) * 5
+        fmt = self.out_format.get()
+        if fmt in QUALITY_CONFIG:
+            cfg = QUALITY_CONFIG[fmt]
+            v = max(cfg["min"], min(cfg["max"], v))
+        if self.quality_var.get() != v:
+            self.quality_var.set(v)
+        self._q_val.config(text=str(v))
+
+    # ═══════════════════════════════════════════════════════════════════════
+    #  Conversion
+    # ═══════════════════════════════════════════════════════════════════════
+
+    def _convert_all(self):
+        if self._converting:
+            return
+        if not self.entries:
+            messagebox.showwarning("警告", "変換するファイルがありません。")
+            return
+
+        out_fmt = self.out_format.get()
+        quality = self.quality_var.get()
+        entries = list(self.entries)
+
+        self._converting = True
+        self._cvt_btn.config(state=tk.DISABLED, text="変換中…")
+        self._prog_bar.config(maximum=len(entries), value=0)
+        self._prog_bar.pack(fill=tk.X, pady=(4, 2))
+        self._prog_lbl.pack(fill=tk.X)
+
+        threading.Thread(
+            target=self._worker,
+            args=(out_fmt, quality, entries),
+            daemon=True,
+        ).start()
+
+    def _worker(self, out_fmt: str, quality: int, entries: list[ImageEntry]):
+        ok, errors = 0, []
+        ext = FORMAT_EXT[out_fmt]
+
+        for i, entry in enumerate(entries):
+            self.root.after(0, lambda n=entry.name:
+                            self._status.set(f"変換中:  {n}"))
+            try:
+                if out_fmt in QUALITY_CONFIG:
+                    folder_name = f"{out_fmt}-{quality}"
+                else:
+                    folder_name = out_fmt
+                out_dir = entry.path.parent / folder_name
+                out_dir.mkdir(parents=True, exist_ok=True)
+                out_path = out_dir / (entry.path.stem + ext)
+
+                img = self._load(entry)
+                if img is None:
+                    errors.append(f"{entry.name}:  SVG 読み込み失敗")
+                    continue
+                self._save(img, out_path, out_fmt, quality)
+                ok += 1
+            except Exception as exc:
+                errors.append(f"{entry.name}:  {exc}")
+
+            p = i + 1
+            self.root.after(0, lambda v=p, t=len(entries):
+                            self._set_progress(v, t))
+
+        self.root.after(0, lambda: self._done(ok, errors))
+
+    def _load(self, entry: ImageEntry) -&gt; "Image.Image | None":
+        if entry.ext == ".svg":
+            return _open_svg(entry.path)
+        img = Image.open(entry.path)
+        # handle animated → take first frame
+        try:
+            img.seek(0)
+        except Exception:
+            pass
+        img.load()
+        return img
+
+    def _save(self, img: Image.Image, path: Path, fmt: str, quality: int):
+        # colour mode coercion
+        if fmt == "JPEG":
+            img = _to_rgb(img)
+        elif fmt in ("WebP", "AVIF", "PNG"):
+            if img.mode == "P":
+                img = img.convert("RGBA")
+            elif img.mode not in ("RGB", "RGBA", "L", "LA"):
+                img = img.convert("RGBA")
+
+        kw: dict = {}
+        if fmt == "JPEG":
+            kw = {"quality": quality, "optimize": True}
+        elif fmt == "WebP":
+            kw = {"quality": quality, "method": 6}
+        elif fmt == "AVIF":
+            kw = {"quality": quality}
+        # PNG → no quality arg
+
+        img.save(str(path), format=fmt, **kw)
+
+    # ── progress / done ────────────────────────────────────────────────────
+
+    def _set_progress(self, v: int, total: int):
+        self._prog_bar["value"] = v
+        self._prog_lbl.config(text=f"{v} / {total} 件完了")
+
+    def _done(self, ok: int, errors: list[str]):
+        self._converting = False
+        self._cvt_btn.config(state=tk.NORMAL, text="フォーマット変換")
+        self._prog_bar.pack_forget()
+        self._prog_lbl.pack_forget()
+
+        fmt = self.out_format.get()
+        quality = self.quality_var.get()
+        folder_name = f"{fmt}-{quality}" if fmt in QUALITY_CONFIG else fmt
+        if errors:
+            msg = f"{ok} 件の変換に成功しました。\n\n"
+            msg += "エラー:\n" + "\n".join(errors[:12])
+            if len(errors) &gt; 12:
+                msg += f"\n…他 {len(errors)-12} 件"
+            messagebox.showerror("変換完了（エラーあり）", msg)
+        else:
+            messagebox.showinfo(
+                "変換完了",
+                f"{ok} 件すべての変換が完了しました！\n\n"
+                f"出力先:  [元ファイルのフォルダー] /{folder_name}/ フォルダー内")
+
+        self._status.set(
+            f"変換完了:  {ok} 件成功" +
+            (f"  /  {len(errors)} 件エラー" if errors else ""))
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
+#  Helpers
+# ═══════════════════════════════════════════════════════════════════════════════
+
+def _to_rgb(img: Image.Image) -&gt; Image.Image:
+    """Convert any mode to RGB, compositing alpha over white."""
+    if img.mode == "RGB":
+        return img
+    if img.mode == "P":
+        img = img.convert("RGBA")
+    if img.mode in ("RGBA", "LA"):
+        bg = Image.new("RGB", img.size, (255, 255, 255))
+        alpha = img.split()[-1]
+        bg.paste(img.convert("RGB"), mask=alpha)
+        return bg
+    return img.convert("RGB")
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
+#  Entry point
+# ═══════════════════════════════════════════════════════════════════════════════
+
+def main():
+    if HAS_DND:
+        root = TkinterDnD.Tk()
+    else:
+        root = tk.Tk()
+
+    # Windows DPI awareness
+    try:
+        from ctypes import windll
+        windll.shcore.SetProcessDpiAwareness(1)
+    except Exception:
+        pass
+
+    # App icon (optional)
+    try:
+        root.iconbitmap(default="")
+    except Exception:
+        pass
+
+    App(root)
+    root.mainloop()
+
+
+if __name__ == "__main__":
+    main()
+</pre>
+<p><a class="link-card" href="../../../2025/04/16/095722.html"><span class="lc-body"><span class="lc-title">Claude）JavaScript）画像フォーマットPNG、WEBP、AVIFをJPEGに変換するWebツール作成。複数ファイル一括も可。</span><span class="lc-desc">過去に、画像フォーマットPNGやWEBPをJPEGに変換するWebアプリを作成した。 今回、画像フォーマット PNG、WEBP、AVIFをJPEGに変換する Webアプリを作成。AIツールClaudeに作成してもらった。…</span><span class="lc-site">晴歩雨描 · <time>2025-04-16</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250416/20250416094324.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../03/31/120201.html"><span class="lc-body"><span class="lc-title">Claude）Python）Windows画像編集加工アプリ：ICCプロファイル維持対応アプリ一覧。</span><span class="lc-desc">今まで作成してきたWindows画像編集加工アプリの一部を、ICCプロファイル維持するように修正してきた。 Pythonで作成したWindows画像編集加工アプリで、ICCプロファイル維持対応したアプリの一覧。 画像一括…</span><span class="lc-site">晴歩雨描 · <time>2026-03-31</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260331/20260331120149.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2025/01/05/131859.html"><span class="lc-body"><span class="lc-title">JavaScript）白黒（モノクロ）画像をブラウザにアップロードして、色（カラー）変換するWebツール作成。アンチエイリアシング対応。カラーピッカー使用。Copilotで作成。</span><span class="lc-desc">白黒（モノクロ）画像をブラウザにアップロードして、色（カラー）変換するWebツールをJavaScriptで作成。 白黒画像を簡単な手順でカラー変換できるツールは意外と見つからない。 なので、カラー変換できるツールを、HT…</span><span class="lc-site">晴歩雨描 · <time>2025-01-05</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250105/20250105131043.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2023/08/07/122742.html"><span class="lc-body"><span class="lc-title">CSS Filter「hue-rotate」で、画像を色相変換するWebツール作成。（ChatGPT）</span><span class="lc-desc">以前に、「CSS Filterを使えば、簡単に色調（明度、彩度、色相、透過度 etc.）加工ができる。」という記事を書いた。 CSS Filter「hue-rotate」を使って、画像（写真）を色相変換するWebページを…</span><span class="lc-site">晴歩雨描 · <time>2023-08-07</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20230807/20230807113225.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../03/22/103448.html"><span class="lc-body"><span class="lc-title">Python）Windows）画像アニメーションファイル（ GIF / APNG / AVIF / WebP / MP4 ）作成アプリ。</span><span class="lc-desc">今まで、GIFアニメ作成には、Webサイト「 フォトコンバイン ：GIFアニメーション画像作成ツール」や、Windowsアプリ「 Giam 」を使用していた。 どちらも使いづらい面があったので、シンプルかつ、その他のアニ…</span><span class="lc-site">晴歩雨描 · <time>2026-03-22</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260322/20260322101900.jpg" alt="" loading="lazy"></span></a></p></div></article>
+</body>
+</html>

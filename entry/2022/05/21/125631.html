@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>備忘録：[CSS] はてなブログ&lt;table&gt;&lt;tbody&gt;の&lt;th&gt;だけを左揃え。 - 晴歩雨描</title>
+<link rel="stylesheet" href="../../../../style.css">
+</head>
+<body>
+<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>備忘録：[CSS] はてなブログ&lt;table&gt;&lt;tbody&gt;の&lt;th&gt;だけを左揃え。</h1><p class="meta">2022-05-21 · <a href="../../../../category/c13.html">ホームページ、Web作成</a> <a href="../../../../category/c4.html">はてなブログ</a></p><div class="entry-body"><p><a class="keyword" href="http://d.hatena.ne.jp/keyword/%A4%CF%A4%C6%A4%CA%A5%D6%A5%ED%A5%B0">はてなブログ</a>の&lt;table&gt;で、&lt;tbody&gt;の&lt;th&gt;だけを左揃え。</p>
+<p>以下の<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%B9%A5%BF%A5%A4%A5%EB%A5%B7%A1%BC%A5%C8">スタイルシート</a>を本文内に追加。</p>
+<pre>&lt;style&gt;
+    tbody &gt; tr &gt; th {text-align : left;}
+&lt;/style&gt;</pre>
+<style>
+    tbody > tr > th {text-align : left;}
+</style>
+<p>以下、サンプル。</p>
+<div style="overflow-x: auto;">
+<table>
+<thead>
+<tr>
+<th>製品名</th>
+<th>センサー<br />サイズ</th>
+<th><a class="keyword" href="http://d.hatena.ne.jp/keyword/%BE%C7%C5%C0%B5%F7%CE%A5">焦点距離</a></th>
+<th><a class="keyword" href="http://d.hatena.ne.jp/keyword/F%C3%CD">F値</a></th>
+<th><a class="keyword" href="http://d.hatena.ne.jp/keyword/EVF">EVF</a></th>
+<th>重量</th>
+<th>最短<br />撮影<br />距離</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th><a class="keyword" href="http://d.hatena.ne.jp/keyword/Nikon">Nikon</a> P1000</th>
+<td>1/2.3型</td>
+<td>24～3000</td>
+<td>2.8～8.0</td>
+<td>○</td>
+<td>1415g</td>
+<td>1cm</td>
+</tr>
+<tr>
+<th><a class="keyword" href="http://d.hatena.ne.jp/keyword/Nikon">Nikon</a> P950</th>
+<td>1/2.3型</td>
+<td>24～2000</td>
+<td>2.8～6.5</td>
+<td>○</td>
+<td>1005g</td>
+<td>1cm</td>
+</tr>
+<tr>
+<th><a class="keyword" href="http://d.hatena.ne.jp/keyword/Canon">Canon</a> SX70 HS</th>
+<td>1/2.3型</td>
+<td>21～1365</td>
+<td>3.4～6.5</td>
+<td>○</td>
+<td>610g</td>
+<td>0cm</td>
+</tr>
+<tr>
+<th><a class="keyword" href="http://d.hatena.ne.jp/keyword/Panasonic">Panasonic</a> FZ85</th>
+<td>1/2.3型</td>
+<td>20～1200</td>
+<td>2.8～5.9</td>
+<td>○</td>
+<td>616g</td>
+<td>1cm</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><a class="link-card" href="../../01/16/173047.html"><span class="lc-body"><span class="lc-title">はてなブログで、&lt;TABLE&gt;のセル（TH,TD）の余白（padding）を変更するには、「!important」が必要。（カスタマイズCSS）</span><span class="lc-desc">はてなブログ で、&lt;TABLE&gt;の&lt;TH&gt;&lt;TD&gt;の余白（padding）を変更するには、「 !important 」が必要。 ■ 特定の記事ページのみ変更する場合は、記事編集の「HTML編集」で、&lt;style&gt;～&lt;/s…</span><span class="lc-site">晴歩雨描 · <time>2022-01-16</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220116/20220116172327.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="105555.html"><span class="lc-body"><span class="lc-title">2022年）コンデジ（レンズ一体型）ズームカメラ製品一覧。</span><span class="lc-desc">最近、レンズ一体型カメラの製品数が減っている。 現時点のレンズ一体型のズームカメラの一覧を作成。特殊なカメラや生産終了している製品は除いている。 センサーサイズ、焦点距離、重量、最短撮影距離等で並び替えできる。 &gt;&gt;&gt; …</span><span class="lc-site">晴歩雨描 · <time>2022-05-21</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220521/20220521104935.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2020/12/06/103609.html"><span class="lc-body"><span class="lc-title">はてなブログで横並びにした画像の縦位置を上揃えにする。（カスタマイズCSS）</span><span class="lc-desc">はてなブログ で、画像を横並びにした場合、縦位置が中央揃えになってしまう。 これを、上揃えにする方法。 【個別にする方法】 「HTML編集」で、「div class=&quot;images-row&quot;」に、 style=&quot;disp…</span><span class="lc-site">晴歩雨描 · <time>2020-12-06</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20201206/20201206101843.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2020/05/05/225915.html"><span class="lc-body"><span class="lc-title">はてなブログで文字列に蛍光ペン（マーカー）風のアンダーラインをつける方法。&lt;em&gt;タグで。（カスタマイズCSS）</span><span class="lc-desc">はてなブログ で、強調したいハイライト文字列に蛍光マーカーペンっぽい色付きのアンダーラインをつける方法。 【サンプル】 強調したいハイライト文字列 はてなブログ で使える文字の装飾には、太字/ボールド、斜体/イタリック、…</span><span class="lc-site">晴歩雨描 · <time>2020-05-05</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20200505/20200505230106.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2021/12/04/173912.html"><span class="lc-body"><span class="lc-title">はてなブログで、Webフォント（Google Fonts）を使う。</span><span class="lc-desc">先日購入した スマホ 「 Xperia 1 III 」では、ブラウザ Chrome でいくつかのホームページのフォントが、パソコンや他の スマホ と違ってしまう。「 Xperia 1 III」では、英文が固定ピッチのフォ…</span><span class="lc-site">晴歩雨描 · <time>2021-12-04</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20211204/20211204173747.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2019/06/24/002655.html"><span class="lc-body"><span class="lc-title">検索機能付き「はてなブログ記事一覧」HTML生成スクリプト(JScript)を作成。</span><span class="lc-desc">先日、はてなブログのHTMLサイトマップ（はてなブログ記事一覧）を生成するスクリプト(JScript)を作成した。 これは、Googleクローラーに読み込んでもらうのが目的だったが、今回は人間が利用するための「はてなブロ…</span><span class="lc-site">晴歩雨描 · <time>2019-06-24</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190623/20190623234257.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2019/03/25/103935.html"><span class="lc-body"><span class="lc-title">はてなブログを記事一覧で見る方法。</span><span class="lc-desc">無料の「 はてなブログ 」をパソコンで見ると記事一覧ではなく、本文がそのまま数日分表示される。記事本文の量が多いと過去分にどんな記事があるのか確認するのが大変。 こういったブログを記事一覧で見る方法。といっても簡単。 そ…</span><span class="lc-site">晴歩雨描 · <time>2019-03-25</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190325/20190325103620.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2019/02/12/141537.html"><span class="lc-body"><span class="lc-title">はてなブログ）スマホ等でページ横からはみ出た表&lt;table&gt;を横スクロールできるようにする最も（？）簡単な方法。</span><span class="lc-desc">はてなブログ を スマホ で閲覧する場合、テーブルが横にはみ出てしまうことがある。レスポンシブ対応含め一般的なデザインテーマでは横スクロールできない。 これを、横スクロールできるようにする最も（？）簡単な方法。 ネットで…</span><span class="lc-site">晴歩雨描 · <time>2019-02-12</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190212/20190212141216.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2019/02/11/234152.html"><span class="lc-body"><span class="lc-title">はてなブログのテーマをレスポンシブ対応のMinimalismに変更。</span><span class="lc-desc">このブログのデザインテーマをレスポンシブ対応の Minimalism に変更。 変更にあたって行った作業の備忘録。 １．レスポンシブデザインにチェック デザイン ⇒ スマートフォン ⇒ 詳細設定 「レスポンシブデザイン」…</span><span class="lc-site">晴歩雨描 · <time>2019-02-11</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190211/20190211232155.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2018/02/06/171857.html"><span class="lc-body"><span class="lc-title">はてなブログ、はてなフォトライフの写真画像一括バックアップ/ダウンロードツール修正。</span><span class="lc-desc">「はてなブログ」や「はてなフォトライフ」の 写真、画像を一括してバックアップ（ダウンロード）するツールを1月17日にリリースしたが、今日試したところ、正常動作しなかった。 調べてみたら、「はてなフォトライフ」の各画像表示…</span><span class="lc-site">晴歩雨描 · <time>2018-02-06</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20180206/20180206171152.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2021/05/18/135819.html"><span class="lc-body"><span class="lc-title">JavaScript）HTML&lt;TABLE&gt;に、ソート機能や検索機能を付けるなら、jQueryプラグイン「DataTables」が簡単。</span><span class="lc-desc">HTML&lt;TABLE&gt; に、ソート機能や検索機能を付けるなら、 jQueryプラグイン「DataTables」 が簡単で便利。 以下の「Eマウント(AF)単焦点レンズ」一覧に、「DataTables」を使って、ソート機能…</span><span class="lc-site">晴歩雨描 · <time>2021-05-18</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20210517/20210517165654.jpg" alt="" loading="lazy"></span></a></p></div></article>
+</body>
+</html>

@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Claude）Python）透過画像作成Windowsアプリ作成。 - 晴歩雨描</title>
+<link rel="stylesheet" href="../../../../style.css">
+</head>
+<body>
+<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>Claude）Python）透過画像作成Windowsアプリ作成。</h1><p class="meta">2025-06-13 · <a href="../../../../category/c18.html">写真・カメラ</a> <a href="../../../../category/c42.html">＜AI＞</a> <a href="../../../../category/c8.html">コンピュータ</a></p><div class="entry-body"><p>Pythonで「透過画像作成」Windowsアプリ作成。画像の白に近い色を透過にする。元データはJPEGまたはPNG。白の範囲は指定できる。AIツールClaudeに作成してもらった。</p>
+<h5 id="使い方">【使い方】</h5>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250613/20250613151037.png" width="876" height="588" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<ul>
+<li>元画像ファイルは、ドラッグ＆ドロップで指定できる。</li>
+<li>ドラッグ＆ドロップした画像の下には背景色を表示して、透過状態を確認できる。</li>
+<li>背景色は、薄い黄色、薄い青、薄いピンクから選択できる。</li>
+<li>透過にする色は白に近い色とする。スライダーで白に近い色の範囲を指定できる。</li>
+<li>「保存」ボタンで、元画像と同じフォルダー内に、元画像ファイル名＋"-transparent.png"の名前で保存する。保存ファイル名は変更可能。</li>
+</ul>
+<h5 id="Pythonインストール">【Pythonインストール】</h5>
+<p>Pythonがインストールされていなければ、インストールする。</p>
+<p><a class="link-card" href="../../../2023/09/08/210741.html"><span class="lc-body"><span class="lc-title">Windows）「Python（Ver.3.11.5）」インストール。</span><span class="lc-desc">Windows版Pythonのインストール手順の備忘録。 ■ Pythonダウンロード 現時点の最新、Ver.3.11.5。 ■ Python インストール 「 python-3.11.5-amd64.exe 」を実行。…</span><span class="lc-site">晴歩雨描 · <time>2023-09-08</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20230908/20230908204241.jpg" alt="" loading="lazy"></span></a></p>
+<p>次のライブラリが必要なので、インストールする。</p>
+<pre>pip install pillow tkinterdnd2 numpy
+</pre>
+<h5 id="Pythonプログラム">【Pythonプログラム】</h5>
+<p>作成されたプログラムを、「透過画像作成.pyw」（名前は任意）という名前にして、デスクトップに置いておき、ダブルクリックで実行する。</p>
+<h5 id="Pythonプログラムコード">【Pythonプログラムコード】</h5>
+<pre>import tkinter as tk
+from tkinter import ttk, filedialog, messagebox
+from tkinterdnd2 import DND_FILES, TkinterDnD
+from PIL import Image, ImageTk, ImageOps
+import os
+import numpy as np
+
+class ImageTransparencyApp:
+    def __init__(self, root):
+        self.root = root
+        self.root.title("画像透過アプリケーション")
+        self.root.geometry("1200x800")
+        self.root.configure(bg='#f0f0f0')
+        
+        # 変数の初期化
+        self.original_image = None
+        self.processed_image = None
+        self.image_path = None
+        
+        # 背景色の選択肢
+        self.background_colors = {
+            "薄い黄色": (255, 255, 200),
+            "薄い青": (200, 220, 255),
+            "薄いピンク": (255, 220, 220)
+        }
+        
+        self.setup_ui()
+        self.setup_dnd()
+        
+    def setup_ui(self):
+        # メインフレーム
+        main_frame = tk.Frame(self.root, bg='#f0f0f0')
+        main_frame.pack(fill=tk.BOTH, expand=True, padx=10, pady=10)
+        
+        # 左側フレーム（コントロール）
+        control_frame = tk.Frame(main_frame, bg='#f0f0f0', width=250)
+        control_frame.pack(side=tk.LEFT, fill=tk.Y, padx=(0, 10))
+        control_frame.pack_propagate(False)
+        
+        # ドラッグ&amp;ドロップエリア
+        self.drop_label = tk.Label(
+            control_frame,
+            text="画像ファイルを\nここにドラッグ&amp;ドロップ\n\n(JPEG/PNG対応)",
+            bg='#e8e8e8',
+            fg='#666666',
+            font=('Arial', 12),
+            relief=tk.SUNKEN,
+            bd=2,
+            height=6
+        )
+        self.drop_label.pack(fill=tk.X, pady=(0, 20))
+        
+        # 透過設定フレーム
+        transparency_frame = tk.LabelFrame(control_frame, text="透過設定", bg='#f0f0f0', font=('Arial', 10, 'bold'))
+        transparency_frame.pack(fill=tk.X, pady=(0, 10))
+        
+        # 透過範囲スライダー（下限）
+        tk.Label(transparency_frame, text="透過範囲（下限）:", bg='#f0f0f0').pack(anchor=tk.W, padx=5, pady=(5, 0))
+        self.transparency_min = tk.DoubleVar(value=240)
+        self.min_scale = tk.Scale(
+            transparency_frame,
+            from_=100,
+            to=255,
+            orient=tk.HORIZONTAL,
+            variable=self.transparency_min,
+            command=self.update_transparency,
+            bg='#f0f0f0'
+        )
+        self.min_scale.pack(fill=tk.X, padx=5, pady=(0, 5))
+        
+        # 透過範囲スライダー（上限）
+        tk.Label(transparency_frame, text="透過範囲（上限）:", bg='#f0f0f0').pack(anchor=tk.W, padx=5)
+        self.transparency_max = tk.DoubleVar(value=255)
+        self.max_scale = tk.Scale(
+            transparency_frame,
+            from_=100,
+            to=255,
+            orient=tk.HORIZONTAL,
+            variable=self.transparency_max,
+            command=self.update_transparency,
+            bg='#f0f0f0'
+        )
+        self.max_scale.pack(fill=tk.X, padx=5, pady=(0, 10))
+        
+        # 背景色選択フレーム
+        bg_frame = tk.LabelFrame(control_frame, text="背景色", bg='#f0f0f0', font=('Arial', 10, 'bold'))
+        bg_frame.pack(fill=tk.X, pady=(0, 10))
+        
+        self.bg_color_var = tk.StringVar(value="薄い黄色")
+        for color_name in self.background_colors.keys():
+            tk.Radiobutton(
+                bg_frame,
+                text=color_name,
+                variable=self.bg_color_var,
+                value=color_name,
+                command=self.update_transparency,
+                bg='#f0f0f0'
+            ).pack(anchor=tk.W, padx=5, pady=2)
+        
+        # ボタンフレーム
+        button_frame = tk.Frame(control_frame, bg='#f0f0f0')
+        button_frame.pack(fill=tk.X, pady=(10, 0))
+        
+        # ファイル選択ボタン
+        self.file_button = tk.Button(
+            button_frame,
+            text="ファイル選択",
+            command=self.select_file,
+            bg='#4CAF50',
+            fg='white',
+            font=('Arial', 10, 'bold'),
+            relief=tk.RAISED,
+            bd=2
+        )
+        self.file_button.pack(fill=tk.X, pady=(0, 5))
+        
+        # 保存ボタン
+        self.save_button = tk.Button(
+            button_frame,
+            text="保存",
+            command=self.save_image,
+            bg='#2196F3',
+            fg='white',
+            font=('Arial', 10, 'bold'),
+            relief=tk.RAISED,
+            bd=2,
+            state=tk.DISABLED
+        )
+        self.save_button.pack(fill=tk.X)
+        
+        # 右側フレーム（画像表示）
+        self.image_frame = tk.Frame(main_frame, bg='white', relief=tk.SUNKEN, bd=2)
+        self.image_frame.pack(side=tk.RIGHT, fill=tk.BOTH, expand=True)
+        
+        # 画像表示ラベル
+        self.image_label = tk.Label(
+            self.image_frame,
+            text="画像がここに表示されます",
+            bg='white',
+            fg='#999999',
+            font=('Arial', 16)
+        )
+        self.image_label.pack(expand=True)
+        
+    def setup_dnd(self):
+        # ドラッグ&amp;ドロップの設定
+        self.drop_label.drop_target_register(DND_FILES)
+        self.drop_label.dnd_bind('&lt;&lt;Drop&gt;&gt;', self.on_drop)
+        
+    def on_drop(self, event):
+        # ドロップされたファイルの処理
+        files = self.root.tk.splitlist(event.data)
+        if files:
+            file_path = files[0]
+            self.load_image(file_path)
+    
+    def select_file(self):
+        # ファイル選択ダイアログ
+        file_path = filedialog.askopenfilename(
+            title="画像ファイルを選択",
+            filetypes=[
+                ("画像ファイル", "*.jpg *.jpeg *.png"),
+                ("JPEG", "*.jpg *.jpeg"),
+                ("PNG", "*.png"),
+                ("すべてのファイル", "*.*")
+            ]
+        )
+        if file_path:
+            self.load_image(file_path)
+    
+    def load_image(self, file_path):
+        try:
+            # 画像の読み込み
+            self.original_image = Image.open(file_path).convert('RGBA')
+            self.image_path = file_path
+            
+            # ドロップエリアのテキストを更新
+            filename = os.path.basename(file_path)
+            self.drop_label.config(text=f"読み込み完了:\n{filename}")
+            
+            # 透過処理を実行
+            self.update_transparency()
+            
+            # 保存ボタンを有効化
+            self.save_button.config(state=tk.NORMAL)
+            
+        except Exception as e:
+            messagebox.showerror("エラー", f"画像の読み込みに失敗しました:\n{str(e)}")
+    
+    def update_transparency(self, *args):
+        if self.original_image is None:
+            return
+        
+        try:
+            # 透過範囲の取得
+            min_val = int(self.transparency_min.get())
+            max_val = int(self.transparency_max.get())
+            
+            # 範囲チェック
+            if min_val &gt; max_val:
+                max_val = min_val
+                self.transparency_max.set(max_val)
+            
+            # 背景色の取得
+            bg_color = self.background_colors[self.bg_color_var.get()]
+            
+            # 透過処理
+            img_array = np.array(self.original_image)
+            
+            # グレースケールに変換して輝度を計算
+            if len(img_array.shape) == 3:
+                gray = np.dot(img_array[...,:3], [0.299, 0.587, 0.114])
+            else:
+                gray = img_array[:,:,0]
+            
+            # 透過マスクの作成（指定した範囲の輝度を透過）
+            mask = (gray &gt;= min_val) &amp; (gray &lt;= max_val)
+            
+            # アルファチャンネルの設定
+            alpha = np.where(mask, 0, 255).astype(np.uint8)
+            
+            # 新しい画像の作成
+            result = img_array.copy()
+            result[:,:,3] = alpha
+            
+            # PIL画像に変換
+            self.processed_image = Image.fromarray(result, 'RGBA')
+            
+            # 背景色画像を作成
+            bg_image = Image.new('RGB', self.processed_image.size, bg_color)
+            
+            # 背景色と合成
+            display_image = Image.alpha_composite(
+                bg_image.convert('RGBA'),
+                self.processed_image
+            ).convert('RGB')
+            
+            # 表示用にリサイズ
+            self.display_image(display_image)
+            
+        except Exception as e:
+            messagebox.showerror("エラー", f"透過処理に失敗しました:\n{str(e)}")
+    
+    def display_image(self, image):
+        # 画像フレームのサイズを取得
+        self.image_frame.update_idletasks()
+        frame_width = self.image_frame.winfo_width() - 20
+        frame_height = self.image_frame.winfo_height() - 20
+        
+        if frame_width &lt;= 0 or frame_height &lt;= 0:
+            self.root.after(100, lambda: self.display_image(image))
+            return
+        
+        # 画像をフレームに合わせてリサイズ
+        img_width, img_height = image.size
+        
+        # アスペクト比を保持してリサイズ
+        ratio = min(frame_width / img_width, frame_height / img_height)
+        new_width = int(img_width * ratio)
+        new_height = int(img_height * ratio)
+        
+        if new_width &gt; 0 and new_height &gt; 0:
+            display_img = image.resize((new_width, new_height), Image.Resampling.LANCZOS)
+            
+            # PhotoImageに変換
+            photo = ImageTk.PhotoImage(display_img)
+            
+            # ラベルに画像を設定
+            self.image_label.config(image=photo, text="")
+            self.image_label.image = photo  # 参照を保持
+    
+    def save_image(self):
+        if self.processed_image is None or self.image_path is None:
+            messagebox.showwarning("警告", "保存する画像がありません。")
+            return
+        
+        try:
+            # デフォルトの保存ファイル名を生成
+            dir_path = os.path.dirname(self.image_path)
+            filename = os.path.splitext(os.path.basename(self.image_path))[0]
+            default_filename = f"{filename}-transparent.png"
+            default_path = os.path.join(dir_path, default_filename)
+            
+            # 保存ダイアログ
+            save_path = filedialog.asksaveasfilename(
+                title="透過画像を保存",
+                initialdir=dir_path,
+                initialfile=default_filename,
+                defaultextension=".png",
+                filetypes=[
+                    ("PNG", "*.png"),
+                    ("すべてのファイル", "*.*")
+                ]
+            )
+            
+            if save_path:
+                # PNG形式で保存
+                self.processed_image.save(save_path, "PNG")
+                messagebox.showinfo("完了", f"画像を保存しました:\n{save_path}")
+                
+        except Exception as e:
+            messagebox.showerror("エラー", f"画像の保存に失敗しました:\n{str(e)}")
+
+def main():
+    # TkinterDnDを使用してルートウィンドウを作成
+    root = TkinterDnD.Tk()
+    app = ImageTransparencyApp(root)
+    root.mainloop()
+
+if __name__ == "__main__":
+    main()</pre>
+<p><a class="link-card" href="../../02/12/100342.html"><span class="lc-body"><span class="lc-title">JavaScript）JPEG画像の白色部分を透過にしたPNG画像生成Webツール。Google Geminiで作成。</span><span class="lc-desc">以前に、ImageMagickを使って、JPEG画像の白色部分を透過にしたPNG画像を生成した。 今回、JavaScriptを使って、ブラウザにJPEG画像をアップロードして、白色部分を透過にしたPNG画像をダウンロード…</span><span class="lc-site">晴歩雨描 · <time>2025-02-12</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250212/20250212095643.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="162926.html"><span class="lc-body"><span class="lc-title">Claude）JavaScript）透過画像作成Webツール作成。</span><span class="lc-desc">先程、Pythonで「透過画像作成」Windowsアプリを作成した。 今回、ほぼ同等の機能のWebアプリをJavaScriptで作成した。AIツールClaudeに作成してもらった。 以前に、JavaScriptで同様のア…</span><span class="lc-site">晴歩雨描 · <time>2025-06-13</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250613/20250613162135.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../02/05/223009.html"><span class="lc-body"><span class="lc-title">Windows）JPEG画像の白色部分を透過にしたPNG画像生成方法。ImageMagickで複数ファイルを一括バッチ処理。</span><span class="lc-desc">Windowsで、JPEG画像の白色部分を透過にしたPNG画像の生成方法。 ImageMagickを使用。 ※注：ImageMagick7以降では、「convert」コマンドが「magick」に変更されている。以下の記述…</span><span class="lc-site">晴歩雨描 · <time>2025-02-05</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250205/20250205221642.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2019/06/30/174808.html"><span class="lc-body"><span class="lc-title">写真でアート：GIMPを使って、写真画像の一部を透過にして、別の画像と重ね合わせ合成してアートを作成する。レイヤー使用。</span><span class="lc-desc">GIMP を使って、写真の一部を透過にして、別の画像と合成してみた。 オリジナル画像は、GIMPのプラグイン「G&#x27;MIC」を使って写真を加工したものを使用。 【オリジナル画像】 １．透過手順 まず、GIMPで、白っぽい背…</span><span class="lc-site">晴歩雨描 · <time>2019-06-30</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190630/20190630170626.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../02/112022.html"><span class="lc-body"><span class="lc-title">Claude＆Gemini）Python）「写真のカラーバランス一括補正」Windowsアプリ作成。Pixel 9 Proの青被りを補正。</span><span class="lc-desc">スマホ「 Pixel 9 Pro 」を所有しているが、写真の青被りがきつい。特に人物の顔色が悪くなる。GIMP等でカラーバランスを調整することで補正できるが、枚数が多いと面倒。 複数画像を一括して補正できるツール が欲し…</span><span class="lc-site">晴歩雨描 · <time>2025-06-02</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250602/20250602110316.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../05/25/211331.html"><span class="lc-body"><span class="lc-title">Claude＆Gemini）Python）「写真のトーンカーブ一括補正」Windowsアプリ作成。</span><span class="lc-desc">先日、Pythonで「写真の明るさ＆コントラスト一括補正」Windowsアプリを作成した。 今回、 トーンカーブを使って写真の明るさを補正するWindowsアプリ をPythonで作成。 複数画像を一括して補正できる。 …</span><span class="lc-site">晴歩雨描 · <time>2025-05-25</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250525/20250525210152.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../05/18/090800.html"><span class="lc-body"><span class="lc-title">Claude）Python）「写真の明るさ＆コントラスト一括補正」Windowsアプリ作成。ICCプロファイル維持。</span><span class="lc-desc">Pythonで「 写真の明るさ＆コントラスト一括補正 」Windowsアプリ作成。 複数の画像を一括して補正できる。 AIツールClaudeに作成してもらった。 ※ 【後日追記】最初のバージョンでは、元の写真に埋め込まれ…</span><span class="lc-site">晴歩雨描 · <time>2025-05-18</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250518/20250518090322.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../10/18/132848.html"><span class="lc-body"><span class="lc-title">Claude）Python）「写真スポット編集ツール」Windowsアプリ作成。シミ消し、オブジェクト除去に使える。スポット修正＋コピー修正。ICCプロファイル維持。</span><span class="lc-desc">以前に、「写真オブジェクト除去」Windowsアプリを作成した。 これは、写真の一部をスポット的に編集するアプリ。 これに加えて、クローンコピー修正もできるようにしたバージョンをPythonで作成。 ■ スポット修正 写…</span><span class="lc-site">晴歩雨描 · <time>2025-10-18</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20251018/20251018131038.png" alt="" loading="lazy"></span></a></p></div></article>
+</body>
+</html>

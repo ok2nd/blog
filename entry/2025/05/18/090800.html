@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Claude）Python）「写真の明るさ＆コントラスト一括補正」Windowsアプリ作成。ICCプロファイル維持。 - 晴歩雨描</title>
+<link rel="stylesheet" href="../../../../style.css">
+</head>
+<body>
+<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>Claude）Python）「写真の明るさ＆コントラスト一括補正」Windowsアプリ作成。ICCプロファイル維持。</h1><p class="meta">2025-05-18 · <a href="../../../../category/c18.html">写真・カメラ</a> <a href="../../../../category/c42.html">＜AI＞</a> <a href="../../../../category/c8.html">コンピュータ</a></p><div class="entry-body"><p>Pythonで「<em>写真の明るさ＆コントラスト一括補正</em>」Windowsアプリ作成。<em>複数の画像を一括して補正できる。</em>AIツールClaudeに作成してもらった。</p>
+<p><span style="color: #dd830c;">※ 【後日追記】最初のバージョンでは、元の写真に埋め込まれたICCプロファイル（sRGB、Adobe RGB、Display P3など）が保存されていなかった。そのために、鮮やかさなどの色合いが失われていた。この点を修正した。</span></p>
+<h5 id="使い方">【使い方】</h5>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250518/20250518090322.jpg" width="802" height="632" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<ul>
+<li>画像ファイルが入ったフォルダーを指定する。</li>
+<li>明るさとコントラストの補正値をスライダーで指定できる。</li>
+<li>明るさ＆コントラストの補正状況をプレビューできる。左←矢印、右→矢印で、プレビュー画像を移動して複数の画像で確認できる。</li>
+<li>「実行」ボタンを押すと、指定フォルダーの下に「補正画像」フォルダーを作成して、<em>指定フォルダー内の画像を一括して補正して保存する。</em>元の画像は、そのまま残る。</li>
+</ul>
+<h5 id="Pythonインストール">【Pythonインストール】</h5>
+<p>Pythonがインストールされていなければ、インストールする。</p>
+<p><a class="link-card" href="../../../2023/09/08/210741.html"><span class="lc-body"><span class="lc-title">Windows）「Python（Ver.3.11.5）」インストール。</span><span class="lc-desc">Windows版Pythonのインストール手順の備忘録。 ■ Pythonダウンロード 現時点の最新、Ver.3.11.5。 ■ Python インストール 「 python-3.11.5-amd64.exe 」を実行。…</span><span class="lc-site">晴歩雨描 · <time>2023-09-08</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20230908/20230908204241.jpg" alt="" loading="lazy"></span></a></p>
+<h5 id="Pythonプログラム">【Pythonプログラム】</h5>
+<p>作成されたプログラムを、「画像明るさ＆コントラスト補正.pyw」（名前は任意）という名前にして、デスクトップに置いておき、ダブルクリックで実行する。</p>
+<h5 id="Pythonプログラムコード">【Pythonプログラムコード】</h5>
+<pre>import os
+import sys
+import tkinter as tk
+from tkinter import filedialog, ttk, messagebox
+from PIL import Image, ImageTk, ImageEnhance
+import threading
+import queue
+
+class BetterSlider(tk.Frame):
+    """改良型スライダーウィジェット
+    
+    ttk.Scaleが持つ問題（クリックで最大・最小値に飛ぶ）を解決するカスタムスライダー
+    """
+    def __init__(self, master, from_=0, to=1, resolution=0.01, orient=tk.HORIZONTAL, 
+                 variable=None, command=None, width=200, height=30):
+        super().__init__(master)
+        
+        # パラメータ設定
+        self.from_ = from_
+        self.to = to
+        self.resolution = resolution
+        self.orient = orient
+        self.variable = variable if variable else tk.DoubleVar(value=(from_ + to) / 2)
+        self.command = command
+        
+        # サイズ設定
+        self.width = width
+        self.height = height if orient == tk.HORIZONTAL else width
+        self.config(width=self.width, height=self.height)
+        
+        # スライダー描画用キャンバス
+        self.canvas = tk.Canvas(self, width=self.width, height=self.height,
+                              highlightthickness=0, bg=self.get_bg_color())
+        self.canvas.pack(fill=tk.BOTH, expand=True)
+        
+        # スライダートラックとハンドル
+        self.track_padding = 10  # トラックの余白
+        self.track_height = 6 if orient == tk.HORIZONTAL else self.width - 2 * self.track_padding
+        self.handle_size = 12  # スライダーハンドルのサイズ
+        
+        # トラックとハンドルの描画
+        self.track_id = None
+        self.handle_id = None
+        self.draw_track()
+        self.draw_handle()
+        
+        # イベントバインド
+        self.canvas.bind("&lt;Button-1&gt;", self.on_click)
+        self.canvas.bind("&lt;B1-Motion&gt;", self.on_drag)
+        self.canvas.bind("&lt;ButtonRelease-1&gt;", self.on_release)
+        
+        # アクティブドラッグ状態変数
+        self.dragging = False
+        
+        # 変数が外部から変更された場合の対応
+        if isinstance(self.variable, tk.Variable):
+            self.variable.trace_add("write", self.update_from_variable)
+    
+    def get_bg_color(self):
+        """現在のテーマに合わせた背景色を取得"""
+        try:
+            # ttk.Styleから取得を試みる
+            style = ttk.Style()
+            bg = style.lookup("TFrame", "background") or style.lookup(".", "background")
+            return bg if bg else "#f0f0f0"  # デフォルト値
+        except:
+            return "#f0f0f0"  # 取得できない場合はデフォルト
+    
+    def draw_track(self):
+        """スライダートラックを描画"""
+        if self.orient == tk.HORIZONTAL:
+            y = self.height // 2
+            x1 = self.track_padding
+            x2 = self.width - self.track_padding
+            
+            if self.track_id:
+                self.canvas.delete(self.track_id)
+            
+            self.track_id = self.canvas.create_rectangle(
+                x1, y - self.track_height // 2,
+                x2, y + self.track_height // 2,
+                fill="#d0d0d0", outline="#a0a0a0", width=1
+            )
+        else:
+            # 縦方向スライダーの場合（現在は未使用）
+            x = self.width // 2
+            y1 = self.track_padding
+            y2 = self.height - self.track_padding
+            
+            if self.track_id:
+                self.canvas.delete(self.track_id)
+            
+            self.track_id = self.canvas.create_rectangle(
+                x - self.track_height // 2, y1,
+                x + self.track_height // 2, y2,
+                fill="#d0d0d0", outline="#a0a0a0", width=1
+            )
+    
+    def draw_handle(self):
+        """スライダーハンドルを描画"""
+        # 現在の値に基づいてハンドル位置を計算
+        pos = self.value_to_position(self.variable.get())
+        
+        if self.orient == tk.HORIZONTAL:
+            x = pos
+            y = self.height // 2
+            
+            if self.handle_id:
+                self.canvas.delete(self.handle_id)
+            
+            self.handle_id = self.canvas.create_oval(
+                x - self.handle_size // 2, y - self.handle_size // 2,
+                x + self.handle_size // 2, y + self.handle_size // 2,
+                fill="#ffffff", outline="#999999", width=1
+            )
+        else:
+            # 縦方向スライダーの場合（現在は未使用）
+            x = self.width // 2
+            y = pos
+            
+            if self.handle_id:
+                self.canvas.delete(self.handle_id)
+            
+            self.handle_id = self.canvas.create_oval(
+                x - self.handle_size // 2, y - self.handle_size // 2,
+                x + self.handle_size // 2, y + self.handle_size // 2,
+                fill="#ffffff", outline="#999999", width=1
+            )
+    
+    def value_to_position(self, value):
+        """値をハンドル位置（ピクセル）に変換"""
+        # 値の範囲をピクセル位置に変換
+        value_range = self.to - self.from_
+        if self.orient == tk.HORIZONTAL:
+            pixel_range = self.width - 2 * self.track_padding
+            relative_value = (value - self.from_) / value_range
+            return self.track_padding + relative_value * pixel_range
+        else:
+            # 縦方向の場合（現在は未使用）
+            pixel_range = self.height - 2 * self.track_padding
+            relative_value = (value - self.from_) / value_range
+            return self.height - (self.track_padding + relative_value * pixel_range)
+    
+    def position_to_value(self, position):
+        """ハンドル位置（ピクセル）を値に変換"""
+        if self.orient == tk.HORIZONTAL:
+            # 位置を値に変換（水平）
+            pixel_range = self.width - 2 * self.track_padding
+            if position &lt; self.track_padding:
+                relative_pos = 0
+            elif position &gt; self.width - self.track_padding:
+                relative_pos = 1
+            else:
+                relative_pos = (position - self.track_padding) / pixel_range
+            
+            raw_value = self.from_ + relative_pos * (self.to - self.from_)
+        else:
+            # 位置を値に変換（垂直）
+            pixel_range = self.height - 2 * self.track_padding
+            if position &lt; self.track_padding:
+                relative_pos = 1
+            elif position &gt; self.height - self.track_padding:
+                relative_pos = 0
+            else:
+                relative_pos = 1 - (position - self.track_padding) / pixel_range
+                
+            raw_value = self.from_ + relative_pos * (self.to - self.from_)
+        
+        # 解像度に合わせて丸める
+        if self.resolution:
+            value = round(raw_value / self.resolution) * self.resolution
+            # 範囲内に収める
+            value = max(self.from_, min(self.to, value))
+            return value
+        else:
+            return max(self.from_, min(self.to, raw_value))
+    
+    def on_click(self, event):
+        """クリックイベントハンドラ - クリックした位置にハンドルを移動"""
+        if self.orient == tk.HORIZONTAL:
+            pos = event.x
+        else:
+            pos = event.y
+        
+        # 値を更新
+        value = self.position_to_value(pos)
+        self.variable.set(value)
+        
+        # ハンドルを更新
+        self.draw_handle()
+        
+        # コマンドを実行
+        if self.command:
+            self.command(value)
+        
+        # ドラッグモード開始
+        self.dragging = True
+    
+    def on_drag(self, event):
+        """ドラッグイベントハンドラ"""
+        if not self.dragging:
+            return
+            
+        if self.orient == tk.HORIZONTAL:
+            pos = event.x
+        else:
+            pos = event.y
+        
+        # 値を更新
+        value = self.position_to_value(pos)
+        self.variable.set(value)
+        
+        # ハンドルを更新
+        self.draw_handle()
+        
+        # コマンドを実行
+        if self.command:
+            self.command(value)
+    
+    def on_release(self, event):
+        """マウスリリースイベントハンドラ"""
+        self.dragging = False
+    
+    def update_from_variable(self, *args):
+        """変数が外部から変更された場合、表示を更新"""
+        self.draw_handle()
+    
+    def get(self):
+        """現在の値を取得"""
+        return self.variable.get()
+    
+    def set(self, value):
+        """値を設定"""
+        # 範囲内に収める
+        value = max(self.from_, min(self.to, value))
+        # 解像度に合わせて丸める
+        if self.resolution:
+            value = round(value / self.resolution) * self.resolution
+        
+        self.variable.set(value)
+        self.draw_handle()
+
+class ImageProcessorApp:
+    def __init__(self, root):
+        self.root = root
+        self.root.title("画像明るさ＆コントラスト補正アプリ")
+        self.root.geometry("800x600")
+        self.root.resizable(True, True)
+        
+        # 変数の初期化
+        self.folder_path = tk.StringVar()
+        self.brightness_value = tk.DoubleVar(value=1.0)
+        self.contrast_value = tk.DoubleVar(value=1.0)
+        self.preview_image = None
+        self.original_image = None
+        self.image_files = []
+        self.current_preview_file = None
+        self.current_preview_index = 0
+        
+        # レイアウトの設定
+        self.create_widgets()
+        
+        # プログレスバー用の変数
+        self.progress_queue = queue.Queue()
+        self.processing = False
+        
+    def create_widgets(self):
+        # メインフレーム
+        main_frame = ttk.Frame(self.root, padding=10)
+        main_frame.pack(fill=tk.BOTH, expand=True)
+        
+        # 上部コンテンツを含むフレーム
+        top_frame = ttk.Frame(main_frame)
+        top_frame.pack(fill=tk.BOTH, expand=True)
+        
+        # 実行ボタン部分 - 先に作成してmain_frameの下部に配置
+        button_frame = ttk.Frame(main_frame)
+        button_frame.pack(fill=tk.X, padx=5, pady=10, side=tk.BOTTOM)
+        
+        self.progress_bar = ttk.Progressbar(button_frame, orient=tk.HORIZONTAL, length=100, mode='determinate')
+        self.progress_bar.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=5)
+        
+        self.execute_button = ttk.Button(button_frame, text="実行", command=self.process_images)
+        self.execute_button.pack(side=tk.RIGHT, padx=5)
+        
+        # フォルダ選択部分
+        folder_frame = ttk.LabelFrame(top_frame, text="フォルダ選択", padding=10)
+        folder_frame.pack(fill=tk.X, padx=5, pady=5)
+        
+        folder_entry = ttk.Entry(folder_frame, textvariable=self.folder_path, width=50)
+        folder_entry.pack(side=tk.LEFT, padx=5, fill=tk.X, expand=True)
+        # Enterキー押下時にフォルダを読み込む
+        folder_entry.bind("&lt;Return&gt;", lambda e: self.load_folder_from_entry())
+        # フォーカスが外れたときにもフォルダを読み込む
+        folder_entry.bind("&lt;FocusOut&gt;", lambda e: self.load_folder_from_entry())
+        
+        ttk.Button(folder_frame, text="参照...", command=self.browse_folder).pack(side=tk.LEFT, padx=5)
+        
+        # パラメータ設定部分
+        param_frame = ttk.LabelFrame(top_frame, text="パラメータ設定", padding=10)
+        param_frame.pack(fill=tk.X, padx=5, pady=5)
+        
+        # 明るさ設定
+        ttk.Label(param_frame, text="明るさ:").grid(row=0, column=0, sticky=tk.W, padx=5, pady=5)
+        
+        # スライダーとスピンボックスを含むフレーム
+        brightness_control_frame = ttk.Frame(param_frame)
+        brightness_control_frame.grid(row=0, column=1, sticky=tk.EW, padx=5, pady=5)
+        
+        # 明るさスライダー（カスタムスライダーを使用）
+        self.brightness_slider = BetterSlider(
+            brightness_control_frame, 
+            from_=0.5, 
+            to=2.0, 
+            resolution=0.01,
+            variable=self.brightness_value, 
+            command=self.update_preview_and_brightness_label,
+            width=400
+        )
+        self.brightness_slider.pack(side=tk.LEFT, fill=tk.X, expand=True)
+        
+        # 明るさの値入力用スピンボックス
+        brightness_spinbox = ttk.Spinbox(param_frame, from_=0.5, to=2.0, increment=0.01,
+                                        textvariable=self.brightness_value, width=5,
+                                        command=self.update_preview)
+        brightness_spinbox.grid(row=0, column=2, padx=5, pady=5)
+        brightness_spinbox.bind("&lt;Return&gt;", lambda e: self.update_preview())
+        
+        # 明るさリセットボタン
+        ttk.Button(param_frame, text="リセット", command=self.reset_brightness).grid(row=0, column=3, padx=5, pady=5)
+        
+        # コントラスト設定
+        ttk.Label(param_frame, text="コントラスト:").grid(row=1, column=0, sticky=tk.W, padx=5, pady=5)
+        
+        # スライダーとスピンボックスを含むフレーム
+        contrast_control_frame = ttk.Frame(param_frame)
+        contrast_control_frame.grid(row=1, column=1, sticky=tk.EW, padx=5, pady=5)
+        
+        # コントラストスライダー（カスタムスライダーを使用）
+        self.contrast_slider = BetterSlider(
+            contrast_control_frame, 
+            from_=0.5, 
+            to=2.0, 
+            resolution=0.01,
+            variable=self.contrast_value, 
+            command=self.update_preview_and_contrast_label,
+            width=400
+        )
+        self.contrast_slider.pack(side=tk.LEFT, fill=tk.X, expand=True)
+        
+        # コントラストの値入力用スピンボックス
+        contrast_spinbox = ttk.Spinbox(param_frame, from_=0.5, to=2.0, increment=0.01,
+                                     textvariable=self.contrast_value, width=5,
+                                     command=self.update_preview)
+        contrast_spinbox.grid(row=1, column=2, padx=5, pady=5)
+        contrast_spinbox.bind("&lt;Return&gt;", lambda e: self.update_preview())
+        
+        # コントラストリセットボタン
+        ttk.Button(param_frame, text="リセット", command=self.reset_contrast).grid(row=1, column=3, padx=5, pady=5)
+        
+        param_frame.columnconfigure(1, weight=1)
+        
+        # プレビュー部分
+        preview_frame = ttk.LabelFrame(top_frame, text="プレビュー", padding=10)
+        preview_frame.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
+        
+        # プレビュー操作ボタンを含むフレーム
+        preview_nav_frame = ttk.Frame(preview_frame)
+        preview_nav_frame.pack(fill=tk.X, pady=5)
+        
+        # 前の画像ボタン
+        self.prev_button = ttk.Button(preview_nav_frame, text="←", command=self.show_prev_image, width=3)
+        self.prev_button.pack(side=tk.LEFT, padx=5)
+        
+        # ファイル名表示ラベル（中央に配置）
+        self.image_name_label = ttk.Label(preview_nav_frame, text="")
+        self.image_name_label.pack(side=tk.LEFT, expand=True, fill=tk.X, padx=5)
+        
+        # 次の画像ボタン
+        self.next_button = ttk.Button(preview_nav_frame, text="→", command=self.show_next_image, width=3)
+        self.next_button.pack(side=tk.RIGHT, padx=5)
+        
+        # プレビューコンテナに最大高さを設定
+        preview_container = ttk.Frame(preview_frame)
+        preview_container.pack(fill=tk.BOTH, expand=True)
+        preview_container.config(height=250)  # 高さを制限
+        preview_container.pack_propagate(False)  # サイズを固定
+        
+        self.preview_label = ttk.Label(preview_container)
+        self.preview_label.pack(fill=tk.BOTH, expand=True)
+    
+    def update_preview_and_brightness_label(self, value=None):
+        """スライダー変更時に明るさラベルとプレビューを更新する"""
+        # 値が指定されていない場合は変数から取得
+        if value is None:
+            value = self.brightness_value.get()
+        else:
+            # 文字列の場合は浮動小数点に変換
+            value = float(value) if isinstance(value, str) else value
+            
+        # 0.01単位で表示
+        value = round(value * 100) / 100
+        self.brightness_value.set(value)  # 値も同期
+        self.update_preview()
+        
+    def update_preview_and_contrast_label(self, value=None):
+        """スライダー変更時にコントラストラベルとプレビューを更新する"""
+        # 値が指定されていない場合は変数から取得
+        if value is None:
+            value = self.contrast_value.get()
+        else:
+            # 文字列の場合は浮動小数点に変換
+            value = float(value) if isinstance(value, str) else value
+            
+        # 0.01単位で表示
+        value = round(value * 100) / 100
+        self.contrast_value.set(value)  # 値も同期
+        self.update_preview()
+        
+    def reset_brightness(self):
+        """明るさを初期値(1.0)にリセット"""
+        self.brightness_value.set(1.0)
+        self.update_preview()
+        
+    def reset_contrast(self):
+        """コントラストを初期値(1.0)にリセット"""
+        self.contrast_value.set(1.0)
+        self.update_preview()
+        preview_nav_frame = ttk.Frame(preview_frame)
+        preview_nav_frame.pack(fill=tk.X, pady=5)
+        
+        # 前の画像ボタン
+        self.prev_button = ttk.Button(preview_nav_frame, text="←", command=self.show_prev_image, width=3)
+        self.prev_button.pack(side=tk.LEFT, padx=5)
+        
+        # ファイル名表示ラベル（中央に配置）
+        self.image_name_label = ttk.Label(preview_nav_frame, text="")
+        self.image_name_label.pack(side=tk.LEFT, expand=True, fill=tk.X, padx=5)
+        
+        # 次の画像ボタン
+        self.next_button = ttk.Button(preview_nav_frame, text="→", command=self.show_next_image, width=3)
+        self.next_button.pack(side=tk.RIGHT, padx=5)
+        
+        # プレビューコンテナに最大高さを設定
+        preview_container = ttk.Frame(preview_frame)
+        preview_container.pack(fill=tk.BOTH, expand=True)
+        preview_container.config(height=250)  # 高さを制限
+        preview_container.pack_propagate(False)  # サイズを固定
+        
+        self.preview_label = ttk.Label(preview_container)
+        self.preview_label.pack(fill=tk.BOTH, expand=True)
+    
+    def update_preview_and_brightness_label(self, *args):
+        """スライダー変更時に明るさラベルとプレビューを更新する"""
+        # 0.01単位で表示
+        value = round(float(args[0]) * 100) / 100 if args else round(self.brightness_value.get() * 100) / 100
+        self.brightness_value.set(value)  # スライダーの値も同期
+        self.update_preview()
+        
+    def update_preview_and_contrast_label(self, *args):
+        """スライダー変更時にコントラストラベルとプレビューを更新する"""
+        # 0.01単位で表示
+        value = round(float(args[0]) * 100) / 100 if args else round(self.contrast_value.get() * 100) / 100
+        self.contrast_value.set(value)  # スライダーの値も同期
+        self.update_preview()
+        
+    def reset_brightness(self):
+        """明るさを初期値(1.0)にリセット"""
+        self.brightness_value.set(1.0)
+        self.update_preview()
+        
+    def reset_contrast(self):
+        """コントラストを初期値(1.0)にリセット"""
+        self.contrast_value.set(1.0)
+        self.update_preview()
+    
+    def show_prev_image(self):
+        """前の画像を表示"""
+        if not self.image_files or len(self.image_files) &lt;= 1:
+            return
+            
+        self.current_preview_index = (self.current_preview_index - 1) % len(self.image_files)
+        self.current_preview_file = os.path.join(self.folder_path.get(), self.image_files[self.current_preview_index])
+        self.load_preview_image()
+        self.update_image_name_label()
+        
+    def show_next_image(self):
+        """次の画像を表示"""
+        if not self.image_files or len(self.image_files) &lt;= 1:
+            return
+            
+        self.current_preview_index = (self.current_preview_index + 1) % len(self.image_files)
+        self.current_preview_file = os.path.join(self.folder_path.get(), self.image_files[self.current_preview_index])
+        self.load_preview_image()
+        self.update_image_name_label()
+        
+    def update_image_name_label(self):
+        """画像ファイル名表示を更新"""
+        if self.current_preview_file:
+            filename = os.path.basename(self.current_preview_file)
+            self.image_name_label.config(text=f"{self.current_preview_index + 1}/{len(self.image_files)}: {filename}")
+        else:
+            self.image_name_label.config(text="")
+    
+    def load_folder_from_entry(self):
+        """エントリに入力されたパスからフォルダを読み込む"""
+        folder_path = self.folder_path.get().strip()
+        if folder_path and os.path.isdir(folder_path):
+            self.load_image_files()
+        elif folder_path:  # パスがあるが存在しない場合
+            messagebox.showerror("エラー", "指定されたフォルダが見つかりません。")
+    
+    def browse_folder(self):
+        # 現在入力されているパスがあれば、それを初期ディレクトリとして使用
+        current_path = self.folder_path.get().strip()
+        initial_dir = current_path if current_path and os.path.isdir(current_path) else os.getcwd()
+        
+        folder_selected = filedialog.askdirectory(initialdir=initial_dir)
+        if folder_selected:
+            self.folder_path.set(folder_selected)
+            self.load_image_files()
+    
+    def load_image_files(self):
+        folder = self.folder_path.get()
+        if not os.path.isdir(folder):
+            return
+        
+        # 画像ファイルのみをリストアップ
+        valid_extensions = ['.jpg', '.jpeg', '.png', '.bmp', '.gif']
+        self.image_files = [f for f in os.listdir(folder) 
+                           if os.path.isfile(os.path.join(folder, f)) and 
+                           os.path.splitext(f)[1].lower() in valid_extensions]
+        
+        if self.image_files:
+            self.current_preview_index = 0
+            self.current_preview_file = os.path.join(folder, self.image_files[0])
+            self.load_preview_image()
+            self.update_image_name_label()
+        else:
+            messagebox.showinfo("情報", "指定されたフォルダには画像ファイルがありません。")
+            self.current_preview_file = None
+            self.update_image_name_label()
+    
+    def load_preview_image(self):
+        if not self.current_preview_file or not os.path.exists(self.current_preview_file):
+            return
+        
+        try:
+            # 元の画像を読み込み
+            self.original_image = Image.open(self.current_preview_file)
+            # プレビュー用にリサイズ
+            self.resize_preview_image()
+            # プレビューを更新
+            self.update_preview()
+        except Exception as e:
+            messagebox.showerror("エラー", f"画像の読み込みエラー: {str(e)}")
+    
+    def resize_preview_image(self):
+        if not self.original_image:
+            return
+            
+        # プレビュー領域のサイズを取得
+        preview_width = self.preview_label.winfo_width()
+        preview_height = self.preview_label.winfo_height()
+        
+        # 初回表示時はウィンドウサイズがまだ確定していないため、デフォルト値を設定
+        if preview_width &lt;= 1:
+            preview_width = 600
+        if preview_height &lt;= 1:
+            preview_height = 400
+            
+        # 画像のアスペクト比を維持しながらリサイズ
+        img_width, img_height = self.original_image.size
+        ratio = min(preview_width / img_width, preview_height / img_height)
+        new_width = int(img_width * ratio)
+        new_height = int(img_height * ratio)
+        
+        # リサイズした画像を保存
+        self.preview_image = self.original_image.resize((new_width, new_height), Image.LANCZOS)
+    
+    def update_preview(self, *args):
+        if not self.preview_image:
+            return
+            
+        try:
+            # 明るさとコントラストを適用したプレビュー画像を作成
+            brightness = self.brightness_value.get()
+            contrast = self.contrast_value.get()
+            
+            # コピーを作成して処理
+            processed = self.preview_image.copy()
+            
+            # 明るさ調整
+            if brightness != 1.0:
+                enhancer = ImageEnhance.Brightness(processed)
+                processed = enhancer.enhance(brightness)
+                
+            # コントラスト調整
+            if contrast != 1.0:
+                enhancer = ImageEnhance.Contrast(processed)
+                processed = enhancer.enhance(contrast)
+                
+            # PhotoImageに変換してラベルに表示
+            photo = ImageTk.PhotoImage(processed)
+            self.preview_label.config(image=photo)
+            self.preview_label.image = photo  # 参照を保持
+        except Exception as e:
+            messagebox.showerror("エラー", f"プレビュー更新エラー: {str(e)}")
+    
+    def process_images(self):
+        if self.processing:
+            return
+            
+        folder = self.folder_path.get()
+        if not folder or not os.path.isdir(folder):
+            messagebox.showinfo("情報", "フォルダを選択してください。")
+            return
+            
+        if not self.image_files:
+            messagebox.showinfo("情報", "処理対象の画像ファイルがありません。")
+            return
+            
+        # 出力フォルダの作成
+        output_folder = os.path.join(folder, "補正画像")
+        try:
+            if not os.path.exists(output_folder):
+                os.makedirs(output_folder)
+        except Exception as e:
+            messagebox.showerror("エラー", f"出力フォルダの作成に失敗しました: {str(e)}")
+            return
+            
+        # パラメータの取得
+        brightness = self.brightness_value.get()
+        contrast = self.contrast_value.get()
+        
+        # プログレスバーの初期化
+        self.progress_bar["maximum"] = len(self.image_files)
+        self.progress_bar["value"] = 0
+        
+        # ボタンを無効化
+        self.execute_button.config(state=tk.DISABLED)
+        self.processing = True
+        
+        # バックグラウンドで処理を実行
+        processing_thread = threading.Thread(
+            target=self.process_images_thread,
+            args=(folder, output_folder, brightness, contrast)
+        )
+        processing_thread.daemon = True
+        processing_thread.start()
+        
+        # 進捗状況を定期的に確認
+        self.root.after(100, self.check_progress)
+    
+    def process_images_thread(self, input_folder, output_folder, brightness, contrast):
+        for i, file_name in enumerate(self.image_files):
+            try:
+                input_path = os.path.join(input_folder, file_name)
+                output_path = os.path.join(output_folder, file_name)
+                
+                # 画像を開く
+                img = Image.open(input_path)
+                
+                # --- メタデータを保存（処理前に取得）---
+                icc_profile = img.info.get('icc_profile')   # ICCプロファイル
+                exif_data   = img.info.get('exif')           # EXIFデータ
+                original_format = img.format or os.path.splitext(file_name)[1].lstrip('.').upper()
+                if original_format == 'JPG':
+                    original_format = 'JPEG'
+                
+                # 明るさ調整
+                if brightness != 1.0:
+                    enhancer = ImageEnhance.Brightness(img)
+                    img = enhancer.enhance(brightness)
+                
+                # コントラスト調整
+                if contrast != 1.0:
+                    enhancer = ImageEnhance.Contrast(img)
+                    img = enhancer.enhance(contrast)
+                
+                # --- 保存オプションを構築 ---
+                save_kwargs = {}
+                
+                # ICCプロファイルを維持
+                if icc_profile:
+                    save_kwargs['icc_profile'] = icc_profile
+                
+                # EXIFデータを維持
+                if exif_data:
+                    save_kwargs['exif'] = exif_data
+                
+                # JPEG固有オプション：品質を元画像相当（90）に設定
+                ext = os.path.splitext(file_name)[1].lower()
+                if ext in ('.jpg', '.jpeg'):
+                    save_kwargs['quality'] = 90
+                    save_kwargs['subsampling'] = 0  # 4:4:4（クロマ情報を最大限保持）
+                
+                # 保存
+                img.save(output_path, **save_kwargs)
+                
+                # 進捗状況をキューに追加
+                self.progress_queue.put(i + 1)
+            except Exception as e:
+                self.progress_queue.put(f"エラー: {file_name} - {str(e)}")
+        
+        # 完了をキューに追加
+        self.progress_queue.put("DONE")
+    
+    def check_progress(self):
+        try:
+            while True:
+                message = self.progress_queue.get_nowait()
+                
+                if message == "DONE":
+                    self.processing = False
+                    self.execute_button.config(state=tk.NORMAL)
+                    messagebox.showinfo("完了", "画像の処理が完了しました。")
+                    break
+                elif isinstance(message, str) and message.startswith("エラー"):
+                    messagebox.showerror("エラー", message)
+                else:
+                    self.progress_bar["value"] = message
+        except queue.Empty:
+            # キューが空の場合は、まだ処理中なので続行
+            if self.processing:
+                self.root.after(100, self.check_progress)
+            else:
+                self.execute_button.config(state=tk.NORMAL)
+
+def main():
+    root = tk.Tk()
+    app = ImageProcessorApp(root)
+    
+    # ウィンドウサイズが変更されたらプレビューをリサイズ
+    def on_resize(event):
+        if hasattr(app, 'original_image') and app.original_image:
+            app.resize_preview_image()
+            app.update_preview()
+    
+    root.bind("&lt;Configure&gt;", on_resize)
+    
+    root.mainloop()
+
+if __name__ == "__main__":
+    main()
+</pre>
+<p><a class="link-card" href="../25/211331.html"><span class="lc-body"><span class="lc-title">Claude＆Gemini）Python）「写真のトーンカーブ一括補正」Windowsアプリ作成。</span><span class="lc-desc">先日、Pythonで「写真の明るさ＆コントラスト一括補正」Windowsアプリを作成した。 今回、 トーンカーブを使って写真の明るさを補正するWindowsアプリ をPythonで作成。 複数画像を一括して補正できる。 …</span><span class="lc-site">晴歩雨描 · <time>2025-05-25</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250525/20250525210152.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../06/02/112022.html"><span class="lc-body"><span class="lc-title">Claude＆Gemini）Python）「写真のカラーバランス一括補正」Windowsアプリ作成。Pixel 9 Proの青被りを補正。</span><span class="lc-desc">スマホ「 Pixel 9 Pro 」を所有しているが、写真の青被りがきつい。特に人物の顔色が悪くなる。GIMP等でカラーバランスを調整することで補正できるが、枚数が多いと面倒。 複数画像を一括して補正できるツール が欲し…</span><span class="lc-site">晴歩雨描 · <time>2025-06-02</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250602/20250602110316.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../09/085200.html"><span class="lc-body"><span class="lc-title">Claude）Python）PowerPointに複数写真（画像）を順番に並べて貼り付けるプログラム作成（改訂版）。</span><span class="lc-desc">以前に、PowerPointに複数写真を順番に並べて貼り付けるプログラムをPythonで作成した。 今回、このプログラムの改訂版。前回と同じく、AI生成ツール「Claude」に作ってもらった。 基本機能はそのままで、オプ…</span><span class="lc-site">晴歩雨描 · <time>2025-05-09</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250509/20250509084045.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../10/18/132848.html"><span class="lc-body"><span class="lc-title">Claude）Python）「写真スポット編集ツール」Windowsアプリ作成。シミ消し、オブジェクト除去に使える。スポット修正＋コピー修正。ICCプロファイル維持。</span><span class="lc-desc">以前に、「写真オブジェクト除去」Windowsアプリを作成した。 これは、写真の一部をスポット的に編集するアプリ。 これに加えて、クローンコピー修正もできるようにしたバージョンをPythonで作成。 ■ スポット修正 写…</span><span class="lc-site">晴歩雨描 · <time>2025-10-18</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20251018/20251018131038.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../06/13/153014.html"><span class="lc-body"><span class="lc-title">Claude）Python）透過画像作成Windowsアプリ作成。</span><span class="lc-desc">Pythonで「透過画像作成」Windowsアプリ作成。画像の白に近い色を透過にする。元データはJPEGまたはPNG。白の範囲は指定できる。AIツールClaudeに作成してもらった。 【使い方】 元画像ファイルは、ドラッ…</span><span class="lc-site">晴歩雨描 · <time>2025-06-13</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250613/20250613151037.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../03/20/171056.html"><span class="lc-body"><span class="lc-title">JavaScript）AIツール「Claude」で、ブラウザに画像をアップロードしてトーンカーブで明るさ補正をしてダウンロードできるWebツール作成。</span><span class="lc-desc">以前に、ブラウザに画像をアップロードしてトーンカーブで明るさ補正できるツールを「jquery.iocurve」を使用して作成した。だが、難点として、新しい画像をアップロードして、現時点のトーンカーブを適用させることが難し…</span><span class="lc-site">晴歩雨描 · <time>2025-03-20</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250320/20250320170144.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../04/18/215613.html"><span class="lc-body"><span class="lc-title">Claude）JavaScript）「写真スポッティング編集ツール」作成。写真のオブジェクト除去やシミ消しに。</span><span class="lc-desc">JavaScriptで、「 写真スポッティング編集ツール 」を作成。 写真の中のちょっとした不要物を除去するためのツール。除去したい不要物をマウスなどで囲んで除去し、除去した後を目立たないように背景画像で補正するなどした…</span><span class="lc-site">晴歩雨描 · <time>2025-04-18</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250418/20250418213106.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../04/16/095722.html"><span class="lc-body"><span class="lc-title">Claude）JavaScript）画像フォーマットPNG、WEBP、AVIFをJPEGに変換するWebツール作成。複数ファイル一括も可。</span><span class="lc-desc">過去に、画像フォーマットPNGやWEBPをJPEGに変換するWebアプリを作成した。 今回、画像フォーマット PNG、WEBP、AVIFをJPEGに変換する Webアプリを作成。AIツールClaudeに作成してもらった。…</span><span class="lc-site">晴歩雨描 · <time>2025-04-16</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250416/20250416094324.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../04/10/172840.html"><span class="lc-body"><span class="lc-title">Claude）Python）PowerPointに複数写真（画像）を順番に並べて貼り付けるプログラム作成（Ver.1）。</span><span class="lc-desc">※ このプログラムについては、後日、改訂版を作成。（↓） PowerPoint に複数写真を順番に並べて貼り付けるプログラムを作成。AI生成ツール「 Claude 」に作ってもらった。 Python で作成。貼り付ける写…</span><span class="lc-site">晴歩雨描 · <time>2025-04-10</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250410/20250410165838.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../04/01/172305.html"><span class="lc-body"><span class="lc-title">Claudeは、無料枠で文章からSVG形式で日本語の4コマ漫画を生成してくれる。</span><span class="lc-desc">ChatGPT、Google Gemini、Microsoft Copilot、Perplexity、リートン、Claude それぞれ無料で使える範囲で、 文章から日本語の4コマ漫画が生成できるか試してみた。 Claud…</span><span class="lc-site">晴歩雨描 · <time>2025-04-01</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250401/20250401171134.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../03/20/115145.html"><span class="lc-body"><span class="lc-title">AIツール「ChatGPT、Gemini、Copilot、Perplexity、リートン、Claude」＋JavaScriptライブラリ「p5.js」で「物理シミュレーション」アプリ作成。Claudeはアプリケーション作成能力が高い。</span><span class="lc-desc">昨日、 JavaScriptライブラリ「p5.js」 を使った「魚の群れのシミュレーション」を、AIツール「ChatGPT、Gemini、Copilot、Perplexity、リートン、Claude」で作った。 今回、J…</span><span class="lc-site">晴歩雨描 · <time>2025-03-20</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250320/20250320114142.jpg" alt="" loading="lazy"></span></a></p></div></article>
+</body>
+</html>

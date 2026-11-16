@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ローカル画像生成AI：RTX3050）Stability Matrix＋ComfyUI＋Qwen-Image-Edit-2511を使う。 - 晴歩雨描</title>
+<link rel="stylesheet" href="../../../../style.css">
+</head>
+<body>
+<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>ローカル画像生成AI：RTX3050）Stability Matrix＋ComfyUI＋Qwen-Image-Edit-2511を使う。</h1><p class="meta">2026-01-11 · <a href="../../../../category/c18.html">写真・カメラ</a> <a href="../../../../category/c5.html">アート・美術</a> <a href="../../../../category/c42.html">＜AI＞</a></p><div class="entry-body"><p>ローカル画像生成AIで、</p>
+<ul>
+<li>Stability Matrix＋Forge＋「FLUX FP8版」</li>
+<li>Stability Matrix＋Forge＋「FLUX.1[dev] GGUF版」</li>
+<li>Stability Matrix＋Forge＋「FLUX.1[schnell] GGUF版」</li>
+</ul>
+<p>を使ってきた。</p>
+<p><a class="link-card" href="../../../2025/12/24/142809.html"><span class="lc-body"><span class="lc-title">ローカル画像生成AI：RTX3050）Stability Matrix＋Stable Diffusion WebUI Forgeで「FLUX FP8版」を使う。</span><span class="lc-desc">WindowsPCローカルで画像生成AIを試している。モデルとして、 「FLUX.1 [dev] の GGUF版」 「FLUX.1 [schnell] の GGUF版」 を試した。「FLUX.1 [dev] の GGUF…</span><span class="lc-site">晴歩雨描 · <time>2025-12-24</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20251224/20251224135757.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2025/12/21/220610.html"><span class="lc-body"><span class="lc-title">ローカル画像生成AI：RTX3050）Stability Matrix＋Stable Diffusion WebUI Forgeで「FLUX.1 [dev] GGUF版」を使う。</span><span class="lc-desc">WindowsPCローカルで画像生成AIを使う「 Fooocus（Stable Diffusion） 」を試したみたが、期待通りの画質を得られなかった。 ● 画像生成AIを使うには、以下の3つが必要。 UI（操作するため…</span><span class="lc-site">晴歩雨描 · <time>2025-12-21</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20251221/20251221213735.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2025/12/23/164434.html"><span class="lc-body"><span class="lc-title">ローカル画像生成AI：RTX3050）Stability Matrix＋Stable Diffusion WebUI Forgeで「FLUX.1 [schnell] GGUF版」を使う。</span><span class="lc-desc">WindowsPCローカルで、画像生成AIのモデル「 FLUX.1 [dev] の GGUF版 」を使ったが、800x600ピクセルの画像生成に10分ほどかかった。 ※【後日追加】その後試したら、「FLUX.1 [dev…</span><span class="lc-site">晴歩雨描 · <time>2025-12-23</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20251223/20251223161527.png" alt="" loading="lazy"></span></a></p>
+<p>今回、「<em>Forge（Stable Diffusion WebUI Forge）</em>」でなく、「<em>ComfyUI</em>」を使ってみる。</p>
+<h4 id="-使うPCのスペック">■ 使うPCのスペック</h4>
+<p>画像生成AIをローカルで行うPCとしては最低限レベル。</p>
+<div style="overflow-x: auto;">
+<table>
+<tbody>
+<tr>
+<th>CPU</th>
+<td>インテル Core i5-14500T (14コア(6P+8E)/1.7GHz)</td>
+</tr>
+<tr>
+<th>GPU</th>
+<td>NVIDIA GeForce RTX 3050 LP 6GB</td>
+</tr>
+<tr>
+<th>メモリー</th>
+<td>32GB</td>
+</tr>
+<tr>
+<th>ストレージ</th>
+<td>1TB M.2 SSD PCI Express x4対応（Gen4対応）</td>
+</tr>
+<tr>
+<th>OS</th>
+<td>Windows 11 Pro 64bit</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h4 id="-モデル構成Qwen-Image-Edit-2511">■ モデル構成：Qwen-Image-Edit-2511</h4>
+<p>2025年末にリリースされた「<em>Qwen-Image-Edit-2511</em>」。</p>
+<ul>
+<li>従来のQwen-Imageよりも実写の肌の質感やライティングが大幅に向上。</li>
+<li>「Qwen2.5-VL」を視覚セマンティック制御に使用しており、プロンプトへの忠実度が極めて高い。</li>
+<li>単なる画像編集だけでなく、リライティング（照明変更）や高精度なインペイントにも対応。</li>
+</ul>
+<p><em><span style="color: #dd830c;">※ 結果的には、「Qwen-Image-Edit-2511」では、以下のローカル画像生成AIに比べて、高画質は得られなかった。</span></em></p>
+<ul>
+<li>Stability Matrix＋Forge＋「FLUX FP8版」</li>
+<li>Stability Matrix＋Forge＋「FLUX.1[dev] GGUF版」</li>
+<li>Stability Matrix＋Forge＋「FLUX.1[schnell] GGUF版」</li>
+</ul>
+<p>PC構成（VRAM 6GB）を考慮し、以下の軽量化版を組み合わせる。</p>
+<div style="overflow-x: auto;">
+<table>
+<thead>
+<tr>
+<th>コンポーネント</th>
+<th>おすすめのバージョン</th>
+<th>役割</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>Diffusion Model</th>
+<td>qwen-image-edit-2511-Q4_K_M.gguf</td>
+<td>生成のメインエンジン。GGUF版でVRAMを節約。</td>
+</tr>
+<tr>
+<th>CLIP / Vision</th>
+<td>qwen_2.5_vl_7b_fp8_scaled</td>
+<td>画像理解とプロンプト解釈。</td>
+</tr>
+<tr>
+<th>VAE</th>
+<td>qwen_image_vae</td>
+<td>画像のデコード・エンコード。</td>
+</tr>
+<tr>
+<th>LoRA</th>
+<td>Qwen-Image-Edit-Lightning</td>
+<td>必須。 これにより4〜8ステップでの超高速・高画質生成が可能に。</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h4 id="---実際にやった手順---">---【実際にやった手順】---</h4>
+<h4 id="-パッケージ追加">■ パッケージ追加</h4>
+<p>Stability Matrixの「パッケージ」から ComfyUI をインストール。</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260111/20260111094036.jpg" width="816" height="366" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260111/20260111102403.jpg" width="883" height="499" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<h4 id="-ComfyUI-Managerを入れる">■ 「ComfyUI-Manager」を入れる</h4>
+<ul>
+<li>Stability Matrixで「Launch」をクリックして「ComfyUI」を起動する。</li>
+<li>Stability Matrixで「To see the GUI go to: <a href="http://127.0.0.1:8188">http://127.0.0.1:8188</a>」と出たら、ブラウザで、<a href="http://127.0.0.1:8188" target="_blank">http://127.0.0.1:8188</a>を開く。<br />※ Stability MatrixのComfyUI設定（歯車アイコン）の中の<br />Auto-Launch「--auto-launch」チェックボックスをオンにしておくとブラウザで自動的に開くようになる。</li>
+<li>「ComfyUI-Manager」が「Extensions」で見つからなかった。</li>
+<li>「ComfyUI-Manager-main.zip」をダウンロード <br />
+<p><a href="https://github.com/ltdrdata/ComfyUI-Manager/archive/refs/heads/main.zip" target="_blank">https://github.com/ltdrdata/ComfyUI-Manager/archive/refs/heads/main.zip</a></p>
+</li>
+<li>zipを展開したフォルダー「ComfyUI-Manager-main」を、<br />「Stability Matrix\Data\Packages\ComfyUI\custom_nodes」の下に入れる。</li>
+<li>一度ComfyUIを閉じ（Stability MatrixでStop）、再度「Launch」。</li>
+</ul>
+<h4 id="-必要なカスタムノードのインストール">■ 必要なカスタムノードのインストール</h4>
+<ul>
+<li>「🧩 Manager」 ボタンをクリック。<br />
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260111/20260111102606.jpg" width="749" height="322" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+</li>
+<li>メニュー内の 「Custom Nodes Manager」 をクリック。<br />
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260112/20260112154017.jpg" width="916" height="494" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+</li>
+<li>右上の検索窓に GGUF と入力し、リストに出てくる ComfyUI-GGUF を探して右側の「Install」を押す。<br />
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260111/20260111102945.jpg" width="770" height="219" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+</li>
+<li>同様に Qwen と検索し、もし ComfyUI-Video-Post-Process や ComfyUI-QwenVL があればインストールしておくと、実写生成の幅が広がる。<br />※ ComfyUI-Video-Post-Processは見つからなかった。</li>
+<li>インストールが終わると「Restart required」と出るので、Stability Matrixで一回Stopして再度Launch（再起動）。</li>
+</ul>
+<h4 id="-モデルファイルの配置">■ モデルファイルの配置</h4>
+<ul>
+<li>モデル「qwen-image-edit-2511-Q4_K_M.gguf」を以下からダウンロード。<br /><a href="https://huggingface.co/unsloth/Qwen-Image-Edit-2511-GGUF/tree/main" target="_blank">https://huggingface.co/unsloth/Qwen-Image-Edit-2511-GGUF/tree/main</a><br />置き場所：Data/Models/unet</li>
+</ul>
+<h4 id="-組み合わせる必須パーツ">■ 組み合わせる「必須パーツ」</h4>
+<p>モデル単体では動かないため、以下の3点も用意。</p>
+<ul>
+<li><strong>Text Encoder (Visionモデル)</strong>:<br />ファイル: qwen_2.5_vl_7b_fp8_scaled.safetensors<br />
+<p><a href="https://huggingface.co/Comfy-Org/Qwen-Image_ComfyUI/blob/main/split_files/text_encoders/qwen_2.5_vl_7b_fp8_scaled.safetensors" target="_blank">https://huggingface.co/Comfy-Org/Qwen-Image_ComfyUI/blob/main/split_files/text_encoders/qwen_2.5_vl_7b_fp8_scaled.safetensors</a></p>
+置き場所: Data/Models/clip<br /><br /></li>
+<li><strong>VAE</strong>:<br />ファイル: qwen_image_vae.safetensors<br />
+<p><a href="https://huggingface.co/Comfy-Org/Qwen-Image_ComfyUI/blob/main/split_files/vae/qwen_image_vae.safetensors" target="_blank">https://huggingface.co/Comfy-Org/Qwen-Image_ComfyUI/blob/main/split_files/vae/qwen_image_vae.safetensors</a></p>
+置き場所: Data/Models/vae<br /><br /></li>
+<li><strong>Lightning LoRA</strong> (超高速化用):<br />これを併用すると、たった4ステップで画像が完成。<br />ファイル: Qwen-Image-Edit-2511-Lightning-4steps-V1.0-bf16.safetensors<br />
+<p><a href="https://huggingface.co/lightx2v/Qwen-Image-Edit-2511-Lightning/blob/main/Qwen-Image-Edit-2511-Lightning-4steps-V1.0-bf16.safetensors" target="_blank">https://huggingface.co/lightx2v/Qwen-Image-Edit-2511-Lightning/blob/main/Qwen-Image-Edit-2511-Lightning-4steps-V1.0-bf16.safetensors</a></p>
+置き場所: Data/Models/lora</li>
+</ul>
+<h4 id="-ComfyUI-内部での設定GGUFを認識させる">■ ComfyUI 内部での設定（GGUFを認識させる）</h4>
+<p>まず、GGUF形式のモデルを読み込めるようにする。</p>
+<p>ComfyUIを起動（Launch） 。</p>
+<p>画面上部の 「🧩 Manager」 をクリックし、「<strong>Custom Nodes Manager</strong>」 を開く。</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260111/20260111112002.jpg" width="932" height="517" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>検索窓に GGUF と入力し、「ComfyUI-GGUF」 がインストールされているか確認。</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260111/20260111112139.jpg" width="839" height="275" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<h4 id="-実写生成ワークフローの組み立て">■ 実写生成ワークフローの組み立て</h4>
+<p>真っ黒な画面をダブルクリックして検索窓を出し、以下の順にノードを呼び出して配置してください。</p>
+<h5 id="-モデルの読み込み-Unet--CLIP--VAE">● モデルの読み込み (Unet / CLIP / VAE)</h5>
+<p>「<strong>Unet-Loader (GGUF)</strong>」: unet_name で <strong>qwen-image-edit-2511-Q4_K_M.gguf </strong>を選択。</p>
+<p><span style="text-decoration: line-through;">「<strong>DualCLIPLoader</strong>」: clip_name1 に <strong>qwen_2.5_vl_7b_fp8_scaled.safetensors</strong> を選択。</span></p>
+<p><em>※ DualCLIPLoaderはGGUF形式 のCLIP専用の読み込みノードであるためFP8に合わないため、使わない。以下で通常のCLIPLoaderに変更。</em></p>
+<p>「<strong>VAELoader</strong>」: <strong>qwen_image_vae.safetensors</strong> を選択。</p>
+<h5 id="-Lightning-LoRAの適用-高速化の肝">● Lightning LoRAの適用 (高速化の肝)</h5>
+<p>「<strong>LoraLoader</strong>」: lora_name で <strong>Qwen-Image-Edit-2511-Lightning... </strong>を選択。</p>
+<ul>
+<li>strength_model: 1.0</li>
+<li>strength_clip: 1.0</li>
+</ul>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260111/20260111121210.jpg" width="1200" height="497" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<h4 id="-配置すべき必須ノード">■ 配置すべき「必須ノード」</h4>
+<p>今の画面には「画像を作るエンジン（サンプラー）」がまだない状態。画面の空いている場所をダブルクリックして、以下を追加。</p>
+<p><strong>KSampler (または KSampler (Advanced))</strong></p>
+<p>設定値を以下に変える。</p>
+<ul>
+<li>steps: 4 （Lightning LoRAを使うため、4回で実写になる）</li>
+<li>cfg: 1.0 （1.5以上にすると画像が焼けたように崩れる）</li>
+<li>sampler_name: euler</li>
+<li>scheduler: simple または sgm_uniform</li>
+<li>denoise: 1.0</li>
+</ul>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260111/20260111131942.jpg" width="275" height="292" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<h4 id="-CLIP-Text-Encodeノード">■ 「CLIP Text Encode」ノード</h4>
+<p>画面の空いている場所をダブルクリック。入力欄に clip text と入力。</p>
+<p>候補に出てくる <strong>CLIP Text Encode (Prompt)</strong> を選択。</p>
+<p>これを2つ（ポジティブ用とネガティブ用）作成。</p>
+<h4 id="-VAE-Decodeノード">■ 「VAE Decode」ノード</h4>
+<p>画面の何もないところをダブルクリック。</p>
+<p>入力欄に vae decode と入力。</p>
+<p>候補リスト <strong>VAE Decode</strong> を選択。</p>
+<h4 id="-Empty-Latent-Imageノード">■ 「Empty Latent Image」ノード</h4>
+<p>画面の何もないところをダブルクリック。</p>
+<p>入力欄に <code data-path-to-node="4,0,0" data-index-in-node="13">empty</code> と入力。</p>
+<p>候補リスト <strong>Empty Latent Image</strong> を選択。</p>
+<h4 id="-Save-Imageノード">■ 「Save Image」ノード</h4>
+<p>画面の何もないところをダブルクリック。</p>
+<p>入力欄に saveと入力。</p>
+<p>候補リスト Save Imag を選択。</p>
+<h4 id="-CLIPLoaderの出し方">■ 「CLIPLoader」の出し方</h4>
+<p>※ 「DualCLIPLoader」を使わず、一般的な「CLIPLoader」を使う。</p>
+<p>画面の空いている場所を ダブルクリック。</p>
+<p>出てきた検索窓に CLIPLoader と入力。</p>
+<p>※「Dual」や「GGUF」が付いていない「CLIPを読み込む」を選択。</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260111/20260111140757.jpg" width="663" height="386" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<h4 id="-ノードの線を繋ぐパズルの完成">■ ノードの「線」を繋ぐ（パズルの完成）</h4>
+<p>各ノードの右側にある丸（●）から、左側の丸へドラッグして線を繋ぐ。</p>
+<ol>
+<li><strong>メインモデルの接続</strong>: Unet Loader (GGUF) の「モデル」から LoRAを読み込む の「モデル」へ繋ぐ。</li>
+<li><strong>CLIPの接続</strong>: CLIPを読み込む の「CLIP」から LoRAを読み込む の「クリップ」へ繋ぐ。</li>
+<li><strong>プロンプトの接続</strong>: LoRAを読み込む の「CLIP」から、2つの CLIPテキストエンコード の「クリップ」へそれぞれ繋ぐ。</li>
+<li><strong>サンプラーへの接続</strong>:
+<ul>
+<li>LoRAを読み込む の「モデル」から Kサンプラー の「モデル」へ繋ぐ。</li>
+<li>各 CLIPテキストエンコード から Kサンプラー の「ポジティブ」「ネガティブ」へ繋ぐ。</li>
+<li>空の潜在画像 から Kサンプラー の「潜在画像」へ繋ぐ。</li>
+</ul>
+</li>
+<li><strong>画像の出力</strong>: Kサンプラー の「潜在」から VAEデコード を経由し、最終的に 画像を保存 へ繋ぐ。</li>
+<li><strong>VAEの接続</strong>: VAEを読み込む から VAEデコード の「vae」へ直接繋ぐ。</li>
+</ol>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260111/20260111141814.jpg" width="901" height="734" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<h4 id="-現在の状態を保存">■ 現在の状態を保存</h4>
+<p>画面左上の 「保存」 で現在の状態を保存。</p>
+<p>保存先：Data/Packages/ComfyUI/user/default/workflows</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260111/20260111133900.jpg" width="244" height="264" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<h4 id="-結果サンプル800x800">■ 結果サンプル（800x800）</h4>
+<p>《プロンプト》</p>
+<pre>realistic photo,
+a cute Japanese girl in her 30 s,
+fashionable clothes,
+full body,
+smiling,
+walking on a old city street,
+bright daytime</pre>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260111/20260111141754.png" width="800" height="800" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p><a class="link-card" href="https://ok2nd.github.io/sitemap/hatena-sitemap-table.html?search=%E3%83%AD%E3%83%BC%E3%82%AB%E3%83%AB%E7%94%BB%E5%83%8F%E7%94%9F%E6%88%90AI" target="_blank" rel="noopener noreferrer"><span class="lc-body"><span class="lc-title">晴歩雨描：記事一覧</span><span class="lc-desc"></span><span class="lc-site">ok2nd.github.io</span></span></a></p>
+<p><a class="link-card" href="../../../2025/12/23/164434.html"><span class="lc-body"><span class="lc-title">ローカル画像生成AI：RTX3050）Stability Matrix＋Stable Diffusion WebUI Forgeで「FLUX.1 [schnell] GGUF版」を使う。</span><span class="lc-desc">WindowsPCローカルで、画像生成AIのモデル「 FLUX.1 [dev] の GGUF版 」を使ったが、800x600ピクセルの画像生成に10分ほどかかった。 ※【後日追加】その後試したら、「FLUX.1 [dev…</span><span class="lc-site">晴歩雨描 · <time>2025-12-23</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20251223/20251223161527.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2025/12/24/142809.html"><span class="lc-body"><span class="lc-title">ローカル画像生成AI：RTX3050）Stability Matrix＋Stable Diffusion WebUI Forgeで「FLUX FP8版」を使う。</span><span class="lc-desc">WindowsPCローカルで画像生成AIを試している。モデルとして、 「FLUX.1 [dev] の GGUF版」 「FLUX.1 [schnell] の GGUF版」 を試した。「FLUX.1 [dev] の GGUF…</span><span class="lc-site">晴歩雨描 · <time>2025-12-24</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20251224/20251224135757.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2025/12/21/220610.html"><span class="lc-body"><span class="lc-title">ローカル画像生成AI：RTX3050）Stability Matrix＋Stable Diffusion WebUI Forgeで「FLUX.1 [dev] GGUF版」を使う。</span><span class="lc-desc">WindowsPCローカルで画像生成AIを使う「 Fooocus（Stable Diffusion） 」を試したみたが、期待通りの画質を得られなかった。 ● 画像生成AIを使うには、以下の3つが必要。 UI（操作するため…</span><span class="lc-site">晴歩雨描 · <time>2025-12-21</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20251221/20251221213735.png" alt="" loading="lazy"></span></a></p></div></article>
+</body>
+</html>

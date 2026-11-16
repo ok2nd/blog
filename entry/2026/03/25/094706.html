@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Claude）Python）「写真オブジェクト除去」Windowsアプリ作成。IOPaint＋LaMa使用。ICCプロファイル維持。 - 晴歩雨描</title>
+<link rel="stylesheet" href="../../../../style.css">
+</head>
+<body>
+<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>Claude）Python）「写真オブジェクト除去」Windowsアプリ作成。IOPaint＋LaMa使用。ICCプロファイル維持。</h1><p class="meta">2026-03-25 · <a href="../../../../category/c18.html">写真・カメラ</a> <a href="../../../../category/c42.html">＜AI＞</a></p><div class="entry-body"><p>以前に、Pythonを使って、「写真オブジェクト除去」Windowsアプリを作成した。<em>これらのアプリは、周辺ピクセルだけで補完する方式なので、顔の小さいシミを消すぐらいしか使い道がなかった。</em></p>
+<p><a class="link-card" href="../../../2025/10/18/132848.html"><span class="lc-body"><span class="lc-title">Claude）Python）「写真スポット編集ツール」Windowsアプリ作成。シミ消し、オブジェクト除去に使える。スポット修正＋コピー修正。ICCプロファイル維持。</span><span class="lc-desc">以前に、「写真オブジェクト除去」Windowsアプリを作成した。 これは、写真の一部をスポット的に編集するアプリ。 これに加えて、クローンコピー修正もできるようにしたバージョンをPythonで作成。 ■ スポット修正 写…</span><span class="lc-site">晴歩雨描 · <time>2025-10-18</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20251018/20251018131038.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2025/04/20/093458.html"><span class="lc-body"><span class="lc-title">Claude）Python）「写真オブジェクト除去」Windowsアプリ作成。シミ消しにも使える。</span><span class="lc-desc">2日前、 JavaScript で「 写真スポッティング編集ツール 」を作成した。 今回、 Python で「 写真オブジェクト除去アプリ 」を作成。AIツールClaudeに作成してもらった。 写真の中のちょっとした不要…</span><span class="lc-site">晴歩雨描 · <time>2025-04-20</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250420/20250420091047.jpg" alt="" loading="lazy"></span></a></p>
+<div><em>画像生成AI系でも、オブジェクト除去を色々試したが、画像全体を描き直してしまうし、画素数なども維持できない。現時点では、写真のオブジェクト除去には向かない。</em></div>
+<div><em>ネット上に「オブジェクト除去」Webツールも色々あるが、無料枠では、画素サイズに制限があったり、ウォーターマークが入ったりして実用上は使えない。</em></div>
+<div><em>今回、Pythonを使って、新たな「写真オブジェクト除去」ツールを作成した。</em></div>
+<div>技術要素として、以下を使用。</div>
+<ul>
+<li><em>フロントエンド：IOPaint</em></li>
+<li><em>AIモデル：LaMa（Large Mask Inpainting）</em><br /><span style="font-size: 80%;">サムスン研究所が2021年に発表した深層学習ベースのinpaintingモデル。「Fast Fourier Convolution（FFC）」という手法を採用しており、画像の広域的な周期パターン——金網・タイル・格子・芝生など——を大きなマスク領域を超えて補完するのが得意。従来手法が「局所的な塗り絵」なのに対し、LaMaは「画像全体の構造を理解して穴を埋める」。</span></li>
+</ul>
+<div>自分のPCに入っている<em>GPU（NVIDIA GeForce RTX 3050 LP 6GB）</em>も利用して、処理の高速化を図った。</div>
+<div>結果は、完璧とは言えないが、まあまあの出来栄え（？）。</div>
+<h5 id="-Python使用ライブラリ-">《 Python使用ライブラリ 》</h5>
+<style>table td {
+    text-align: left;
+}
+</style>
+<table>
+<tbody>
+<tr>
+<td>ライブラリ</td>
+<td>役割</td>
+</tr>
+<tr>
+<td>simple-lama-inpainting</td>
+<td>LaMaモデルの薄いラッパー。PIL Imageを渡すだけで推論できる</td>
+</tr>
+<tr>
+<td>PyTorch (CUDA)</td>
+<td>モデルの推論エンジン。GPU版を使うことで処理を高速化</td>
+</tr>
+<tr>
+<td>tkinterdnd2</td>
+<td>Tkinter にドラッグ＆ドロップ機能を追加するラッパー</td>
+</tr>
+<tr>
+<td>Pillow</td>
+<td>画像の読み書き・リサイズ・マスク合成</td>
+</tr>
+<tr>
+<td>NumPy</td>
+<td>マスク配列の操作・空マスク判定など</td>
+</tr>
+</tbody>
+</table>
+<h5 id="-写真オブジェクト除去Windowsアプリ-">《 「写真オブジェクト除去」Windowsアプリ 》</h5>
+<p>写真をアプリのウインドウに、ドラッグ＆ドロップし、マウスで除去したい部分をなぞった後、「オブジェクト除去」ボタンを押す。</p>
+<p>画像は縮小表示と実寸表示を切り替えできる。</p>
+<p>画像サイズが大きいと処理時間がかかる。長辺1200ピクセル程度までが適当。</p>
+<p>保存ボタンでオリジナル写真と同じフォルダーに結果画像を保存できる。</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260325/20260325083545.jpg" width="1080" height="769" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260325/20260325083556.jpg" width="1080" height="769" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>【オリジナル写真】</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260325/20260325083741.jpg" width="1024" height="682" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>【オブジェクト除去写真】</p>
+<p>人物を2人、消した。除去後の処理があまり綺麗ではないが、まあまあのレベル。</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260325/20260325083750.jpg" width="1024" height="688" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>【オリジナル写真】</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260325/20260325083901.jpg" width="1024" height="683" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>【オブジェクト除去写真】</p>
+<p>自転車を消した。まあまあの出来栄え。</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260325/20260325083920.jpg" width="1024" height="688" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>【オリジナル写真】</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260325/20260325084009.jpg" width="1024" height="683" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>【オブジェクト除去写真】</p>
+<p>左のバイクを消した。ゴーストが残った。</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260325/20260325084022.jpg" width="1024" height="688" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>【オリジナル写真】</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260325/20260325084128.jpg" width="1024" height="684" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>【オブジェクト除去写真】</p>
+<p>柵を消した。まあまあの出来栄え。</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260325/20260325084139.jpg" width="1024" height="688" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>【オリジナル写真】</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260325/20260325084203.jpg" width="1200" height="797" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>【オブジェクト除去写真】</p>
+<p>自転車を消した。</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260325/20260325084214.jpg" width="1200" height="800" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>【オリジナル写真】</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260325/20260325084450.jpg" width="1024" height="682" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>【オブジェクト除去写真】</p>
+<p>クレーンを消した。ゴーストがかなり残った。</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260325/20260325084502.jpg" width="1024" height="688" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<h5 id="-Pythonプログラム-">《 Pythonプログラム 》</h5>
+<p><span style="color: #dd830c;">※ 【後日追記】最初のバージョンでは、元の写真に埋め込まれたICCプロファイル（sRGB、Adobe RGB、Display P3など）が保存されていなかった。そのために、鮮やかさなどの色合いが失われていた。この点を修正した。</span></p>
+<pre>"""
+オブジェクト除去ツール  –  LaMa Inpainting (CUDA対応)
+"""
+
+import tkinter as tk
+from tkinter import ttk, filedialog, messagebox
+from tkinterdnd2 import DND_FILES, TkinterDnD
+from PIL import Image, ImageTk, ImageDraw
+import numpy as np
+import os
+import threading
+
+# ─────────────────────────────────────────────────
+#  定数
+# ─────────────────────────────────────────────────
+SUPPORTED_EXT = {".jpg", ".jpeg", ".png", ".bmp", ".tiff", ".tif", ".webp"}
+BG_DARK       = "#1a1a2e"
+BG_PANEL      = "#16213e"
+BG_BTN        = "#0f3460"
+ACCENT        = "#e94560"
+TEXT_MAIN     = "#eaeaea"
+TEXT_DIM      = "#7a8099"
+MASK_COLOR    = (255, 60, 60, 160)   # 半透明の赤
+
+
+# ─────────────────────────────────────────────────
+#  メインアプリ
+# ─────────────────────────────────────────────────
+class ObjectRemovalApp:
+    def __init__(self, root: TkinterDnD.Tk):
+        self.root = root
+        self.root.title("オブジェクト除去ツール  –  LaMa Inpainting")
+        self.root.geometry("1280x820")
+        self.root.configure(bg=BG_DARK)
+        self.root.minsize(800, 600)
+
+        # ─── 状態変数 ───────────────────────────────
+        self.original_path:   str | None   = None
+        self.source_dir:      str | None   = None
+        self.original_stem:   str | None   = None   # 拡張子なしファイル名
+
+        # 画像履歴 (inpainting 結果ごと)
+        self.img_history: list[Image.Image] = []
+        self.current_image: Image.Image | None = None
+
+        # マスク
+        self.mask_image: Image.Image | None = None          # 'L' mode, full resolution
+        self.mask_stroke_history: list[Image.Image] = []   # ストロークごとのスナップショット
+
+        # 表示
+        self.fit_mode    = True     # True=ウインドウに合わせる / False=実寸
+        self.disp_scale  = 1.0
+        self.img_offset  = (0, 0)
+        self.photo_tk:   ImageTk.PhotoImage | None = None
+
+        # ブラシ
+        self.brush_size  = 30       # 画像座標系でのブラシ径 (px)
+        self.is_drawing  = False
+        self.last_img_xy: tuple | None = None
+        self.cursor_oval = None     # キャンバス上のカーソル円
+
+        # LaMa
+        self.lama        = None
+        self.processing  = False
+
+        # ─── UI構築 ─────────────────────────────────
+        self._build_ui()
+        self._load_lama_async()
+
+    # ══════════════════════════════════════════════
+    #  UI 構築
+    # ══════════════════════════════════════════════
+    def _build_ui(self):
+        # ── ツールバー ────────────────────────────
+        bar = tk.Frame(self.root, bg=BG_PANEL, height=56)
+        bar.pack(side=tk.TOP, fill=tk.X)
+        bar.pack_propagate(False)
+
+        def _btn(parent, text, cmd, color=BG_BTN, width=None):
+            kw = dict(text=text, command=cmd, bg=color, fg=TEXT_MAIN,
+                      relief=tk.FLAT, padx=12, pady=6,
+                      font=("Yu Gothic UI", 10), cursor="hand2",
+                      activebackground="#1a4a80", activeforeground="white")
+            if width:
+                kw["width"] = width
+            b = tk.Button(parent, **kw)
+            return b
+
+        # 表示切替
+        self.view_btn = _btn(bar, "🔍 実寸表示", self.toggle_view)
+        self.view_btn.pack(side=tk.LEFT, padx=(10, 4), pady=10)
+
+        _sep(bar)
+
+        # ブラシサイズ
+        tk.Label(bar, text="ブラシ径:", bg=BG_PANEL, fg=TEXT_DIM,
+                 font=("Yu Gothic UI", 9)).pack(side=tk.LEFT, padx=(8, 2), pady=10)
+        self.brush_var = tk.IntVar(value=self.brush_size)
+        sp = tk.Spinbox(bar, from_=4, to=300, textvariable=self.brush_var,
+                        width=5, command=self._on_brush_change,
+                        font=("Yu Gothic UI", 10),
+                        bg="#0d2240", fg=TEXT_MAIN, insertbackground=TEXT_MAIN,
+                        relief=tk.FLAT, buttonbackground=BG_BTN)
+        sp.pack(side=tk.LEFT, pady=10)
+        sp.bind("&lt;Return&gt;", lambda e: self._on_brush_change())
+        tk.Label(bar, text="px", bg=BG_PANEL, fg=TEXT_DIM,
+                 font=("Yu Gothic UI", 9)).pack(side=tk.LEFT, padx=(2, 4))
+
+        # マスククリア
+        _btn(bar, "🗑 マスククリア", self.clear_mask).pack(side=tk.LEFT, padx=4, pady=10)
+
+        _sep(bar)
+
+        # 除去実行
+        self.process_btn = _btn(bar, "⚡ オブジェクト除去", self.run_inpainting, color=ACCENT)
+        self.process_btn.pack(side=tk.LEFT, padx=8, pady=10)
+
+        _sep(bar)
+
+        # Undo
+        _btn(bar, "↩ 1つ戻す",   self.undo_one).pack(side=tk.LEFT, padx=4, pady=10)
+        _btn(bar, "⏮ すべて戻す", self.undo_all).pack(side=tk.LEFT, padx=4, pady=10)
+
+        # 保存 (右端)
+        _btn(bar, "💾 保存", self.save_image, color="#1a6640").pack(side=tk.RIGHT, padx=12, pady=10)
+
+        # ── プログレスバー ────────────────────────
+        style = ttk.Style()
+        style.theme_use("clam")
+        style.configure("TProgressbar",
+                        troughcolor=BG_DARK, background=ACCENT,
+                        bordercolor=BG_PANEL, lightcolor=ACCENT, darkcolor=ACCENT)
+        prog_frame = tk.Frame(self.root, bg=BG_DARK, height=4)
+        prog_frame.pack(side=tk.TOP, fill=tk.X)
+        prog_frame.pack_propagate(False)
+        self.progress = ttk.Progressbar(prog_frame, mode="indeterminate", style="TProgressbar")
+        self.progress.pack(fill=tk.BOTH, expand=True)
+
+        # ── キャンバスエリア ──────────────────────
+        self.canvas_frame = tk.Frame(self.root, bg=BG_DARK)
+        self.canvas_frame.pack(side=tk.TOP, fill=tk.BOTH, expand=True)
+
+        self.v_scroll = tk.Scrollbar(self.canvas_frame, orient=tk.VERTICAL,
+                                     bg=BG_PANEL, troughcolor=BG_DARK)
+        self.h_scroll = tk.Scrollbar(self.canvas_frame, orient=tk.HORIZONTAL,
+                                     bg=BG_PANEL, troughcolor=BG_DARK)
+
+        self.canvas = tk.Canvas(self.canvas_frame, bg=BG_DARK,
+                                highlightthickness=0, cursor="none",
+                                yscrollcommand=self.v_scroll.set,
+                                xscrollcommand=self.h_scroll.set)
+        self.v_scroll.config(command=self.canvas.yview)
+        self.h_scroll.config(command=self.canvas.xview)
+        self.canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+
+        # ── ステータスバー ────────────────────────
+        self.status_var = tk.StringVar(value="写真をドラッグ＆ドロップしてください")
+        tk.Label(self.root, textvariable=self.status_var, bg="#0d0d1a", fg=TEXT_DIM,
+                 anchor=tk.W, padx=12, font=("Yu Gothic UI", 9)
+                 ).pack(side=tk.BOTTOM, fill=tk.X)
+
+        # ── D&amp;D ──────────────────────────────────
+        self.canvas.drop_target_register(DND_FILES)
+        self.canvas.dnd_bind("&lt;&lt;Drop&gt;&gt;", self.on_drop)
+
+        # ── マウスイベント ────────────────────────
+        self.canvas.bind("&lt;Button-1&gt;",        self.on_press)
+        self.canvas.bind("&lt;B1-Motion&gt;",       self.on_drag)
+        self.canvas.bind("&lt;ButtonRelease-1&gt;", self.on_release)
+        self.canvas.bind("&lt;Motion&gt;",          self.on_mouse_move)
+        self.canvas.bind("&lt;Leave&gt;",           self.on_mouse_leave)
+
+        # ── リサイズ ──────────────────────────────
+        self.root.bind("&lt;Configure&gt;", self.on_resize)
+
+        # ドロップゾーンテキスト
+        self.drop_label_id = self.canvas.create_text(
+            640, 380,
+            text="📂  写真をここにドラッグ＆ドロップ",
+            font=("Yu Gothic UI", 18), fill="#3a3a5a", tags="drop_hint"
+        )
+        self.canvas.create_text(
+            640, 420,
+            text="JPG / PNG / BMP / TIFF / WebP",
+            font=("Yu Gothic UI", 11), fill="#2a2a4a", tags="drop_hint"
+        )
+
+    # ══════════════════════════════════════════════
+    #  LaMa モデル読み込み
+    # ══════════════════════════════════════════════
+    def _load_lama_async(self):
+        self.status_var.set("🔄 LaMaモデルを読み込み中… (初回はダウンロードが発生します)")
+        self.progress.start(12)
+
+        def _load():
+            try:
+                import torch
+                from simple_lama_inpainting import SimpleLama
+                device = "cuda" if torch.cuda.is_available() else "cpu"
+                self.lama = SimpleLama()   # 内部でCUDAを自動使用
+                msg = f"✅ LaMaモデル準備完了  (デバイス: {device.upper()})  |  写真をドラッグ＆ドロップしてください"
+            except Exception as e:
+                msg = f"❌ LaMaモデルエラー: {e}"
+            self.root.after(0, lambda: (
+                self.status_var.set(msg),
+                self.progress.stop(),
+                self.progress.config(value=0),
+            ))
+
+        threading.Thread(target=_load, daemon=True).start()
+
+    # ══════════════════════════════════════════════
+    #  ファイル操作
+    # ══════════════════════════════════════════════
+    def on_drop(self, event):
+        raw = event.data.strip()
+        # Windowsでは複数ファイルが {} で囲まれることがある
+        paths = self.root.tk.splitlist(raw)
+        path = paths[0] if paths else raw.strip("{}")
+        ext = os.path.splitext(path)[1].lower()
+        if ext not in SUPPORTED_EXT:
+            messagebox.showerror("エラー", f"非対応の形式です: {ext}\n{', '.join(SUPPORTED_EXT)}")
+            return
+        self._load_image(path)
+
+    def _load_image(self, path: str):
+        _pil = Image.open(path)
+        self.icc_profile = _pil.info.get("icc_profile", None)  # 色合い保持
+        img = _pil.convert("RGB")
+        self.original_path  = path
+        self.source_dir     = os.path.dirname(path)
+        self.original_stem  = os.path.splitext(os.path.basename(path))[0]
+        self.img_history    = [img.copy()]
+        self.current_image  = img.copy()
+        self._reset_mask()
+        self.canvas.delete("drop_hint")
+        self.status_var.set(
+            f"📷 {os.path.basename(path)}  ({img.width} × {img.height} px)"
+        )
+        self._update_display()
+
+    # ══════════════════════════════════════════════
+    #  マスク
+    # ══════════════════════════════════════════════
+    def _reset_mask(self):
+        if self.current_image:
+            w, h = self.current_image.size
+            self.mask_image = Image.new("L", (w, h), 0)
+            self.mask_stroke_history.clear()
+
+    def clear_mask(self):
+        self._reset_mask()
+        self._update_display()
+        self.status_var.set("🗑 マスクをクリアしました")
+
+    # ══════════════════════════════════════════════
+    #  表示
+    # ══════════════════════════════════════════════
+    def toggle_view(self):
+        self.fit_mode = not self.fit_mode
+        if self.fit_mode:
+            self.view_btn.config(text="🔍 実寸表示")
+            self.v_scroll.pack_forget()
+            self.h_scroll.pack_forget()
+        else:
+            self.view_btn.config(text="🔭 縮小表示")
+            self.h_scroll.pack(side=tk.BOTTOM, fill=tk.X)
+            self.v_scroll.pack(side=tk.RIGHT,  fill=tk.Y)
+        self._update_display()
+
+    def on_resize(self, event):
+        if self.fit_mode and self.current_image:
+            self._update_display()
+
+    def _update_display(self):
+        if not self.current_image:
+            return
+        self.canvas.delete("img_layer")
+        self.canvas.delete("mask_layer")
+
+        img = self.current_image
+        iw, ih = img.size
+        cw = self.canvas.winfo_width()
+        ch = self.canvas.winfo_height()
+        if cw &lt; 10 or ch &lt; 10:
+            self.root.after(80, self._update_display)
+            return
+
+        if self.fit_mode:
+            scale = min(cw / iw, ch / ih)
+            self.disp_scale = scale
+            dw, dh = max(1, int(iw * scale)), max(1, int(ih * scale))
+            xoff   = (cw - dw) // 2
+            yoff   = (ch - dh) // 2
+            self.img_offset = (xoff, yoff)
+            self.canvas.config(scrollregion=(0, 0, cw, ch))
+            disp_img  = img.resize((dw, dh), Image.LANCZOS)
+            disp_mask = self.mask_image.resize((dw, dh), Image.NEAREST)
+        else:
+            self.disp_scale = 1.0
+            dw, dh = iw, ih
+            self.img_offset = (0, 0)
+            self.canvas.config(scrollregion=(0, 0, dw, dh))
+            disp_img  = img.copy()
+            disp_mask = self.mask_image.copy()
+
+        # マスクオーバーレイ合成
+        overlay   = Image.new("RGBA", (dw, dh), (0, 0, 0, 0))
+        mask_rgba = Image.new("RGBA", (dw, dh), MASK_COLOR)
+        overlay.paste(mask_rgba, mask=disp_mask)
+        composited = Image.alpha_composite(disp_img.convert("RGBA"), overlay)
+
+        self.photo_tk = ImageTk.PhotoImage(composited)
+        xoff, yoff = self.img_offset
+        self.canvas.create_image(xoff, yoff, anchor=tk.NW,
+                                 image=self.photo_tk, tags="img_layer")
+        self._redraw_cursor()
+
+    # ══════════════════════════════════════════════
+    #  マウス操作
+    # ══════════════════════════════════════════════
+    def _canvas_to_image(self, cx: int, cy: int) -&gt; tuple[int, int]:
+        sx = self.canvas.canvasx(cx)
+        sy = self.canvas.canvasy(cy)
+        xoff, yoff = self.img_offset
+        ix = (sx - xoff) / self.disp_scale
+        iy = (sy - yoff) / self.disp_scale
+        return int(ix), int(iy)
+
+    def on_press(self, event):
+        if not self.current_image or self.processing:
+            return
+        self.is_drawing = True
+        # このストローク開始前のマスクを保存
+        self.mask_stroke_history.append(self.mask_image.copy())
+        ix, iy = self._canvas_to_image(event.x, event.y)
+        self._draw_circle(ix, iy)
+        self.last_img_xy = (ix, iy)
+
+    def on_drag(self, event):
+        if not self.is_drawing or not self.current_image:
+            return
+        ix, iy = self._canvas_to_image(event.x, event.y)
+        r = max(1, self.brush_size // 2)
+        draw = ImageDraw.Draw(self.mask_image)
+        if self.last_img_xy:
+            lx, ly = self.last_img_xy
+            draw.line([lx, ly, ix, iy], fill=255, width=r * 2)
+        draw.ellipse([ix - r, iy - r, ix + r, iy + r], fill=255)
+        self.last_img_xy = (ix, iy)
+        self._update_display()
+        self._move_cursor(event.x, event.y)
+
+    def on_release(self, event):
+        self.is_drawing  = False
+        self.last_img_xy = None
+
+    def on_mouse_move(self, event):
+        self._move_cursor(event.x, event.y)
+
+    def on_mouse_leave(self, event):
+        if self.cursor_oval:
+            self.canvas.delete(self.cursor_oval)
+            self.cursor_oval = None
+
+    def _draw_circle(self, ix: int, iy: int):
+        r = max(1, self.brush_size // 2)
+        draw = ImageDraw.Draw(self.mask_image)
+        draw.ellipse([ix - r, iy - r, ix + r, iy + r], fill=255)
+        self._update_display()
+
+    def _move_cursor(self, cx: int, cy: int):
+        r_canvas = max(2, int(self.brush_size * self.disp_scale / 2))
+        if self.cursor_oval:
+            self.canvas.delete(self.cursor_oval)
+        self.cursor_oval = self.canvas.create_oval(
+            cx - r_canvas, cy - r_canvas,
+            cx + r_canvas, cy + r_canvas,
+            outline=ACCENT, width=2, dash=(4, 3), tags="cursor"
+        )
+
+    def _redraw_cursor(self):
+        if self.cursor_oval:
+            self.canvas.tag_raise("cursor")
+
+    def _on_brush_change(self):
+        try:
+            self.brush_size = max(4, min(300, int(self.brush_var.get())))
+            self.brush_var.set(self.brush_size)
+        except (tk.TclError, ValueError):
+            pass
+
+    # ══════════════════════════════════════════════
+    #  Undo
+    # ══════════════════════════════════════════════
+    def undo_one(self):
+        """マスクストロークを1つ戻す → なければ inpainting を1つ戻す"""
+        if self.mask_stroke_history:
+            self.mask_image = self.mask_stroke_history.pop()
+            self._update_display()
+            self.status_var.set("↩ マスクを1ストローク戻しました")
+        elif len(self.img_history) &gt; 1:
+            self.img_history.pop()
+            self.current_image = self.img_history[-1].copy()
+            self._reset_mask()
+            self._update_display()
+            self.status_var.set("↩ 除去操作を1つ戻しました")
+        else:
+            messagebox.showinfo("情報", "これ以上戻せません")
+
+    def undo_all(self):
+        """最初の画像まですべて戻す"""
+        if len(self.img_history) &lt;= 1 and not self.mask_stroke_history:
+            messagebox.showinfo("情報", "これ以上戻せません")
+            return
+        if messagebox.askyesno("確認", "すべての操作を取り消して元の写真に戻しますか？"):
+            self.img_history   = [self.img_history[0]]
+            self.current_image = self.img_history[0].copy()
+            self._reset_mask()
+            self._update_display()
+            self.status_var.set("⏮ すべての操作を取り消しました")
+
+    # ══════════════════════════════════════════════
+    #  Inpainting 実行
+    # ══════════════════════════════════════════════
+    def run_inpainting(self):
+        if not self.current_image:
+            messagebox.showwarning("警告", "画像が読み込まれていません")
+            return
+        if self.lama is None:
+            messagebox.showwarning("警告", "LaMaモデルがまだ準備できていません\nしばらくお待ちください")
+            return
+        if self.processing:
+            return
+        mask_arr = np.array(self.mask_image)
+        if mask_arr.max() == 0:
+            messagebox.showwarning("警告", "除去範囲が指定されていません\nマウスで除去したい部分を塗ってください")
+            return
+
+        self.processing = True
+        self.process_btn.config(state=tk.DISABLED, text="⏳ 処理中…")
+        self.status_var.set("⚡ LaMa Inpainting 処理中… GPUで高速化中")
+        self.progress.start(10)
+
+        img_snap  = self.current_image.copy()
+        mask_snap = self.mask_image.copy()
+
+        def _work():
+            try:
+                result = self.lama(img_snap, mask_snap)
+                self.root.after(0, lambda: self._on_done(result))
+            except Exception as e:
+                self.root.after(0, lambda: self._on_error(str(e)))
+
+        threading.Thread(target=_work, daemon=True).start()
+
+    def _on_done(self, result: Image.Image):
+        self.img_history.append(result.copy())
+        self.current_image = result.copy()
+        self._reset_mask()
+        self._update_display()
+        self.progress.stop()
+        self.process_btn.config(state=tk.NORMAL, text="⚡ オブジェクト除去")
+        self.processing = False
+        self.status_var.set("✅ 除去完了！  続けて塗り直すか、保存してください")
+
+    def _on_error(self, msg: str):
+        self.progress.stop()
+        self.process_btn.config(state=tk.NORMAL, text="⚡ オブジェクト除去")
+        self.processing = False
+        self.status_var.set(f"❌ エラー: {msg}")
+        messagebox.showerror("エラー", f"処理中にエラーが発生しました:\n\n{msg}")
+
+    # ══════════════════════════════════════════════
+    #  保存
+    # ══════════════════════════════════════════════
+    def save_image(self):
+        if not self.current_image:
+            messagebox.showwarning("警告", "保存する画像がありません")
+            return
+
+        default_name = f"{self.original_stem}_edited"
+        initial_dir  = self.source_dir or os.path.expanduser("~")
+
+        path = filedialog.asksaveasfilename(
+            title="名前を付けて保存",
+            initialdir=initial_dir,
+            initialfile=default_name,
+            defaultextension=".jpg",
+            filetypes=[
+                ("JPEG",         "*.jpg *.jpeg"),
+                ("PNG (可逆圧縮)", "*.png"),
+                ("すべてのファイル", "*.*"),
+            ],
+        )
+        if not path:
+            return
+
+        ext = os.path.splitext(path)[1].lower()
+        save_img = self.current_image.copy()
+        try:
+            icc = getattr(self, "icc_profile", None)
+            if ext in (".jpg", ".jpeg"):
+                save_kw = {"quality": 95, "subsampling": 0}
+                if icc:
+                    save_kw["icc_profile"] = icc
+                save_img.save(path, "JPEG", **save_kw)
+            else:
+                save_kw = {}
+                if icc:
+                    save_kw["icc_profile"] = icc
+                save_img.save(path, **save_kw)
+            self.status_var.set(f"💾 保存完了: {path}")
+        except Exception as e:
+            messagebox.showerror("保存エラー", str(e))
+
+
+# ─────────────────────────────────────────────────
+#  ヘルパー
+# ─────────────────────────────────────────────────
+def _sep(parent):
+    tk.Frame(parent, bg="#2a2a50", width=1).pack(side=tk.LEFT, fill=tk.Y, padx=6, pady=10)
+
+
+# ─────────────────────────────────────────────────
+#  エントリーポイント
+# ─────────────────────────────────────────────────
+def main():
+    root = TkinterDnD.Tk()
+    ObjectRemovalApp(root)
+    root.mainloop()
+
+
+if __name__ == "__main__":
+    main()
+</pre>
+<p>「install.bat」実行時、以下のエラーが出るが、問題ない。これは、pipの依存関係チェッカーの警告であり、実際のエラーではない。</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260325/20260325083443.jpg" width="1115" height="628" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p><a class="link-card" href="https://ok2nd.github.io/sitemap/hatena-sitemap-table.html?search=%E3%82%AA%E3%83%96%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%20%E9%99%A4%E5%8E%BB" target="_blank" rel="noopener noreferrer"><span class="lc-body"><span class="lc-title">晴歩雨描：記事一覧</span><span class="lc-desc"></span><span class="lc-site">ok2nd.github.io</span></span></a></p>
+<p><a class="link-card" href="../../../2024/06/02/140023.html"><span class="lc-body"><span class="lc-title">消しゴムマジックのように、写真に写り込んだ不要な人や物を消すオブジェクト除去無料Webツール比較。SnapEdit、Cleanup.pictures、Hama、Magic Eraser、ClipDrop、MyEdit、PicWish、Inpaint、Cutout.Pro。</span><span class="lc-desc">Googleフォトアプリの消しゴムマジックのように、写真に写り込んだ不要な人や物を消すオブジェクト除去Webツールをいくつか試してきたが、今回改めて比較してみた。 無料で使える範囲で検証した。 SnapEdit（ htt…</span><span class="lc-site">晴歩雨描 · <time>2024-06-02</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20240602/20240602132230.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2024/10/06/155635.html"><span class="lc-body"><span class="lc-title">消しゴムマジックのように、写真に写り込んだ不要な人や物を消す（オブジェクト除去）無料Webツールアプリ「AI Ease」。</span><span class="lc-desc">消しゴムマジックのように、写真に写り込んだ不要な人や物を消すWebツールを色々と試してきた。 SnapEdit、Hama、Magic Eraser、ClipDrop、MyEdit、Cleanup.pictures、Pic…</span><span class="lc-site">晴歩雨描 · <time>2024-10-06</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20241006/20241006183858.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2025/12/19/133333.html"><span class="lc-body"><span class="lc-title">画像生成AIツール）「GPT-Image-1.5」で、言葉で指示しての写真のオブジェクト除去を試した。「Seedream 4」「Grok Imagine」「Qwen3-Max」「Nano Banana Pro（Gemini 3）」「Nano Banana（Gemini 2.5）」「Copilot（GPT-5）」「ChatGPT（GPT-5）」と比較。</span><span class="lc-desc">以前に、複数のWeb画像生成AIツールで「写真のオブジェクト除去」を比較してみた。 どの画像生成AIツールも、オブジェクト除去以外の部分も再描画しているため、元の写真とは別の画像になってしまってる。そういった意味ではどれ…</span><span class="lc-site">晴歩雨描 · <time>2025-12-19</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20251219/20251219132432.jpg" alt="" loading="lazy"></span></a></p></div></article>
+</body>
+</html>

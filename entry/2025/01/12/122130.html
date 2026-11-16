@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>JavaScript）写真画像補正編集ツール作成。写真の彩度、明るさ、色温度、シャープネスを調整。＋ノイズリダクション。 - 晴歩雨描</title>
+<link rel="stylesheet" href="../../../../style.css">
+</head>
+<body>
+<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>JavaScript）写真画像補正編集ツール作成。写真の彩度、明るさ、色温度、シャープネスを調整。＋ノイズリダクション。</h1><p class="meta">2025-01-12 · <a href="../../../../category/c18.html">写真・カメラ</a> <a href="../../../../category/c13.html">ホームページ、Web作成</a> <a href="../../../../category/c42.html">＜AI＞</a></p><div class="entry-body"><p>写真・画像の編集ツールはたくさんある。が、どれも高機能でちょっとした補正程度の編集には手順が面倒なケースもある。</p>
+<p>ということで、機能を絞った簡易画像編集ツール作成。AIツールChatGPT、Copilotで作った。</p>
+<p>写真の<span style="color: #dd830c;"><em>彩度</em></span>、<span style="color: #dd830c;"><em>明るさ（明度）</em></span>、<span style="color: #dd830c;"><em>色温度</em></span>、<span style="color: #dd830c;"><em>シャープネス</em></span>の調整。＋<span style="color: #dd830c;"><em>ノイズリダクション</em></span>。</p>
+<ul>
+<li>パソコンで使うことを想定。</li>
+<li>JavaScriptで処理しているので、サーバー側に画像データが送られることはない。</li>
+<li>写真サイズの制限はないが、ブログにアップする程度の画素数（1200x1200ピクセル）を想定している。画素数が多いと処理時間がかかる。</li>
+<li>写真は左側の枠にドラッグ＆ドロップする。</li>
+<li>それぞれの調整項目の値範囲は、必要以上の値にはせず、通常の写真の補正に使う程度にした。項目毎にリセットボタンも付けた。</li>
+<li>処理前後の画質をブラウザ画面の左右で確認できる。</li>
+<li>違う写真画像をドロップ（アップロード）すると、前の調整値がそのまま適用される。</li>
+<li>結果の写真をダウンロードできる。ダウンロード・ファイル名には、彩度、明るさ、色温度、ノイズリダクション、シャープネスの適用数値が入る。<br />　例：ケリ(彩度53,明るさ1.3,色温度6360,NR0.79,SH0.13)</li>
+</ul>
+<p><a href="https://ok2nd.github.io/tool/photo/edit/tool.html" target="_blank">https://ok2nd.github.io/tool/photo/edit/tool.html</a></p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250112/20250112122355.jpg" width="983" height="645" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>【サンプル Ａ】</p>
+<figure class="figure-image figure-image-fotolife mceNonEditable" title="オリジナル画像">
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250112/20250112122536.jpg" width="1200" height="1064" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<figcaption class="mceEditable">オリジナル画像</figcaption>
+</figure>
+<figure class="figure-image figure-image-fotolife mceNonEditable" title="処理後の画像">
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250112/20250112122552.jpg" width="1200" height="1064" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<figcaption class="mceEditable">処理後の画像（彩度53,明るさ1.3,色温度6360,NR0.79,SH0.13）</figcaption>
+</figure>
+<p>【サンプル Ｂ】</p>
+<figure class="figure-image figure-image-fotolife mceNonEditable" title="オリジナル画像">
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250925/20250925102417.jpg" width="1200" height="1166" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<figcaption class="mceEditable">オリジナル画像</figcaption>
+</figure>
+<figure class="figure-image figure-image-fotolife mceNonEditable" title="シャープネスだけMAX1にした">
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250925/20250925102435.jpg" width="1200" height="1166" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<figcaption class="mceEditable">シャープネスだけMAX1にした</figcaption>
+</figure>
+<p><a class="link-card" href="../../09/25/124757.html"><span class="lc-body"><span class="lc-title">Claude）Python）ローカル）写真のシャープネス、コントラスト、明度、彩度を調整するWindowsアプリ作成。野鳥写真で、等倍高画質化をTopaz Labs、Aiarty Image Enhancerと比較。</span><span class="lc-desc">Pythonで「 写真のシャープネス、コントラスト、明度、彩度を調整する 」Windowsアプリを作成。「Claude」で作成。 【機能概略】 写真画像(JPEG,PNG)をウインドウに、ドラッグ＆ドロップで取り込み。 …</span><span class="lc-site">晴歩雨描 · <time>2025-09-25</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250925/20250925123628.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../08/092935.html"><span class="lc-body"><span class="lc-title">JavaScript）画像2倍アップスケーリング＆シャープネス・ツール作成。Windows高画質化アプリ「Aiarty Image Enhancer」に負ける。</span><span class="lc-desc">最近、AIによる画像アップスケーリング・ツールがたくさん出ている。 いずれも処理時間がかかるし、ノイズ低減処理なども合わせて行われ、写真によっては期待外れの結果に終わる場合もある。 野鳥写真で、遠くて小さくしか撮れなかっ…</span><span class="lc-site">晴歩雨描 · <time>2025-01-08</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250108/20250108084600.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../05/131859.html"><span class="lc-body"><span class="lc-title">JavaScript）白黒（モノクロ）画像をブラウザにアップロードして、色（カラー）変換するWebツール作成。アンチエイリアシング対応。カラーピッカー使用。Copilotで作成。</span><span class="lc-desc">白黒（モノクロ）画像をブラウザにアップロードして、色（カラー）変換するWebツールをJavaScriptで作成。 白黒画像を簡単な手順でカラー変換できるツールは意外と見つからない。 なので、カラー変換できるツールを、HT…</span><span class="lc-site">晴歩雨描 · <time>2025-01-05</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250105/20250105131043.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2024/11/24/111430.html"><span class="lc-body"><span class="lc-title">JavaScript）ブラウザに画像をアップロードしてトーンカーブで色補正をしてダウンロードできるページ。「jquery.iocurve」使用。</span><span class="lc-desc">ブラウザに画像をアップロードして、トーンカーブ編集をしてダウンロードできるページを作成。 ※ PCでの利用を想定。スマホでは使えない。 https://ok2nd.github.io/tool/photo/tone-cu…</span><span class="lc-site">晴歩雨描 · <time>2024-11-24</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20241124/20241124111541.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2024/09/16/134405.html"><span class="lc-body"><span class="lc-title">JavaScript）2枚の写真/画像比較ツール「TwentyTwenty」で、縦方向ブラウザの高さ一杯に画像が入るようにした。＋CSSでheight:100%が効かない時の対策。</span><span class="lc-desc">以前に、2枚の写真/画像を比較するJavaScriptツール「TwentyTwenty」を試してみた。 標準では、ブラウザ画面の横幅一杯に画像が表示されるため、縦方向に画像が切れる。 縦方向ブラウザの高さ一杯に画像が入る…</span><span class="lc-site">晴歩雨描 · <time>2024-09-16</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20240916/20240916133006.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2021/07/21/120850.html"><span class="lc-body"><span class="lc-title">JavaScript）2枚の写真/画像の一部を拡大して画質比較できるツールを作成。</span><span class="lc-desc">ブラウザで、2枚の写真の一部を拡大して画質比較できるツールを作成してみた。 「画像の一部を拡大して別枠に表示する」以下のJavaScriptライブラリ「jquery.ImageExpansion.js」の改修版を使用。 …</span><span class="lc-site">晴歩雨描 · <time>2021-07-21</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20210721/20210721105848.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2019/07/27/164241.html"><span class="lc-body"><span class="lc-title">JavaScript）パソコンローカルの2枚の写真/画像をドラッグ＆ドロップして横並びに表示して比較するWebツール作成。</span><span class="lc-desc">2つの写真/画像を横に並べて比較したい時がある。似たような写真でどちらが良いかを確認したい時など。 画像を横に並べて比較できるツールはあるが、似たような写真がたくさんある場合、比較相手をとっかえひっかえしながら比べたい場…</span><span class="lc-site">晴歩雨描 · <time>2019-07-27</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190727/20190727160638.jpg" alt="" loading="lazy"></span></a></p></div></article>
+</body>
+</html>

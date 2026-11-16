@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>「PHP Simple HTML DOM Parser」で、Webスクレイピング（HTMLから情報を抽出）。 - 晴歩雨描</title>
+<link rel="stylesheet" href="../../../../style.css">
+</head>
+<body>
+<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>「PHP Simple HTML DOM Parser」で、Webスクレイピング（HTMLから情報を抽出）。</h1><p class="meta">2021-05-18 · <a href="../../../../category/c13.html">ホームページ、Web作成</a></p><div class="entry-body"><p>「<em><a class="keyword" href="http://d.hatena.ne.jp/keyword/PHP">PHP</a> Simple HTML DOM Parser</em>」で、<em>Web<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%B9%A5%AF%A5%EC%A5%A4%A5%D4%A5%F3%A5%B0">スクレイピング</a></em>（HTMLから情報を抽出）を試してみた。</p>
+<p>以下のWebページを参考にした。</p>
+<p><a class="link-card" href="https://so-zou.jp/web-app/tech/programming/php/library/simplehtmldom/" target="_blank" rel="noopener noreferrer"><span class="lc-body"><span class="lc-title">PHP Simple HTML DOM Parserの使用方法 - Webスクレイピング ライブラリ</span><span class="lc-desc"></span><span class="lc-site">so-zou.jp</span></span></a></p>
+<p><a class="link-card" href="http://weble.org/2011/11/09/php-simple-html-dom-parser" target="_blank" rel="noopener noreferrer"><span class="lc-body"><span class="lc-title">weble.org</span><span class="lc-desc">Find the best information and most relevant links on all topics related to weble.org.</span><span class="lc-site">weble.org</span></span></a></p>
+<p>以下から<a class="keyword" href="http://d.hatena.ne.jp/keyword/PHP">PHP</a>ライブラリをダウンロードする。</p>
+<p><a class="link-card" href="https://sourceforge.net/projects/simplehtmldom/files/" target="_blank" rel="noopener noreferrer"><span class="lc-body"><span class="lc-title">PHP Simple HTML DOM Parser - Browse Files at SourceForge.net</span><span class="lc-desc">PHP Simple HTML DOM Parser files. Full list of files for PHP Simple HTML DOM Parser, A php based DOM parser.</span><span class="lc-site">sourceforge.net</span></span></a></p>
+<p>「simple_html_dom.<a class="keyword" href="http://d.hatena.ne.jp/keyword/php">php</a>」を読み込む。</p>
+<pre>&lt;?<a class="keyword" href="http://d.hatena.ne.jp/keyword/php">php</a>
+require_once('simple_html_dom.<a class="keyword" href="http://d.hatena.ne.jp/keyword/php">php</a>');
+?&gt;
+</pre>
+<p>例えば、次のような<a class="keyword" href="http://d.hatena.ne.jp/keyword/%B2%C1%B3%CA.com">価格.com</a>の一覧リストから製品名を抽出する。</p>
+<p><a target="_blank" href="https://kakaku.com/camera/camera-lens/itemlist.aspx?pdf_Spec101=1&amp;pdf_Spec102=1&amp;pdf_Spec103=35">https://kakaku.com/camera/camera-lens/itemlist.aspx?pdf_Spec101=1&amp;pdf_Spec102=1&amp;pdf_Spec103=35</a></p>
+<p>≪HTMLの抜粋≫</p>
+<pre>&lt;table&gt;
+&lt;tr&gt;
+&lt;td class="ckitemLink"&gt;
+&lt;a href="<a href="https://kakaku.com/.....">https://kakaku.com/.....</a>" class="ckitanker"&gt;&lt;span&gt;メーカー名&lt;/span&gt;製品名&lt;/a&gt;
+&lt;/td&gt;
+&lt;td class="addFavoriteBtn"&gt;・・・・&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;</pre>
+<p>上記の様なHTMLから製品名が入っているclass名「ckitemLink」の中を抜き出すソースは以下。</p>
+<pre>&lt;?<a class="keyword" href="http://d.hatena.ne.jp/keyword/php">php</a>
+require_once('simple_html_dom.<a class="keyword" href="http://d.hatena.ne.jp/keyword/php">php</a>');
+parse('<a href="https://kakaku.com/camera/camera-lens/itemlist.aspx?pdf_Spec101=1&pdf_Spec102=1&pdf_Spec103=35');">https://kakaku.com/camera/camera-lens/itemlist.aspx?pdf_Spec101=1&pdf_Spec102=1&pdf_Spec103=35');</a>
+function parse($url) {
+	$html = file_get_html($url);
+	foreach ($html-&gt;find(<span style="color: #ff0000;">'.ckitemLink'</span>) as $element) {
+		echo <span style="color: #ff0000;">$element-&gt;outertext</span>.'&lt;br&gt;'."\n";
+	}
+}
+?&gt;
+</pre>
+<p>=&gt; 処理結果サンプル：<a href="https://ok2nd.sakura.ne.jp/parse/kakaku-1.php" target="_blank">https://ok2nd.sakura.ne.jp/parse/kakaku-1.php</a></p>
+<p>class名「ckitemLink」の中の&lt;a&gt;タグ内だけを抜き出すソースは以下。</p>
+<pre>&lt;?<a class="keyword" href="http://d.hatena.ne.jp/keyword/php">php</a>
+require_once('simple_html_dom.<a class="keyword" href="http://d.hatena.ne.jp/keyword/php">php</a>');
+parse('<a href="https://kakaku.com/camera/camera-lens/itemlist.aspx?pdf_Spec101=1&pdf_Spec102=1&pdf_Spec103=35');">https://kakaku.com/camera/camera-lens/itemlist.aspx?pdf_Spec101=1&pdf_Spec102=1&pdf_Spec103=35');</a>
+function parse($url) {
+	$html = file_get_html($url);
+	foreach ($html-&gt;find(<span style="color: #ff0000;">'.ckitemLink a'</span>) as $element) {
+		echo $element-&gt;outertext.'&lt;br&gt;'."\n";
+	}
+}
+?&gt;
+</pre>
+<p>=&gt; 処理結果サンプル：<a href="https://ok2nd.sakura.ne.jp/parse/kakaku-2.php" target="_blank">https://ok2nd.sakura.ne.jp/parse/kakaku-2.php</a></p>
+<p>&lt;a&gt;タグ内のタイトルとURLをそれぞれ別々に抜き出す。</p>
+<pre>&lt;?<a class="keyword" href="http://d.hatena.ne.jp/keyword/php">php</a>
+require_once('simple_html_dom.<a class="keyword" href="http://d.hatena.ne.jp/keyword/php">php</a>');
+parse('<a href="https://kakaku.com/camera/camera-lens/itemlist.aspx?pdf_Spec101=1&pdf_Spec102=1&pdf_Spec103=35');">https://kakaku.com/camera/camera-lens/itemlist.aspx?pdf_Spec101=1&pdf_Spec102=1&pdf_Spec103=35');</a>
+function parse($url) {
+	$html = file_get_html($url);
+	foreach ($html-&gt;find('.ckitemLink a') as $element) {
+		echo <span style="color: #ff0000;">$element-&gt;plaintext</span>.' ■ ';
+		echo <span style="color: #ff0000;">$element-&gt;href</span>.'&lt;br&gt;'."\n";
+	}
+}
+?&gt;
+</pre>
+<p>=&gt; 処理結果サンプル：<a href="https://ok2nd.sakura.ne.jp/parse/kakaku-3.php" target="_blank">https://ok2nd.sakura.ne.jp/parse/kakaku-3.php</a></p>
+<p><a class="link-card" href="../../../2020/11/06/231247.html"><span class="lc-body"><span class="lc-title">PHP）多次元連想配列のソート。array_multisort()。「My野鳥図鑑」の野鳥の並びを五十音順に。</span><span class="lc-desc">備忘録として。PHPの多次元連想配列のソート。 「My 野鳥図鑑」の野鳥の並びを五十音順にした。 以下、PHPソースの抜粋（説明のため、実際よりはシンプルにしてある）。野鳥データは適時順番を考えずに多次元連想配列に。 $…</span><span class="lc-site">晴歩雨描 · <time>2020-11-06</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20201106/20201106230805.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2018/07/13/144317.html"><span class="lc-body"><span class="lc-title">PHP）シンプルなHTMLカレンダー。Google Calendar API v3で祝日表示。コードサンプル。</span><span class="lc-desc">先日作成したスマホ&amp;PC用検索ポータル「2nd Sch」にカレンダー表示のため、シンプルなHTMLカレンダーを作成。 祝日表示に「Google Calendar API v3」を使用。 ただ、祝日は当年の前後合わせて3年…</span><span class="lc-site">晴歩雨描 · <time>2018-07-13</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20180713/20180713143522.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2016/03/27/134726.html"><span class="lc-body"><span class="lc-title">パソコン用Webポータルシステム「MyHome Portal」</span><span class="lc-desc">パソコン用の個人または家族で使える自宅用のWebポータルシステム「 MyHome Portal 」をオープンソース/フリーソフトとして公開している。 《MyHome Portal》 https://ok2nd.githu…</span><span class="lc-site">晴歩雨描 · <time>2016-03-27</time></span></span><span class="lc-thumb"><img src="http://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20160327/20160327133617.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2018/07/07/144138.html"><span class="lc-body"><span class="lc-title">HTML(TABLE)クリッカブルマップ「日本地図」を作成。スマホ対応。</span><span class="lc-desc">HTML(TABLE)で、クリッカブルマップとしての日本地図を作成。（昔、作ったものを手直し） スマホを想定して、縦長画面の時は都道府県名を縦書きにして画面内に収まるようにした。スマホ画面を横位置にした場合の縦が狭い画面…</span><span class="lc-site">晴歩雨描 · <time>2018-07-07</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20180707/20180707224156.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2019/06/21/215450.html"><span class="lc-body"><span class="lc-title">「Google Search Console」のサイトマップ登録の進展がないので、はてなブログのHTMLサイトマップを生成するスクリプト(JScript)を作成した。</span><span class="lc-desc">先日、「 Google Search Console 」で、 はてなブログ の サイトマップ （「sitemap. xml 」、「sitemap. xml ?page=???」）を登録したが、いくつかが「取得できませんで…</span><span class="lc-site">晴歩雨描 · <time>2019-06-21</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190621/20190621213324.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2019/06/24/002655.html"><span class="lc-body"><span class="lc-title">検索機能付き「はてなブログ記事一覧」HTML生成スクリプト(JScript)を作成。</span><span class="lc-desc">先日、はてなブログのHTMLサイトマップ（はてなブログ記事一覧）を生成するスクリプト(JScript)を作成した。 これは、Googleクローラーに読み込んでもらうのが目的だったが、今回は人間が利用するための「はてなブロ…</span><span class="lc-site">晴歩雨描 · <time>2019-06-24</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190623/20190623234257.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2019/09/09/200129.html"><span class="lc-body"><span class="lc-title">HTML、jQuery）HTMLフォトギャラリー＆スライドショー（Unite Gallery版）</span><span class="lc-desc">JavaScript ライブラリ「Unite Gallery」を使って、HTMLフォトギャラリー＆スライドショーを作成。 フォトギャラリー用の JavaScript ライブラリでは「Fotorama」「lightgall…</span><span class="lc-site">晴歩雨描 · <time>2019-09-09</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190909/20190909195107.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2019/07/27/164241.html"><span class="lc-body"><span class="lc-title">JavaScript）パソコンローカルの2枚の写真/画像をドラッグ＆ドロップして横並びに表示して比較するWebツール作成。</span><span class="lc-desc">2つの写真/画像を横に並べて比較したい時がある。似たような写真でどちらが良いかを確認したい時など。 画像を横に並べて比較できるツールはあるが、似たような写真がたくさんある場合、比較相手をとっかえひっかえしながら比べたい場…</span><span class="lc-site">晴歩雨描 · <time>2019-07-27</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190727/20190727160638.jpg" alt="" loading="lazy"></span></a></p></div></article>
+</body>
+</html>

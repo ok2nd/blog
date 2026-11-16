@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>JPEG圧縮率（品質レベル）の比較テストをしてみた。85が最適（？） - 晴歩雨描</title>
+<link rel="stylesheet" href="../../../../style.css">
+</head>
+<body>
+<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>JPEG圧縮率（品質レベル）の比較テストをしてみた。85が最適（？）</h1><p class="meta">2021-04-13 · <a href="../../../../category/c18.html">写真・カメラ</a></p><div class="entry-body"><p>JEPGは非可逆圧縮の画像フォーマット。画質を落としてファイルサイズを小さくできる。</p>
+<p>JPEG作成時に、圧縮率「品質レベル」（一般的な表現ではないかもしれない。英語では単に「quality」と表現しているようだ。）を指定できる。品質レベルによっては、人間の眼では画質の低下には気づかない。</p>
+<p>どの程度の品質レベルなら気づかないのかテストをしてみた。</p>
+<p>オリジナル画像をWindowsアプリ「縮小革命」で1200×800にする際に品質レベルを変えてテストした。</p>
+<p>以下のページで画質を比較できる。</p>
+<p><em><span style="color: rgb(255, 0, 0);">※ 以下、<a href="https://ok2nd.sakura.ne.jp/">https://ok2nd.sakura.ne.jp/</a> で始まるWebページは現在使えなくなっている。</span></em></p>
+<p>≪JPEG 圧縮率 テスト（１）≫</p>
+<p><a target="_blank" href="https://ok2nd.sakura.ne.jp/x-jpeg/t1.html">https://ok2nd.sakura.ne.jp/x-jpeg/t1.html</a></p>
+<p><a href="https://ok2nd.sakura.ne.jp/x-jpeg/t1.html" target="_blank"><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20210414/20210414085425.jpg" alt="f:id:art2nd:20210414085425j:plain" title="" class="hatena-fotolife" itemprop="image"></a></p>
+<p>ぱっと見はかなり圧縮しても瞬間的には画質劣化は解らない。眼を近づけて細部を確認すると品質レベル75ぐらいで画質劣化が解るようになる。品質レベル50程度だとかなり解る。</p>
+<figure class="figure-image figure-image-fotolife mceNonEditable" title="品質レベル：100">
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220702/20220702091231.jpg" width="1200" height="800" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<figcaption class="mceEditable">品質レベル：100（707KB）</figcaption>
+</figure>
+<figure class="figure-image figure-image-fotolife mceNonEditable" title="品質レベル：85">
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220702/20220702091250.jpg" width="1200" height="800" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<figcaption class="mceEditable">品質レベル：85（199KB）</figcaption>
+</figure>
+<figure class="figure-image figure-image-fotolife mceNonEditable" title="品質レベル：75">
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220702/20220702091302.jpg" width="1200" height="800" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<figcaption class="mceEditable">品質レベル：75（156KB）</figcaption>
+</figure>
+<figure class="figure-image figure-image-fotolife mceNonEditable" title="品質レベル：50">
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220702/20220702091312.jpg" width="1200" height="800" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<figcaption class="mceEditable">品質レベル：50（115KB）</figcaption>
+</figure>
+<figure class="figure-image figure-image-fotolife mceNonEditable" title="品質レベル：30（90KB）">
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220702/20220702092446.jpg" width="1200" height="800" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<figcaption class="mceEditable">品質レベル：30（90KB）</figcaption>
+</figure>
+<p>≪JPEG 圧縮率 テスト（２）≫</p>
+<p><a target="_blank" href="https://ok2nd.sakura.ne.jp/x-jpeg/t2.html">https://ok2nd.sakura.ne.jp/x-jpeg/t2.html</a></p>
+<p><a href="https://ok2nd.sakura.ne.jp/x-jpeg/t2.html" target="_blank"><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20210414/20210414085438.jpg" alt="f:id:art2nd:20210414085438j:plain" title="" class="hatena-fotolife" itemprop="image"></a></p>
+<p>テスト（２）では、品質レベル50程度でも、画質劣化はぱっと見ではよく解らない。しかし、品質レベル20になると中央の桜がかなり紫っぽくなってしまう。</p>
+<figure class="figure-image figure-image-fotolife mceNonEditable" title="品質レベル：100（1,241KB）">
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220702/20220702093003.jpg" width="1200" height="800" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<figcaption class="mceEditable">品質レベル：100（1,241KB）</figcaption>
+</figure>
+<figure class="figure-image figure-image-fotolife mceNonEditable" title="品質レベル：85（437KB）">
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220702/20220702093017.jpg" width="1200" height="800" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<figcaption class="mceEditable">品質レベル：85（437KB）</figcaption>
+</figure>
+<figure class="figure-image figure-image-fotolife mceNonEditable" title="品質レベル：50（236KB）">
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220702/20220702093030.jpg" width="1200" height="800" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<figcaption class="mceEditable">品質レベル：50（236KB）</figcaption>
+</figure>
+<figure class="figure-image figure-image-fotolife mceNonEditable" title="品質レベル：20（142KB）">
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220702/20220702093042.jpg" width="1200" height="800" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<figcaption class="mceEditable">品質レベル：20（142KB）</figcaption>
+</figure>
+<p>≪JPEG 圧縮率 テスト（３）≫</p>
+<p><a href="https://ok2nd.sakura.ne.jp/x-jpeg/t3.html" target="_blank">https://ok2nd.sakura.ne.jp/x-jpeg/t3.html</a></p>
+<p><a href="https://ok2nd.sakura.ne.jp/x-jpeg/t3.html" target="_blank"><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20210414/20210414085453.jpg" alt="f:id:art2nd:20210414085453j:plain" title="" class="hatena-fotolife" itemprop="image"></a></p>
+<p>テスト（３）では、品質レベル75で空にモアレ模様を少し感じる。品質レベルを下げるとモアレ模様がひどくなる。</p>
+<figure class="figure-image figure-image-fotolife mceNonEditable" title="品質レベル：100（999KB）">
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220702/20220702093126.jpg" width="1200" height="800" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<figcaption class="mceEditable">品質レベル：100（999KB）</figcaption>
+</figure>
+<figure class="figure-image figure-image-fotolife mceNonEditable" title="品質レベル：85（318KB）">
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220702/20220702093137.jpg" width="1200" height="800" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<figcaption class="mceEditable">品質レベル：85（318KB）</figcaption>
+</figure>
+<figure class="figure-image figure-image-fotolife mceNonEditable" title="品質レベル：75（247KB）">
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220702/20220702093149.jpg" width="1200" height="800" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<figcaption class="mceEditable">品質レベル：75（247KB）</figcaption>
+</figure>
+<figure class="figure-image figure-image-fotolife mceNonEditable" title="品質レベル：50（171KB）">
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220702/20220702093203.jpg" width="1200" height="800" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<figcaption class="mceEditable">品質レベル：50（171KB）</figcaption>
+</figure>
+<figure class="figure-image figure-image-fotolife mceNonEditable" title="品質レベル：30（126KB）">
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220702/20220702094251.jpg" width="1200" height="800" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<figcaption class="mceEditable">品質レベル：30（126KB）</figcaption>
+</figure>
+<p>3つのテストでは、品質レベル85程度までなら、人間の眼では画質低下に気づかない。</p>
+<p>それぞれ、ファイルサイズは以下のようになっている。品質レベル85だと、実際のファイルサイズは品質レベル100の30%前後になっている。</p>
+<div style="overflow-x: auto;">
+<table>
+<tbody>
+<tr>
+<th>テスト（１）</th>
+<th>テスト（２）</th>
+</tr>
+<tr>
+<td>
+<table>
+<tbody>
+<tr>
+<th>品質レベル</th>
+<th>ファイルサイズ</th>
+</tr>
+<tr>
+<td>100</td>
+<td>707KB</td>
+</tr>
+<tr>
+<td>96</td>
+<td>372KB（53%）</td>
+</tr>
+<tr>
+<td>94</td>
+<td>311KB（44%）</td>
+</tr>
+<tr>
+<td>92</td>
+<td>254KB（36%）</td>
+</tr>
+<tr>
+<td>90</td>
+<td>243KB（34%）</td>
+</tr>
+<tr>
+<td>85</td>
+<td>199KB（28%）</td>
+</tr>
+<tr>
+<td>80</td>
+<td>170KB（24%）</td>
+</tr>
+<tr>
+<td>75</td>
+<td>156KB（22%）</td>
+</tr>
+<tr>
+<td>70</td>
+<td>145KB（21%）</td>
+</tr>
+<tr>
+<td>65</td>
+<td>136KB（19%）</td>
+</tr>
+<tr>
+<td>60</td>
+<td>125KB（18%）</td>
+</tr>
+<tr>
+<td>50</td>
+<td>115KB（16%）</td>
+</tr>
+<tr>
+<td>40</td>
+<td>103KB（15%）</td>
+</tr>
+<tr>
+<td>30</td>
+<td>90KB（13%）</td>
+</tr>
+<tr>
+<td>20</td>
+<td>77KB（11%）</td>
+</tr>
+<tr>
+<td>10</td>
+<td>60KB（8%）</td>
+</tr>
+</tbody>
+</table>
+</td>
+<td>
+<table>
+<tbody>
+<tr>
+<th>品質レベル</th>
+<th>ファイルサイズ</th>
+</tr>
+<tr>
+<td>100</td>
+<td>1,241KB</td>
+</tr>
+<tr>
+<td>96</td>
+<td>768KB（62%）</td>
+</tr>
+<tr>
+<td>94</td>
+<td>657KB（53%）</td>
+</tr>
+<tr>
+<td>92</td>
+<td>549KB（44%）</td>
+</tr>
+<tr>
+<td>90</td>
+<td>527KB（42%）</td>
+</tr>
+<tr>
+<td>85</td>
+<td>437KB（35%）</td>
+</tr>
+<tr>
+<td>80</td>
+<td>372KB（30%）</td>
+</tr>
+<tr>
+<td>75</td>
+<td>339KB（27%）</td>
+</tr>
+<tr>
+<td>70</td>
+<td>311KB（25%）</td>
+</tr>
+<tr>
+<td>65</td>
+<td>286KB（23%）</td>
+</tr>
+<tr>
+<td>60</td>
+<td>262KB（21%）</td>
+</tr>
+<tr>
+<td>50</td>
+<td>236KB（19%）</td>
+</tr>
+<tr>
+<td>40</td>
+<td>206KB（17%）</td>
+</tr>
+<tr>
+<td>30</td>
+<td>176KB（14%）</td>
+</tr>
+<tr>
+<td>20</td>
+<td>142KB（11%）</td>
+</tr>
+<tr>
+<td>10</td>
+<td>97KB（8%）</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>JPEGは非可逆圧縮なので、一般的に画像処理と保存を繰り返せば画質がどんどん劣化すると言われている。</p>
+<p>そこで、「縮小革命」を使って実験をしてみた。「縮小革命」で縮小を1回だけするのと、縮小を10回繰り返した結果を比較した。いずれも品質レベル90で行った。</p>
+<p>オリジナル写真のサイズは6000×4000。</p>
+<ol>
+<li>長辺長さを6000＞1024に1回だけ縮小。</li>
+<li>長辺長さを6000＞4000＞3600＞3400＞3200＞3000＞2800＞2600＞2400＞2200＞1024と縮小を10回繰り返し。</li>
+</ol>
+<p>結果は、以下。</p>
+<ol>
+<li>1回のみ処理した画像：273KB。1024×682</li>
+<li>10回繰り返した画像：274KB。1024×680</li>
+</ol>
+<figure class="figure-image figure-image-fotolife mceNonEditable" title="縮小を1回だけ行った画像">
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20210416/20210416100541.jpg" alt="f:id:art2nd:20210416100541j:plain" title="" class="hatena-fotolife" itemprop="image"></p>
+<figcaption class="mceEditable">縮小を1回だけ行った画像</figcaption>
+</figure>
+<figure class="figure-image figure-image-fotolife mceNonEditable" title="縮小を10回繰り返した画像">
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20210416/20210416100600.jpg" alt="f:id:art2nd:20210416100600j:plain" title="" class="hatena-fotolife" itemprop="image"></p>
+<figcaption class="mceEditable">縮小を10回繰り返した画像</figcaption>
+</figure>
+<p>画質もファイルサイズもほとんど差が出なかった。</p>
+<p>画像処理と保存を繰り返しても、一般的に言われているような品質の劣化はほとんど認められなかった。</p>
+<p><a class="link-card" href="../../../2026/04/02/165334.html"><span class="lc-body"><span class="lc-title">Claude）Python）画像フォーマット変換Windowsアプリ。JPEG,PNG,WebP,AVIF,GIF,SVG,TIFF,BMP,HEIC/HEIF → JPEG,PNG,WebP,AVIF。複数一括も可。サイズ比較。</span><span class="lc-desc">画像フォーマットを変換するWindowsアプリ作成。複数ファイル一括も可。 変換できるフォーマット形式は以下。 インプット形式：JPEG、PNG、WebP、AVIF、GIF、SVG、TIFF、BMP、HEIC/HEIF …</span><span class="lc-site">晴歩雨描 · <time>2026-04-02</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260402/20260402160928.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2024/12/13/155818.html"><span class="lc-body"><span class="lc-title">PCストレージ(SSD)容量圧縮検証。JPEG写真画像の解像度を落としたら、どの程度ファイルサイズを圧縮できるか。</span><span class="lc-desc">PCのメイン・ストレージに4TBのSSDを使用している。ストレージの空き容量が減ってきているので、8TBのSSDを購入したいが、現時点では製品の選択肢が少ない。 写真画像JPEGデータがストレージの容量の大半を占めている…</span><span class="lc-site">晴歩雨描 · <time>2024-12-13</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20241213/20241213153818.png" alt="" loading="lazy"></span></a></p>
+<p><span class="link-card-plain"><a href="https://ok2nd.sakura.ne.jp/home/camera-know-how.html">https://ok2nd.sakura.ne.jp/home/camera-know-how.html</a></span></p>
+<p><a class="link-card" href="../../../2018/06/12/110116.html"><span class="lc-body"><span class="lc-title">デジカメ仕様＆画質比較サイト、デジカメ写真サンプルサイト。</span><span class="lc-desc">デジカメの仕様や画質比較サイト、デジカメ写真サンプルサイト、デジカメ・レビューサイトのリンク集。ブックマーク代わり。 ≪Imaging Resource：2機種の仕様比較≫ https://www.imaging-res…</span><span class="lc-site">晴歩雨描 · <time>2018-06-12</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20180612/20180612110020.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2018/11/06/154738.html"><span class="lc-body"><span class="lc-title">デジカメ：センサーサイズが大きければ、画質は上がるのか？</span><span class="lc-desc">先日、DSC-RX100M6を購入して、レビューを書いた。 DSC-RX100M6のセンサーサイズは1型。普及型コンデジのセンサーサイズは1/2.3型が大半。1型は面積比で1/2.3型の約4倍。 センサーサイズが大きくな…</span><span class="lc-site">晴歩雨描 · <time>2018-11-06</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20181106/20181106153158.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2020/02/22/111455.html"><span class="lc-body"><span class="lc-title">マイクロフォーサーズは本当にコンパクトなのか？中望遠ポートレートレンズのボケ量を比較。（センサーサイズ・ボケ量比較表）</span><span class="lc-desc">マイクロフォーサーズは、フルサイズやAPS-Cに比べて、コンパクトなカメラができるはず。かつて、マイクロフォーサーズにはLUMIX GM1、GM5というコンパクトかつ高級感のあるカメラが存在した。 しかし、 現在販売され…</span><span class="lc-site">晴歩雨描 · <time>2020-02-22</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20200222/20200222104626.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2020/05/23/171538.html"><span class="lc-body"><span class="lc-title">焦点距離24mmのカメラ・レンズのボケ量(有効口径)比較。LX100M2がおすすめ、フルサイズF4.0やAPS-CF2.8よりもボケる。</span><span class="lc-desc">カメラ・レンズのボケ量は、有効口径で決まる。有効口径が大きい方がボケ量が大きい。 ・ 有効口径(mm) ＝［実］焦点距離(mm) ÷ Ｆ値 撮影素子（センサー）が大きい方が、実焦点距離が大きい。実焦点距離が大きいと有効口…</span><span class="lc-site">晴歩雨描 · <time>2020-05-23</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20200523/20200523131007.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2018/10/05/145542.html"><span class="lc-body"><span class="lc-title">コンデジ画質比較 by Imaging Resource, TwentyTwenty</span><span class="lc-desc">先日試した「 画像比較ツールTwentyTwenty 」を使って、主な箱型 コンデジ の画質を比較できるページを作成してみた。 画像は、「 Imaging Resource 」のものを借りている。 任意の2つの機種名をプ…</span><span class="lc-site">晴歩雨描 · <time>2018-10-05</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20181005/20181005151616.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2024/08/13/141824.html"><span class="lc-body"><span class="lc-title">写真解像度を上げる（アップスケーリング、高画質化）Windowsアプリ「Aiarty Image Enhancer」で、古いフイルム写真をスキャンした画像の解像度を上げてみた。</span><span class="lc-desc">先程、写真解像度を上げる（アップスケーリング、高画質化）Windowsアプリ「 Aiarty Image Enhancer 」を試してみた。 今回、昔フイルムカメラで撮ってアルバムに貼ってある写真を家庭用スキャナでスキャ…</span><span class="lc-site">晴歩雨描 · <time>2024-08-13</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20240813/20240813141445.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2019/08/26/175234.html"><span class="lc-body"><span class="lc-title">「GIMP」で、もや・かすみの除去を試してみた。（色レベルの調整、トーンカーブの調整）。色補正。</span><span class="lc-desc">山ではガス（霧）に囲まれる事がしばしば。写真も霞がかったものになる。それはそれで、幻想的で雰囲気があるのだが、少しクリアな写真にしたい場合もある。 画像編集アプリで霞を除去できるのか試してみた。Windowsアプリ「GI…</span><span class="lc-site">晴歩雨描 · <time>2019-08-26</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190826/20190826171636.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2020/11/13/152023.html"><span class="lc-body"><span class="lc-title">SILKYPIX JPEG Photography 10）露出補正（明るさ補正）。GIMPトーンカーブ補正も合わせて。</span><span class="lc-desc">アンダー目、オーバー目の写真は露出補正が必要。 写真画像調整ソフト「SILKYPIX JPEG Photography 10」で露出補正を試す。 ※ GIMPのトーンカーブで補正した例も合わせて載せておく。 オリジナル写…</span><span class="lc-site">晴歩雨描 · <time>2020-11-13</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20201113/20201113225941.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2019/12/14/114349.html"><span class="lc-body"><span class="lc-title">写真でアート：GIMPの「しきい値」で作成したモノクロ（白黒）画像と重ねて合成してみる。（２）レイヤー使用。★</span><span class="lc-desc">WindowsアプリGIMPを使った写真アート加工シリーズ。 昨日試した「しきい値で白黒画像にしたものと元画像の合成」（↑）を別の写真で試してみる。ほとんどがグリーン系の写真で試してみる。 オリジナル画像 しきい値で白黒…</span><span class="lc-site">晴歩雨描 · <time>2019-12-14</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20191214/20191214114123.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2019/11/02/173131.html"><span class="lc-body"><span class="lc-title">GIMPで4枚の写真を重ね合わせ合成。コスモスの写真で試す。レイヤー使用。</span><span class="lc-desc">GIMPで4枚の写真を合成。 合成に使った4枚のオリジナル写真は以下。 GIMPのレイヤーを使って合成する。 4枚の画像を順番にドラッグ＆ドロップで読み込む。 レイヤーダイアログを表示する。 ・メニュー［ウインドウ］ →…</span><span class="lc-site">晴歩雨描 · <time>2019-11-02</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20191102/20191102172734.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2019/07/02/105401.html"><span class="lc-body"><span class="lc-title">写真でアート：GIMPプラグイン「G&#x27;MIC」の「Artistic」フィルター［Black Crayon Graffiti］［Ellipsionism］［Hough Sketch］を使って写真をアート加工。★</span><span class="lc-desc">GIMP を使った写真アート加工シリーズ。 今回の素材は、昨日、OLYMPUS Tough TG-5で撮った写真。 今回、GIMPプラグイン「G&#x27;MIC」フィルター［Artistic］の中の以下のフィルターを使った。 ［…</span><span class="lc-site">晴歩雨描 · <time>2019-07-02</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190702/20190702104814.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../17/160751.html"><span class="lc-body"><span class="lc-title">色の三要素、色相・明度・彩度。マンセルの色立体。sRGBカラートライアングル。網膜の視細胞、錐体細胞。</span><span class="lc-desc">色についてネットで調べてみた。奥深いものがあって、結構難しい。分かりやすいところだけを簡単にまとめた。 電磁波の中で380nm～780nmの波長域を可視光と呼ぶ。 『 可視光の波長域 』by アート開発Labs 色の三要…</span><span class="lc-site">晴歩雨描 · <time>2021-04-17</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20210417/20210417145824.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2024/08/17/141230.html"><span class="lc-body"><span class="lc-title">キヤノン「EOS R1 / R5 Mark II」カメラ内アップスケーリング（高画質化）とWindows高解像度化、高画質化ツール「Aiarty Image Enhancer」「Upscayl」によるアップスケーリングを比較してみた。</span><span class="lc-desc">キヤノン「 EOS R1 / R5 Mark II 」が発表されている。「 EOS R1 / R5 Mark II」には、「カメラ内アップスケーリング 」機能がある。 このページでは、以下のように説明されている。 【カメ…</span><span class="lc-site">晴歩雨描 · <time>2024-08-17</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20240817/20240817140256.jpg" alt="" loading="lazy"></span></a></p></div></article>
+</body>
+</html>

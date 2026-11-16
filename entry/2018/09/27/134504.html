@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>JavaScript）2枚の写真/画像比較ツール「TwentyTwenty」を試してみた。 - 晴歩雨描</title>
+<link rel="stylesheet" href="../../../../style.css">
+</head>
+<body>
+<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>JavaScript）2枚の写真/画像比較ツール「TwentyTwenty」を試してみた。</h1><p class="meta">2018-09-27 · <a href="../../../../category/c13.html">ホームページ、Web作成</a> <a href="../../../../category/c18.html">写真・カメラ</a></p><div class="entry-body"><p>画像比較JavaScriptツール「<a href="https://zurb.com/playground/twentytwenty" target="_blank">TwentyTwenty</a>」を試してみた。</p>
+<p>TwentyTwentyを使うと、2つの画像を重ねて表示して、中央のバーをスライダーで動かしながら画像比較できる。</p>
+<p>画像は「<a href="https://www.imaging-resource.com/IMCOMP/COMPS01.HTM" target="_blank">Imaging Resource</a>」の「G7 X Mark II」と「RX100 VI」の写真を借りている。</p>
+<p><a href="https://ok2nd.sakura.ne.jp/camera/twentytwenty/g7x2-rx1006.html" target="_blank">≫≫≫ Gark II vs RX100 VI by TwentyTwenty</a></p>
+<p><a href="https://ok2nd.sakura.ne.jp/camera/twentytwenty/g7x2-rx1006.html" target="_blank"><img class="hatena-fotolife" title="f:id:art2nd:20181006093149j:plain" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20181006/20181006093149.jpg" alt="f:id:art2nd:20181006093149j:plain" /></a></p>
+<p>設定は簡単。画像ファイルとJavaScript、CSSを以下のように指定するだけ。JavaScript、CSSは、「<a href="https://zurb.com/playground/twentytwenty" target="_blank">TwentyTwenty</a>」からダウンロードできる。</p>
+<pre>&lt;div class="container"&gt;
+	&lt;img src="img/画像1.jpg"&gt;
+	&lt;img src="img/画像2.jpg"&gt;
+&lt;/div&gt;
+</pre>
+<p>＜CSS＞</p>
+<pre>&lt;link href="css/twentytwenty.css" rel="stylesheet"&gt;
+</pre>
+<p>＜JavaScript＞</p>
+<pre>&lt;script src="<a href="https://code.jquery.com/jquery-3.2.1.js">https://code.jquery.com/jquery-3.2.1.js</a>"&gt;&lt;/script&gt;
+&lt;script src="js/jquery.event.move.js"&gt;&lt;/script&gt;
+&lt;script src="js/jquery.twentytwenty.js"&gt;&lt;/script&gt;
+&lt;script&gt;
+	$(function(){
+		$(".container").twentytwenty();
+	});
+&lt;/script&gt;
+</pre>
+<p>後日、任意の機種を比較できるページを作成。↓</p>
+<p><a class="link-card" href="../../10/05/145542.html"><span class="lc-body"><span class="lc-title">コンデジ画質比較 by Imaging Resource, TwentyTwenty</span><span class="lc-desc">先日試した「 画像比較ツールTwentyTwenty 」を使って、主な箱型 コンデジ の画質を比較できるページを作成してみた。 画像は、「 Imaging Resource 」のものを借りている。 任意の2つの機種名をプ…</span><span class="lc-site">晴歩雨描 · <time>2018-10-05</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20181005/20181005151616.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2024/09/16/134405.html"><span class="lc-body"><span class="lc-title">JavaScript）2枚の写真/画像比較ツール「TwentyTwenty」で、縦方向ブラウザの高さ一杯に画像が入るようにした。＋CSSでheight:100%が効かない時の対策。</span><span class="lc-desc">以前に、2枚の写真/画像を比較するJavaScriptツール「TwentyTwenty」を試してみた。 標準では、ブラウザ画面の横幅一杯に画像が表示されるため、縦方向に画像が切れる。 縦方向ブラウザの高さ一杯に画像が入る…</span><span class="lc-site">晴歩雨描 · <time>2024-09-16</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20240916/20240916133006.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2025/03/09/115348.html"><span class="lc-body"><span class="lc-title">JavaScript）パソコンローカルの2枚の写真/画像をドラッグ＆ドロップして、TwentyTwentyでスライダーで画像比較するWebツール。</span><span class="lc-desc">以前に、パソコンローカルの2枚の写真/画像をドラッグ＆ドロップして横並びに表示して比較するWebツールを作成した。 今回、パソコンローカルの2枚の写真/画像をドラッグ＆ドロップするのは同じで、2枚の画像を横に並べるのでは…</span><span class="lc-site">晴歩雨描 · <time>2025-03-09</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250309/20250309114216.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../05/02/134421.html"><span class="lc-body"><span class="lc-title">1型デジカメG7X MarkII、RX100M5、DMC-LX9 仕様比較</span><span class="lc-desc">デジカメで次に買うなら、1型センサーで F値 の明るい コンデジ を考えている。 候補としては、 PowerShot G7 X Mark II、 サイバーショット DSC-RX100M5、 LUMIX DMC -LX9い…</span><span class="lc-site">晴歩雨描 · <time>2018-05-02</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20180502/20180502134229.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../06/12/110116.html"><span class="lc-body"><span class="lc-title">デジカメ仕様＆画質比較サイト、デジカメ写真サンプルサイト。</span><span class="lc-desc">デジカメの仕様や画質比較サイト、デジカメ写真サンプルサイト、デジカメ・レビューサイトのリンク集。ブックマーク代わり。 ≪Imaging Resource：2機種の仕様比較≫ https://www.imaging-res…</span><span class="lc-site">晴歩雨描 · <time>2018-06-12</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20180612/20180612110020.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2019/01/29/135013.html"><span class="lc-body"><span class="lc-title">GIMPで、写真のビネット効果（周辺減光補正）を試してみた。</span><span class="lc-desc">Windows アプリ「 GIMP 2.10.8」で、写真の ビネット 効果加工を試してみた。 ビネット 効果とは、写真の四隅周辺の光量を落として、昔のレンズで撮ったような味わいの雰囲気にすること。写真中央部が相対的に明…</span><span class="lc-site">晴歩雨描 · <time>2019-01-29</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190129/20190129134746.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2019/01/23/102010.html"><span class="lc-body"><span class="lc-title">モノクロ人物写真（オードリーヘプバーン）を「FotoSketcher」で絵画調に。アート加工。</span><span class="lc-desc">写真を絵画調にするWindowsアプリ「FotoSketcher」を、モノクロ人物写真で試してみた。 オードリーヘプバーンの写真で試してみた。写真は以下のサイトのMark Shawの写真。 上記写真を一部トリミングして、…</span><span class="lc-site">晴歩雨描 · <time>2019-01-23</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190123/20190123101751.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../04/24/222743.html"><span class="lc-body"><span class="lc-title">写真を鉛筆画、ペン画、版画、水彩画、油彩画のような絵画調に変換（加工）する「FotoSketcher」。アート加工。★</span><span class="lc-desc">写真を鉛筆画、ペン画、版画、水彩画、油彩画のような絵画調に変換するWindowsアプリ「FotoSketcher」が凄い。一応、フリーソフト。このブログを書いている時点のバージョンは3.30。 操作は簡単。写真をドラッグ…</span><span class="lc-site">晴歩雨描 · <time>2018-04-24</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20180424/20180424215752.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../11/29/160702.html"><span class="lc-body"><span class="lc-title">自分で撮った写真で2019年壁掛けカレンダー手作り。（CubePDF使用）</span><span class="lc-desc">主に今年1年で撮った写真を使って、2019年の壁掛けカレンダーを作ってみた。 A3サイズのPDFを作成してコピーショップに持ち込んで厚紙に印刷。1,620円。満足できる仕上がり。 以下、作成手順備忘録。 【事前準備】 P…</span><span class="lc-site">晴歩雨描 · <time>2018-11-29</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20181129/20181129154543.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2019/07/27/164241.html"><span class="lc-body"><span class="lc-title">JavaScript）パソコンローカルの2枚の写真/画像をドラッグ＆ドロップして横並びに表示して比較するWebツール作成。</span><span class="lc-desc">2つの写真/画像を横に並べて比較したい時がある。似たような写真でどちらが良いかを確認したい時など。 画像を横に並べて比較できるツールはあるが、似たような写真がたくさんある場合、比較相手をとっかえひっかえしながら比べたい場…</span><span class="lc-site">晴歩雨描 · <time>2019-07-27</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190727/20190727160638.jpg" alt="" loading="lazy"></span></a></p></div></article>
+</body>
+</html>

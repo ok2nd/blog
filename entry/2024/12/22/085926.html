@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Google Calendar API）HTMLカレンダーの七五三やクリスマスが祝日扱いに。 - 晴歩雨描</title>
+<link rel="stylesheet" href="../../../../style.css">
+</head>
+<body>
+<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>Google Calendar API）HTMLカレンダーの七五三やクリスマスが祝日扱いに。</h1><p class="meta">2024-12-22 · <a href="../../../../category/c13.html">ホームページ、Web作成</a></p><div class="entry-body"><p>以前、シンプルなHTMLカレンダーを作成した。</p>
+<p><em>Google Calendar API</em>を使って、祝日表示できるようにした。</p>
+<p><a class="link-card" href="../../../2018/07/13/144317.html"><span class="lc-body"><span class="lc-title">PHP）シンプルなHTMLカレンダー。Google Calendar API v3で祝日表示。コードサンプル。</span><span class="lc-desc">先日作成したスマホ&amp;PC用検索ポータル「2nd Sch」にカレンダー表示のため、シンプルなHTMLカレンダーを作成。 祝日表示に「Google Calendar API v3」を使用。 ただ、祝日は当年の前後合わせて3年…</span><span class="lc-site">晴歩雨描 · <time>2018-07-13</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20180713/20180713143522.jpg" alt="" loading="lazy"></span></a></p>
+<p><em>Google Calendar APIの仕様が勝手に変わってしまったようで、七五三やクリスマスが祝日扱いになってしまった。</em></p>
+<p><span class="link-card-plain"><a href="https://fikaweb.jp/dev/google-calendar-api-holiday/">https://fikaweb.jp/dev/google-calendar-api-holiday/</a></span></p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20241222/20241222084202.jpg" width="583" height="429" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20241222/20241222084003.jpg" width="529" height="498" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<p>以下が祝日扱いに。</p>
+<ul>
+<li>1/1～3：銀行休業日</li>
+<li>2/3：節分</li>
+<li>3/3：ひな祭り</li>
+<li>5/第2日曜日：母の日</li>
+<li>7/7：七夕</li>
+<li>11/15：七五三</li>
+<li>12/25：クリスマス</li>
+<li>12/31：大晦日</li>
+</ul>
+<h5 id="対策">【対策】</h5>
+<p>Google Calendar APIの「カレンダーID」を以下のように変更することで、七五三やクリスマスが祝日から外れる。</p>
+<p><strong>≪ 修正前 ≫</strong></p>
+<pre>japanese__ja@holiday.calendar.google.com
+</pre>
+<p><strong>≪ 修正後 ≫</strong></p>
+<pre>ja.japanese.official#holiday@group.v.calendar.google.com
+</pre>
+<p>「#」があると、そのまま使えないので、「%23」にエンコードして使用。</p>
+<pre>ja.japanese.official%23holiday@group.v.calendar.google.com
+</pre>
+<p><em>「ja.japanese.official」を使っても、「大晦日」と「銀行休業日」はそのまま残る。「大晦日」と「銀行休業日」はロジックで除いた。</em></p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20241222/20241222084049.jpg" width="566" height="273" loading="lazy" title="" class="hatena-fotolife" itemprop="image" style="border: 1px #000 solid;"></p>
+<p>　↓↓↓</p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20241222/20241222123452.jpg" width="558" height="265" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<p><em><span style="color: rgb(255, 0, 0);">※ 以下、<a href="https://ok2nd.sakura.ne.jp/">https://ok2nd.sakura.ne.jp/</a> で始まるWebページは現在使えなくなっている。</span></em></p>
+<p>≪12か月≫</p>
+<p><a href="https://ok2nd.sakura.ne.jp/index/sch/calendar/" target="_blank">https://ok2nd.sakura.ne.jp/index/sch/calendar/</a></p>
+<p>≪6か月2頁≫</p>
+<p><a href="https://ok2nd.sakura.ne.jp/index/sch/calendar/y6.php?y=2024" target="_blank">https://ok2nd.sakura.ne.jp/index/sch/calendar/y6.php?y=2024</a></p>
+<p>≪1か月表示用≫</p>
+<p><a href="https://ok2nd.sakura.ne.jp/index/sch/calendar/month.php" target="_blank" rel="noopener">https://ok2nd.sakura.ne.jp/index/sch/calendar/month.php</a></p>
+<p>≪1か月印刷用≫</p>
+<p><a href="https://ok2nd.sakura.ne.jp/index/sch/calendar/month-print.php" target="_blank">https://ok2nd.sakura.ne.jp/index/sch/calendar/month-print.php</a></p>
+<p><a class="link-card" href="../23/093802.html"><span class="lc-body"><span class="lc-title">JavaScriptで、シンプルなHTMLカレンダーを作成。AIツールCopilotで作成。</span><span class="lc-desc">以前に、PHPでHTMLカレンダーを作成した。 今回、JavaScriptで、シンプルなHTMLカレンダーを作成。 JavaScriptを使ったHTMLカレンダーはネットで探すといくつも出てくる。今回、AIツール「Cha…</span><span class="lc-site">晴歩雨描 · <time>2024-12-23</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20241223/20241223092959.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../23/121252.html"><span class="lc-body"><span class="lc-title">HTML/JavaScriptカレンダーに「Holidays JP API 」で祝日表示。AIツールChatGPT、Copilotで作成。</span><span class="lc-desc">先程、JavaScriptでシンプルなHTMLカレンダーを作成した。 これは、祝日表示対応していない。 これに、祝日表示を追加した。「Google Calendar API 」を使う方法もあるが、Google API K…</span><span class="lc-site">晴歩雨描 · <time>2024-12-23</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20241223/20241223215858.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2018/11/29/081842.html"><span class="lc-body"><span class="lc-title">Google Calendar API v3の祝日表示が2019年の即位の礼を含む10連休に対応</span><span class="lc-desc">先日作成したHTMLカレンダーで使っているGoogle Calendar API v3の祝日表示が、2019年の即位の礼を含む10連休に対応している。 ≪ミニカレンダー：2019年1月から1年分≫ https://ok2…</span><span class="lc-site">晴歩雨描 · <time>2018-11-29</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20181129/20181129081355.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2021/05/18/154629.html"><span class="lc-body"><span class="lc-title">「PHP Simple HTML DOM Parser」で、Webスクレイピング（HTMLから情報を抽出）。</span><span class="lc-desc">「 PHP Simple HTML DOM Parser 」で、 Web スクレイピング （HTMLから情報を抽出）を試してみた。 以下のWebページを参考にした。 以下から PHP ライブラリをダウンロードする。 「s…</span><span class="lc-site">晴歩雨描 · <time>2021-05-18</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20210518/20210518154611.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2020/11/06/231247.html"><span class="lc-body"><span class="lc-title">PHP）多次元連想配列のソート。array_multisort()。「My野鳥図鑑」の野鳥の並びを五十音順に。</span><span class="lc-desc">備忘録として。PHPの多次元連想配列のソート。 「My 野鳥図鑑」の野鳥の並びを五十音順にした。 以下、PHPソースの抜粋（説明のため、実際よりはシンプルにしてある）。野鳥データは適時順番を考えずに多次元連想配列に。 $…</span><span class="lc-site">晴歩雨描 · <time>2020-11-06</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20201106/20201106230805.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2019/07/27/164241.html"><span class="lc-body"><span class="lc-title">JavaScript）パソコンローカルの2枚の写真/画像をドラッグ＆ドロップして横並びに表示して比較するWebツール作成。</span><span class="lc-desc">2つの写真/画像を横に並べて比較したい時がある。似たような写真でどちらが良いかを確認したい時など。 画像を横に並べて比較できるツールはあるが、似たような写真がたくさんある場合、比較相手をとっかえひっかえしながら比べたい場…</span><span class="lc-site">晴歩雨描 · <time>2019-07-27</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190727/20190727160638.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2018/11/29/160702.html"><span class="lc-body"><span class="lc-title">自分で撮った写真で2019年壁掛けカレンダー手作り。（CubePDF使用）</span><span class="lc-desc">主に今年1年で撮った写真を使って、2019年の壁掛けカレンダーを作ってみた。 A3サイズのPDFを作成してコピーショップに持ち込んで厚紙に印刷。1,620円。満足できる仕上がり。 以下、作成手順備忘録。 【事前準備】 P…</span><span class="lc-site">晴歩雨描 · <time>2018-11-29</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20181129/20181129154543.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2018/12/01/145527.html"><span class="lc-body"><span class="lc-title">自分で撮った写真で卓上型カレンダーをつくってみた。（CubePDF使用）</span><span class="lc-desc">先日、自分で撮った写真で2019年カレンダーをつくってみた。 今回、自分で撮った写真で卓上型カレンダーをつくってみた。片面6か月で両面で1年タイプのカレンダー。家庭のプリンターでA4サイズで印刷して半分に折って使う。 【…</span><span class="lc-site">晴歩雨描 · <time>2018-12-01</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20181201/20181201140923.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2017/04/11/193206.html"><span class="lc-body"><span class="lc-title">「ブロック(コンテナ)全体は中央揃え(センタリング)＋中の要素(複数画像)は左寄せ」をJavaScriptを使わないでCSSのみで実現できる方法</span><span class="lc-desc">このブログで以前に書いた「 ブロック全体は中央揃え＋中の複数画像は左寄 」をJavaScriptを使わないでCSSのみで実現できる方法が見つかったので、紹介。 「Webクリエイターボックス」の以下の記事のコメント欄で質問…</span><span class="lc-site">晴歩雨描 · <time>2017-04-11</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20170313/20170313140402.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2019/06/18/143439.html"><span class="lc-body"><span class="lc-title">JavaScript）「デジカメ・スナップ写真 ブログ記事一覧」にjQueryプラグイン「DataTables」で検索機能追加。</span><span class="lc-desc">Webページ「晴歩雨描 デジカメ・スナップ写真 ブログ記事一覧」 に、JavaScriptでテーブル行の検索機能を追加。 jQueryプラグイン「DataTables」を使用。 【注意事項】 １．&lt;thead&gt;&lt;/the…</span><span class="lc-site">晴歩雨描 · <time>2019-06-18</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190618/20190618131027.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2018/06/27/152713.html"><span class="lc-body"><span class="lc-title">パソコン用検索ポータル「2nd Sch」を作成。「Windy.com」3画面付き表示等。現時点、12時間後、24時間後の天気（雨・雪・風）図を同時に並べて確認できる。</span><span class="lc-desc">【2018/7/10全面的修正】 スマホ 用検索ポータル「2nd Sch」を、パソコンで開いた時用にカスタマイズ。ある程度の大きさのディスプレイのパソコンを想定。 初期画面のリンク先を増やした。 Gmail 、Yahoo…</span><span class="lc-site">晴歩雨描 · <time>2018-06-27</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20180710/20180710155856.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2019/06/15/112639.html"><span class="lc-body"><span class="lc-title">CSSのflexbox（display:flex;）で、写真/画像を横並びにする。inline-blockやfloat:leftは使わない。＋ &lt;div&gt;の横幅一杯に画像を並べてリサイザブル（レスポンシブ）にする。</span><span class="lc-desc">Webページで写真/画像を横並びにする方法として、以前は display: inline-block; display: table-cell; float: left; などを使っていた。どれもあまり使いやすいとは言え…</span><span class="lc-site">晴歩雨描 · <time>2019-06-15</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190615/20190615110247.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2018/07/07/144138.html"><span class="lc-body"><span class="lc-title">HTML(TABLE)クリッカブルマップ「日本地図」を作成。スマホ対応。</span><span class="lc-desc">HTML(TABLE)で、クリッカブルマップとしての日本地図を作成。（昔、作ったものを手直し） スマホを想定して、縦長画面の時は都道府県名を縦書きにして画面内に収まるようにした。スマホ画面を横位置にした場合の縦が狭い画面…</span><span class="lc-site">晴歩雨描 · <time>2018-07-07</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20180707/20180707224156.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2019/02/15/135029.html"><span class="lc-body"><span class="lc-title">CSSで写真を鉛筆画、色鉛筆画、水彩画風にエフェクト</span><span class="lc-desc">写真を鉛筆画、色鉛筆画、水彩画風にエフェクトをかける CSS が見つかったので、試してみた。その CSS は以下。 下の「coliss」の紹介記事で知った。 【オリジナル写真】 【鉛筆画】 &lt;div class=&quot;pen…</span><span class="lc-site">晴歩雨描 · <time>2019-02-15</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190215/20190215134430.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2018/01/30/165612.html"><span class="lc-body"><span class="lc-title">京都伏見の酒蔵マップ作成。伏見酒蔵めぐり（丹波橋→中書島）。</span><span class="lc-desc">京都伏見の酒蔵マップを作成。酒造会社名でなく、銘柄で載せている。関連施設や観光スポットも載せている。 酒蔵の銘柄は以下。 黄桜、富翁、京姫、金鵄正宗、 月桂冠 、英勳、招德、松竹梅、玉乃光、桃の滴、 鶴正宗 、豊祝、慶長…</span><span class="lc-site">晴歩雨描 · <time>2018-01-30</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20180130/20180130164919.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2017/05/23/131757.html"><span class="lc-body"><span class="lc-title">神戸・西宮）灘五郷の酒蔵マップ作成。</span><span class="lc-desc">灘五郷の酒蔵マップを作成。酒造会社名でなく、銘柄で載せている。 西から順番に、以下の銘柄を載せた。全てにショップや見学場所がある訳ではない。会社所在地と資料館やショップが離れた場所にある場合もある。 【西郷】 金盃、沢の…</span><span class="lc-site">晴歩雨描 · <time>2017-05-23</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190627/20190627094423.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2016/03/27/134726.html"><span class="lc-body"><span class="lc-title">パソコン用Webポータルシステム「MyHome Portal」</span><span class="lc-desc">パソコン用の個人または家族で使える自宅用のWebポータルシステム「 MyHome Portal 」をオープンソース/フリーソフトとして公開している。 《MyHome Portal》 https://ok2nd.githu…</span><span class="lc-site">晴歩雨描 · <time>2016-03-27</time></span></span><span class="lc-thumb"><img src="http://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20160327/20160327133617.jpg" alt="" loading="lazy"></span></a></p></div></article>
+</body>
+</html>

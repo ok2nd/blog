@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>はてなブログのテーマをレスポンシブ対応のMinimalismに変更。 - 晴歩雨描</title>
+<link rel="stylesheet" href="../../../../style.css">
+</head>
+<body>
+<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>はてなブログのテーマをレスポンシブ対応のMinimalismに変更。</h1><p class="meta">2019-02-11 · <a href="../../../../category/c13.html">ホームページ、Web作成</a> <a href="../../../../category/c4.html">はてなブログ</a></p><div class="entry-body"><p>このブログのデザインテーマをレスポンシブ対応の<a href="http://blog.hatena.ne.jp/-/store/theme/8599973812270629022" target="_blank">Minimalism</a>に変更。</p>
+<p>変更にあたって行った作業の備忘録。</p>
+<p><strong><span style="color: #dd830c;">１．レスポンシブデザインにチェック</span></strong></p>
+<ul>
+<li>デザイン ⇒ <a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%B9%A5%DE%A1%BC%A5%C8%A5%D5%A5%A9%A5%F3">スマートフォン</a> ⇒ 詳細設定</li>
+</ul>
+<p>「レスポンシブデザイン」にチェックを入れる。</p>
+<p><img class="hatena-fotolife" title="f:id:art2nd:20190211232155j:plain" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190211/20190211232155.jpg" alt="f:id:art2nd:20190211232155j:plain" /></p>
+<p><strong><span style="color: #dd830c;">２．<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%B9%A5%DE%A5%DB">スマホ</a>も記事一覧の対象にする（headの<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%B9%A5%AF%A5%EA%A5%D7%A5%C8">スクリプト</a>を修正）</span></strong></p>
+<ul>
+<li>設定 ⇒ 詳細設定 ⇒ headに要素を追加</li>
+</ul>
+<p>ブログのトップページを記事一覧にするための<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%B9%A5%AF%A5%EA%A5%D7%A5%C8">スクリプト</a>で<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%B9%A5%DE%A5%DB">スマホ</a>を対象外にしている箇所を<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%B3%A5%E1%A5%F3%A5%C8%A5%A2%A5%A6%A5%C8">コメントアウト</a>。</p>
+<pre>&lt;script&gt;
+//if (!navigator.userAgent.match(/(<a class="keyword" href="http://d.hatena.ne.jp/keyword/Android">Android</a>|<a class="keyword" href="http://d.hatena.ne.jp/keyword/iPhone">iPhone</a>|<a class="keyword" href="http://d.hatena.ne.jp/keyword/iPod">iPod</a>|<a class="keyword" href="http://d.hatena.ne.jp/keyword/Windows">Windows</a> Phone)/)) {
+	if (location.href == '<a href="https://2ndart.hatenablog.com/')">https://2ndart.hatenablog.com/')</a> {
+		location.href = '<a href="https://2ndart.hatenablog.com/archive';">https://2ndart.hatenablog.com/archive';</a>
+	}
+	if (document.title == '記事一覧 - 晴歩雨描') {
+		document.title = '晴歩雨描';
+	}
+//}
+&lt;/script&gt;</pre>
+<p>Minimalismの標準のままでは、ブラウザの横幅を小さくした時に、メインのカラムの幅が広がりすぎてデザインが崩れる。</p>
+<p>ネットを検索したら以下の記事が見つかったので、参考にさせてもらい対策。</p>
+<p><a class="link-card" href="https://www.inside-shiina.com/entry/minimalism-Revert-change" target="_blank" rel="noopener noreferrer"><span class="lc-body"><span class="lc-title">Minimalism テーマを利用した「はてなブログ」の表示が突然崩れた2018年9月 - インサイド シーナ</span><span class="lc-desc">はてなブログの minimalism テーマの表示を2018年9月9日以前の状態に戻す方法です。</span><span class="lc-site">インサイド シーナ</span></span><span class="lc-thumb"><img src="https://cdn.image.st-hatena.com/image/scale/c74a4a735057cd15048635a9d268f5d0ac730a7b/backend=imagemagick;version=1;width=1300/https%3A%2F%2Fcdn-ak.f.st-hatena.com%2Fimages%2Ffotolife%2FI%2FInside_Shiina%2F20180910%2F20180910222036.jpg" alt="" loading="lazy"></span></a></p>
+<p>以下、上記記事を参考に設定した事。</p>
+<p><strong><span style="color: #dd830c;">３．デザイン<a class="keyword" href="http://d.hatena.ne.jp/keyword/CSS">CSS</a>を変更</span></strong></p>
+<ul>
+<li>デザイン ⇒ カスタマイズ ⇒ ｛｝デザイン<a class="keyword" href="http://d.hatena.ne.jp/keyword/CSS">CSS</a></li>
+</ul>
+<p>上記記事にあるold.<a class="keyword" href="http://d.hatena.ne.jp/keyword/css">css</a>を、以下の<a class="keyword" href="http://d.hatena.ne.jp/keyword/github">github</a>にコピーして使用。デザイン<a class="keyword" href="http://d.hatena.ne.jp/keyword/CSS">CSS</a>でimportしている<a class="keyword" href="http://d.hatena.ne.jp/keyword/css">css</a>を以下に変更。</p>
+<pre>@import url("<a href="https://ok2nd.github.io/hatena-css/minimalism-20170618.css">https://ok2nd.github.io/hatena-css/minimalism-20170618.css</a>");
+</pre>
+<p><strong><span style="color: #dd830c;">４．metaタグでviewport設定</span></strong></p>
+<ul>
+<li>設定 ⇒ 詳細設定 ⇒ headに要素を追加</li>
+</ul>
+<p>以下のmetaタグを追加。</p>
+<pre>&lt;meta name="viewport" content="width=device-width, maximum-scale=1.0, minimum-scale=0.5,user-scalable=yes,initial-scale=1.0" /&gt;
+</pre>
+<p><strong><span style="color: #2196f3;">【2/12追記】</span></strong></p>
+<p><strong><span style="color: #dd830c;">５．&lt;figure&gt;の横マージンを0pxにする</span></strong></p>
+<p>上記minimalism-20170618.<a class="keyword" href="http://d.hatena.ne.jp/keyword/css">css</a>では、&lt;figure&gt;の横マージンが40pxになっているので、これを0pxに変更したものに置き換え。</p>
+<ul>
+<li>デザイン ⇒ カスタマイズ ⇒ ｛｝デザイン<a class="keyword" href="http://d.hatena.ne.jp/keyword/CSS">CSS</a></li>
+</ul>
+<pre>@import url("<a href="https://ok2nd.github.io/hatena-css/minimalism-20170618-c1.css">https://ok2nd.github.io/hatena-css/minimalism-20170618-c1.css</a>");
+</pre>
+<p>以上。</p>
+<p><strong><span style="color: #2196f3;">【4/30追記】</span></strong></p>
+<p><strong><span style="color: #dd830c;">６．<a class="keyword" href="http://d.hatena.ne.jp/keyword/CSS">CSS</a>を<a class="keyword" href="http://d.hatena.ne.jp/keyword/github">github</a>ではなく、<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A4%CF%A4%C6%A4%CA%A5%D6%A5%ED%A5%B0">はてなブログ</a>のテーマストアにアップロード</span></strong></p>
+<p><a class="keyword" href="http://d.hatena.ne.jp/keyword/github">github</a>が永久に保証されるかどうか不明なので、<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A4%CF%A4%C6%A4%CA%A5%D6%A5%ED%A5%B0">はてなブログ</a>のテーマストアにアップロードする。</p>
+<p><a href="http://blog.hatena.ne.jp/-/store/theme/" target="_blank">テーマ ストア - はてなブログ</a></p>
+<p>で、「新しいテーマを投稿」をクリックしてアップロード。とりあえず、非公開。</p>
+<ul>
+<li>デザイン ⇒ カスタマイズ ⇒ ｛｝デザイン<a class="keyword" href="http://d.hatena.ne.jp/keyword/CSS">CSS</a></li>
+</ul>
+<p>を確認すると、以下のようになっている。</p>
+<pre>/* &lt;system section="theme" selected="17680117127095289072"&gt; */
+@import url("<a href="https://blog.hatena.ne.jp/-/theme/17680117127095289072.css">https://blog.hatena.ne.jp/-/theme/17680117127095289072.css</a>");
+/* &lt;/system&gt; */</pre>
+<p>viewportの設定は、そのまま残す。</p>
+<p><a class="link-card" href="../../../2020/05/05/225915.html"><span class="lc-body"><span class="lc-title">はてなブログで文字列に蛍光ペン（マーカー）風のアンダーラインをつける方法。&lt;em&gt;タグで。（カスタマイズCSS）</span><span class="lc-desc">はてなブログ で、強調したいハイライト文字列に蛍光マーカーペンっぽい色付きのアンダーラインをつける方法。 【サンプル】 強調したいハイライト文字列 はてなブログ で使える文字の装飾には、太字/ボールド、斜体/イタリック、…</span><span class="lc-site">晴歩雨描 · <time>2020-05-05</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20200505/20200505230106.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2021/12/04/173912.html"><span class="lc-body"><span class="lc-title">はてなブログで、Webフォント（Google Fonts）を使う。</span><span class="lc-desc">先日購入した スマホ 「 Xperia 1 III 」では、ブラウザ Chrome でいくつかのホームページのフォントが、パソコンや他の スマホ と違ってしまう。「 Xperia 1 III」では、英文が固定ピッチのフォ…</span><span class="lc-site">晴歩雨描 · <time>2021-12-04</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20211204/20211204173747.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2020/12/06/103609.html"><span class="lc-body"><span class="lc-title">はてなブログで横並びにした画像の縦位置を上揃えにする。（カスタマイズCSS）</span><span class="lc-desc">はてなブログ で、画像を横並びにした場合、縦位置が中央揃えになってしまう。 これを、上揃えにする方法。 【個別にする方法】 「HTML編集」で、「div class=&quot;images-row&quot;」に、 style=&quot;disp…</span><span class="lc-site">晴歩雨描 · <time>2020-12-06</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20201206/20201206101843.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2017/11/13/100926.html"><span class="lc-body"><span class="lc-title">はてなブログのトップページを記事一覧ページに変更</span><span class="lc-desc">はてなブログのトップページを記事一覧ページに変更してみた。参考にしたのは、以下のページ。 有料の「はてなブログpro」なら、基本機能でトップページを記事一覧に設定できるが無料版ではできないので、JavaScriptを使う…</span><span class="lc-site">晴歩雨描 · <time>2017-11-13</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20171113/20171113143648.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2020/08/21/153625.html"><span class="lc-body"><span class="lc-title">はてなブログで使えるアイコンWebフォント</span><span class="lc-desc">はてなブログ の本文文章の中で、アイコンを使いたい時がある。例えば、 スマホ などで設定画面を開くためのアイコン［ ］。 はてなブログ で標準で使えるアイコンWebフォントが用意されている。 使い方は、HTML編集画面で…</span><span class="lc-site">晴歩雨描 · <time>2020-08-21</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20200821/20200821152444.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2018/08/05/232643.html"><span class="lc-body"><span class="lc-title">HTTPSが無料で使えるWebサーバーとしてGitHubを使う。GitHub Desktopも。</span><span class="lc-desc">HTTPSが無料で使える無料のWebレンタルサーバーを探したが見つからない。 Google Drive、Dropbox、Yahoo!ボックスなどをWebサーバーとして使う方法があったらしいが、いずれも現在は使えなくなって…</span><span class="lc-site">晴歩雨描 · <time>2018-08-05</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20180805/20180805231437.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../12/141537.html"><span class="lc-body"><span class="lc-title">はてなブログ）スマホ等でページ横からはみ出た表&lt;table&gt;を横スクロールできるようにする最も（？）簡単な方法。</span><span class="lc-desc">はてなブログ を スマホ で閲覧する場合、テーブルが横にはみ出てしまうことがある。レスポンシブ対応含め一般的なデザインテーマでは横スクロールできない。 これを、横スクロールできるようにする最も（？）簡単な方法。 ネットで…</span><span class="lc-site">晴歩雨描 · <time>2019-02-12</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190212/20190212141216.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../03/25/113619.html"><span class="lc-body"><span class="lc-title">はてなブログを記事一覧に簡単に切り替える方法。ブックマークレットを使う。</span><span class="lc-desc">先ほど「 はてなブログ を記事一覧で見る方法」という記事を書いたが、 毎回URLに「/archive」を付けるのが面倒な場合、マウスのワンクリックで切り替えができるようにする方法。 ブックマークレット という機能を使う。…</span><span class="lc-site">晴歩雨描 · <time>2019-03-25</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190325/20190325112136.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2018/01/17/162418.html"><span class="lc-body"><span class="lc-title">はてなブログ、はてなフォトライフの写真画像一括バックアップ/ダウンロードツールを作成。</span><span class="lc-desc">「はてなブログ」や「はてなフォトライフ」の 写真、画像を一括してバックアップ（ダウンロード）する方法を探したが、無いわけではないが手間がかかりそうなものが多かったので、作成してみた。 以前に作った「 MyHome Por…</span><span class="lc-site">晴歩雨描 · <time>2018-01-17</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20180117/20180117160357.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../06/17/232506.html"><span class="lc-body"><span class="lc-title">はてなブログの記事がGoogle検索になかなか反映されない。「Google Search Console」でインデックス登録とサイトマップ登録をやってみる。</span><span class="lc-desc">最近、 はてなブログ の記事が Google 検索になかなか反映されない。 Google にインデックスされていない気がする。 「 Google Search Console 」を使えば、インデックス登録が出来そうなので…</span><span class="lc-site">晴歩雨描 · <time>2019-06-17</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190617/20190617214609.jpg" alt="" loading="lazy"></span></a></p></div></article>
+</body>
+</html>

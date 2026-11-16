@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Windows）Python）.htmlファイルと「_files」フォルダーのリンク（コネクテッド・ファイル機能）を外すツール作成。フォルダー名一括変換アプリ。青空文庫HTMLなど。 - 晴歩雨描</title>
+<link rel="stylesheet" href="../../../../style.css">
+</head>
+<body>
+<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>Windows）Python）.htmlファイルと「_files」フォルダーのリンク（コネクテッド・ファイル機能）を外すツール作成。フォルダー名一括変換アプリ。青空文庫HTMLなど。</h1><p class="meta">2026-01-13 · <a href="../../../../category/c8.html">コンピュータ</a> <a href="../../../../category/c13.html">ホームページ、Web作成</a></p><div class="entry-body"><p>青空文庫HTMLなど、Windowsでウェブページを保存した際、<em>.htmlファイル</em>と<em>「_files」フォルダー</em>がセットになり、片方を移動・削除するともう一方も連動してしまう。</p>
+<p>この挙動（コネクテッド・ファイル機能）を切り離したい。</p>
+<p>HTMLファイルとフォルダーの「リンク」は、ファイル名が一致していることで維持されているので、フォルダー名を変えればよい。</p>
+<p>ということで、フォルダー名を一括変換するツールアプリをPythonで作成。</p>
+<p>指定したフォルダの直下にあるすべてのフォルダの名前の末尾に、指定した文字列を追加する。</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260113/20260113100226.jpg" width="552" height="282" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>【処理結果例】</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260113/20260113102307.jpg" width="476" height="518" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>【Pythonプログラムコード】</p>
+<pre>import os
+import tkinter as tk
+from tkinter import filedialog, messagebox
+
+def rename_folders():
+    target_dir = entry_path.get().strip('"') # 引用符がついている場合を除去
+    suffix = entry_suffix.get()
+
+    if not target_dir or not os.path.isdir(target_dir):
+        messagebox.showerror("エラー", "有効な対象フォルダを選択してください。")
+        return
+    if not suffix:
+        messagebox.showwarning("警告", "追加する文字列を入力してください。")
+        return
+
+    try:
+        count = 0
+        for item in os.listdir(target_dir):
+            item_path = os.path.join(target_dir, item)
+            if os.path.isdir(item_path):
+                new_name = item + suffix
+                new_path = os.path.join(target_dir, new_name)
+                
+                if not os.path.exists(new_path):
+                    os.rename(item_path, new_path)
+                    count += 1
+        messagebox.showinfo("完了", f"{count} 個のフォルダ名を変更しました。")
+    except Exception as e:
+        messagebox.showerror("エラー", f"予期せぬエラーが発生しました:\n{e}")
+
+def select_folder():
+    # 入力欄から現在のパスを取得
+    current_path = entry_path.get().strip('"')
+    
+    # パスが有効ならそのフォルダを、無効ならNone（標準）を初期ディレクトリにする
+    initial_dir = current_path if os.path.isdir(current_path) else None
+    
+    selected = filedialog.askdirectory(initialdir=initial_dir)
+    if selected:
+        # 入力欄をクリアして新しいパスを挿入
+        entry_path.delete(0, tk.END)
+        entry_path.insert(0, selected.replace('/', '\\')) # Windows風の区切りに統一
+
+# --- GUIの構築 ---
+root = tk.Tk()
+root.title("フォルダ名一括追加ツール")
+root.geometry("550x250")
+
+label1 = tk.Label(root, text="対象の親フォルダ (手入力可):")
+label1.pack(pady=(15, 0))
+
+frame_path = tk.Frame(root)
+frame_path.pack(fill="x", padx=20)
+
+entry_path = tk.Entry(frame_path)
+entry_path.pack(side="left", fill="x", expand=True, padx=(0, 5))
+
+btn_browse = tk.Button(frame_path, text="参照", command=select_folder)
+btn_browse.pack(side="right")
+
+label2 = tk.Label(root, text="フォルダ名に追加する文字列:")
+label2.pack(pady=(15, 0))
+entry_suffix = tk.Entry(root, width=30)
+entry_suffix.pack(pady=5)
+entry_suffix.insert(0, "_追加文字")
+
+btn_execute = tk.Button(root, text="処理を実行する", command=rename_folders, 
+                       bg="#4CAF50", fg="white", font=("MS Gothic", 10, "bold"), 
+                       padx=20, pady=10)
+btn_execute.pack(pady=20)
+
+root.mainloop()</pre>
+<p><a class="link-card" href="../../../2025/11/19/105207.html"><span class="lc-body"><span class="lc-title">Python）青空文庫をスマホで機内モード（オフライン）で縦書きで読むためにXHTMLを変換するWindowsアプリを作成。</span><span class="lc-desc">飛行機の機内で、スマホで青空文庫を縦書きで読みたい。 スマホの青空文庫ビューアーアプリはたくさんあるが、機能が多すぎてかえって使いづらい。オフラインに対応していないものもある。広告が表示されて煩わしいものが多い。 シンプ…</span><span class="lc-site">晴歩雨描 · <time>2025-11-19</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20251119/20251119104322.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2025/11/19/133754.html"><span class="lc-body"><span class="lc-title">縦書きHTMLファイルは、スマホアプリ「読書尚友 Lite」でページ割りして読める。（青空文庫）</span><span class="lc-desc">先程、青空文庫XHTMLファイルを縦書きに変換するWindowsアプリを作成した。 作成したHTMLファイルは、スマホブラウザで縦書きで読める。 ただし、ブラウザでは紙の書籍のようにページ単位で読むことはできない。スワイ…</span><span class="lc-site">晴歩雨描 · <time>2025-11-19</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20251119/20251119133400.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../06/130143.html"><span class="lc-body"><span class="lc-title">Windows：Python）特定のフォルダー（ディレクトリ）以下のフォルダー名一覧作成。→写真フォルダー名検索。</span><span class="lc-desc">以前に、PowerShellで、特定のフォルダー（ディレクトリ）以下のフォルダー名一覧をテキストファイルに書き出すスクリプトを作成。 同等の機能を実現するプログラムを、Pythonで作成。 【Pythonプログラムコード…</span><span class="lc-site">晴歩雨描 · <time>2026-01-06</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260106/20260106124942.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../10/135347.html"><span class="lc-body"><span class="lc-title">Python）Windowsのエクスプローラーを2画面左右に並べて開くツール作成。Windows11のスナップ機能を使わずに実現。</span><span class="lc-desc">Windowsのエクスプローラーを2画面左右に並べて開きたい。 こういった機能のツールアプリは色々あるが、余分な機能があって使いづらい。 単純に、エクスプローラーを2画面左右に並べて開くだけのツールをPythonで作成し…</span><span class="lc-site">晴歩雨描 · <time>2026-01-10</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260110/20260110135334.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="https://ok2nd.github.io/sitemap/hatena-sitemap-table.html?search=python" target="_blank" rel="noopener noreferrer"><span class="lc-body"><span class="lc-title">晴歩雨描：記事一覧</span><span class="lc-desc"></span><span class="lc-site">ok2nd.github.io</span></span></a></p>
+<p><a class="link-card" href="../../../2025/11/19/105207.html"><span class="lc-body"><span class="lc-title">Python）青空文庫をスマホで機内モード（オフライン）で縦書きで読むためにXHTMLを変換するWindowsアプリを作成。</span><span class="lc-desc">飛行機の機内で、スマホで青空文庫を縦書きで読みたい。 スマホの青空文庫ビューアーアプリはたくさんあるが、機能が多すぎてかえって使いづらい。オフラインに対応していないものもある。広告が表示されて煩わしいものが多い。 シンプ…</span><span class="lc-site">晴歩雨描 · <time>2025-11-19</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20251119/20251119104322.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2025/10/22/214630.html"><span class="lc-body"><span class="lc-title">Claude）Python）ローカル）写真を等倍高画質化するWindowsアプリ作成。OpenCV（疑似Real-ESRGAN）、シャープネス。SwinIR断念。</span><span class="lc-desc">※ 後日、Claude、ChatGPT、Geminiに確認したところ、今回作成したアプリでは、Real-ESRGANモデルは使われていないとのこと。中身はOpenCVの古典的な画像フィルターの組み合わせらしい（？）。ただ…</span><span class="lc-site">晴歩雨描 · <time>2025-10-22</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20251022/20251022211457.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2025/10/21/141052.html"><span class="lc-body"><span class="lc-title">Claude）Python）写真を美肌に編集加工するWindowsアプリ作成（５）。毛穴やシミを目立たなくする。AI顔検出＋AI輪郭抽出（精度向上版）。ICCプロファイル維持。</span><span class="lc-desc">先日、写真を美肌に編集加工するWindowsアプリをPythonで作成した。 輪郭抽出枠が大雑把だったので、もう少し細かく輪郭を抽出できるバージョンを作成。 課題としては、輪郭抽出の処理時間が大幅に上がったことと、抽出で…</span><span class="lc-site">晴歩雨描 · <time>2025-10-21</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20251021/20251021140459.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2025/09/29/090826.html"><span class="lc-body"><span class="lc-title">Claude）Python）シンプルなWindows用ランチャーアプリ作成。</span><span class="lc-desc">Pythonで作成したWindows用アプリが増えてきた。 これらを起動する ランチャーアプリ が欲しいと思って、作成した。 設定できる項目を少なくして、極力シンプルなものにした。 設定できるのは、ボタンサイズと横に並べ…</span><span class="lc-site">晴歩雨描 · <time>2025-09-29</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260108/20260108141324.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2025/09/20/205629.html"><span class="lc-body"><span class="lc-title">Claude）Python）写真のEXIF情報を表示するWindowsアプリ（ExifTool）を作成。</span><span class="lc-desc">Pythonで「 写真のEXIF情報を表示する 」Windowsアプリを作成。「Claude」で作成。 【機能概略】 JPEGファイルを画面にドラッグ＆ドロップすると、その写真のEXIF情報一覧を表示する。 メーカー独自…</span><span class="lc-site">晴歩雨描 · <time>2025-09-20</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250920/20250920175347.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2025/08/12/130210.html"><span class="lc-body"><span class="lc-title">Claude）Python）「写真をEXIF機種毎のフォルダーに分類」Windowsアプリ作成。</span><span class="lc-desc">Pythonで「写真をEXIF機種毎のフォルダーに分類」Windowsアプリを作成。 生成AI「 Claude 」「 Gemini 」「 Copilot 」で、以下のプロンプトで作成した。 【生成AI プロンプト】 Wi…</span><span class="lc-site">晴歩雨描 · <time>2025-08-12</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250812/20250812125530.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2025/08/12/093959.html"><span class="lc-body"><span class="lc-title">Gemini）Python）「ファイル拡張子別フォルダー移動」Windowsアプリ作成。</span><span class="lc-desc">Pythonで「ファイル拡張子別フォルダー移動」Windowsアプリを作成。 生成AI「 Gemini 」「 Claude 」「 ChatGPT GPT-5 」で、以下のプロンプトで作成してみた。 【生成AI プロンプト…</span><span class="lc-site">晴歩雨描 · <time>2025-08-12</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250812/20250812093352.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2025/06/14/093748.html"><span class="lc-body"><span class="lc-title">JavaScript＆Web、Python＆Windows）写真画像編集アプリ／ツールまとめ。</span><span class="lc-desc">写真画像編集アプリ／ツールを、JavaScriptとPythonでいくつか作成してきた。それらのツールまとめ。 ■ 画像縮小 【Webツール（JavaScript）】 https://ok2nd.github.io/to…</span><span class="lc-site">晴歩雨描 · <time>2025-06-14</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250614/20250614094138.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2025/06/13/153014.html"><span class="lc-body"><span class="lc-title">Claude）Python）透過画像作成Windowsアプリ作成。</span><span class="lc-desc">Pythonで「透過画像作成」Windowsアプリ作成。画像の白に近い色を透過にする。元データはJPEGまたはPNG。白の範囲は指定できる。AIツールClaudeに作成してもらった。 【使い方】 元画像ファイルは、ドラッ…</span><span class="lc-site">晴歩雨描 · <time>2025-06-13</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250613/20250613151037.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2025/05/09/085200.html"><span class="lc-body"><span class="lc-title">Claude）Python）PowerPointに複数写真（画像）を順番に並べて貼り付けるプログラム作成（改訂版）。</span><span class="lc-desc">以前に、PowerPointに複数写真を順番に並べて貼り付けるプログラムをPythonで作成した。 今回、このプログラムの改訂版。前回と同じく、AI生成ツール「Claude」に作ってもらった。 基本機能はそのままで、オプ…</span><span class="lc-site">晴歩雨描 · <time>2025-05-09</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250509/20250509084045.jpg" alt="" loading="lazy"></span></a></p></div></article>
+</body>
+</html>

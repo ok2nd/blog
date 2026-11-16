@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>備忘録：「DB Browser for SQLite（DB4S）」インストール。ID・パスワード管理用データベース＆テーブル作成。 - 晴歩雨描</title>
+<link rel="stylesheet" href="../../../../style.css">
+</head>
+<body>
+<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>備忘録：「DB Browser for SQLite（DB4S）」インストール。ID・パスワード管理用データベース＆テーブル作成。</h1><p class="meta">2026-09-28 · <a href="../../../../category/c8.html">コンピュータ</a></p><div class="entry-body"><p>WebサイトなどのID・パスワード管理を、「MyHome Portal」の「ID管理」で行ってきた。</p>
+<ul>
+<li><a href="https://ok2nd.github.io/myportal/" target="_blank">https://ok2nd.github.io/myportal/</a></li>
+</ul>
+<p>「MyHome Portal」の「ID管理」は、自分で作成したシステムだが、問題なく使えていて、使い勝手も良いが、将来にわたって、PHP、MySQLの環境管理含めて維持することに不安があるため、Python＋SQLiteの環境に移行することを検討。</p>
+<p>手始めとして、「<em>SQLite</em>」を使うために「<em>DB Browser for SQLite</em>」（略称：DB4S）をインストール。</p>
+<ul>
+<li>「<em>DB Browser for SQLite</em>」（<a href="https://sqlitebrowser.org/" target="_blank">https://sqlitebrowser.org/</a>）</li>
+</ul>
+<p>「Downloads」から、以下を選択。</p>
+<ul>
+<li>「<em>DB Browser for SQLite - Standard installer for 64-bit Windows</em>」</li>
+</ul>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260928/20260928130436.png" width="787" height="414" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<p>セットアップで、とりあえず、全てチェックして、インストール。</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260928/20260928120053.png" width="495" height="387" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<ul>
+<li>DB Browser (SQLite)</li>
+<ul>
+<li>機能: 通常の（暗号化されていない）SQLite データベースを扱う。</li>
+<li>特徴: 最新バージョンの SQLite エンジンを搭載。暗号化機能はない。</li>
+</ul>
+<li>DB Browser (SQLCipher)</li>
+<ul>
+<li>機能: SQLCipher（256-bit AES で暗号化された SQLite の拡張規格）で保護されたデータベースを開いたり、新しく暗号化 DB を作成したりできる。  </li>
+<li>特徴: 暗号化に対応する代わりに、内部の SQLite エンジンが通常版より少し古いバージョンになっている。</li>
+</ul>
+</ul>
+<p>■「MyHome Portal」&gt;「ID管理」で使用しているデータベース</p>
+<p>※ 移行前のMySQLデータベース</p>
+<p>データベース：<strong>_mydb_zid_mgr_a</strong></p>
+<p>ビュー：<strong>v_pass_for_csv</strong>（エクスポート用のビューを作成）</p>
+<p>パスワードを格納しているc_val1～c_val8は独自の手法で暗号化してる。CSVダウンロード時は、複合化してから、CSVに落とす。</p>
+<pre>CREATE VIEW v_pass_for_csv AS
+SELECT
+    a.id_pass AS id_pass,
+    a.c_subject AS c_subject,
+    a.c_body AS c_body,
+    a.c_homepageUrl AS c_homepageUrl,
+    a.c_delete AS c_delete,
+    a.id_category AS id_category,
+    a.c_registtime AS c_registtime,
+    a.c_updatetime AS c_updatetime,
+    a.c_item1 AS c_item1,
+    a.c_item2 AS c_item2,
+    a.c_item3 AS c_item3,
+    a.c_item4 AS c_item4,
+    a.c_item5 AS c_item5,
+    a.c_item6 AS c_item6,
+    a.c_item7 AS c_item7,
+    a.c_item8 AS c_item8,
+    b.c_val1 AS c_val1,
+    b.c_val2 AS c_val2,
+    b.c_val3 AS c_val3,
+    b.c_val4 AS c_val4,
+    b.c_val5 AS c_val5,
+    b.c_val6 AS c_val6,
+    b.c_val7 AS c_val7,
+    b.c_val8 AS c_val8
+FROM
+    _mydb_zid_mgr_a.m_pass AS a
+LEFT JOIN
+    _mydb_zid_mgr_b.m_pass2 AS b
+    ON a.id_pass = b.id_pass
+WHERE
+    a.c_delete = 0;
+</pre>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Null</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>id_pass</th>
+<td>int(10) unsigned</td>
+<td>NO</td>
+</tr>
+<tr>
+<th>c_subject</th>
+<td>varchar(255)</td>
+<td>NO</td>
+</tr>
+<tr>
+<th>c_body</th>
+<td>varchar(5000)</td>
+<td>YES</td>
+</tr>
+<tr>
+<th>c_homepageUrl</th>
+<td>varchar(500)</td>
+<td>NO</td>
+</tr>
+<tr>
+<th>c_delete</th>
+<td>int(10) unsigned</td>
+<td>NO</td>
+</tr>
+<tr>
+<th>id_category</th>
+<td>int(10) unsigned</td>
+<td>NO</td>
+</tr>
+<tr>
+<th>c_registtime</th>
+<td>datetime</td>
+<td>NO</td>
+</tr>
+<tr>
+<th>c_updatetime</th>
+<td>datetime</td>
+<td>NO</td>
+</tr>
+<tr>
+<th>c_item1</th>
+<td>varchar(45)</td>
+<td>NO</td>
+</tr>
+<tr>
+<th>c_item2</th>
+<td>varchar(45)</td>
+<td>NO</td>
+</tr>
+<tr>
+<th>c_item3</th>
+<td>varchar(45)</td>
+<td>NO</td>
+</tr>
+<tr>
+<th>c_item4</th>
+<td>varchar(45)</td>
+<td>NO</td>
+</tr>
+<tr>
+<th>c_item5</th>
+<td>varchar(45)</td>
+<td>NO</td>
+</tr>
+<tr>
+<th>c_item6</th>
+<td>varchar(45)</td>
+<td>NO</td>
+</tr>
+<tr>
+<th>c_item7</th>
+<td>varchar(45)</td>
+<td>NO</td>
+</tr>
+<tr>
+<th>c_item8</th>
+<td>varchar(45)</td>
+<td>NO</td>
+</tr>
+<tr>
+<th>c_val1</th>
+<td>varchar(700)</td>
+<td>YES</td>
+</tr>
+<tr>
+<th>c_val2</th>
+<td>varchar(700)</td>
+<td>YES</td>
+</tr>
+<tr>
+<th>c_val3</th>
+<td>varchar(700)</td>
+<td>YES</td>
+</tr>
+<tr>
+<th>c_val4</th>
+<td>varchar(700)</td>
+<td>YES</td>
+</tr>
+<tr>
+<th>c_val5</th>
+<td>varchar(700)</td>
+<td>YES</td>
+</tr>
+<tr>
+<th>c_val6</th>
+<td>varchar(700)</td>
+<td>YES</td>
+</tr>
+<tr>
+<th>c_val7</th>
+<td>varchar(700)</td>
+<td>YES</td>
+</tr>
+<tr>
+<th>c_val8</th>
+<td>varchar(700)</td>
+<td>YES</td>
+</tr>
+</tbody>
+</table>
+<p>ビュー：<strong>v_category</strong>（エクスポート用のビューを作成）</p>
+<pre>CREATE VIEW v_category AS
+SELECT
+    id_category,
+    c_categoryName,
+    c_categoryDisplayOrder
+FROM
+    m_category
+WHERE
+    c_delete = 0;</pre>
+<p>■ 新しいデータベース「<strong>idManager.db</strong>」を作成。</p>
+<p>※ 移行後のSQLiteデータベース</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260928/20260928123807.png" width="397" height="246" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<p>■ テーブル「<strong>t_id_pass</strong>」「<strong>t_category</strong>」、ビュー「<strong>id_pass</strong>」を作成。</p>
+<p>SQLiteにはMySQLのような詳細な型（varchar(255) や int(10) unsigned など）が無く、基本的に INTEGER、TEXT、REAL、BLOB の4種類のデータ型にマッピングして定義する。</p>
+<p>「DB Browser for SQLite」の「SQL実行」タブで、以下のCREATE TABLE文を実行する。</p>
+<pre>CREATE TABLE "t_id_pass" (
+    id_pass INTEGER NOT NULL,
+    c_subject TEXT NOT NULL,
+    c_body TEXT,
+    c_homepageUrl TEXT,
+    c_delete INTEGER NOT NULL,
+    id_category INTEGER,
+    c_registtime TEXT,
+    c_updatetime TEXT,
+    c_item1 TEXT NOT NULL,
+    c_item2 TEXT NOT NULL,
+    c_item3 TEXT NOT NULL,
+    c_item4 TEXT NOT NULL,
+    c_item5 TEXT NOT NULL,
+    c_item6 TEXT NOT NULL,
+    c_item7 TEXT NOT NULL,
+    c_item8 TEXT NOT NULL,
+    c_item9 TEXT NOT NULL,
+    c_item10 TEXT NOT NULL,
+    c_val1 TEXT,
+    c_val2 TEXT,
+    c_val3 TEXT,
+    c_val4 TEXT,
+    c_val5 TEXT,
+    c_val6 TEXT,
+    c_val7 TEXT,
+    c_val8 TEXT,
+    c_val9 TEXT,
+    c_val10 TEXT,
+    PRIMARY KEY (id_pass) 
+);
+
+CREATE TABLE "t_category" (
+    id_category INTEGER,
+    c_categoryName TEXT,
+    c_categoryDisplayOrder INTEGER NOT NULL,
+    PRIMARY KEY (id_category) 
+);
+
+CREATE VIEW id_pass AS
+SELECT
+    p.id_pass,
+    p.c_subject,
+    p.c_body,
+    p.c_homepageUrl,
+    p.c_delete,
+    p.id_category,
+    c.c_categoryName,
+    c.c_categoryDisplayOrder,
+    p.c_registtime,
+    p.c_updatetime,
+    p.c_item1,
+    p.c_item2,
+    p.c_item3,
+    p.c_item4,
+    p.c_item5,
+    p.c_item6,
+    p.c_item7,
+    p.c_item8,
+    p.c_item9,
+    p.c_item10,
+    p.c_val1,
+    p.c_val2,
+    p.c_val3,
+    p.c_val4,
+    p.c_val5,
+    p.c_val6,
+    p.c_val7,
+    p.c_val8,
+    p.c_val9,
+    p.c_val10
+FROM
+    t_id_pass AS p
+LEFT JOIN
+    t_category AS c
+ON
+    p.id_category = c.id_category;</pre>
+<p>上記SQL文をSQLガリ実画面に貼り付けて、青い再生ボタン（▶）を押す。</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260928/20260928124726.png" width="1039" height="662" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<p>実行後、エラーが無ければ、画面上部の 「変更を書き込み(W)」 ボタンをクリックして変更を保存する。</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260928/20260928125538.png" width="1018" height="848" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<p>続き（↓）</p>
+<p><a class="link-card" href="152052.html"><span class="lc-body"><span class="lc-title">備忘録：Python）CSVデータをSQLiteデータベースにインポート。一部データは暗号化して保管。ID・パスワード管理。</span><span class="lc-desc">上記（↑）の続き。 「MyHome Portal」の「ID管理」を、Python＋SQLiteの環境に移行するための作業。 「MyHome Portal」の「ID管理」データベース・データをCSVにエキスポートしたものを…</span><span class="lc-site">晴歩雨描 · <time>2026-09-28</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260928/20260928152235.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../10/04/082547.html"><span class="lc-body"><span class="lc-title">備忘録：Python＋SQLite）ID・パスワード管理アプリ作成。Nuitkaでexe化。</span><span class="lc-desc">WebサイトなどのID・パスワード管理を、「MyHome Portal」の「ID管理」で行ってきた。 https://ok2nd.github.io/myportal/ 「MyHome Portal」の「ID管理」は、自…</span><span class="lc-site">晴歩雨描 · <time>2026-10-04</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20261004/20261004082200.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../10/06/125158.html"><span class="lc-body"><span class="lc-title">備忘録：Python＋SQLite）住所録管理アプリ作成。＋はがき宛名書きPDF作成。Nuitkaでexe化。</span><span class="lc-desc">住所録管理を、「 MyHome Portal 」の「 住所録管理 」で行ってきた。 https://ok2nd.github.io/myportal/index.html 「MyHome Portal」の「住所録管理」は…</span><span class="lc-site">晴歩雨描 · <time>2026-10-06</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20261006/20261006125716.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../01/19/163007.html"><span class="lc-body"><span class="lc-title">無料でPHP＋MySQLが使えるWebホスティングサーバー「InfinityFree」を使ってみた。既存サービスからの移行検証。</span><span class="lc-desc">無料でPHP＋MySQLが使えるWebホスティングサーバーは、いくつもあるようだ。 InfinityFree GoogieHost x10Hosting Free-Hosting.org ProPHP Free Host…</span><span class="lc-site">晴歩雨描 · <time>2026-01-19</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260119/20260119163724.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../01/21/152702.html"><span class="lc-body"><span class="lc-title">無料でPHP＋MySQLが使えるWebホスティングサーバー「x10Hosting」を使ってみた。既存サービスからの移行検証。</span><span class="lc-desc">先日、無料でPHP＋MySQLが使えるWebホスティングサーバー「 InfinityFree 」を使ってみた。 「InfinityFree」は、レスポンスが遅い。 （※ 後日追記：「InfinityFree」で無料で立ち…</span><span class="lc-site">晴歩雨描 · <time>2026-01-21</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260121/20260121132031.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../01/25/121257.html"><span class="lc-body"><span class="lc-title">MySQLデータベースをphpMyAdminで別サーバーにコピーする時、ビューもコピーするには、「DEFINER=」を削除してインポートする。</span><span class="lc-desc">MySQLデータベースを別サーバーにコピーする時の注意点。 phpMyAdmin を使って、移行元サーバーで エクスポート して、移行先サーバーでそのファイルを インポート すればテーブルはコピーできる。 しかし、ビュー…</span><span class="lc-site">晴歩雨描 · <time>2026-01-25</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260125/20260125120448.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="https://ok2nd.hatenablog.com/archive" target="_blank" rel="noopener noreferrer"><span class="lc-body"><span class="lc-title">記事一覧 - 中級プログラマの自宅でPHP ブログ</span><span class="lc-desc">自宅用ポータルシステム「MyHome Portal」をオープンソースで公開。MyHome Portalの説明とエンハンス情報。</span><span class="lc-site">中級プログラマの自宅でPHP ブログ</span></span><span class="lc-thumb"><img src="https://cdn.blog.st-hatena.com/images/theme/og-image-1500.png" alt="" loading="lazy"></span></a></p></div></article>
+</body>
+</html>

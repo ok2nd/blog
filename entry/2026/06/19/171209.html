@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>備忘録）PHP+MySQLカレンダー（スケジューラー）システム：MySQLデータコピー「x10Hosting」→「InfinityFree」。 - 晴歩雨描</title>
+<link rel="stylesheet" href="../../../../style.css">
+</head>
+<body>
+<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>備忘録）PHP+MySQLカレンダー（スケジューラー）システム：MySQLデータコピー「x10Hosting」→「InfinityFree」。</h1><p class="meta">2026-06-19 · <a href="../../../../category/c13.html">ホームページ、Web作成</a></p><div class="entry-body"><p>自分用のカレンダー（スケジューラー）システムを、PHP+MySQLで作成して利用している。</p>
+<p><a class="link-card" href="../../../2025/07/30/092729.html"><span class="lc-body"><span class="lc-title">Gemini）PHP＋MySQLを使ったカレンダー＆スケジューラを作った。</span><span class="lc-desc">夫婦のスケジュール共有に「 Lifebear 」無料版を使ってきたが、Web版サービスが2025年12月中旬に終了すると発表されたので、無料でPCとスマホ両方で使えるスケジュール共有カレンダーアプリを探したが、良いものが…</span><span class="lc-site">晴歩雨描 · <time>2025-07-30</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250730/20250730084219.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2025/08/03/110524.html"><span class="lc-body"><span class="lc-title">JavaScript）HTMLカレンダー）スマホのスワイプ操作で、前月、翌月へ画面遷移できるようにした。</span><span class="lc-desc">先日、PHP＋MySQLを使ったHTMLカレンダー＆スケジューラを作った。 ＜ スマホ画面 ＞ このHTMLカレンダーは、前月、翌月へ画面遷移できるが、スマホのスワイプ操作でも、前月、翌月へ画面遷移できるようにした。 【…</span><span class="lc-site">晴歩雨描 · <time>2025-08-03</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250805/20250805123315.png" alt="" loading="lazy"></span></a></p>
+<p>無料でPHP＋MySQLが使えるWebホスティングサーバーの以下2つをメイン・サブとして使っている。</p>
+<ul>
+<li>メイン：「<em>x10Hosting</em>」</li>
+<li>サブ：「<em>InfinityFree</em>」</li>
+</ul>
+<p>基本は「<em>x10Hosting</em>」で運用し、定期的に「<em>InfinityFree</em>」にスケジューラーデータをバックアップコピーしている。</p>
+<p>MySQLデータコピー（<em>エクスポート→インポート</em>）の手順の備忘録。</p>
+<h4 id="-MySQLデータコピーx10HostingInfinityFree手順-">【 MySQLデータコピー「x10Hosting」→「InfinityFree」手順 】</h4>
+<h5 id="-x10hostingcom-サービスエクスポート">■ x10hosting.com サービス：エクスポート</h5>
+<p><a href="https://x10hosting.com/panel/services" target="_blank">https://x10hosting.com/panel/services</a></p>
+<p>● Login</p>
+<p>● Hosting Control Panel</p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260619/20260619163140.png" width="565" height="341" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<p>● 「Hosting Control Panel」用のUsernameとPasswordでSign in。</p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260619/20260619163329.png" width="498" height="478" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<p>● SQL (Databases)</p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260619/20260619163543.png" width="674" height="369" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<p>● phpMyAdmin</p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260619/20260619163810.png" width="781" height="337" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<p>● 「tbl_schedule」を選択。</p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260619/20260619164115.png" width="989" height="440" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<p>● エクスポート</p>
+<p>簡易＆エンコーディングなしで「エクスポート」。</p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260619/20260619164239.png" width="756" height="564" loading="lazy" title="" class="hatena-fotolife" itemprop="image">● 「<em>tbl_schedule.sql</em>」ファイルがダウンロードされる。</p>
+<h5 id="-infinityfreecom-サービスインポート">■ infinityfree.com サービス：インポート</h5>
+<p><a href="https://dash.infinityfree.com/accounts" target="_blank">https://dash.infinityfree.com/accounts</a></p>
+<p>● Login</p>
+<p>「Log in with Google」でLog in。</p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260619/20260619164814.png" width="551" height="496" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<p>● 使用しているドメイン「xxxxxxxxx.infinityfree.me」を選択して「Manage」。</p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260619/20260619165137.png" width="765" height="233" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<p>● MySQL Database → phpMyAdmin</p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260619/20260619165533.png" width="839" height="511" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<p>● 「tbl_schedule」を選択して「削除」。</p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260619/20260619170137.png" width="745" height="255" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260619/20260619170241.png" width="774" height="485" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<p>● インポート</p>
+<p>「<em>tbl_schedule.sql</em>」ファイルを選択し、オプションは何も変更なしで「実行」。</p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260619/20260619170613.png" width="709" height="703" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<p><a class="link-card" href="../../01/21/152702.html"><span class="lc-body"><span class="lc-title">無料でPHP＋MySQLが使えるWebホスティングサーバー「x10Hosting」を使ってみた。既存サービスからの移行検証。</span><span class="lc-desc">先日、無料でPHP＋MySQLが使えるWebホスティングサーバー「 InfinityFree 」を使ってみた。 「InfinityFree」は、レスポンスが遅い。 （※ 後日追記：「InfinityFree」で無料で立ち…</span><span class="lc-site">晴歩雨描 · <time>2026-01-21</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260121/20260121132031.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../01/19/163007.html"><span class="lc-body"><span class="lc-title">無料でPHP＋MySQLが使えるWebホスティングサーバー「InfinityFree」を使ってみた。既存サービスからの移行検証。</span><span class="lc-desc">無料でPHP＋MySQLが使えるWebホスティングサーバーは、いくつもあるようだ。 InfinityFree GoogieHost x10Hosting Free-Hosting.org ProPHP Free Host…</span><span class="lc-site">晴歩雨描 · <time>2026-01-19</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260119/20260119163724.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2025/09/17/112330.html"><span class="lc-body"><span class="lc-title">CSSレスポンシブ対応）スマホの機種によらず、画面横の文字数を同じにしたければ、font-sizeにvwを使う。</span><span class="lc-desc">スマホは、機種によって画面の横幅のサイズが違う。ブラウザのpixelサイズも違う。 ＜ ブラウザの表示幅・ピクセル(pixel)チェック ＞ https://ok2nd.github.io/tool/html/pixel…</span><span class="lc-site">晴歩雨描 · <time>2025-09-17</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250917/20250917105139.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2025/01/26/085411.html"><span class="lc-body"><span class="lc-title">JavaScriptで、HTML12か月カレンダーを作成。ChatGPTで作成。</span><span class="lc-desc">今まで、HTMLカレンダーをいくつか作成してきた。 ≪ PHPで作成したカレンダー≫ ≪ JavaScriptで作成した1か月カレンダー ≫ 今回、JavaScriptで、HTML「 12か月 」カレンダーを作成。 ht…</span><span class="lc-site">晴歩雨描 · <time>2025-01-26</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250126/20250126084550.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2024/12/23/093802.html"><span class="lc-body"><span class="lc-title">JavaScriptで、シンプルなHTMLカレンダーを作成。AIツールCopilotで作成。</span><span class="lc-desc">以前に、PHPでHTMLカレンダーを作成した。 今回、JavaScriptで、シンプルなHTMLカレンダーを作成。 JavaScriptを使ったHTMLカレンダーはネットで探すといくつも出てくる。今回、AIツール「Cha…</span><span class="lc-site">晴歩雨描 · <time>2024-12-23</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20241223/20241223092959.jpg" alt="" loading="lazy"></span></a></p></div></article>
+</body>
+</html>

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>写真でアート：GIMPを使って、写真画像の一部を透過にして、別の画像と重ね合わせ合成してアートを作成する。レイヤー使用。 - 晴歩雨描</title>
+<link rel="stylesheet" href="../../../../style.css">
+</head>
+<body>
+<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>写真でアート：GIMPを使って、写真画像の一部を透過にして、別の画像と重ね合わせ合成してアートを作成する。レイヤー使用。</h1><p class="meta">2019-06-30 · <a href="../../../../category/c18.html">写真・カメラ</a> <a href="../../../../category/c5.html">アート・美術</a></p><div class="entry-body"><p><a href="https://www.gimp.org/" target="_blank">GIMP</a>を使って、写真の一部を透過にして、別の画像と合成してみた。</p>
+<p>オリジナル画像は、GIMPのプラグイン「G'MIC」を使って写真を加工したものを使用。</p>
+<p><a class="link-card" href="141344.html"><span class="lc-body"><span class="lc-title">写真でアート：GIMPプラグイン「G&#x27;MIC」の「Artistic」フィルター［Black Crayon Graffiti］［Hough Sketch］［Make Squiggly］を使って写真を加工。</span><span class="lc-desc">先日、 GIMP の プラグイン 「 G&#x27;MIC 」を使って、写真を粒子感のあるモノクロ写真に加工した。 今回、「 G&#x27;MIC 」の他のフィルターを使ってみた。 ※「G&#x27;MIC」のインストール等については、上記記事を参照…</span><span class="lc-site">晴歩雨描 · <time>2019-06-30</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190630/20190630140302.jpg" alt="" loading="lazy"></span></a></p>
+<p>【オリジナル画像】</p>
+<p><img class="hatena-fotolife" title="f:id:art2nd:20190630164144j:plain" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190630/20190630164144.jpg" alt="f:id:art2nd:20190630164144j:plain" /></p>
+<h4 id="１透過手順">１．透過手順</h4>
+<p>まず、GIMPで、白っぽい背景色部分を透過にする。</p>
+<p>手順は以下。</p>
+<ul>
+<li>メニュー［ツール］→［選択ツール］→［色域を選択］</li>
+</ul>
+<p>で、白っぽい部分をマウスでドラッグしながら、選ぶ。選ぶ範囲は任意だが、少しコツがいる。</p>
+<p><img class="hatena-fotolife" title="f:id:art2nd:20190630164528j:plain" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190630/20190630164528.jpg" alt="f:id:art2nd:20190630164528j:plain" /></p>
+<p>選択が終わったら、以下の手順を実行すると、選択した部分が透過色になる。</p>
+<ul>
+<li>メニュー［レイヤー］→［透明部分］→［アルファチャンネルの追加］</li>
+<li>メニュー［編集］→［消去］</li>
+</ul>
+<p>この状態の画像を一旦保存する。透過色を保存するためには、ファイルの拡張子を<strong><span style="color: #ff0000;">png</span></strong>にする。</p>
+<p><img class="hatena-fotolife" title="f:id:art2nd:20190630164307p:plain" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190630/20190630164307.png" alt="f:id:art2nd:20190630164307p:plain" /></p>
+<h4 id="２合成手順">２．合成手順</h4>
+<p>合成する背景画像をドラッグ＆ドロップで読み込む。</p>
+<p>背景画像の上に、前景画像をドラッグ＆ドロップで読み込む。新しいレイヤーとして前景画像が追加される。</p>
+<p>【背景用の画像】</p>
+<p><img class="hatena-fotolife" title="f:id:art2nd:20190630164121j:plain" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190630/20190630164121.jpg" alt="f:id:art2nd:20190630164121j:plain" /></p>
+<p>合成したイメージが表示される。</p>
+<p><img class="hatena-fotolife" title="f:id:art2nd:20190630172501j:plain" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190630/20190630172501.jpg" alt="f:id:art2nd:20190630172501j:plain" /></p>
+<p>画像をjpgまたはpngでエクスポートすれば、合成画像が得られる。</p>
+<p><img class="hatena-fotolife" title="f:id:art2nd:20190630170448j:plain" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190630/20190630170448.jpg" alt="f:id:art2nd:20190630170448j:plain" /></p>
+<p>レイヤーダイアログを表示する。</p>
+<ul>
+<li>メニュー［ウインドウ］ →［ドッキング可能なダイアログ］→［レイヤー］<br /><img class="hatena-fotolife" title="f:id:art2nd:20191019160223j:plain" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20191019/20191019160223.jpg" alt="f:id:art2nd:20191019160223j:plain" /></li>
+</ul>
+<p>合成のモードを変えてみる。</p>
+<ul>
+<li>モード［乗算］/［Mulitiply］</li>
+</ul>
+<p><img class="hatena-fotolife" title="f:id:art2nd:20190630173318j:plain" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190630/20190630173318.jpg" alt="f:id:art2nd:20190630173318j:plain" /></p>
+<ul>
+<li>モード［ハードライト］/［Hard light］</li>
+</ul>
+<p><img class="hatena-fotolife" title="f:id:art2nd:20190630173909j:plain" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190630/20190630173909.jpg" alt="f:id:art2nd:20190630173909j:plain" /></p>
+<ul>
+<li>モード［Vivid light］</li>
+</ul>
+<p><img class="hatena-fotolife" title="f:id:art2nd:20190630170626j:plain" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190630/20190630170626.jpg" alt="f:id:art2nd:20190630170626j:plain" /></p>
+<p><a class="link-card" href="../../11/02/173131.html"><span class="lc-body"><span class="lc-title">GIMPで4枚の写真を重ね合わせ合成。コスモスの写真で試す。レイヤー使用。</span><span class="lc-desc">GIMPで4枚の写真を合成。 合成に使った4枚のオリジナル写真は以下。 GIMPのレイヤーを使って合成する。 4枚の画像を順番にドラッグ＆ドロップで読み込む。 レイヤーダイアログを表示する。 ・メニュー［ウインドウ］ →…</span><span class="lc-site">晴歩雨描 · <time>2019-11-02</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20191102/20191102172734.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../07/18/145810.html"><span class="lc-body"><span class="lc-title">写真でアート：モノクロ写真2枚をGIMPのレイヤーで重ね合わせ合成。</span><span class="lc-desc">GIMP を使った写真アート加工シリーズ。 モノクロ写真2枚をGIMPのレイヤーで合成してみた。 合成に使った2枚の写真 GIMPのレイヤーを使って合成する。 背景画像をドラッグ＆ドロップで読み込む。 背景画像の上に、前…</span><span class="lc-site">晴歩雨描 · <time>2019-07-18</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190718/20190718145134.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../07/02/132445.html"><span class="lc-body"><span class="lc-title">写真でアート：写真の色相を変えた2枚のうち1枚を上下逆転して重ね合わせ合成。GIMPのレイヤーを使う。</span><span class="lc-desc">GIMP を使った写真アート加工シリーズ。 今回は写真の色相を変えた2枚のうち1枚を上下逆転して合成してみた。 【オリジナル写真】 まず、GIMPメニュー［色］→［Color Balance］で写真の色相を変える。 青み…</span><span class="lc-site">晴歩雨描 · <time>2019-07-02</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190702/20190702131938.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../07/02/105401.html"><span class="lc-body"><span class="lc-title">写真でアート：GIMPプラグイン「G&#x27;MIC」の「Artistic」フィルター［Black Crayon Graffiti］［Ellipsionism］［Hough Sketch］を使って写真をアート加工。★</span><span class="lc-desc">GIMP を使った写真アート加工シリーズ。 今回の素材は、昨日、OLYMPUS Tough TG-5で撮った写真。 今回、GIMPプラグイン「G&#x27;MIC」フィルター［Artistic］の中の以下のフィルターを使った。 ［…</span><span class="lc-site">晴歩雨描 · <time>2019-07-02</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190702/20190702104814.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../12/13/191514.html"><span class="lc-body"><span class="lc-title">写真でアート：GIMPの「しきい値」で作成したモノクロ（白黒）画像と重ねて合成してみる。レイヤー使用。</span><span class="lc-desc">Windowsアプリ GIMP を使った写真アート加工シリーズ。 今回は、しきい値で白黒画像にしたものと元画像を重ねて、レイヤーモードを変えて合成してみた。 オリジナル画像 まず、しきい値を使って、白黒画像を作る。 メニ…</span><span class="lc-site">晴歩雨描 · <time>2019-12-13</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20191213/20191213190245.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../03/04/133453.html"><span class="lc-body"><span class="lc-title">GIMPを使って、写真2枚を重ねたイメージの作成を試した。（不透明度調整）。レイヤー使用。</span><span class="lc-desc">先日、 CSS の ブレンド モード&quot;background-blend-mode&quot;を使って、写真2枚を重ねたイメージの作成を試した。 今回、 Windows アプリ GIMP を使って、写真2枚を重ねたイメージの作成を試…</span><span class="lc-site">晴歩雨描 · <time>2019-03-04</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190304/20190304133037.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../14/164745.html"><span class="lc-body"><span class="lc-title">写真をビビッドに加工する。彩度調整を「GIMP」と「JTrim」で試してみる。色加工。</span><span class="lc-desc">写真をビビッドに加工するのにとりあえず手っ取り早いのは、彩度を上げること。 彩度調整をWindowsアプリ「 JTrim 」と「 GIMP 」で試してみた。GIMPでは彩度調整のパラメーターが複数ある。 検証のため、彩度…</span><span class="lc-site">晴歩雨描 · <time>2019-06-14</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190614/20190614145412.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../05/26/082853.html"><span class="lc-body"><span class="lc-title">GIMPで、写真の歪み（ゆがみ）を補正する。</span><span class="lc-desc">Windowsアプリ「 GIMP 」で、写真の歪みを補正する。 例えば、以下のような歪んだ写真を補正する。 操作は簡単。 メニュー［ツール］→［変形ツール］→［遠近法］ を使う。 写真の四隅をマウスでつかんで、補正する方…</span><span class="lc-site">晴歩雨描 · <time>2019-05-26</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190526/20190526075417.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../03/21/165144.html"><span class="lc-body"><span class="lc-title">GIMPで、写真の色相を変えてみた。（カラーバランス調整、色補正、色加工）</span><span class="lc-desc">Windows アプリ「 GIMP 2.10」で、写真の色相を変えてみた。 メニュー[色] → [Color Balance] を使う。シアン、マゼンダ、イエローの3つのスライドバーでカラーバランスを調整するだけ。シンプ…</span><span class="lc-site">晴歩雨描 · <time>2019-03-21</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190321/20190321164144.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../01/29/135013.html"><span class="lc-body"><span class="lc-title">GIMPで、写真のビネット効果（周辺減光補正）を試してみた。</span><span class="lc-desc">Windows アプリ「 GIMP 2.10.8」で、写真の ビネット 効果加工を試してみた。 ビネット 効果とは、写真の四隅周辺の光量を落として、昔のレンズで撮ったような味わいの雰囲気にすること。写真中央部が相対的に明…</span><span class="lc-site">晴歩雨描 · <time>2019-01-29</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190129/20190129134746.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../01/27/180942.html"><span class="lc-body"><span class="lc-title">写真から輪郭(線画)抽出。アプリ「Adobe Capture CC」「FotoSketcher」「GIMP」...を試してみた。</span><span class="lc-desc">写真から輪郭（線画）抽出に使えそうなソフトをいくつか試してみた。 iPad アプリ「Adobe Capture CC」 https://itunes.apple.com/jp/app/adobe-capture-cc/i…</span><span class="lc-site">晴歩雨描 · <time>2019-01-27</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190127/20190127173558.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../05/17/150028.html"><span class="lc-body"><span class="lc-title">オリンパス Tough TG-5で、身近なものを顕微鏡モードで撮ってみた。</span><span class="lc-desc">オリンパス Tough TG-5で、身近なものを顕微鏡モード（マクロ）で撮ってみた。 手持ち撮影なので、手ブレも加味してピンボケな感じが、アートっぽいかもしれない。 顕微鏡モードで撮影すると、ホコリやゴミがちょっと目立つ…</span><span class="lc-site">晴歩雨描 · <time>2019-05-17</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190517/20190517145428.jpg" alt="" loading="lazy"></span></a></p></div></article>
+</body>
+</html>

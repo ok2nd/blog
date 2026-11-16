@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Leaflet地図：「南海トラフ巨大地震」想定震度（内閣府、J-SHIS）を重ねて表示（オーバレイ）。 - 晴歩雨描</title>
+<link rel="stylesheet" href="../../../../style.css">
+</head>
+<body>
+<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>Leaflet地図：「南海トラフ巨大地震」想定震度（内閣府、J-SHIS）を重ねて表示（オーバレイ）。</h1><p class="meta">2026-08-07 · <a href="../../../../category/c21.html">地図・マップ</a> <a href="../../../../category/c13.html">ホームページ、Web作成</a></p><div class="entry-body"><p>Leaflet地図に、<em>「南海トラフ巨大地震」想定震度</em>（内閣府、J-SHIS）を重ねて表示（オーバレイ）できるようにした。</p>
+<p>内閣府「南海トラフ巨大地震モデル検討会」の公表データ（基本ケース・陸側ケース等の最大値）および防災科学技術研究所（J-SHIS）の震度分布を元に集約した代表値を使っている。想定震度は、モデルの違いで大きく変わる点に注意が必要。</p>
+<p><span style="color: #dd830c;">※ 今回使用したデータは、内閣府の有識者会議などが提示しているモデルで、「千年に一度」クラスのあらゆる可能性を考慮した最悪のシナリオなので、想定震度が最大クラスになっている</span></p>
+<p><span style="color: #dd830c;">※ 気象庁のホームページに載っているのは、過去に実際に起きた地震と同規模の破壊パターンを再現したモデルなので、想定震度は低めに現されている。以下の図は、気象庁ホームページのもの。</span></p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260809/20260809082758.png" width="793" height="525" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>以前に作成した以下の地図に、</p>
+<p><a href="https://ok2nd.github.io/leaflet/me4.html" target="_blank">https://ok2nd.github.io/leaflet/me4.html</a></p>
+<p>「南海トラフ地震」想定震度データを重ねて表示できるようにした。（↓）</p>
+<p><a href="https://ok2nd.github.io/leaflet/me5.html" target="_blank">https://ok2nd.github.io/leaflet/me5.html</a></p>
+<p>右側のプルダウンメニューで、「南海トラフ巨大地震 想定震度」にチェックを入れる。</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260807/20260807140343.jpg" width="1024" height="756" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>九州南部から東海地方にかけての太平洋側沿岸部などで最大震度7、九州から近畿・東海、関東一部にかけての広い地域で震度6強から6弱が想定されている。</p>
+<p>建物が大きな被害を免れたとしても、電気・ガス・水道・通信・道路などのインフラには甚大な被害が生じる可能性が高い。被災範囲が極めて広いため、近隣の市町村から十分な応援を受けることも容易ではない。</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260807/20260807140338.jpg" width="1024" height="756" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>津波浸水想定のハザードマップも合わせて表示することもできる。</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260807/20260807140348.jpg" width="1024" height="756" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>《 Style、JavaScript 追加・修正箇所 》</p>
+<pre>&lt;style&gt;
+.shindo-badge {	/* 南海トラフ想定震度マーカー */
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 26px;
+	height: 26px;
+	border-radius: 50%;
+	border: 2px solid #fdfdfd;
+	box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.7);
+	font-size: 12px;
+	font-weight: bold;
+	font-family: sans-serif;
+}
+&lt;/style&gt;</pre>
+<pre>&lt;script&gt;
+// 南海トラフ巨大地震 想定震度マーカー（パネルでチェックした時のみ表示）
+var nankaiTroughLayer = L.layerGroup();	// 最初は地図に addTo しない＝非表示状態
+var shindoStyle = {	// 震度ごとの色・文字色・表示ラベル（JMA震度階級の配色に準拠）
+	'震度1':   { color: '#F2F2FF', text: '#000', label: '1'  },
+	'震度2':   { color: '#00AAFF', text: '#000', label: '2'  },
+	'震度3':   { color: '#00FF00', text: '#000', label: '3'  },
+	'震度4':   { color: '#FFFF00', text: '#000', label: '4'  },
+	'震度5弱': { color: '#FF9600', text: '#000', label: '5-' },
+	'震度5強': { color: '#FF6000', text: '#fff', label: '5+' },
+	'震度6弱': { color: '#FF0000', text: '#fff', label: '6-' },
+	'震度6強': { color: '#C00000', text: '#fff', label: '6+' },
+	'震度7':   { color: '#960099', text: '#fff', label: '7'  }
+};
+function loadNankaiTrough() {
+	fetch('csv/nankai-trough-earthquake.csv')
+	.then(function(res) {
+		return res.text();
+	})
+	.then(function(text) {
+		var lines = text.split(/\r?\n/).filter(function(line) {
+			return line.trim() !== '';
+		});
+		// 1行目はヘッダーなのでスキップ
+		// 列構成：全国地方公共団体コード,都道府県名,市区町村名,代表緯度,代表経度,南海トラフ巨大地震想定震度
+		for (var i = 1; i &lt; lines.length; i++) {
+			var cols = lines[i].split(',');
+			if (cols.length &lt; 6) { continue; }
+			var pref = cols[1];
+			var city = cols[2];
+			var lat = parseFloat(cols[3]);
+			var lng = parseFloat(cols[4]);
+			var shindo = cols[5].trim();
+			var style = shindoStyle[shindo];
+			if (!style || isNaN(lat) || isNaN(lng)) { continue; }
+			var html = '&lt;div class="shindo-badge" style="background-color:' + style.color + ';color:' + style.text + ';"&gt;' + style.label + '&lt;/div&gt;';
+			var icon = L.divIcon({ className: '', html: html, iconSize: [26, 26], iconAnchor: [13, 13] });
+			L.marker([lat, lng], { icon: icon })
+				.bindPopup(pref + city + '&lt;br&gt;南海トラフ巨大地震 想定震度：' + shindo)
+				.addTo(nankaiTroughLayer);
+		}
+	})
+	.catch(function(err) {
+		console.error('南海トラフ震度データの読み込みに失敗しました。', err);
+	});
+}
+loadNankaiTrough();	// ページ読み込み時に一度だけ取得（表示はレイヤーパネルのチェック操作に連動）
+&lt;/script&gt;
+&lt;script&gt;
+var overlay = {
+	'国土地理院 色別標高図': Overlay_Map[ 0 ],
+	'国土地理院 陰影起伏図': Overlay_Map[ 1 ],
+	'産総研 地質図': Overlay_Map[ 2 ],
+	'Esri 衛星画像': Overlay_Map[ 3 ],
+	'ハザードマップ 洪水浸水想定区域': Overlay_Map[ 4 ],
+	'ハザードマップ 浸水継続時間': Overlay_Map[ 5 ],
+	'ハザードマップ 高潮浸水想定区域': Overlay_Map[ 6 ],
+	'ハザードマップ 津波浸水想定': Overlay_Map[ 7 ],
+	'ハザードマップ 土石流': Overlay_Map[ 8 ],
+	'ハザードマップ 急傾斜地の崩壊': Overlay_Map[ 9 ],
+	'ハザードマップ 地すべり': Overlay_Map[ 10 ],
+	'活断層（主要活断層帯：J-SHIS）': Overlay_Map[ 11 ],
+	'南海トラフ巨大地震 想定震度': nankaiTroughLayer
+};
+&lt;/script&gt;</pre>
+<p><a class="link-card" href="https://ok2nd.github.io/leaflet/" target="_blank" rel="noopener noreferrer"><span class="lc-body"><span class="lc-title">Leaflet地図 リスト by 晴歩雨描</span><span class="lc-desc"></span><span class="lc-site">ok2nd.github.io</span></span></a></p>
+<p><a class="link-card" href="https://ok2nd.github.io/sitemap/hatena-sitemap-table.html?search=leaflet" target="_blank" rel="noopener noreferrer"><span class="lc-body"><span class="lc-title">晴歩雨描：記事一覧</span><span class="lc-desc"></span><span class="lc-site">ok2nd.github.io</span></span></a></p>
+<p><a class="link-card" href="../../07/29/101706.html"><span class="lc-body"><span class="lc-title">Leaflet地図：活断層データ（防災科学技術研究所「J-SHIS」データ）を重ねて表示（オーバレイ）。</span><span class="lc-desc">Leaflet地図に、活断層データを重ねて表示できるようにした。 以前に作成した以下の地図に、 https://ok2nd.github.io/leaflet/me3.html 活断層データを重ねて表示できるようにした。…</span><span class="lc-site">晴歩雨描 · <time>2026-07-29</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260729/20260729100022.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2021/06/27/134220.html"><span class="lc-body"><span class="lc-title">Leaflet地図：国土地理院のハザードマップ（津波、洪水 etc.）を重ねて表示。Googleマップにも重ねて表示できる。サンプルソース。</span><span class="lc-desc">地図データを扱うJavaScript ライブラリ「Leaflet」を使って、地図表示を試してきた。 今回、国土地理院の「ハザードマップ」を重ねて表示してみた。 以下の7つを重ねて表示できるようにした。 洪水浸水想定区域（…</span><span class="lc-site">晴歩雨描 · <time>2021-06-27</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20210627/20210627133723.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../05/101918.html"><span class="lc-body"><span class="lc-title">都道府県別「晴れ日数」を、Leaflet地図で視覚的に分かり易くしてみた。春、夏、秋、冬、月別。</span><span class="lc-desc">都道府県別の（平年の）晴れ日数を、Leaflet地図で視覚的に分かり易くしてみた。 北海道は広いので、14振興局別にした。 春、夏、秋、冬の3か月バージョンと月別バージョンを作成。 《 春(3月～5月)の平年晴れ日数マッ…</span><span class="lc-site">晴歩雨描 · <time>2026-08-05</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260805/20260805100703.jpg" alt="" loading="lazy"></span></a></p></div></article>
+</body>
+</html>

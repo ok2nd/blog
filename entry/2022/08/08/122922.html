@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>WordPress）画像格納ディレクトリ確認。はてなブログからのインポートテスト。 - 晴歩雨描</title>
+<link rel="stylesheet" href="../../../../style.css">
+</head>
+<body>
+<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>WordPress）画像格納ディレクトリ確認。はてなブログからのインポートテスト。</h1><p class="meta">2022-08-08 · <a href="../../../../category/c13.html">ホームページ、Web作成</a> <a href="../../../../category/c2.html">WordPress</a> <a href="../../../../category/c4.html">はてなブログ</a></p><div class="entry-body"><p>先日、自宅のWindowsPCに<a class="keyword" href="http://d.hatena.ne.jp/keyword/WordPress">WordPress</a>をインストールした。</p>
+<p><a class="link-card" href="../06/224635.html"><span class="lc-body"><span class="lc-title">WindowsPCの古いXAMPPにWordPress（5.0.16）をインストール。</span><span class="lc-desc">※ 後日追記：ドライブやディレクトリを変える場合は注意が必要。 自宅のWindowsPCにWordPressをインストールした手順の備忘録。 自宅のWindowsPCには、古いバージョンのXAMPP（ XAMPP 1.8…</span><span class="lc-site">晴歩雨描 · <time>2022-08-06</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220806/20220806222743.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../07/111810.html"><span class="lc-body"><span class="lc-title">WordPressのデータベース変更。</span><span class="lc-desc">昨日、自宅のWindowsPCに WordPress をインストールした。 WordPress 用のデータベースを切り替えてみる。 http://localhost/xampp/ で、「 phpMyAdmin 」を開いて…</span><span class="lc-site">晴歩雨描 · <time>2022-08-07</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220807/20220807110458.png" alt="" loading="lazy"></span></a></p>
+<p>画像格納<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%C7%A5%A3%A5%EC%A5%AF%A5%C8">ディレクト</a>リ確認、<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A4%CF%A4%C6%A4%CA%A5%D6%A5%ED%A5%B0">はてなブログ</a>からのインポート、他、試しごとの備忘録。</p>
+<h5 id="デザイン変更">【デザイン変更】</h5>
+<p><a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%C0%A5%C3%A5%B7%A5%E5">ダッシュ</a>ボードの「外観」で「テーマ」を選択。</p>
+<ul>
+<li><a href="http://localhost/wordpress/wp-admin/themes.php">http://localhost/wordpress/wp-admin/themes.php</a></li>
+</ul>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220807/20220807123827.png" width="948" height="478" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>シンプルなテーマ「Twenty Sixteen」にしてみた。3カラムではあるが。</p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220807/20220807123838.png" width="971" height="522" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<h5 id="投稿写真画像の格納場所">【投稿写真画像の格納場所】</h5>
+<p>写真画像を投稿して、どこに格納されるのか確認してみた。</p>
+<p>「<em>wp-content\uploads</em>」フォルダー下の「年\月」単位のフォルダーに格納される。</p>
+<pre>\xampp\htdocs\<a class="keyword" href="http://d.hatena.ne.jp/keyword/wordpress">wordpress</a>\wp-content\uploads\2022\08
+</pre>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220807/20220807130551.png" width="628" height="463" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<h4 id="はてなブログからのインポート">【<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A4%CF%A4%C6%A4%CA%A5%D6%A5%ED%A5%B0">はてなブログ</a>からのインポート】</h4>
+<p><a class="keyword" href="http://d.hatena.ne.jp/keyword/%A4%CF%A4%C6%A4%CA%A5%D6%A5%ED%A5%B0">はてなブログ</a>でエクスポートしたMT（<a class="keyword" href="http://d.hatena.ne.jp/keyword/MovableType">MovableType</a>）形式のテキストファイルをインポートする。</p>
+<p>「ツール」の「<em><a class="keyword" href="http://d.hatena.ne.jp/keyword/Movable%20Type">Movable Type</a> と <a class="keyword" href="http://d.hatena.ne.jp/keyword/TypePad">TypePad</a></em>」の「今すぐインストール 」を実行。</p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220807/20220807131927.png" width="966" height="439" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>「インポーターの実行」が表示されるので実行。</p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220807/20220807132140.png" width="984" height="483" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>「<em><a class="keyword" href="http://d.hatena.ne.jp/keyword/Movable%20Type">Movable Type</a> もしくは <a class="keyword" href="http://d.hatena.ne.jp/keyword/Typepad">Typepad</a> のインポート</em>」画面が出る。</p>
+<p><a class="keyword" href="http://d.hatena.ne.jp/keyword/%A4%CF%A4%C6%A4%CA%A5%D6%A5%ED%A5%B0">はてなブログ</a>でエクスポートしたMT（<a class="keyword" href="http://d.hatena.ne.jp/keyword/MovableType">MovableType</a>）形式のテキストファイルを選択して「ファイルをアップロードしてインポート」を実行。</p>
+<p><em>※ インポートファイルは最大サイズ2MBと出るが、追加で複数ファイルをインポートできる。ちゃんと日付順に表示される。</em></p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220807/20220807132324.png" width="1003" height="438" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>インポート完了画面。</p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220807/20220807132546.png" width="998" height="661" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p><a class="keyword" href="http://d.hatena.ne.jp/keyword/%A4%CF%A4%C6%A4%CA%A5%D6%A5%ED%A5%B0">はてなブログ</a>と似たイメージにインポートできた。</p>
+<p>各記事のURLは以下のように変換される。</p>
+<pre><a href="../../07/31/113041.html">https://2ndart.hatenablog.com/entry/2022/07/31/113041</a>
+</pre>
+<p>↓↓↓</p>
+<pre><a href="http://localhost/wordpress/2022/07/31/2022-07-31-113041/">http://localhost/wordpress/2022/07/31/2022-07-31-113041/</a>
+</pre>
+<p>写真・画像は「<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A4%CF%A4%C6%A4%CA%A5%D5%A5%A9%A5%C8%A5%E9%A5%A4%A5%D5">はてなフォトライフ</a>」にリンクされた形になる。</p>
+<div class="images-row mceNonEditable">
+<div class="images-row-item"><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220807/20220807133748.jpg" width="938" height="1200" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></div>
+<div class="images-row-item"><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220807/20220807133751.jpg" width="850" height="1200" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></div>
+</div>
+<p><a class="keyword" href="http://d.hatena.ne.jp/keyword/%A4%CF%A4%C6%A4%CA%A5%D6%A5%ED%A5%B0">はてなブログ</a>埋め込みリンクや<a class="keyword" href="http://d.hatena.ne.jp/keyword/YouTube">YouTube</a>画像埋め込みリンクもそのままインポートされる。</p>
+<p>※ <a class="keyword" href="http://d.hatena.ne.jp/keyword/%A4%CF%A4%C6%A4%CA%A5%D6%A5%ED%A5%B0">はてなブログ</a>内埋め込みリンクは、<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A4%CF%A4%C6%A4%CA%A5%D6%A5%ED%A5%B0">はてなブログ</a>に依存したままになる。</p>
+<div class="images-row mceNonEditable">
+<div class="images-row-item"><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220807/20220807134509.png" width="453" height="641" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></div>
+<div class="images-row-item"><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220807/20220807134513.png" width="452" height="669" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></div>
+</div>
+<p><a class="link-card" href="123707.html"><span class="lc-body"><span class="lc-title">はてなブログのエクスポートファイルの画像リンクをWordPressローカルに変えるJScriptを作成。</span><span class="lc-desc">自宅のWindowsPCローカルに WordPress をインストールしている。 はてなブログ のエクスポートファイルでは写真画像は、 はてなフォトライフ を参照する形になっている。 ≪サンプル≫ https://cdn…</span><span class="lc-site">晴歩雨描 · <time>2022-08-08</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220808/20220808125307.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="171242.html"><span class="lc-body"><span class="lc-title">WordPress）外観テーマを「Semplicemente」に変更。</span><span class="lc-desc">先日、自宅のWindowsPCローカルに WordPress を入れた。 この WordPress の外観テーマを「Semplicemente」に変更。 【 はてなブログ 「晴歩雨描」のテーマ：Minimalism】 一…</span><span class="lc-site">晴歩雨描 · <time>2022-08-08</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220808/20220808170200.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../12/160116.html"><span class="lc-body"><span class="lc-title">WordPress）はてなブログから移行（インポート）する手順まとめ。メディアライブラリを使うバージョン。</span><span class="lc-desc">自宅のWindowsPCローカルに WordPress をインストールしている。 「 はてなブログ 」からエクスポートして WordPress にインポートしてみた。 ※ メディアライブラリを使わない前提の移行（インポー…</span><span class="lc-site">晴歩雨描 · <time>2022-08-12</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220807/20220807132140.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../12/153111.html"><span class="lc-body"><span class="lc-title">WordPress）設定まとめ。メディアライブラリを使うバージョン。</span><span class="lc-desc">自宅のWindowsPCローカルに WordPress をインストールしている。 設定をいくつかやってみたので、備忘録としてまとめ。 ※ メディアライブラリを使わない前提の設定まとめは以下。 １－Ａ．外観テーマを「 Se…</span><span class="lc-site">晴歩雨描 · <time>2022-08-12</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220812/20220812153057.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../14/225205.html"><span class="lc-body"><span class="lc-title">WordPress）はてなブログのアイキャッチ画像をメディアライブラリを使わずに記事一覧とブログカードに反映させる。</span><span class="lc-desc">自宅WindowsPCローカルに WordPress をインストールしている。 「 はてなブログ 」から WordPress への移行の検証をしている。 ※ ↓は、本対策を行う前のインポート手順。 どうにか、やりたいこと…</span><span class="lc-site">晴歩雨描 · <time>2022-08-14</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220814/20220814225145.jpg" alt="" loading="lazy"></span></a></p></div></article>
+</body>
+</html>

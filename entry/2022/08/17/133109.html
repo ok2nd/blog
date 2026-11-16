@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>はてなブログエクスポートファイルからキーワードリンク&lt;a&gt;タグを除去するJScript。WordPressインポート用。 - 晴歩雨描</title>
+<link rel="stylesheet" href="../../../../style.css">
+</head>
+<body>
+<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>はてなブログエクスポートファイルからキーワードリンク&lt;a&gt;タグを除去するJScript。WordPressインポート用。</h1><p class="meta">2022-08-17 · <a href="../../../../category/c13.html">ホームページ、Web作成</a> <a href="../../../../category/c4.html">はてなブログ</a> <a href="../../../../category/c2.html">WordPress</a></p><div class="entry-body"><p><a class="keyword" href="http://d.hatena.ne.jp/keyword/%A4%CF%A4%C6%A4%CA%A5%D6%A5%ED%A5%B0">はてなブログ</a>では、文章中の特定のキーワードに勝手にアンダーラインが引かれリンクになる。</p>
+<p>無料版では標準的にはこれを消せない。</p>
+<p><a class="keyword" href="http://d.hatena.ne.jp/keyword/%A4%CF%A4%C6%A4%CA%A5%D6%A5%ED%A5%B0">はてなブログ</a>からエクスポートするファイルにも、その<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%AD%A1%BC%A5%EF%A1%BC%A5%C9%A5%EA%A5%F3%A5%AF">キーワードリンク</a>はそのまま残っている。</p>
+<p>≪サンプル≫</p>
+<pre>&lt;a class="keyword" href="<a href="http://d.hatena.ne.jp/keyword/%B5%FE%C5%D4%C9%DC%CE%A9%BF%A2%CA%AA%B1%E0">http://d.hatena.ne.jp/keyword/%B5%FE%C5%D4%C9%DC%CE%A9%BF%A2%CA%AA%B1%E0</a>"&gt;<a class="keyword" href="http://d.hatena.ne.jp/keyword/%B5%FE%C5%D4%C9%DC%CE%A9%BF%A2%CA%AA%B1%E0">京都府立植物園</a>&lt;/a&gt;
+</pre>
+<p><a class="keyword" href="http://d.hatena.ne.jp/keyword/%A4%CF%A4%C6%A4%CA%A5%D6%A5%ED%A5%B0">はてなブログ</a>エクスポートファイルから、この<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%AD%A1%BC%A5%EF%A1%BC%A5%C9%A5%EA%A5%F3%A5%AF">キーワードリンク</a>&lt;a&gt;タグを除去する<a class="keyword" href="http://d.hatena.ne.jp/keyword/JScript">JScript</a><a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%B9%A5%AF%A5%EA%A5%D7%A5%C8">スクリプト</a>。</p>
+<pre>//	ドラッグ＆ドロップしたパス情報を取得
+var args = WScript.Arguments;
+var inputFile = args(0);
+
+var sr = new ActiveXObject("ADODB.Stream");
+sr.Type = 2;					// adTypeText
+sr.charset = "<a class="keyword" href="http://d.hatena.ne.jp/keyword/utf-8">utf-8</a>";
+sr.Open();
+sr.LoadFromFile(inputFile);
+var str = sr.ReadText(-1);			// adReadAll
+sr.Close();
+
+var out = str.replace(new <a class="keyword" href="http://d.hatena.ne.jp/keyword/RegExp">RegExp</a>('&lt;a[^&gt;]+href=\"<a class="keyword" href="http://d.hatena.ne.jp/keyword/https">https</a>?://d\.hatena\.ne\.jp/keyword.*?&gt;(.*?)&lt;/a&gt;', 'g'), '$1')
+
+var sw = new ActiveXObject("ADODB.Stream");
+sw.Type = 2;					// adTypeText
+sw.charset = "<a class="keyword" href="http://d.hatena.ne.jp/keyword/utf-8">utf-8</a>";
+sw.Open();
+sw.WriteText(out, 1);				// adWriteLine
+sw.SaveToFile(inputFile.slice(0,-4) + "-remove.txt", 2);	// adSaveCreateOverWrite
+sw.Close();
+</pre>
+<p>&lt;a&gt;タグを除去する<a class="keyword" href="http://d.hatena.ne.jp/keyword/%C0%B5%B5%AC%C9%BD%B8%BD">正規表現</a>については、「teratail」で教えてもらった。</p>
+<p><a class="link-card" href="https://teratail.com/" target="_blank" rel="noopener noreferrer"><span class="lc-body"><span class="lc-title">teratail【テラテイル】｜ITエンジニア特化型Q&amp;Aサイト</span><span class="lc-desc">teratail（テラテイル）はプログラミングに特化したQ&amp;Aサイトです。実現したい機能や作業中に発生したエラーについて質問すると、他のエンジニアから回答を得られます。</span><span class="lc-site">teratail[テラテイル]</span></span><span class="lc-thumb"><img src="https://teratail.com/img/ogpImages/imgFacebookShare.png" alt="" loading="lazy"></span></a></p>
+<hr />
+<p><a class="link-card" href="../16/141341.html"><span class="lc-body"><span class="lc-title">JavaScript）EUC-JPエンコード→UTF-8エンコード変換。</span><span class="lc-desc">はてなブログ では、文章中の特定のキーワードに勝手にアンダーラインが引かれリンクになる。 無料版では標準的にはこれを消せない。 はてなブログ からエクスポートするファイルにも、その キーワードリンク はそのまま残っている…</span><span class="lc-site">晴歩雨描 · <time>2022-08-16</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220816/20220816141220.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../16/105039.html"><span class="lc-body"><span class="lc-title">WordPress）はてなブログから移行（インポート）する手順まとめ。メディアライブラリを使わないバージョン。</span><span class="lc-desc">自宅WindowsPCローカルに WordPress をインストールしている。 「 はてなブログ 」からエクスポートして WordPress にインポートしてみた。 以前、移行（インポート）する手順まとめを書いた。この時…</span><span class="lc-site">晴歩雨描 · <time>2022-08-16</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220817/20220817223605.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2019/06/24/002655.html"><span class="lc-body"><span class="lc-title">検索機能付き「はてなブログ記事一覧」HTML生成スクリプト(JScript)を作成。</span><span class="lc-desc">先日、はてなブログのHTMLサイトマップ（はてなブログ記事一覧）を生成するスクリプト(JScript)を作成した。 これは、Googleクローラーに読み込んでもらうのが目的だったが、今回は人間が利用するための「はてなブロ…</span><span class="lc-site">晴歩雨描 · <time>2019-06-24</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190623/20190623234257.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../12/143645.html"><span class="lc-body"><span class="lc-title">WordPress）はてなブログのブログカードをWordPressローカルリンクのショートコードに変更するJScript作成。</span><span class="lc-desc">自宅のWindowsPCローカルに WordPress をインストールしている。 はてなブログ をエクスポートして、 WordPress にインポートした。 ブログカードは、 はてなブログ に依存したままになる。自分のブ…</span><span class="lc-site">晴歩雨描 · <time>2022-08-12</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220812/20220812141901.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../08/123707.html"><span class="lc-body"><span class="lc-title">はてなブログのエクスポートファイルの画像リンクをWordPressローカルに変えるJScriptを作成。</span><span class="lc-desc">自宅のWindowsPCローカルに WordPress をインストールしている。 はてなブログ のエクスポートファイルでは写真画像は、 はてなフォトライフ を参照する形になっている。 ≪サンプル≫ https://cdn…</span><span class="lc-site">晴歩雨描 · <time>2022-08-08</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220808/20220808125307.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../18/130246.html"><span class="lc-body"><span class="lc-title">JavaScript、CSS）aタグ、divタグを使わずに、imgタグだけで画像をポップアップする。</span><span class="lc-desc">HTMLで画像をポップアップする場合、&lt;a&gt;タグや&lt;div&gt;タグで&lt;img&gt;タグを囲んで行うのが一般的。 &lt;a&gt;タグ、&lt;div&gt;タグを使わずに、&lt;img&gt;タグだけで画像をポップアップする方法を探した。以下に目的のものがあ…</span><span class="lc-site">晴歩雨描 · <time>2022-08-18</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220818/20220818150842.jpg" alt="" loading="lazy"></span></a></p></div></article>
+</body>
+</html>

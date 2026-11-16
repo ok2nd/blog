@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CSS）「mix-blend-mode」の「multiply」で、JPEG画像を半透明（透過）に重ねて表示。 - 晴歩雨描</title>
+<link rel="stylesheet" href="../../../../style.css">
+</head>
+<body>
+<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>CSS）「mix-blend-mode」の「multiply」で、JPEG画像を半透明（透過）に重ねて表示。</h1><p class="meta">2023-07-29 · <a href="../../../../category/c13.html">ホームページ、Web作成</a></p><div class="entry-body"><p>CSSの「mix-blend-mode」の「multiply」のテスト。</p>
+<p>以下の3つのJPG画像を「multiply（乗算）」で半透明に重ねて表示。</p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20230729/20230729142644.jpg" width="320" height="259" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20230729/20230729142649.jpg" width="320" height="259" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20230729/20230729142646.jpg" width="320" height="259" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>≪HTMLとCSS≫</p>
+<pre>&lt;style&gt;
+div {
+	position: relative;
+}
+img {
+	border: 1px #000 solid;
+}
+.multiply &gt; img {
+	mix-blend-mode: multiply;
+	position: absolute;
+}
+&lt;/style&gt;
+&lt;div&gt;
+	&lt;img src="image/320/red.jpg"&gt;
+	&lt;img src="image/320/blue.jpg"&gt;
+	&lt;img src="image/320/yellow.jpg"&gt;
+&lt;/div&gt;
+&lt;div class="multiply"&gt;
+	&lt;img src="image/320/red.jpg"&gt;
+	&lt;img src="image/320/blue.jpg"&gt;
+	&lt;img src="image/320/yellow.jpg"&gt;
+&lt;/div&gt;
+</pre>
+<p>≪サンプルページ≫</p>
+<p><a target="_blank" href="https://ok2nd.github.io/Test/mix-blend-mode/multiply.html">https://ok2nd.github.io/Test/mix-blend-mode/multiply.html</a></p>
+<p>重ねたイメージ画像。</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20230729/20230729142726.jpg" width="328" height="268" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>以前に、GIMPでPNG透過画像を使って重ねたものを、JPEGで「mix-blend-mode」を使って重ねてみた。</p>
+<p><a class="link-card" href="../../../2020/03/15/112612.html"><span class="lc-body"><span class="lc-title">GIMPグラデーションで部分的に半透明にした写真を重ね合わせ合成。レイヤー使用。</span><span class="lc-desc">GIMPのグラデーションで写真を部分的に半透明にして、2枚の写真を重ねてみる。 オリジナル写真は以下から。 まず、レイヤーマスクを追加する。 GIMPメニュー［レイヤー］→［レイヤーマスク］→［レイヤーマスクの追加］ 「…</span><span class="lc-site">晴歩雨描 · <time>2020-03-15</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20200315/20200315104800.jpg" alt="" loading="lazy"></span></a></p>
+<p>オリジナル画像そのままだと、濃すぎるので、opacity: 0.8 で少し薄くして使用。</p>
+<pre>&lt;style&gt;
+div {
+	position: relative;
+}
+img {
+	border: 1px #000 solid;
+	width: 400px;
+}
+.opacity &gt; img {
+	opacity: 0.8;
+}
+.multiply &gt; img {
+	mix-blend-mode: multiply;
+	position: absolute;
+}
+&lt;/style&gt;
+&lt;div&gt;
+	&lt;img src="image/001-g.jpg"&gt;
+	&lt;img src="image/002-g.jpg"&gt;
+&lt;/div&gt;
+&lt;div class="opacity"&gt;
+	&lt;img src="image/001-g.jpg"&gt;
+	&lt;img src="image/002-g.jpg"&gt;
+&lt;/div&gt;
+&lt;div class="opacity multiply"&gt;
+	&lt;img src="image/001-g.jpg"&gt;
+	&lt;img src="image/002-g.jpg"&gt;
+&lt;/div&gt;
+</pre>
+<div class="images-row mceNonEditable">
+<div class="images-row-item"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20230729/20230729152000.jpg" width="400" height="266" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></div>
+<div class="images-row-item"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20230729/20230729152003.jpg" width="400" height="266" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></div>
+</div>
+<p><a target="_blank" href="https://ok2nd.github.io/Test/mix-blend-mode/multiply2.html">https://ok2nd.github.io/Test/mix-blend-mode/multiply2.html</a></p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20230729/20230729152050.png" width="407" height="274" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p><a class="link-card" href="../../../2022/08/24/123319.html"><span class="lc-body"><span class="lc-title">JavaScript、CSS）「My野鳥図鑑」ポップアップ画像表示を、別ページや&lt;a&gt;タグ、&lt;div&gt;タグを使わない方式に変更。</span><span class="lc-desc">以前作成した「My 野鳥図鑑」のポップアップ画像を表示する方式を、別ページや&lt;a&gt;タグ、&lt;div&gt;タグを使わない方式に変更。 ≪ My 野鳥図鑑 ≫ &lt;a&gt;タグ、&lt;div&gt;タグを使わない方式については、以下を利用。</span><span class="lc-site">晴歩雨描 · <time>2022-08-24</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220824/20220824123143.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2022/08/18/130246.html"><span class="lc-body"><span class="lc-title">JavaScript、CSS）aタグ、divタグを使わずに、imgタグだけで画像をポップアップする。</span><span class="lc-desc">HTMLで画像をポップアップする場合、&lt;a&gt;タグや&lt;div&gt;タグで&lt;img&gt;タグを囲んで行うのが一般的。 &lt;a&gt;タグ、&lt;div&gt;タグを使わずに、&lt;img&gt;タグだけで画像をポップアップする方法を探した。以下に目的のものがあ…</span><span class="lc-site">晴歩雨描 · <time>2022-08-18</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220818/20220818150842.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2021/07/14/182154.html"><span class="lc-body"><span class="lc-title">HTMLとCSSで点線リーダー：目次や索引で項目名とページの間を点線で結ぶ。（Googleフォント）</span><span class="lc-desc">目次や索引で、項目名とページの間を点線で結ぶ（タブリ－ダー）のをHTMLと CSS で実現する方法の備忘録。 ≪完成イメージ≫ ≪参考にさせてもらったページ≫ 他の方法を公開しているページ。 【関連：Wordで点線リーダ…</span><span class="lc-site">晴歩雨描 · <time>2021-07-14</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20210714/20210714180559.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2021/05/28/145911.html"><span class="lc-body"><span class="lc-title">CSS）画像を角丸で切り抜く。</span><span class="lc-desc">備忘録。 CSS で、画像を角丸で切り抜くサンプル。 img { display: block; margin: 0px 0px 3px 0px; width: 140px; height: 100px; object-…</span><span class="lc-site">晴歩雨描 · <time>2021-05-28</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20210528/20210528145609.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2020/01/02/233132.html"><span class="lc-body"><span class="lc-title">CSS）ブラウザで縦書き表示＆印刷。PHP版。</span><span class="lc-desc">HTML、CSSで縦書き表示するWebページを作成。任意の文章に、以下のようなCSSを指定したHTMLページを生成する。 &lt;style&gt; -webkit-writing-mode: vertical-rl; -ms-wr…</span><span class="lc-site">晴歩雨描 · <time>2020-01-02</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20200102/20200102224001.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2019/09/02/174735.html"><span class="lc-body"><span class="lc-title">JavaScript、jQuery、CSS）ポップアップ写真画像をブラウザのウインドウサイズに合わせて拡大縮小できるようにした。</span><span class="lc-desc">以前、HTMLで写真サムネイルアルバム＋ポップアップ画像ページを作成した。下はその時のブログ記事。 作成したサムネイルアルバムWebページは、以下。 https://ok2nd.sakura.ne.jp/album/ko…</span><span class="lc-site">晴歩雨描 · <time>2019-09-02</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190902/20190902154309.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2019/07/19/100328.html"><span class="lc-body"><span class="lc-title">HTML、CSSで背景画像を並べる＆透過風に白っぽくする。</span><span class="lc-desc">昨日、GIMPで同じ画像（写真）を継ぎ目なくきれいに壁紙状に並べるのを試した。 ここで作成した画像をHTMLで壁紙として並べる方法。 単純に同じ画像を背景一杯に並べるのは簡単。 &lt;body background=&quot;pho…</span><span class="lc-site">晴歩雨描 · <time>2019-07-19</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190718/20190718170706.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2019/02/28/112119.html"><span class="lc-body"><span class="lc-title">CSSのブレンドモード&quot;background-blend-mode&quot;を使って、写真を2枚重ねたイメージの作成を試した。</span><span class="lc-desc">先日、 CSS の ブレンド モード&quot;background-blend-mode&quot;を使って、写真にカラーフィルタをかけたような色の加工を試した。↓ 今回、 CSS の ブレンド モード&quot;background-blend-…</span><span class="lc-site">晴歩雨描 · <time>2019-02-28</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190228/20190228111348.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2019/02/15/155918.html"><span class="lc-body"><span class="lc-title">CSS）写真に影付きのシンプルな枠＋ビネット効果</span><span class="lc-desc">↑ で、写真に枠(フレーム)を付けた。 この写真に、さらに ビネット 効果を付ける。 ビネット 効果については、以下リンク先を参照。 ビネット 効果を付ける&lt;div&gt;を、枠を付ける&lt;div&gt;で囲む。 &lt;div class…</span><span class="lc-site">晴歩雨描 · <time>2019-02-15</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190215/20190215172500.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2018/05/05/163731.html"><span class="lc-body"><span class="lc-title">写真を正方形にトリミングする方法。画像処理しないでCSSのみでトリミング。</span><span class="lc-desc">写真・画像をサムネイル表示する場合など、正方形にトリミングしたい場合がある。画像処理ソフトでトリミングする方法もあるが、 Webブラウザ で表示するのが目的なら、写真・画像はそのままで CSS でトリミングすることができ…</span><span class="lc-site">晴歩雨描 · <time>2018-05-05</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20180505/20180505162503.jpg" alt="" loading="lazy"></span></a></p></div></article>
+</body>
+</html>

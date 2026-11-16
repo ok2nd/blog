@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Claude）Python）写真を美肌に編集加工するWindowsアプリ作成（２）。毛穴やシミを目立たなくする。AIによる人物顔判別。 - 晴歩雨描</title>
+<link rel="stylesheet" href="../../../../style.css">
+</head>
+<body>
+<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>Claude）Python）写真を美肌に編集加工するWindowsアプリ作成（２）。毛穴やシミを目立たなくする。AIによる人物顔判別。</h1><p class="meta">2025-10-13 · <a href="../../../../category/c18.html">写真・カメラ</a> <a href="../../../../category/c42.html">＜AI＞</a></p><div class="entry-body"><p>先程、写真を美肌にするWindowsアプリを作成した。このバージョンでは、人物の顔判別はしていない。背景も含めて全体にソフトフォーカスをかける感じ。</p>
+<p><a class="link-card" href="115001.html"><span class="lc-body"><span class="lc-title">Claude）Python）写真を美肌に編集加工するWindowsアプリ作成（１）。毛穴やシミを目立たなくする。ソフトフォーカス。</span><span class="lc-desc">Pythonで、写真の人物を美肌にするWindowsアプリ作成。毛穴を目立たなくする。 このバージョンでは、AIによる人物の顔判別はしていない。背景も含めて全体にソフトフォーカスをかける感じ。 Pythonの「PIL/P…</span><span class="lc-site">晴歩雨描 · <time>2025-10-13</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20251013/20251013093911.png" alt="" loading="lazy"></span></a></p>
+<p><em>今回、AIによる人物の顔を判別をしている。人物のみを美肌にし、背景はなるべく加工せずそのままにする。</em>ただし、人物顔判別が正しくできない場合は、人物の美肌効果も限られる。</p>
+<p>顔認識には、PythonのMediaPipeライブラリを使用。</p>
+<h5 id="Pythonプログラム">【Pythonプログラム】</h5>
+<ul>
+<li>写真はドラッグ＆ドロップでアプリに取り込める。</li>
+<li>美肌効果をスライダーで調整できる。</li>
+<li>美肌効果を画面上で確認できる。アプリのウインドウサイズを拡大縮小でプレビュー画像も拡大縮小する。</li>
+<li>保存ボタンを押したら、元の写真と同じフォルダーに「オリジナルファイル名-AI美肌」という名前で保存する。</li>
+</ul>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20251013/20251013115756.png" width="1020" height="789" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<h5 id="Pythonライブラリインストール">【Pythonライブラリインストール】</h5>
+<p>次のライブラリが必要なので、インストールする。</p>
+<pre>pip install mediapipe</pre>
+<h5 id="Pythonプログラムコード">【Pythonプログラムコード】</h5>
+<pre>import sys
+import os
+from PIL import Image, ImageFilter, ImageEnhance
+import numpy as np
+import cv2
+from PyQt5.QtWidgets import (QApplication, QMainWindow, QLabel, QPushButton, 
+                             QSlider, QVBoxLayout, QHBoxLayout, QWidget, QMessageBox)
+from PyQt5.QtCore import Qt, QTimer
+from PyQt5.QtGui import QPixmap, QImage, QDragEnterEvent, QDropEvent
+
+try:
+    import mediapipe as mp
+    MEDIAPIPE_AVAILABLE = True
+except ImportError:
+    MEDIAPIPE_AVAILABLE = False
+    print("警告: MediaPipeがインストールされていません。顔認識精度が低下します。")
+
+class BeautySkinApp(QMainWindow):
+    def __init__(self):
+        super().__init__()
+        self.setWindowTitle("AI美肌処理アプリ")
+        self.setGeometry(100, 100, 1200, 800)
+        
+        self.original_image = None
+        self.processed_image = None
+        self.image_path = None
+        self.current_intensity = 70
+        self.mp_face_detection = None
+        self.face_cascade = None
+        
+        # 顔認識モデルの初期化
+        self.init_face_detection()
+        
+        # スライダー更新用タイマー
+        self.update_timer = QTimer()
+        self.update_timer.setSingleShot(True)
+        self.update_timer.timeout.connect(self.process_image)
+        
+        self.init_ui()
+        
+    def init_face_detection(self):
+        """顔認識モデルを初期化"""
+        try:
+            if MEDIAPIPE_AVAILABLE:
+                # MediaPipeの高精度な顔認識を使用
+                mp_face = mp.solutions.face_detection
+                self.mp_face_detection = mp_face.FaceDetection(
+                    model_selection=1,  # 0: 2m以内用, 1: 5m以内用（より広範囲）
+                    min_detection_confidence=0.3  # 検出感度を上げる
+                )
+                print("MediaPipe顔認識を使用します（高精度）")
+            else:
+                # OpenCVのHaar Cascade分類器をフォールバック
+                cascade_path = cv2.data.haarcascades + 'haarcascade_frontalface_default.xml'
+                self.face_cascade = cv2.CascadeClassifier(cascade_path)
+                print("OpenCV顔認識を使用します（通常精度）")
+                
+        except Exception as e:
+            print(f"顔認識の初期化エラー: {e}")
+        
+    def init_ui(self):
+        # メインウィジェット
+        main_widget = QWidget()
+        self.setCentralWidget(main_widget)
+        main_layout = QVBoxLayout()
+        main_widget.setLayout(main_layout)
+        
+        # 画像表示エリア
+        self.image_label = QLabel()
+        self.image_label.setAlignment(Qt.AlignCenter)
+        self.image_label.setMinimumSize(1000, 600)
+        self.image_label.setStyleSheet("""
+            QLabel {
+                background-color: #2b2b2b;
+                border: 3px dashed #666;
+                border-radius: 10px;
+                color: #999;
+                font-size: 16px;
+            }
+        """)
+        self.image_label.setText("ここに画像をドラッグ＆ドロップ\n（JPG, PNG, BMP対応）")
+        main_layout.addWidget(self.image_label, 1)
+        
+        # コントロールエリア
+        control_widget = QWidget()
+        control_widget.setStyleSheet("background-color: #1e1e1e; padding: 15px; border-radius: 8px;")
+        control_layout = QHBoxLayout()
+        control_widget.setLayout(control_layout)
+        
+        # スライダーラベル
+        slider_label = QLabel("美肌効果:")
+        slider_label.setStyleSheet("color: white; font-size: 15px; font-weight: bold;")
+        control_layout.addWidget(slider_label)
+        
+        # 美肌効果スライダー
+        self.beauty_slider = QSlider(Qt.Horizontal)
+        self.beauty_slider.setMinimum(0)
+        self.beauty_slider.setMaximum(100)
+        self.beauty_slider.setValue(70)
+        self.beauty_slider.setEnabled(False)
+        self.beauty_slider.setStyleSheet("""
+            QSlider::groove:horizontal {
+                border: 1px solid #555;
+                height: 10px;
+                background: #333;
+                border-radius: 5px;
+            }
+            QSlider::handle:horizontal {
+                background: #4CAF50;
+                border: 2px solid #45a049;
+                width: 20px;
+                margin: -6px 0;
+                border-radius: 10px;
+            }
+            QSlider::handle:horizontal:hover {
+                background: #45a049;
+            }
+        """)
+        self.beauty_slider.valueChanged.connect(self.on_slider_changed)
+        control_layout.addWidget(self.beauty_slider, 1)
+        
+        # スライダー値表示
+        self.value_label = QLabel("70%")
+        self.value_label.setStyleSheet("color: white; font-size: 15px; font-weight: bold; min-width: 60px;")
+        control_layout.addWidget(self.value_label)
+        
+        main_layout.addWidget(control_widget)
+        
+        # ボタンエリア
+        button_widget = QWidget()
+        button_widget.setStyleSheet("background-color: #1e1e1e; padding: 10px;")
+        button_layout = QHBoxLayout()
+        button_widget.setLayout(button_layout)
+        
+        button_layout.addStretch()
+        
+        # 保存ボタン
+        self.save_button = QPushButton("💾 保存")
+        self.save_button.setEnabled(False)
+        self.save_button.setStyleSheet("""
+            QPushButton {
+                background-color: #4CAF50;
+                color: white;
+                font-size: 16px;
+                font-weight: bold;
+                padding: 12px 40px;
+                border-radius: 6px;
+                border: none;
+            }
+            QPushButton:hover {
+                background-color: #45a049;
+            }
+            QPushButton:disabled {
+                background-color: #333;
+                color: #666;
+            }
+        """)
+        self.save_button.clicked.connect(self.save_image)
+        button_layout.addWidget(self.save_button)
+        
+        main_layout.addWidget(button_widget)
+        
+        # ドラッグ＆ドロップを有効化
+        self.setAcceptDrops(True)
+        
+    def dragEnterEvent(self, event: QDragEnterEvent):
+        if event.mimeData().hasUrls():
+            event.acceptProposedAction()
+            
+    def dropEvent(self, event: QDropEvent):
+        files = [u.toLocalFile() for u in event.mimeData().urls()]
+        if files:
+            file_path = files[0]
+            if file_path.lower().endswith(('.png', '.jpg', '.jpeg', '.bmp', '.tiff', '.webp')):
+                self.load_image(file_path)
+            else:
+                QMessageBox.warning(self, "エラー", "サポートされていない画像形式です。\nJPG, PNG, BMPなどの形式をご使用ください。")
+                
+    def load_image(self, file_path):
+        """画像を読み込む"""
+        try:
+            self.image_path = file_path
+            self.original_image = Image.open(file_path).convert('RGB')
+            
+            # UI更新
+            self.beauty_slider.setEnabled(True)
+            self.save_button.setEnabled(True)
+            
+            # 初期効果を適用
+            self.current_intensity = 70
+            self.process_image()
+            
+        except Exception as e:
+            import traceback
+            error_msg = f"画像の読み込みに失敗しました。\n\nエラー詳細:\n{str(e)}\n\n{traceback.format_exc()}"
+            QMessageBox.warning(self, "エラー", error_msg)
+            self.original_image = None
+            self.processed_image = None
+            
+    def on_slider_changed(self, value):
+        """スライダー変更時（遅延処理でスムーズに）"""
+        self.current_intensity = value
+        self.value_label.setText(f"{value}%")
+        
+        # タイマーをリセットして再スタート（200ms後に処理）
+        self.update_timer.stop()
+        self.update_timer.start(200)
+        
+    def process_image(self):
+        """美肌処理を実行"""
+        if self.original_image is None:
+            return
+        
+        try:
+            intensity = self.current_intensity / 100.0
+            
+            if intensity == 0:
+                self.processed_image = self.original_image.copy()
+            else:
+                self.processed_image = self.apply_beauty_effect(self.original_image, intensity)
+            
+            self.display_image()
+            
+        except Exception as e:
+            import traceback
+            error_msg = f"画像処理中にエラーが発生しました。\n\nエラー詳細:\n{str(e)}\n\n{traceback.format_exc()}"
+            QMessageBox.warning(self, "エラー", error_msg)
+        
+    def apply_beauty_effect(self, image, intensity):
+        """
+        AI顔認識を使用した高品質な美肌効果
+        顔部分だけを自動認識して処理
+        """
+        # 顔を検出
+        faces = self.detect_faces(image)
+        
+        if len(faces) == 0:
+            # 顔が検出されない場合は全体に処理を適用
+            return self.apply_beauty_to_image(image, intensity)
+        
+        # オリジナル画像をNumPy配列に変換
+        result_array = np.array(image, dtype=np.float32)
+        
+        # 各顔に対して処理
+        for face_rect in faces:
+            x, y, w, h = face_rect
+            
+            # 顔領域を拡張（首や耳も含める）
+            expand_ratio = 0.5
+            exp_w = int(w * expand_ratio)
+            exp_h = int(h * expand_ratio)
+            
+            x1 = max(0, x - exp_w)
+            y1 = max(0, y - int(exp_h * 0.3))  # 上は少なめに拡張
+            x2 = min(image.width, x + w + exp_w)
+            y2 = min(image.height, y + h + int(exp_h * 1.2))  # 下は多めに拡張（首まで）
+            
+            # 顔領域を切り出し
+            face_region = image.crop((x1, y1, x2, y2))
+            
+            # 美肌処理を適用
+            processed_face = self.apply_beauty_to_image(face_region, intensity)
+            processed_face_array = np.array(processed_face, dtype=np.float32)
+            
+            # 高品質なマスクを作成
+            mask_array = self.create_smooth_mask(x2 - x1, y2 - y1)
+            
+            # マスクを3チャンネルに拡張
+            mask_3d = mask_array[:, :, np.newaxis]
+            
+            # アルファブレンドで自然に合成
+            result_array[y1:y2, x1:x2] = (
+                result_array[y1:y2, x1:x2] * (1.0 - mask_3d) +
+                processed_face_array * mask_3d
+            )
+        
+        # uint8に変換して返す
+        result_array = np.clip(result_array, 0, 255).astype(np.uint8)
+        return Image.fromarray(result_array)
+    
+    def detect_faces(self, image):
+        """顔を検出する（MediaPipeまたはOpenCV）"""
+        # OpenCV形式に変換
+        img_array = np.array(image)
+        
+        faces = []
+        
+        if MEDIAPIPE_AVAILABLE and self.mp_face_detection is not None:
+            # MediaPipeで顔検出（より高精度・高速）
+            rgb_image = cv2.cvtColor(img_array, cv2.COLOR_RGB2BGR)
+            results = self.mp_face_detection.process(rgb_image)
+            
+            if results.detections:
+                img_height, img_width = img_array.shape[:2]
+                
+                for detection in results.detections:
+                    bbox = detection.location_data.relative_bounding_box
+                    x = int(bbox.xmin * img_width)
+                    y = int(bbox.ymin * img_height)
+                    w = int(bbox.width * img_width)
+                    h = int(bbox.height * img_height)
+                    
+                    # 境界チェック
+                    x = max(0, x)
+                    y = max(0, y)
+                    w = min(w, img_width - x)
+                    h = min(h, img_height - y)
+                    
+                    faces.append((x, y, w, h))
+                    
+        elif self.face_cascade is not None:
+            # OpenCVで顔検出（フォールバック）
+            gray = cv2.cvtColor(img_array, cv2.COLOR_RGB2GRAY)
+            
+            # 複数のスケールで検出を試みる
+            detected = self.face_cascade.detectMultiScale(
+                gray,
+                scaleFactor=1.05,
+                minNeighbors=3,
+                minSize=(30, 30),
+                flags=cv2.CASCADE_SCALE_IMAGE
+            )
+            
+            for (x, y, w, h) in detected:
+                faces.append((x, y, w, h))
+        
+        return faces
+    
+    def create_smooth_mask(self, width, height):
+        """高品質なグラデーションマスクを作成"""
+        # NumPyで滑らかな楕円形マスクを作成
+        y_coords, x_coords = np.ogrid[:height, :width]
+        
+        center_x, center_y = width / 2.0, height / 2.0
+        
+        # 各ピクセルの中心からの正規化距離を計算
+        dx = (x_coords - center_x) / (width / 2.0)
+        dy = (y_coords - center_y) / (height / 2.0)
+        distance = np.sqrt(dx * dx + dy * dy)
+        
+        # より滑らかなグラデーション（コサインカーブ使用）
+        mask = np.zeros((height, width), dtype=np.float32)
+        
+        # 中心部は完全に適用
+        mask[distance &lt;= 0.6] = 1.0
+        
+        # 境界部分は滑らかにフェードアウト
+        fade_region = (distance &gt; 0.6) &amp; (distance &lt;= 1.3)
+        fade_distance = distance[fade_region]
+        # コサインカーブで自然なフェード
+        mask[fade_region] = 0.5 * (1.0 + np.cos((fade_distance - 0.6) * np.pi / 0.7))
+        
+        # さらにガウシアンブラーで滑らかに
+        blur_size = max(3, min(width, height) // 20)
+        if blur_size % 2 == 0:
+            blur_size += 1
+        
+        mask = cv2.GaussianBlur(mask, (blur_size, blur_size), 0)
+        
+        return mask
+    
+    def apply_beauty_to_image(self, image, intensity):
+        """
+        画像に美肌効果を適用（既存のロジック）
+        """
+        # NumPy配列に変換
+        img_array = np.array(image, dtype=np.float32)
+        
+        # 1. 基本的な平滑化（Pillow使用）
+        pil_img = image.copy()
+        
+        # 強度に応じた平滑化
+        radius = 2 + int(intensity * 4)
+        smoothed = pil_img.filter(ImageFilter.GaussianBlur(radius=radius))
+        
+        # 2. エッジ検出でマスクを作成
+        edges = pil_img.filter(ImageFilter.FIND_EDGES)
+        edge_array = np.array(edges.convert('L'), dtype=np.float32) / 255.0
+        edge_array = 1.0 - edge_array  # 反転（エッジ以外を保護）
+        
+        # エッジマスクを3チャンネルに拡張
+        edge_mask = np.stack([edge_array] * 3, axis=-1)
+        
+        # 3. ディテール保持フィルタ
+        detail = pil_img.filter(ImageFilter.DETAIL)
+        detail_array = np.array(detail, dtype=np.float32)
+        
+        # 4. 平滑化画像とオリジナルをブレンド
+        smoothed_array = np.array(smoothed, dtype=np.float32)
+        
+        # エッジ部分は保護、肌の部分は平滑化
+        blend_strength = intensity * 0.7
+        blended = img_array * (1.0 - blend_strength * edge_mask) + smoothed_array * (blend_strength * edge_mask)
+        
+        # 5. 微細なディテールを戻す
+        detail_strength = 0.15 * (1.0 - intensity * 0.5)
+        result = blended * (1.0 - detail_strength) + detail_array * detail_strength
+        
+        # PIL Imageに戻す
+        result = np.clip(result, 0, 255).astype(np.uint8)
+        result_img = Image.fromarray(result)
+        
+        # 6. 明るさとコントラストの微調整
+        enhancer_brightness = ImageEnhance.Brightness(result_img)
+        result_img = enhancer_brightness.enhance(1.0 + intensity * 0.08)
+        
+        enhancer_contrast = ImageEnhance.Contrast(result_img)
+        result_img = enhancer_contrast.enhance(1.0 + intensity * 0.05)
+        
+        # 7. 色の彩度を微調整（自然な肌色）
+        enhancer_color = ImageEnhance.Color(result_img)
+        result_img = enhancer_color.enhance(1.0 + intensity * 0.1)
+        
+        # 8. シャープネスを微調整
+        enhancer_sharpness = ImageEnhance.Sharpness(result_img)
+        result_img = enhancer_sharpness.enhance(1.0 - intensity * 0.2)
+        
+        return result_img
+        
+    def display_image(self):
+        """画像をラベルに表示（ウィンドウサイズに合わせて拡大縮小）"""
+        if self.processed_image is None:
+            return
+        
+        # PIL ImageをQPixmapに変換
+        img_copy = self.processed_image.copy()
+        
+        # ラベルのサイズを取得
+        label_size = self.image_label.size()
+        
+        # アスペクト比を維持してリサイズ
+        img_copy.thumbnail((label_size.width(), label_size.height()), Image.Resampling.LANCZOS)
+        
+        # QImageに変換
+        img_array = np.array(img_copy)
+        height, width, channel = img_array.shape
+        bytes_per_line = 3 * width
+        q_image = QImage(img_array.data, width, height, bytes_per_line, QImage.Format_RGB888)
+        
+        pixmap = QPixmap.fromImage(q_image)
+        self.image_label.setPixmap(pixmap)
+        
+    def resizeEvent(self, event):
+        """ウィンドウリサイズ時にプレビュー画像も更新"""
+        super().resizeEvent(event)
+        if self.processed_image is not None:
+            # リサイズ後すぐに表示を更新
+            QTimer.singleShot(10, self.display_image)
+            
+    def save_image(self):
+        """画像を保存"""
+        if self.processed_image is None or self.image_path is None:
+            return
+        
+        try:
+            # ファイル名を生成
+            directory = os.path.dirname(self.image_path)
+            filename = os.path.basename(self.image_path)
+            name, ext = os.path.splitext(filename)
+            
+            # 拡張子がない場合はJPGにする
+            if not ext:
+                ext = '.jpg'
+            
+            new_filename = f"{name}-AI美肌{self.current_intensity}{ext}"
+            save_path = os.path.join(directory, new_filename)
+            
+            # 元の画像サイズで保存（表示用ではなく処理済み画像）
+            self.processed_image.save(save_path, quality=95, optimize=True)
+            
+            QMessageBox.information(
+                self, 
+                "保存完了", 
+                f"画像を保存しました:\n{new_filename}"
+            )
+            
+        except Exception as e:
+            QMessageBox.warning(self, "エラー", f"画像の保存に失敗しました。\n{str(e)}")
+
+def main():
+    app = QApplication(sys.argv)
+    app.setStyle('Fusion')  # モダンなスタイル
+    window = BeautySkinApp()
+    window.show()
+    sys.exit(app.exec_())
+
+if __name__ == "__main__":
+    main()</pre>
+<h5 id="サンプル画像">【サンプル画像】</h5>
+<p>オリジナル画像は、生成AIで作成。</p>
+<p>AIによる顔判別していないバージョンの画像も合わせて掲載。</p>
+<figure class="figure-image figure-image-fotolife mceNonEditable" title="オリジナル画像">
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20251013/20251013120706.jpg" width="1024" height="1024" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<figcaption class="mceEditable">オリジナル画像</figcaption>
+</figure>
+<figure class="figure-image figure-image-fotolife mceNonEditable" title="美肌効果（AI人物顔判別なし）：30%">
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20251013/20251013120800.jpg" width="1024" height="1024" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<figcaption class="mceEditable">美肌効果（AI人物顔判別なし）：30%</figcaption>
+</figure>
+<figure class="figure-image figure-image-fotolife mceNonEditable" title="美肌効果（AI人物顔判別）：30%">
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20251013/20251013120815.jpg" width="1024" height="1024" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<figcaption class="mceEditable">美肌効果（AI人物顔判別）：30%</figcaption>
+</figure>
+<figure class="figure-image figure-image-fotolife mceNonEditable" title="美肌効果（AI人物顔判別なし）：50%">
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20251013/20251013120831.jpg" width="1024" height="1024" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<figcaption class="mceEditable">美肌効果（AI人物顔判別なし）：50%</figcaption>
+</figure>
+<figure class="figure-image figure-image-fotolife mceNonEditable" title="美肌効果（AI人物顔判別）：50%">
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20251013/20251013120850.jpg" width="1024" height="1024" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<figcaption class="mceEditable">美肌効果（AI人物顔判別）：50%</figcaption>
+</figure>
+<figure class="figure-image figure-image-fotolife mceNonEditable" title="美肌効果（AI人物顔判別なし）：70%">
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20251013/20251013120925.jpg" width="1024" height="1024" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<figcaption class="mceEditable">美肌効果（AI人物顔判別なし）：70%</figcaption>
+</figure>
+<figure class="figure-image figure-image-fotolife mceNonEditable" title="美肌効果（AI人物顔判別）：70%">
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20251013/20251013120959.jpg" width="1024" height="1024" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<figcaption class="mceEditable">美肌効果（AI人物顔判別）：70%</figcaption>
+</figure>
+<figure class="figure-image figure-image-fotolife mceNonEditable" title="美肌効果（AI人物顔判別なし）：90%">
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20251013/20251013121029.jpg" width="1024" height="1024" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<figcaption class="mceEditable">美肌効果（AI人物顔判別なし）：90%</figcaption>
+</figure>
+<figure class="figure-image figure-image-fotolife mceNonEditable" title="美肌効果（AI人物顔判別）：90%">
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20251013/20251013121049.jpg" width="1024" height="1024" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<figcaption class="mceEditable">美肌効果（AI人物顔判別）：90%</figcaption>
+</figure>
+<figure class="figure-image figure-image-fotolife mceNonEditable" title="オリジナル画像">
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20251013/20251013123121.png" width="1024" height="1024" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<figcaption class="mceEditable">オリジナル画像</figcaption>
+</figure>
+<figure class="figure-image figure-image-fotolife mceNonEditable" title="美肌効果（AI人物顔判別なし）：70%">
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20251013/20251013123201.png" width="1024" height="1024" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<figcaption class="mceEditable">美肌効果（AI人物顔判別なし）：70%</figcaption>
+</figure>
+<figure class="figure-image figure-image-fotolife mceNonEditable" title="美肌効果（AI人物顔判別）：70%">
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20251013/20251013123218.png" width="1024" height="1024" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<figcaption class="mceEditable">美肌効果（AI人物顔判別）：70%</figcaption>
+</figure>
+<p><em><strong><span style="color: #ff0000;">※ （↓）改良バージョン作成。</span></strong></em></p>
+<p><a class="link-card" href="../16/164836.html"><span class="lc-body"><span class="lc-title">Claude）Python）写真を美肌に編集加工するWindowsアプリ作成（３）。毛穴やシミを目立たなくする。AI顔認識＋手動顔指定。</span><span class="lc-desc">先日、写真を美肌に編集加工するWindowsアプリを作成した。毛穴を目立たなくする効果がある。AIによる人物の顔認識もする。 ただ、AIによる顔認識が100%正しいとは言えないので、認識した範囲を画面で確認できる機能と、…</span><span class="lc-site">晴歩雨描 · <time>2025-10-16</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20251016/20251016161723.png" alt="" loading="lazy"></span></a></p>
+<p><em><strong><span style="color: #ff0000;">※ （↓）更なる改良バージョン作成。</span></strong></em></p>
+<p><a class="link-card" href="../21/141052.html"><span class="lc-body"><span class="lc-title">Claude）Python）写真を美肌に編集加工するWindowsアプリ作成（５）。毛穴やシミを目立たなくする。AI顔検出＋AI輪郭抽出（精度向上版）。ICCプロファイル維持。</span><span class="lc-desc">先日、写真を美肌に編集加工するWindowsアプリをPythonで作成した。 輪郭抽出枠が大雑把だったので、もう少し細かく輪郭を抽出できるバージョンを作成。 課題としては、輪郭抽出の処理時間が大幅に上がったことと、抽出で…</span><span class="lc-site">晴歩雨描 · <time>2025-10-21</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20251021/20251021140459.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../04/20/093458.html"><span class="lc-body"><span class="lc-title">Claude）Python）「写真オブジェクト除去」Windowsアプリ作成。シミ消しにも使える。</span><span class="lc-desc">2日前、 JavaScript で「 写真スポッティング編集ツール 」を作成した。 今回、 Python で「 写真オブジェクト除去アプリ 」を作成。AIツールClaudeに作成してもらった。 写真の中のちょっとした不要…</span><span class="lc-site">晴歩雨描 · <time>2025-04-20</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250420/20250420091047.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../04/18/215613.html"><span class="lc-body"><span class="lc-title">Claude）JavaScript）「写真スポッティング編集ツール」作成。写真のオブジェクト除去やシミ消しに。</span><span class="lc-desc">JavaScriptで、「 写真スポッティング編集ツール 」を作成。 写真の中のちょっとした不要物を除去するためのツール。除去したい不要物をマウスなどで囲んで除去し、除去した後を目立たないように背景画像で補正するなどした…</span><span class="lc-site">晴歩雨描 · <time>2025-04-18</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250418/20250418213106.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../09/25/124757.html"><span class="lc-body"><span class="lc-title">Claude）Python）ローカル）写真のシャープネス、コントラスト、明度、彩度を調整するWindowsアプリ作成。野鳥写真で、等倍高画質化をTopaz Labs、Aiarty Image Enhancerと比較。</span><span class="lc-desc">Pythonで「 写真のシャープネス、コントラスト、明度、彩度を調整する 」Windowsアプリを作成。「Claude」で作成。 【機能概略】 写真画像(JPEG,PNG)をウインドウに、ドラッグ＆ドロップで取り込み。 …</span><span class="lc-site">晴歩雨描 · <time>2025-09-25</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250925/20250925123628.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../09/12/163500.html"><span class="lc-body"><span class="lc-title">「Topaz Labs」で、アップスケーリングなしで写真の等倍高画質化が出来るかを検証。結果は優秀。野鳥写真で「Aiarty Image Enhancer」と比較。</span><span class="lc-desc">『 Topaz Labs 』の「 Upscale（Standard V2） 」で、アップスケーリングなしで等倍高画質化を検証してみた。 野鳥写真で「 Aiarty Image Enhancer 」の結果とも比較。 結果的…</span><span class="lc-site">晴歩雨描 · <time>2025-09-12</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250912/20250912162716.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../03/28/153642.html"><span class="lc-body"><span class="lc-title">写真の高画質化/鮮明化Windowsアプリ「Aiarty Image Enhancer」「Upscayl」最新版で、等倍高画質化（アップスケーリングなし）を野鳥写真で比較。</span><span class="lc-desc">先日、写真の高画質化Webツールで、アップスケーリングなしの高画質化の検証をしたが、使えるレベルのものはなかった。 今回、写真の高画質化/鮮明化Windowsアプリ「 Aiarty Image Enhancer 」「 U…</span><span class="lc-site">晴歩雨描 · <time>2025-03-28</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250328/20250328151358.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../09/20/205629.html"><span class="lc-body"><span class="lc-title">Claude）Python）写真のEXIF情報を表示するWindowsアプリ（ExifTool）を作成。</span><span class="lc-desc">Pythonで「 写真のEXIF情報を表示する 」Windowsアプリを作成。「Claude」で作成。 【機能概略】 JPEGファイルを画面にドラッグ＆ドロップすると、その写真のEXIF情報一覧を表示する。 メーカー独自…</span><span class="lc-site">晴歩雨描 · <time>2025-09-20</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250920/20250920175347.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../08/29/140141.html"><span class="lc-body"><span class="lc-title">「Gemini 2.5 Flash Image（Nano Banana）」で、写真の高画質化を試した。高画質化ツールとしては使えない。</span><span class="lc-desc">Googleが無料の超高品質な画像編集AI「 Gemini 2.5 Flash Image 」をリリース。 「 Gemini 2.5 Flash Image 」は、「 Gemini 」の中で、無料で使える。 「Gemin…</span><span class="lc-site">晴歩雨描 · <time>2025-08-29</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250829/20250829131658.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../04/08/095058.html"><span class="lc-body"><span class="lc-title">ChatGPTの画像生成AI「4o Image Generation」の写真の高画質化は凄まじい（？）。一般的なアップスケーリングツールとは一線を画す。「DALL・E」との比較も。</span><span class="lc-desc">先日、写真の高画質化/鮮明化Windowsアプリ「Aiarty Image Enhancer」「Upscayl」で、アップスケーリングなしの1倍で、野鳥写真を使って高画質化/鮮明化レベルを検証した。 ChatGPT「4o…</span><span class="lc-site">晴歩雨描 · <time>2025-04-08</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250408/20250408091610.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2024/09/09/163543.html"><span class="lc-body"><span class="lc-title">Windows無料アプリ「Upscayl」で、ノイズ除去、鮮明化を、野鳥写真で試した。「Aiarty Image Enhancer」とも比較。</span><span class="lc-desc">昨日、Windowsアプリ「 Aiarty Image Enhancer 」で、ノイズ除去、ピンボケ補正、シャープネス強化、鮮明化を、野鳥写真で試した。 今回、Windows無料アプリ「 Upscayl 」で、拡大率を1…</span><span class="lc-site">晴歩雨描 · <time>2024-09-09</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20240909/20240909162512.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2024/10/06/182845.html"><span class="lc-body"><span class="lc-title">JPEG写真の高画質化（ノイズ除去＋シャープネスなど）を無料でできるWebツールアプリ「AI Ease」。野鳥写真で試した。</span><span class="lc-desc">先程、オブジェクト除去Webツール「 AI Ease 」を試した。 「AI Ease」は、オブジェクト除去以外にも多くの機能を持っている。 AI画像編集ツール AI背景除去 AI画像高画質化（ノイズ除去、シャープネスなど…</span><span class="lc-site">晴歩雨描 · <time>2024-10-06</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20241006/20241006181719.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2024/08/20/124709.html"><span class="lc-body"><span class="lc-title">写真解像度を上げる（アップスケーリング、高画質化）無料Webツール「AnyRec AI」比較。「Adobe スーパー解像度」「Aiarty Image Enhancer」「Upscayl」と。</span><span class="lc-desc">写真解像度を上げる（アップスケーリング）ツールを色々試している。 今回、Webツール「 AnyRec AI 」を試してみた。会員登録なしで無料で使える。 「 Adobe スーパー解像度 」「 Aiarty Image E…</span><span class="lc-site">晴歩雨描 · <time>2024-08-20</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20240820/20240820135752.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2024/08/17/141230.html"><span class="lc-body"><span class="lc-title">キヤノン「EOS R1 / R5 Mark II」カメラ内アップスケーリング（高画質化）とWindows高解像度化、高画質化ツール「Aiarty Image Enhancer」「Upscayl」によるアップスケーリングを比較してみた。</span><span class="lc-desc">キヤノン「 EOS R1 / R5 Mark II 」が発表されている。「 EOS R1 / R5 Mark II」には、「カメラ内アップスケーリング 」機能がある。 このページでは、以下のように説明されている。 【カメ…</span><span class="lc-site">晴歩雨描 · <time>2024-08-17</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20240817/20240817140256.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2024/08/14/130416.html"><span class="lc-body"><span class="lc-title">「Adobe スーパー解像度」と写真解像度を上げる（アップスケーリング、高画質化）Windowsアプリ「Aiarty Image Enhancer」を比較。</span><span class="lc-desc">写真解像度を上げる（アップスケーリング、高画質化）Windowsアプリ「 Aiarty Image Enhancer 」を試してきた。 今回、「 Adobe スーパー解像度 」と比較してみた。オリジナル画像とAdobe …</span><span class="lc-site">晴歩雨描 · <time>2024-08-14</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20240814/20240814124610.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2018/11/19/153002.html"><span class="lc-body"><span class="lc-title">AIを使って写真の解像度を6倍にできる（アップスケーリング、高画質化）ソフト「Topaz A.I. Gigapixel」を試してみた。</span><span class="lc-desc">AIを使って写真の解像度を6倍にできるソフト「Topaz A.I. Gigapixel」を試してみた。 A.I. Gigapixel™ – Topaz Labs Current Version 2.0ではインストール時に…</span><span class="lc-site">晴歩雨描 · <time>2018-11-19</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20181119/20181119144056.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2022/04/03/135227.html"><span class="lc-body"><span class="lc-title">写真解像度を上げる（アップスケーリング、高画質化）Webツールアプリ「kakudaiAC」「AI Image Enlarger」「Bigjpg」「waifu2x」「Let&#x27;s Enhance」「Topaz Gigapixel AI」比較。</span><span class="lc-desc">以前、写真の解像度を上げるサービスアプリ「 Bigjpg 」「 waifu2x 」「 Let&#x27;s Enhance 」を試してみた。 今回、新たに「 kakudaiAC 」「 AI Image Enlarger 」を追加し…</span><span class="lc-site">晴歩雨描 · <time>2022-04-03</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20210330/20210330111145.jpg" alt="" loading="lazy"></span></a></p></div></article>
+</body>
+</html>

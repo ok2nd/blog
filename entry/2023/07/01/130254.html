@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ソニーデジカメ）コントラストやシャープネスなどの設定値は、EXIFの標準項目には書かれず、メーカー独自の項目に書かれる。 - 晴歩雨描</title>
+<link rel="stylesheet" href="../../../../style.css">
+</head>
+<body>
+<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>ソニーデジカメ）コントラストやシャープネスなどの設定値は、EXIFの標準項目には書かれず、メーカー独自の項目に書かれる。</h1><p class="meta">2023-07-01 · <a href="../../../../category/c18.html">写真・カメラ</a></p><div class="entry-body"><p>「SONY VLOGCAM ZV-1 II」では、「クリエイティブルック」で、コントラストやシャープネスなどを微調整できることになっているが、EXIFの標準項目には書かれず、メーカー独自の項目に設定値が書かれる。</p>
+<p><a class="link-card" href="https://helpguide.sony.net/dc/2310/v1/ja/contents/0411B_creative_look.html" target="_blank" rel="noopener noreferrer"><span class="lc-body"><span class="lc-title">ZV-1M2 | ヘルプガイド | クリエイティブルック（静止画/動画）</span><span class="lc-desc"></span><span class="lc-site">helpguide.sony.net</span></span></a></p>
+<style>
+pre {
+ font-family: Consolas, 'Courier New', Courier, Monaco, monospace;
+ font-size: 14px;
+ line-height: 1.2;
+}
+</style>
+<p>【クリエイティブルック】</p>
+<ul>
+<li>Standard／Portrait／Neutral／Vivid／Vivid2／FL／IN／SH／BW／Sepia</li>
+</ul>
+<p>【微調整項目】</p>
+<ul>
+<li>コントラスト</li>
+<li>ハイライト</li>
+<li>シャドウ</li>
+<li>フェード</li>
+<li>彩度</li>
+<li>シャープネス</li>
+<li>明瞭度</li>
+</ul>
+<p>ExifToolで、EXIF標準項目を抜き出す。</p>
+<pre>exiftool.exe -CreativeStyle -Contrast -Highlights -Shadows -Fade -Saturation -Sharpness -SharpnessRange -Clarity *.JPG
+</pre>
+<pre>======== DSC00497_Standard.JPG
+Creative Style                  : Standard
+Contrast                        : Normal
+Highlights                      : 0
+Shadows                         : 0
+Fade                            : 0
+Saturation                      : Normal
+Sharpness                       : Normal
+Sharpness Range                 : +3
+Clarity                         : +1
+======== DSC00498_Portrait.JPG
+Creative Style                  : Portrait
+Contrast                        : Normal
+Highlights                      : 0
+Shadows                         : 0
+Fade                            : 0
+Saturation                      : Normal
+Sharpness                       : Soft
+Sharpness Range                 : +3
+Clarity                         : 0
+======== DSC00499_Neutral.JPG
+Creative Style                  : Neutral
+Contrast                        : Normal
+Highlights                      : 0
+Shadows                         : 0
+Fade                            : 0
+Saturation                      : Normal
+Sharpness                       : Normal
+Sharpness Range                 : +3
+Clarity                         : +1
+======== DSC00500_Vivid.JPG
+Creative Style                  : Vivid
+Contrast                        : Normal
+Highlights                      : 0
+Shadows                         : 0
+Fade                            : 0
+Saturation                      : Normal
+Sharpness                       : Normal
+Sharpness Range                 : +3
+Clarity                         : +1
+======== DSC00501_Vivid2.JPG
+Creative Style                  : Vivid 2
+Contrast                        : Normal
+Highlights                      : 0
+Shadows                         : 0
+Fade                            : 0
+Saturation                      : Normal
+Sharpness                       : Normal
+Sharpness Range                 : +3
+Clarity                         : +8
+======== DSC00502_FL.JPG
+Creative Style                  : FL
+Contrast                        : Normal
+Highlights                      : 0
+Shadows                         : 0
+Fade                            : 0
+Saturation                      : Normal
+Sharpness                       : Normal
+Sharpness Range                 : +3
+Clarity                         : +1
+======== DSC00503_IN.JPG
+Creative Style                  : IN
+Contrast                        : Normal
+Highlights                      : 0
+Shadows                         : 0
+Fade                            : +3
+Saturation                      : Normal
+Sharpness                       : Normal
+Sharpness Range                 : +3
+Clarity                         : +1
+======== DSC00504_SH.JPG
+Creative Style                  : SH
+Contrast                        : Normal
+Highlights                      : 0
+Shadows                         : 0
+Fade                            : +6
+Saturation                      : Normal
+Sharpness                       : Normal
+Sharpness Range                 : +3
+Clarity                         : +1
+======== DSC00505_BW.JPG
+Creative Style                  : B&amp;W
+Contrast                        : Normal
+Highlights                      : 0
+Shadows                         : 0
+Fade                            : 0
+Saturation                      : Normal
+Sharpness                       : Normal
+Sharpness Range                 : +3
+Clarity                         : +1
+======== DSC00506_Sepia.JPG
+Creative Style                  : Sepia
+Contrast                        : Normal
+Highlights                      : 0
+Shadows                         : 0
+Fade                            : 0
+Saturation                      : Normal
+Sharpness                       : Normal
+Sharpness Range                 : +3
+Clarity                         : +1
+</pre>
+<p>ExifToolで、EXIFのメーカー独自項目を抜き出す。</p>
+<pre>exiftool.exe -CreativeStyle -makernotes:Contrast -makernotes:Highlights -makernotes:Shadows -makernotes:Fade -makernotes:Saturation -makernotes:Sharpness -makernotes:SharpnessRange -makernotes:Clarity *.JPG
+
+</pre>
+<pre>======== DSC00497_Standard.JPG
+Creative Style                  : Standard
+Contrast                        : 0
+Highlights                      : 0
+Shadows                         : 0
+Fade                            : 0
+Saturation                      : 0
+Sharpness                       : +4
+Sharpness Range                 : +3
+Clarity                         : +1
+======== DSC00498_Portrait.JPG
+Creative Style                  : Portrait
+Contrast                        : 0
+Highlights                      : 0
+Shadows                         : 0
+Fade                            : 0
+Saturation                      : 0
+Sharpness                       : +3
+Sharpness Range                 : +3
+Clarity                         : 0
+======== DSC00499_Neutral.JPG
+Creative Style                  : Neutral
+Contrast                        : 0
+Highlights                      : 0
+Shadows                         : 0
+Fade                            : 0
+Saturation                      : 0
+Sharpness                       : +4
+Sharpness Range                 : +3
+Clarity                         : +1
+======== DSC00500_Vivid.JPG
+Creative Style                  : Vivid
+Contrast                        : 0
+Highlights                      : 0
+Shadows                         : 0
+Fade                            : 0
+Saturation                      : 0
+Sharpness                       : +4
+Sharpness Range                 : +3
+Clarity                         : +1
+======== DSC00501_Vivid2.JPG
+Creative Style                  : Vivid 2
+Contrast                        : 0
+Highlights                      : 0
+Shadows                         : 0
+Fade                            : 0
+Saturation                      : 0
+Sharpness                       : +4
+Sharpness Range                 : +3
+Clarity                         : +8
+======== DSC00502_FL.JPG
+Creative Style                  : FL
+Contrast                        : 0
+Highlights                      : 0
+Shadows                         : 0
+Fade                            : 0
+Saturation                      : 0
+Sharpness                       : +4
+Sharpness Range                 : +3
+Clarity                         : +1
+======== DSC00503_IN.JPG
+Creative Style                  : IN
+Contrast                        : 0
+Highlights                      : 0
+Shadows                         : 0
+Fade                            : +3
+Saturation                      : 0
+Sharpness                       : +4
+Sharpness Range                 : +3
+Clarity                         : +1
+======== DSC00504_SH.JPG
+Creative Style                  : SH
+Contrast                        : 0
+Highlights                      : 0
+Shadows                         : 0
+Fade                            : +6
+Saturation                      : 0
+Sharpness                       : +4
+Sharpness Range                 : +3
+Clarity                         : +1
+======== DSC00505_BW.JPG
+Creative Style                  : B&amp;W
+Contrast                        : 0
+Highlights                      : 0
+Shadows                         : 0
+Fade                            : 0
+Saturation                      : 0
+Sharpness                       : +4
+Sharpness Range                 : +3
+Clarity                         : +1
+======== DSC00506_Sepia.JPG
+Creative Style                  : Sepia
+Contrast                        : 0
+Highlights                      : 0
+Shadows                         : 0
+Fade                            : 0
+Saturation                      : 0
+Sharpness                       : +4
+Sharpness Range                 : +3
+Clarity                         : +1
+</pre>
+<p><a class="link-card" href="../../06/30/121450.html"><span class="lc-body"><span class="lc-title">ソニーのデジカメ写真のEXIFから、「クリエイティブルック」情報を抜き出して、画像ファイル名に「クリエイティブルック名」を付け足す。（ExifTool/JScript）</span><span class="lc-desc">以前、「 ソニー のデジカメ写真の EXIF から、クリエイティブスタイル、ピクチャーエフェクト情報を抜き出して、画像ファイル名に EXIF 情報を付け足す。」という記事を書いた。 これは、「 DSC-RX100M6 」…</span><span class="lc-site">晴歩雨描 · <time>2023-06-30</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20230630/20230630120338.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../06/24/223517.html"><span class="lc-body"><span class="lc-title">「SONY VLOGCAM ZV-1 II 」＋「シューティンググリップ GP-VPT2BT」購入。ZV-1、ZV-1F、ZV-E10との仕様比較。</span><span class="lc-desc">「 SONY VLOGCAM ZV-1 II 」（18～50mm／F1.8～F4）と「 シューティンググリップ GP-VPT2BT 」購入。 【購入目的】 （夫婦2人で）自撮りする時に、背景も広く入れたい。 動画で電子手…</span><span class="lc-site">晴歩雨描 · <time>2023-06-24</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20230624/20230624224051.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2025/09/20/205629.html"><span class="lc-body"><span class="lc-title">Claude）Python）写真のEXIF情報を表示するWindowsアプリ（ExifTool）を作成。</span><span class="lc-desc">Pythonで「 写真のEXIF情報を表示する 」Windowsアプリを作成。「Claude」で作成。 【機能概略】 JPEGファイルを画面にドラッグ＆ドロップすると、その写真のEXIF情報一覧を表示する。 メーカー独自…</span><span class="lc-site">晴歩雨描 · <time>2025-09-20</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250920/20250920175347.jpg" alt="" loading="lazy"></span></a></p></div></article>
+</body>
+</html>

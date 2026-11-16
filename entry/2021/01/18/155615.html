@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Amazon（アマゾン）が直接販売している商品一覧にワンクリックで切り替えるブックマークレット。 - 晴歩雨描</title>
+<link rel="stylesheet" href="../../../../style.css">
+</head>
+<body>
+<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>Amazon（アマゾン）が直接販売している商品一覧にワンクリックで切り替えるブックマークレット。</h1><p class="meta">2021-01-18 · <a href="../../../../category/c8.html">コンピュータ</a> <a href="../../../../category/c13.html">ホームページ、Web作成</a></p><div class="entry-body"><p><a class="keyword" href="http://d.hatena.ne.jp/keyword/Amazon">Amazon</a>では、<a class="keyword" href="http://d.hatena.ne.jp/keyword/Amazon">Amazon</a>が直接販売している商品とそれ以外の<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%DE%A1%BC%A5%B1%A5%C3%A5%C8%A5%D7%A5%EC%A5%A4%A5%B9">マーケットプレイス</a>出品の商品がある。<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%DE%A1%BC%A5%B1%A5%C3%A5%C8%A5%D7%A5%EC%A5%A4%A5%B9">マーケットプレイス</a>出品の商品には怪しい商品が混じっている。</p>
+<p><a class="keyword" href="http://d.hatena.ne.jp/keyword/Amazon">Amazon</a>でキーワード検索して表示される一覧リストには、両方の商品が混在している。</p>
+<p>この一覧リストから<a class="keyword" href="http://d.hatena.ne.jp/keyword/Amazon">Amazon</a>が直接販売している商品だけに切り替える方法が以下に載っている。</p>
+<p><a class="link-card" href="https://radiolife.com/internet/amazon/45201/" target="_blank" rel="noopener noreferrer"><span class="lc-body"><span class="lc-title">Amazon裏技の隠しコマンド「&amp;sort=salesrank」ほかで絞り込み</span><span class="lc-desc">悪徳業者が幅を利かせるのが今のAmazon。「ベストセラー」を装ったり、最新製品を騙ったりとやりたい放題で、安心して買い物できません。Amazon側がきちんと対策してくれればいいのですが、駆逐するのは無理な気も…。そこで…</span><span class="lc-site">radiolife.com</span></span></a></p>
+<p><em>URLに「&amp;emi=AN1VRQENFRJN5」を付け加えるだけで、<a class="keyword" href="http://d.hatena.ne.jp/keyword/Amazon">Amazon</a>が直接販売している商品だけに切り替わる。</em></p>
+<p>しかし、「&amp;emi=AN1VRQENFRJN5」の文字列を毎回付け足すのは面倒。</p>
+<p>ということで、<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%D6%A5%C3%A5%AF%A5%DE%A1%BC%A5%AF%A5%EC%A5%C3%A5%C8">ブックマークレット</a>を作ってみた。<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%D6%A5%C3%A5%AF%A5%DE%A1%BC%A5%AF%A5%EC%A5%C3%A5%C8">ブックマークレット</a>とはブックマークバーに簡単な機能を登録すること。以下の<a class="keyword" href="http://d.hatena.ne.jp/keyword/JavaScript">JavaScript</a>をブックマークバーに追加する。</p>
+<p><em>【追加する<a class="keyword" href="http://d.hatena.ne.jp/keyword/JavaScript">JavaScript</a>】</em></p>
+<pre><a class="keyword" href="http://d.hatena.ne.jp/keyword/javascript">javascript</a>:(window.location.href = location.href+"&amp;emi=AN1VRQENFRJN5");</pre>
+<p><em>【ブラウザ<a class="keyword" href="http://d.hatena.ne.jp/keyword/Chrome">Chrome</a>の場合の<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%D6%A5%C3%A5%AF%A5%DE%A1%BC%A5%AF%A5%EC%A5%C3%A5%C8">ブックマークレット</a>追加手順】</em></p>
+<ol>
+<li><a class="keyword" href="http://d.hatena.ne.jp/keyword/Chrome">Chrome</a>のブックマークバーでマウスを右クリックする。</li>
+<li>「ページを追加」を選択。</li>
+<li>「ブークマークを編集」ウインドウで、以下の文字列を入れて保存ボタンを押す。<br />※ 下に表示されるフォルダーで「ブックマーク バー」が選択されている事。
+<ul>
+<li>名前：<a class="keyword" href="http://d.hatena.ne.jp/keyword/Amazon">Amazon</a>直販（←任意の文字列）</li>
+<li>URL：<a class="keyword" href="http://d.hatena.ne.jp/keyword/javascript">javascript</a>:(window.location.href = location.href+"&amp;emi=AN1VRQENFRJN5");</li>
+</ul>
+</li>
+</ol>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20210118/20210118153012.jpg" alt="f:id:art2nd:20210118153012j:plain" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p><a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%D6%A5%C3%A5%AF%A5%DE%A1%BC%A5%AF%A5%EC%A5%C3%A5%C8">ブックマークレット</a>を追加すると、ブックマークバーに「<a class="keyword" href="http://d.hatena.ne.jp/keyword/Amazon">Amazon</a>直販」（←任意の文字列）が表示される。</p>
+<p><em><a class="keyword" href="http://d.hatena.ne.jp/keyword/Amazon">Amazon</a>の商品一覧のページで、ブックマークバーの「<a class="keyword" href="http://d.hatena.ne.jp/keyword/Amazon">Amazon</a>直販」をクリックすると、<a class="keyword" href="http://d.hatena.ne.jp/keyword/Amazon">Amazon</a>が販売している商品だけの商品一覧に切り替わる。</em></p>
+<p>【例：「usb ハブ」で検索】</p>
+<p><a target="_blank" href="https://www.amazon.co.jp/s?k=usb+%E3%83%8F%E3%83%96&amp;__mk_ja_JP=%E3%82%AB%E3%82%BF%E3%82%AB%E3%83%8A&amp;crid=2FHSB8GDVUK8A&amp;sprefix=usb%2Caps%2C305&amp;ref=nb_sb_ss_ts-a-p_2_3">https://www.amazon.co.jp/s?k=usb+%E3%83%8F%E3%83%96&amp;__mk_ja_JP=%E3%82%AB%E3%82%BF%E3%82%AB%E3%83%8A&amp;crid=2FHSB8GDVUK8A&amp;sprefix=usb%2Caps%2C305&amp;ref=nb_sb_ss_ts-a-p_2_3</a></p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20210118/20210118154238.jpg" alt="f:id:art2nd:20210118154238j:plain" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>【例：「usb ハブ」で検索＋「<a class="keyword" href="http://d.hatena.ne.jp/keyword/Amazon">Amazon</a>直販」をクリック】</p>
+<p><a target="_blank" href="https://www.amazon.co.jp/s?k=usb+%E3%83%8F%E3%83%96&amp;__mk_ja_JP=%E3%82%AB%E3%82%BF%E3%82%AB%E3%83%8A&amp;crid=2FHSB8GDVUK8A&amp;sprefix=usb%2Caps%2C305&amp;ref=nb_sb_ss_ts-a-p_2_3&amp;emi=AN1VRQENFRJN5">https://www.amazon.co.jp/s?k=usb+%E3%83%8F%E3%83%96&amp;__mk_ja_JP=%E3%82%AB%E3%82%BF%E3%82%AB%E3%83%8A&amp;crid=2FHSB8GDVUK8A&amp;sprefix=usb%2Caps%2C305&amp;ref=nb_sb_ss_ts-a-p_2_3&amp;emi=AN1VRQENFRJN5</a></p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20210118/20210118154255.jpg" alt="f:id:art2nd:20210118154255j:plain" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p><a class="link-card" href="../../../2020/11/15/150004.html"><span class="lc-body"><span class="lc-title">備忘録：Amazon（アマゾン）プライムビデオの視聴履歴確認＆削除方法</span><span class="lc-desc">Amazonプライム ビデオの視聴履歴を確認する方法。 パソコンのブラウザから、 Amazon にログインした状態で、以下のURL「視聴済みのビデオ」を開く。 https://www.amazon.co.jp/gp/vi…</span><span class="lc-site">晴歩雨描 · <time>2020-11-15</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20200809/20200809172640.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2020/10/08/090615.html"><span class="lc-body"><span class="lc-title">Amazon Photosの写真をAmazon Driveでサムネイル表示する。</span><span class="lc-desc">※【後日記載】Amazon Driveは、2023年末に終了。 以前に、「 Amazon Photos 」の記事を書いた。 「 Amazon Photos（Amazonプライムフォト） 」は、Amazonプライム会員なら…</span><span class="lc-site">晴歩雨描 · <time>2020-10-08</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20201007/20201007233534.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2019/07/19/121348.html"><span class="lc-body"><span class="lc-title">開いているWebページのタイトルとURLをクリップボードにコピーするブックマークレット（＋ダイアログ版）</span><span class="lc-desc">開いているWebページのタイトルとURLをクリップボードにコピーするブックマークレット。備忘録として。 最初参考にしたのは以下のページ。 【JavaScript】 &lt;p&gt;タグを使ったこの方法だと、文字にフォントサイズの属…</span><span class="lc-site">晴歩雨描 · <time>2019-07-19</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190719/20190719120258.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2019/03/25/113619.html"><span class="lc-body"><span class="lc-title">はてなブログを記事一覧に簡単に切り替える方法。ブックマークレットを使う。</span><span class="lc-desc">先ほど「 はてなブログ を記事一覧で見る方法」という記事を書いたが、 毎回URLに「/archive」を付けるのが面倒な場合、マウスのワンクリックで切り替えができるようにする方法。 ブックマークレット という機能を使う。…</span><span class="lc-site">晴歩雨描 · <time>2019-03-25</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190325/20190325112136.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2019/09/02/174735.html"><span class="lc-body"><span class="lc-title">JavaScript、jQuery、CSS）ポップアップ写真画像をブラウザのウインドウサイズに合わせて拡大縮小できるようにした。</span><span class="lc-desc">以前、HTMLで写真サムネイルアルバム＋ポップアップ画像ページを作成した。下はその時のブログ記事。 作成したサムネイルアルバムWebページは、以下。 https://ok2nd.sakura.ne.jp/album/ko…</span><span class="lc-site">晴歩雨描 · <time>2019-09-02</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190902/20190902154309.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2018/08/15/154253.html"><span class="lc-body"><span class="lc-title">JavaScriptで宙玉(そらたま)写真を作れる「SORA-TAMA Transform (Fish-Eye)」を試してみた。</span><span class="lc-desc">先日、宙玉というものの存在を知った。 レンズの前に透明な玉を置いて写真を撮ると、独特の不思議な写真が撮れるというもの。詳しくは、以下を参照。 ラップフィルムなどを使って作る方法が紹介されているが、実際に自分で作るのは難し…</span><span class="lc-site">晴歩雨描 · <time>2018-08-15</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20180815/20180815145546.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2017/04/11/193206.html"><span class="lc-body"><span class="lc-title">「ブロック(コンテナ)全体は中央揃え(センタリング)＋中の要素(複数画像)は左寄せ」をJavaScriptを使わないでCSSのみで実現できる方法</span><span class="lc-desc">このブログで以前に書いた「 ブロック全体は中央揃え＋中の複数画像は左寄 」をJavaScriptを使わないでCSSのみで実現できる方法が見つかったので、紹介。 「Webクリエイターボックス」の以下の記事のコメント欄で質問…</span><span class="lc-site">晴歩雨描 · <time>2017-04-11</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20170313/20170313140402.jpg" alt="" loading="lazy"></span></a></p></div></article>
+</body>
+</html>

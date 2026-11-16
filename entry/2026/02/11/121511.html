@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>JavaScript）タクシー料金計算アプリ作成。 - 晴歩雨描</title>
+<link rel="stylesheet" href="../../../../style.css">
+</head>
+<body>
+<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>JavaScript）タクシー料金計算アプリ作成。</h1><p class="meta">2026-02-11 · <a href="../../../../category/c13.html">ホームページ、Web作成</a> <a href="../../../../category/c11.html">スマホ・タブレット</a> <a href="../../../../category/c27.html">旅行</a></p><div class="entry-body"><p>JavaScriptで、「タクシー料金計算アプリ」を作成。</p>
+<p>以下を入力して、「料金を計算」ボタンを押す。</p>
+<ul>
+<li>初乗運賃：距離（メートル）、料金</li>
+<li>加算運賃：距離（メートル）、料金</li>
+<li>乗車予定距離（キロメートル）</li>
+</ul>
+<p>なお、時間距離併用制運賃は考慮していない。</p>
+<h4 id="-タクシー料金計算アプリ">■ タクシー料金計算アプリ</h4>
+<p><a href="https://ok2nd.github.io/tool/taxi-fare/simulation.html" target="_blank">https://ok2nd.github.io/tool/taxi-fare/simulation.html</a></p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260211/20260211120430.png" width="509" height="745" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>地域毎のタクシー料金を調べるには、以下のサイトが便利。</p>
+<p><strong>《 タクシー料金を調べる タクシーサイト 》</strong></p>
+<p><a href="https://www.taxisite.com/far/" target="_blank">https://www.taxisite.com/far/</a></p>
+<p>今回作成した「タクシー料金計算アプリ」にもリンクを付けた。</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260211/20260211125525.png" width="508" height="94" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<h5 id="-2026年2月11日時点の全国の主な都市のタクシー料金目安">■ 2026年2月11日時点の全国の主な都市のタクシー料金目安</h5>
+<p>※ 関西地区、中部東海地区は高い。沖縄は安い。</p>
+<table>
+<thead>
+<tr>
+<th> </th>
+<th>5km</th>
+<th>10km</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>札幌市</th>
+<td>2,100円</td>
+<td>3,900円</td>
+</tr>
+<tr>
+<th>青森県</th>
+<td>2,400円</td>
+<td>4,300円</td>
+</tr>
+<tr>
+<th>仙台市</th>
+<td>1,910円</td>
+<td>3,510円</td>
+</tr>
+<tr>
+<th>新潟市</th>
+<td>2,200円</td>
+<td>4,000円</td>
+</tr>
+<tr>
+<th>金沢市</th>
+<td>2,100円</td>
+<td>4,000円</td>
+</tr>
+<tr>
+<th>東京</th>
+<td>2,100円</td>
+<td>4,000円</td>
+</tr>
+<tr>
+<th>岐阜県<br />飛騨地区</th>
+<td>2,440円</td>
+<td>4,740円</td>
+</tr>
+<tr>
+<th>名古屋市</th>
+<td>2,300円</td>
+<td>4,500円</td>
+</tr>
+<tr>
+<th>滋賀県</th>
+<td>2,400円</td>
+<td>4,770円</td>
+</tr>
+<tr>
+<th>京都市</th>
+<td>2,200円</td>
+<td>4,100円</td>
+</tr>
+<tr>
+<th>大阪市</th>
+<td>2,300円</td>
+<td>4,500円</td>
+</tr>
+<tr>
+<th>神戸市</th>
+<td>2,400円</td>
+<td>4,600円</td>
+</tr>
+<tr>
+<th>広島市</th>
+<td>2,000円</td>
+<td>3,700円</td>
+</tr>
+<tr>
+<th>高知市</th>
+<td>1,760円</td>
+<td>3,280円</td>
+</tr>
+<tr>
+<th>福岡市</th>
+<td>1,870円</td>
+<td>3,390円</td>
+</tr>
+<tr>
+<th>鹿児島市</th>
+<td>1,900円</td>
+<td>3,450円</td>
+</tr>
+<tr>
+<th>那覇市</th>
+<td>1,500円</td>
+<td>2,700円</td>
+</tr>
+</tbody>
+</table>
+<p><a class="link-card" href="https://ok2nd.github.io/sitemap/hatena-sitemap-table.html?search=javascript" target="_blank" rel="noopener noreferrer"><span class="lc-body"><span class="lc-title">晴歩雨描：記事一覧</span><span class="lc-desc"></span><span class="lc-site">ok2nd.github.io</span></span></a></p>
+<p><a class="link-card" href="../03/124042.html"><span class="lc-body"><span class="lc-title">Leaflet地図：現在の積雪を地図表示。気象庁データを使用。JavaScript＆PHP（CORS制限回避）。XAMPPでCA証明書。InfinityFree。</span><span class="lc-desc">気象庁の「 現在の積雪 」データを使って、 Leaflet で地図表示するようにした。 ■ 使用したデータ 《 気象庁：積雪観測地点情報（json）》 https://www.jma.go.jp/bosai/amedas…</span><span class="lc-site">晴歩雨描 · <time>2026-02-03</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260203/20260203120620.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2025/10/03/151654.html"><span class="lc-body"><span class="lc-title">Claude）JavaScript）Web版「カラーソートパズルゲーム」作成。ボケ防止、認知症予防（？）。</span><span class="lc-desc">JavaScriptで、Web版「カ ラーソートパズルゲーム 」を作成。 老人性ボケ防止や認知症予防に役立つかも？。 ≪ カラーソートパズル ≫ https://ok2nd.github.io/tool/puzzle/c…</span><span class="lc-site">晴歩雨描 · <time>2025-10-03</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20251004/20251004075224.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2025/10/01/145235.html"><span class="lc-body"><span class="lc-title">Claude）JavaScript）Web版「緑内障簡易視野検査（セルフチェック）ツール（１）」作成。</span><span class="lc-desc">JavaScriptで、Web版「 緑内障簡易視野検査ツール 」を作成した。 ≪ 緑内障簡易視野検査ツール ≫ https://ok2nd.github.io/tool/glaucoma/test.html 【利用方法】…</span><span class="lc-site">晴歩雨描 · <time>2025-10-01</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20251001/20251001144653.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2025/10/01/140342.html"><span class="lc-body"><span class="lc-title">Claude）JavaScript）Web版「難聴検査ツール」作成。</span><span class="lc-desc">JavaScriptで、Web版「 難聴検査ツール 」を作成した。PCでもスマホでも使える。 ≪ 難聴検査ツール ≫ https://ok2nd.github.io/tool/hearing/test.html ボタンを…</span><span class="lc-site">晴歩雨描 · <time>2025-10-01</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20251001/20251001135037.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2025/08/03/110524.html"><span class="lc-body"><span class="lc-title">JavaScript）HTMLカレンダー）スマホのスワイプ操作で、前月、翌月へ画面遷移できるようにした。</span><span class="lc-desc">先日、PHP＋MySQLを使ったHTMLカレンダー＆スケジューラを作った。 ＜ スマホ画面 ＞ このHTMLカレンダーは、前月、翌月へ画面遷移できるが、スマホのスワイプ操作でも、前月、翌月へ画面遷移できるようにした。 【…</span><span class="lc-site">晴歩雨描 · <time>2025-08-03</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250805/20250805123315.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2025/07/19/084659.html"><span class="lc-body"><span class="lc-title">JavaScript）「用紙・額縁サイズ比較確認」Webツール作成。（A判、デッサン額、写真）</span><span class="lc-desc">絵画や版画などの作品を額縁に収めようとした時に、どの程度の額縁が必要なのか分からない事がある。 任意の用紙サイズと、一般的なA判額、デッサン額（水彩額、デザイン額）、写真額サイズとの比較ができるWebツールを作成した。C…</span><span class="lc-site">晴歩雨描 · <time>2025-07-19</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250719/20250719170523.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2025/07/14/143141.html"><span class="lc-body"><span class="lc-title">JavaScript）モノトーン（モノクロ）で任意のWebページを表示するWebツール作成。</span><span class="lc-desc">モノトーンで任意のWebページを表示するWebツール作成。Claudeで作成。 ≪ モノトーンWebビューア ≫ https://ok2nd.github.io/tool/html/monotone.html URLを入…</span><span class="lc-site">晴歩雨描 · <time>2025-07-14</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250714/20250714142425.jpg" alt="" loading="lazy"></span></a></p></div></article>
+</body>
+</html>

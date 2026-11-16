@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>無料WebホスティングサーバーInfinityFree、x10HostingにおけるPHP並行リクエストcurl_multi_exec() 制限。 - 晴歩雨描</title>
+<link rel="stylesheet" href="../../../../style.css">
+</head>
+<body>
+<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>無料WebホスティングサーバーInfinityFree、x10HostingにおけるPHP並行リクエストcurl_multi_exec() 制限。</h1><p class="meta">2026-07-22 · <a href="../../../../category/c13.html">ホームページ、Web作成</a></p><div class="entry-body"><p>無料Webホスティングサーバー <strong>InfinityFree</strong> と <strong>x10Hosting</strong> は共に無料枠でPHP並行リクエストを強く制限しているが、その方式は異なる。</p>
+<p><strong>InfinityFree </strong>は関数自体を無効化、<strong>x10Hosting </strong>は関数は有効だがリソース制限で間接的に抑制する構造である。</p>
+<style><!--
+td {
+  text-align: left;
+}
+--></style>
+<table>
+<tbody>
+<tr>
+<th>項目</th>
+<th>InfinityFree</th>
+<th>x10Hosting</th>
+</tr>
+<tr>
+<td><strong>curl_multi_exec() の可否</strong></td>
+<td>
+<p>無効。</p>
+<p>disabled_functionsに含まれ、呼び出すと Call to undefined function になる。<br />cURL自体は有効だが、curl_multi_exec() は無効化されている。</p>
+</td>
+<td>
+<p>有効。</p>
+<p>公式な無効化リストに含まれていない。ただしプロセス数制限により事実上の上限がある。</p>
+</td>
+</tr>
+<tr>
+<td><strong>制限理由</strong></td>
+<td>大量のURLを並列に呼び出せるため、濫用によりブロックを余儀なくされた。</td>
+<td>共有サーバー保護のため。</td>
+</tr>
+<tr>
+<td><strong>具体的制限値</strong></td>
+<td>
+<p>並行数 0。</p>
+<p>代替策として逐次的な curl_exec() の使用が推奨される。</p>
+</td>
+<td>
+<p>同時プロセス数 10以下。</p>
+<p>CPU 50%を120秒以上使用不可、60分中5分以上も不可、メモリ合計820MB以下。<br />実効的な並行数は5〜10が限界である。</p>
+</td>
+</tr>
+<tr>
+<td><strong>エラー挙動</strong></td>
+<td>PHP 7.4までは警告、PHP 8以降は Fatal error: Uncaught Error となる。</td>
+<td>制限超過時は503やプロセス強制終了、CPUサスペンドとなる。</td>
+</tr>
+<tr>
+<td><strong>回避策</strong></td>
+<td>ループによる逐次リクエスト、外部Cronや有料プラン(iFastNet)への移行。</td>
+<td>並行数を3〜5に絞る、curl_multi_select()で待機を入れる、実行時間を短く保つ。</td>
+</tr>
+</tbody>
+</table>
+<h5 id="InfinityFreeの特徴">InfinityFreeの特徴</h5>
+<p><strong>完全無効化型</strong>である。並行リクエストは不可能であり、WordPressの画像最適化プラグインやMediaWikiのVisualEditorなど、内部で curl_multi_exec() に依存するソフトウェアは動作しない。公式フォーラムでも有効化は不可と明言されている。</p>
+<h5 id="x10Hostingの特徴">x10Hostingの特徴</h5>
+<p><strong>条件付き許可型</strong>である。関数自体は呼び出せるが、無料プランはクラウド上の共有環境であるため、上記リソース制限が厳格に適用される。並行数を増やすほどCPUとプロセス制限に抵触しやすく、結果的にタイムアウトやアカウント一時停止のリスクが高まる。したがって、少数並列＋リトライ間隔を設ける実装が現実的である。</p>
+<p><a class="link-card" href="../../01/21/152702.html"><span class="lc-body"><span class="lc-title">無料でPHP＋MySQLが使えるWebホスティングサーバー「x10Hosting」を使ってみた。既存サービスからの移行検証。</span><span class="lc-desc">先日、無料でPHP＋MySQLが使えるWebホスティングサーバー「 InfinityFree 」を使ってみた。 「InfinityFree」は、レスポンスが遅い。 （※ 後日追記：「InfinityFree」で無料で立ち…</span><span class="lc-site">晴歩雨描 · <time>2026-01-21</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260121/20260121132031.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../01/19/163007.html"><span class="lc-body"><span class="lc-title">無料でPHP＋MySQLが使えるWebホスティングサーバー「InfinityFree」を使ってみた。既存サービスからの移行検証。</span><span class="lc-desc">無料でPHP＋MySQLが使えるWebホスティングサーバーは、いくつもあるようだ。 InfinityFree GoogieHost x10Hosting Free-Hosting.org ProPHP Free Host…</span><span class="lc-site">晴歩雨描 · <time>2026-01-19</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260119/20260119163724.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../20/100726.html"><span class="lc-body"><span class="lc-title">Leaflet）eBirdのAPIを使って、「野鳥観察マップ（日本地図）」アプリ作成（２）。InfinityFree。Leaflet都道府県境界表示。</span><span class="lc-desc">以前に、 eBirdのAPI を使って、「野鳥観察マップ（日本地図）」アプリを作成した。 今回、別バージョンを作成。マップはLeafletを使用。Claude使用。 《 野鳥観察マップ 》 ※ eBirdの仕様として、今…</span><span class="lc-site">晴歩雨描 · <time>2026-07-20</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260721/20260721095927.jpg" alt="" loading="lazy"></span></a></p></div></article>
+</body>
+</html>

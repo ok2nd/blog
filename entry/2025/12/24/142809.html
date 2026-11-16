@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ローカル画像生成AI：RTX3050）Stability Matrix＋Stable Diffusion WebUI Forgeで「FLUX FP8版」を使う。 - 晴歩雨描</title>
+<link rel="stylesheet" href="../../../../style.css">
+</head>
+<body>
+<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>ローカル画像生成AI：RTX3050）Stability Matrix＋Stable Diffusion WebUI Forgeで「FLUX FP8版」を使う。</h1><p class="meta">2025-12-24 · <a href="../../../../category/c18.html">写真・カメラ</a> <a href="../../../../category/c5.html">アート・美術</a> <a href="../../../../category/c42.html">＜AI＞</a></p><div class="entry-body"><p>WindowsPCローカルで画像生成AIを試している。モデルとして、</p>
+<ul>
+<li>「FLUX.1 [dev] の GGUF版」</li>
+<li>「FLUX.1 [schnell] の GGUF版」</li>
+</ul>
+<p>を試した。「FLUX.1 [dev] の GGUF版」の方が処理時間はかかるが、画質は良い。</p>
+<p>「FLUX.1 [dev] の GGUF版」でも、1200x800ピクセルで5分程で画像生成できる。</p>
+<p><a class="link-card" href="../21/220610.html"><span class="lc-body"><span class="lc-title">ローカル画像生成AI：RTX3050）Stability Matrix＋Stable Diffusion WebUI Forgeで「FLUX.1 [dev] GGUF版」を使う。</span><span class="lc-desc">WindowsPCローカルで画像生成AIを使う「 Fooocus（Stable Diffusion） 」を試したみたが、期待通りの画質を得られなかった。 ● 画像生成AIを使うには、以下の3つが必要。 UI（操作するため…</span><span class="lc-site">晴歩雨描 · <time>2025-12-21</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20251221/20251221213735.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../23/164434.html"><span class="lc-body"><span class="lc-title">ローカル画像生成AI：RTX3050）Stability Matrix＋Stable Diffusion WebUI Forgeで「FLUX.1 [schnell] GGUF版」を使う。</span><span class="lc-desc">WindowsPCローカルで、画像生成AIのモデル「 FLUX.1 [dev] の GGUF版 」を使ったが、800x600ピクセルの画像生成に10分ほどかかった。 ※【後日追加】その後試したら、「FLUX.1 [dev…</span><span class="lc-site">晴歩雨描 · <time>2025-12-23</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20251223/20251223161527.png" alt="" loading="lazy"></span></a></p>
+<p>● 使うPCのスペックは以下。画像生成AIをローカルで行うPCとしては最低限レベル。</p>
+<div style="overflow-x: auto;">
+<table>
+<tbody>
+<tr>
+<th>CPU</th>
+<td>インテル Core i5-14500T (14コア(6P+8E)/1.7GHz)</td>
+</tr>
+<tr>
+<th>GPU</th>
+<td>NVIDIA GeForce RTX 3050 LP 6GB</td>
+</tr>
+<tr>
+<th>メモリー</th>
+<td>32GB</td>
+</tr>
+<tr>
+<th>ストレージ</th>
+<td>1TB M.2 SSD PCI Express x4対応（Gen4対応）</td>
+</tr>
+<tr>
+<th>OS</th>
+<td>Windows 11 Pro 64bit</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>● 画像生成AIを使うには、以下の3つが必要。</p>
+<ul style="font-family: 'Noto Sans JP', sans-serif; color: #454545; font-size: 15.2px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; background-color: #ffffff; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;">
+<li style="font-family: 'Noto Sans JP', sans-serif;">UI（操作するための画面＋VRAM効率化など）</li>
+<li style="font-family: 'Noto Sans JP', sans-serif;">エンジン（実際に画像を作る仕組み）</li>
+<li style="font-family: 'Noto Sans JP', sans-serif;">モデル（AIの知識・作風）</li>
+</ul>
+<p>最近、新しいモデルがいくつかリリースされている。</p>
+<p><span style="color: #999999;">モデル「FLUX.2 [klein]」の GGUF版」を使ってみたが、Stability Matrix＋Forgeの環境では、RuntimeErrorで使えなかった。</span></p>
+<p>そこで、「写真画質」に特化した「<em>FLUX FP8版</em>」を使ってみた。</p>
+<p>※「FP8」はデータの精度（8ビット浮動小数点数）を指しており、元の巨大なモデル（約23GB以上）を画質を落としすぎずに半分以下のサイズ（約12GB弱）に軽量化したモデルであることを意味する。</p>
+<table>
+<thead>
+<tr>
+<th>特徴</th>
+<th>FP8版 (.safetensors)</th>
+<th>GGUF版 (.gguf)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>通称</th>
+<td>FP8版</td>
+<td>GGUF版（量子化版）</td>
+</tr>
+<tr>
+<th>VRAM消費</th>
+<td>6GB～8GBでギリギリ</td>
+<td>4GB～6GBでも余裕</td>
+</tr>
+<tr>
+<th>画質</th>
+<td>非常に良い（オリジナルに近い）</td>
+<td>設定（Q4/Q5等）により変わるが良好</td>
+</tr>
+<tr>
+<th>互換性</th>
+<td>多くのUIで標準対応</td>
+<td>ForgeやComfyUIの特定版で対応</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>ツール管理：Stability Matrix</li>
+<li>UI：Forge（Stable Diffusion WebUI Forge）</li>
+<li>エンジン：Stable Diffusion</li>
+<li>モデル：FLUX FP8版（<em>GGUFではない）</em></li>
+</ul>
+<h5 id="-FLUX-FP8版のダウンロード">■ FLUX FP8版のダウンロード</h5>
+<p>入手先：<a href="https://huggingface.co/Kijai/flux-fp8/tree/main" target="_blank">https://huggingface.co/Kijai/flux-fp8/tree/main</a></p>
+<ul>
+<li>ファイル：<strong>flux1-dev-fp8.safetensors</strong><br />画質と速度のバランスが完璧。VRAM 6GBの環境で最も「サクサク」動く可能性が高いサイズ。</li>
+<li>保存場所：Data/Models/Stable-diffusion</li>
+</ul>
+<h5 id="-テキストエンコーダーのダウンロード">■ テキストエンコーダーのダウンロード</h5>
+<p>入手先：<a href="https://huggingface.co/chatpig/encoder/blob/main/t5xxl-encoder-q4_k_m.gguf" target="_blank">https://huggingface.co/chatpig/encoder/blob/main/t5xxl-encoder-q4_k_m.gguf</a></p>
+<ul>
+<li>ファイル：<strong>t5xxl-encoder-q4_k_m.gguf</strong></li>
+<li>保存場所：Data/Models/TextEncoder</li>
+</ul>
+<h5 id="-使い方">■ 使い方</h5>
+<p>※「FLUX.1 [dev] GGUF」をすでに使っている前提で、</p>
+<p><strong>Stability Matrix＋Stable Diffusion WebUI Forge </strong>の画面で、</p>
+<p><strong>Checkpoint</strong></p>
+<ul>
+<li><strong>sd\flux1-dev-fp8.safetensors</strong> を選択。<br />
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20251224/20251224140429.jpg" width="268" height="77" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+</li>
+</ul>
+<p><strong>VAE / Text Encoder</strong></p>
+<ul>
+<li>t5xxl_fp16.safetensors のチェックを外し、</li>
+<li><strong>t5xxl-encoder-q4_k_m.gguf</strong> をチェックする。<br />
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20251224/20251224140441.jpg" width="444" height="81" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+</li>
+</ul>
+<p><strong>GPU Weights</strong></p>
+<ul>
+<li>4500～5000 MB<br /><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20251224/20251224142122.jpg" width="197" height="66" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></li>
+</ul>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20251224/20251224140826.jpg" width="1096" height="726" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<h5 id="-結果サンプル">■ 結果サンプル</h5>
+<p>900x600ピクセルで3分程度、1200x800ピクセルで4分程度で、生成できた。画質は、「FLUX.1 [dev] の GGUF版」に負けないレベル。</p>
+<p>《プロンプト》</p>
+<pre>realistic photo,
+a cute Japanese girl in her 30 s,
+fashionable clothes,
+full body,
+smiling,
+walking on a old city street,
+bright daytime</pre>
+<figure class="figure-image figure-image-fotolife mceNonEditable" title="600x900ピクセル">
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20251224/20251224135733.png" width="600" height="896" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<figcaption class="mceEditable">600x900ピクセル</figcaption>
+</figure>
+<p>《プロンプト》</p>
+<pre>realistic photo,
+a cute Japanese girl in her 30 s,
+fashionable clothes,
+full body,
+smiling,
+walking on a old city street,
+bright daytime</pre>
+<figure class="figure-image figure-image-fotolife mceNonEditable" title="800x1200ピクセル">
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20251224/20251224135757.png" width="800" height="1200" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<figcaption class="mceEditable">800x1200ピクセル</figcaption>
+</figure>
+<p>《プロンプト》</p>
+<pre>photorealistic, RAW photo, 8k uhd, highly detailed skin texture, soft cinematic lighting, shot on 35mm lens,
+Three Japanese women in their 20s walk in the fashionable streets of Kobe in April.
+They are wearing trendy spring clothes, smiling and talking happily.</pre>
+<p>※ おしゃれな神戸の街の雰囲気は出ていないし、春の感じもない。</p>
+<figure class="figure-image figure-image-fotolife mceNonEditable" title="1200x800ピクセル">
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20251224/20251224135826.png" width="1200" height="800" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<figcaption class="mceEditable">1200x800ピクセル</figcaption>
+</figure>
+<p><a class="link-card" href="../../../2026/01/11/144811.html"><span class="lc-body"><span class="lc-title">ローカル画像生成AI：RTX3050）Stability Matrix＋ComfyUI＋Qwen-Image-Edit-2511を使う。</span><span class="lc-desc">ローカル画像生成AIで、 Stability Matrix＋Forge＋「FLUX FP8版」 Stability Matrix＋Forge＋「FLUX.1[dev] GGUF版」 Stability Matrix＋Fo…</span><span class="lc-site">晴歩雨描 · <time>2026-01-11</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260111/20260111134234.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../23/164434.html"><span class="lc-body"><span class="lc-title">ローカル画像生成AI：RTX3050）Stability Matrix＋Stable Diffusion WebUI Forgeで「FLUX.1 [schnell] GGUF版」を使う。</span><span class="lc-desc">WindowsPCローカルで、画像生成AIのモデル「 FLUX.1 [dev] の GGUF版 」を使ったが、800x600ピクセルの画像生成に10分ほどかかった。 ※【後日追加】その後試したら、「FLUX.1 [dev…</span><span class="lc-site">晴歩雨描 · <time>2025-12-23</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20251223/20251223161527.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../20/153429.html"><span class="lc-body"><span class="lc-title">無料で使える画像生成AIサイト(ChatGPT)Photoshop、Adobe Firefly、Dreamina(Seedream 4)、Grok Imagine、Canva AI、ImageFX(Imagen3)、Ideogram、Gemini(Nano Banana Pro)、ChatGPT(GPT-Image-1.5)、Qwen3-Max、Bing Image Creator、Microsoft Designer、ChatGPT(Glibatree Art Designer)を比較してみた。</span><span class="lc-desc">先ほど、WindowsPCローカルで画像生成AIができるFooocus（画像生成エンジンはStable Diffusion）を試してみたが、結果は大きく期待外れだった。 WindowsPCローカルではなく、ブラウザ上で無…</span><span class="lc-site">晴歩雨描 · <time>2025-12-20</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20251220/20251220150807.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="https://ok2nd.github.io/sitemap/hatena-sitemap-table.html?search=%E7%94%BB%E5%83%8F%E7%94%9F%E6%88%90" target="_blank" rel="noopener noreferrer"><span class="lc-body"><span class="lc-title">晴歩雨描：記事一覧</span><span class="lc-desc"></span><span class="lc-site">ok2nd.github.io</span></span></a></p>
+<p><a class="link-card" href="../../03/16/113054.html"><span class="lc-body"><span class="lc-title">画像生成AIで、「ホワイトデー」のカード生成。Bing Image Creator、Gemini（Imagen 3）、Ideogram、ChatGPT（DALL-E3）で。</span><span class="lc-desc">現時点で気軽に無料で使える画像生成AIで、「Happy White Day」のカード生成をしてもらった。（ホワイトデーは過ぎてしまったが。） Microsoft Bing Image Creator https://ww…</span><span class="lc-site">晴歩雨描 · <time>2025-03-16</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250316/20250316111149.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2024/10/07/102500.html"><span class="lc-body"><span class="lc-title">画像生成AI）無料画像編集Webツールアプリ「AI Ease」の「AI顔入れ替え（合成）」を試してみた。オードリーヘプバーン、夏目漱石で。</span><span class="lc-desc">無料画像編集Webツールアプリ「 AI Ease 」を色々試している。 今回、「 AI Ease 」の「 AI顔入れ替え 」を試してみた。 オードリーヘップバーンと夏目漱石の写真で試してみた。オードリーヘップバーンの写真…</span><span class="lc-site">晴歩雨描 · <time>2024-10-07</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20241007/20241007101824.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2024/09/04/170833.html"><span class="lc-body"><span class="lc-title">画像生成AI）「ImageFX（Imagen3）」で、色々と遊んでみた。一部は「Ideogram 2.0」で。</span><span class="lc-desc">画像生成AI「ImageFX（Imagen3）」で、色々と遊んでみた。一部は、画像生成AI「Ideogram 2.0」で。 ■ 浮世絵風のキクイタダキ：ukiyo-e style Goldcrest ■ カワセミと野鳥キ…</span><span class="lc-site">晴歩雨描 · <time>2024-09-04</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20240831/20240831172653.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2024/08/31/141902.html"><span class="lc-body"><span class="lc-title">画像生成AI）「Ideogram 2.0」「ImageFX（Imagen3）」で、日本、韓国、中国、イギリス、ウクライナの女性（女優）のイメージ画像を生成。結構リアル。</span><span class="lc-desc">最近、画像生成AI「Ideogram 2.0」「ImageFX（Imagen3）」を試してみた。 今回、「 Ideogram 2.0 」「 ImageFX（Imagen3） 」で、各国の女優のイメージ画像を生成。 「Im…</span><span class="lc-site">晴歩雨描 · <time>2024-08-31</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20240831/20240831140854.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2024/08/29/105403.html"><span class="lc-body"><span class="lc-title">画像生成AI）「Ideogram 2.0」を試したみた。</span><span class="lc-desc">評価が高そうな画像生成AI「 Ideogram 2.0 」を試したみた。 無料プランでも1日あたり10クレジット（1回の画像作成に2クレジット消費。1回で4枚の画像生成。1日最大20枚の画像生成。）が提供される。 操作は…</span><span class="lc-site">晴歩雨描 · <time>2024-08-29</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20240829/20240829104842.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2024/02/06/220950.html"><span class="lc-body"><span class="lc-title">画像生成AI）Google「Bard（Gemini）」にキクイタダキの画像を生成させてみた。</span><span class="lc-desc">先程、Google「Bard」に画像生成AIを試した。 今回、先日撮影した「キクイタダキ」をGoogle「Bard」に描かせてみた。「キクイタダキ」は英語で「Goldcrest」という。 ■ create an imag…</span><span class="lc-site">晴歩雨描 · <time>2024-02-06</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20240206/20240206215558.jpg" alt="" loading="lazy"></span></a></p></div></article>
+</body>
+</html>

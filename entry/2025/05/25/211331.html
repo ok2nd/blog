@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Claude＆Gemini）Python）「写真のトーンカーブ一括補正」Windowsアプリ作成。 - 晴歩雨描</title>
+<link rel="stylesheet" href="../../../../style.css">
+</head>
+<body>
+<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>Claude＆Gemini）Python）「写真のトーンカーブ一括補正」Windowsアプリ作成。</h1><p class="meta">2025-05-25 · <a href="../../../../category/c18.html">写真・カメラ</a> <a href="../../../../category/c8.html">コンピュータ</a> <a href="../../../../category/c42.html">＜AI＞</a></p><div class="entry-body"><p>先日、Pythonで「写真の明るさ＆コントラスト一括補正」Windowsアプリを作成した。</p>
+<p><a class="link-card" href="../18/090800.html"><span class="lc-body"><span class="lc-title">Claude）Python）「写真の明るさ＆コントラスト一括補正」Windowsアプリ作成。ICCプロファイル維持。</span><span class="lc-desc">Pythonで「 写真の明るさ＆コントラスト一括補正 」Windowsアプリ作成。 複数の画像を一括して補正できる。 AIツールClaudeに作成してもらった。 ※ 【後日追記】最初のバージョンでは、元の写真に埋め込まれ…</span><span class="lc-site">晴歩雨描 · <time>2025-05-18</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250518/20250518090322.jpg" alt="" loading="lazy"></span></a></p>
+<p>今回、<em>トーンカーブを使って写真の明るさを補正するWindowsアプリ</em>をPythonで作成。<em>複数画像を一括して補正できる。</em>AIツールClaudeとGeminiに作成してもらった。最初Claudeに作成してもらい、改良しようとしたが、1日の無料枠を超えたので、ソースをGeminiに渡して改良してもらった。</p>
+<h5 id="使い方">【使い方】</h5>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250525/20250525210152.jpg" width="1104" height="822" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<ul>
+<li>画像ファイルが入ったフォルダーを指定する。</li>
+<li>トーンカーブを使って明るさの補正ができる。トーンカーブのポイントを掴むには多少コツがいる。改善が必要と思われる。</li>
+<li>明るさの補正状況をプレビューできる。左←矢印、右→矢印で、プレビュー画像を移動して複数の画像で確認できる。</li>
+<li>「実行」ボタンを押すと、指定フォルダーの下に「トーンカーブ補正」フォルダーを作成して、<em>指定フォルダー内の画像を一括して補正して保存する。</em>元の画像は、そのまま残る。</li>
+</ul>
+<h5 id="Pythonインストール">【Pythonインストール】</h5>
+<p>Pythonがインストールされていなければ、インストールする。</p>
+<p><a class="link-card" href="../../../2023/09/08/210741.html"><span class="lc-body"><span class="lc-title">Windows）「Python（Ver.3.11.5）」インストール。</span><span class="lc-desc">Windows版Pythonのインストール手順の備忘録。 ■ Pythonダウンロード 現時点の最新、Ver.3.11.5。 ■ Python インストール 「 python-3.11.5-amd64.exe 」を実行。…</span><span class="lc-site">晴歩雨描 · <time>2023-09-08</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20230908/20230908204241.jpg" alt="" loading="lazy"></span></a></p>
+<h5 id="Pythonプログラム">【Pythonプログラム】</h5>
+<p>作成されたプログラムを、「トーンカーブ補正.pyw」（名前は任意）という名前にして、デスクトップに置いておき、ダブルクリックで実行する。</p>
+<h5 id="Pythonプログラムコード">【Pythonプログラムコード】</h5>
+<pre>import os
+import sys
+import tkinter as tk
+from tkinter import filedialog, ttk, messagebox
+from PIL import Image, ImageTk, ImageEnhance
+import threading
+import queue
+import numpy as np
+from scipy.interpolate import CubicSpline
+
+class ToneCurveEditor(tk.Canvas):
+    def __init__(self, master, width=256, height=256, bg="white", borderwidth=2, relief="sunken", command=None):
+        # widthとheightは初期値として設定し、on_resizeで動的に更新されます
+        super().__init__(master, width=width, height=height, bg=bg, borderwidth=borderwidth, relief=relief)
+        self.width = width # 初期値
+        self.height = height # 初期値
+        self.command = command
+        
+        # トーンカーブのポイント (入力0-255, 出力0-255)
+        # 初期状態は直線 (0,0), (255,255)
+        self.points = [(0, 0), (255, 255)] 
+        self.handle_radius = 5
+        self.selected_point_index = None
+
+        self.curve_id = None
+        self.point_ids = []
+
+        self.bind("&lt;Button-1&gt;", self.on_click)
+        self.bind("&lt;B1-Motion&gt;", self.on_drag)
+        self.bind("&lt;ButtonRelease-1&gt;", self.on_release)
+        self.bind("&lt;Button-3&gt;", self.on_right_click) # 右クリックでポイント削除
+        # ToneCurveEditorのon_resizeメソッドとバインドは削除
+        # self.bind("&lt;Configure&gt;", self.on_resize) 
+
+        self.draw_curve()
+
+    # ToneCurveEditorのon_resizeメソッドは削除
+    # def on_resize(self, event):
+    #     """ウィジェットのサイズが変更されたときに曲線とポイントを再描画"""
+    #     if event.width &gt; 0 and event.height &gt; 0:
+    #         # 親フレームの利用可能スペースの小さい方に合わせてサイズを決定し、0.7倍する
+    #         new_size = min(event.width, event.height)
+    #         new_size = int(new_size * 0.7) # 0.7倍に縮小
+
+    #         # 最小サイズを設定して、極端に小さくなるのを防ぐ
+    #         min_canvas_size = 150
+    #         new_size = max(min_canvas_size, new_size)
+
+    #         if self.width != new_size or self.height != new_size:
+    #             self.width = new_size
+    #             self.height = new_size
+    #             # Canvasのサイズを更新
+    #             self.config(width=self.width, height=self.height) 
+    #             self.draw_curve()
+
+    def _normalize_coords(self, x, y):
+        # UI座標 (0-width, 0-height) を画像データ座標 (0-255, 0-255) に変換
+        # TkinterのCanvasはy軸が下向きなので、反転させる
+        norm_x = int((x / self.width) * 255)
+        norm_y = int((1 - (y / self.height)) * 255)
+        return norm_x, norm_y
+
+    def _canvas_coords(self, norm_x, norm_y):
+        # 画像データ座標 (0-255, 0-255) をUI座標 (0-width, 0-height) に変換
+        canvas_x = (norm_x / 255) * self.width
+        canvas_y = (1 - (norm_y / 255)) * self.height
+        return canvas_x, canvas_y
+
+    def draw_curve(self):
+        self.delete("all")
+        
+        # グリッドの描画
+        self.draw_grid()
+
+        # ポイントをソート（x座標順）
+        self.points.sort(key=lambda p: p[0])
+
+        # 曲線を描画するためのデータポイントを生成
+        x_coords = np.array([p[0] for p in self.points])
+        y_coords = np.array([p[1] for p in self.points])
+
+        if len(self.points) &gt; 1:
+            # スプライン補間 (CubicSpline)
+            # x_coordsが単調増加であることを確認 (sortしているので問題ないはず)
+            # x_coordsの重複を排除してユニークなものにする
+            unique_x, unique_indices = np.unique(x_coords, return_index=True)
+            unique_y = y_coords[unique_indices]
+
+            # 少なくとも2つのユニークな点が必要
+            if len(unique_x) &gt; 1:
+                cs = CubicSpline(unique_x, unique_y, bc_type='natural')
+                
+                # 0から255までのすべてのx座標に対する補間されたy座標を計算
+                self.interpolated_y = cs(np.arange(256))
+                # 値を0-255の範囲にクリップ
+                self.interpolated_y = np.clip(self.interpolated_y, 0, 255).astype(int)
+
+                # 曲線を描画 (Canvasの座標系に変換)
+                curve_points_canvas = []
+                for i in range(256):
+                    cx, cy = self._canvas_coords(i, self.interpolated_y[i])
+                    curve_points_canvas.extend([cx, cy])
+                
+                self.curve_id = self.create_line(curve_points_canvas, fill="blue", width=2)
+            else: # ユニークな点が1つの場合、直線として扱う
+                self.interpolated_y = np.full(256, unique_y[0]) if len(unique_y) &gt; 0 else np.arange(256)
+                self.curve_id = self.create_line(self._canvas_coords(0, self.interpolated_y[0]), self._canvas_coords(255, self.interpolated_y[255]), fill="blue", width=2)
+        else: # ポイントが1つの場合、または0個の場合
+            # ポイントが1つの場合は、その点のy値を全てに出力、0個の場合は対角線
+            if len(self.points) == 1:
+                self.interpolated_y = np.full(256, self.points[0][1])
+            else:
+                self.interpolated_y = np.arange(256) # デフォルトは直線
+            self.curve_id = self.create_line(self._canvas_coords(0, self.interpolated_y[0]), self._canvas_coords(255, self.interpolated_y[255]), fill="blue", width=2)
+
+
+        self.point_ids = []
+        for i, (norm_x, norm_y) in enumerate(self.points):
+            cx, cy = self._canvas_coords(norm_x, norm_y)
+            point_id = self.create_oval(cx - self.handle_radius, cy - self.handle_radius,
+                                         cx + self.handle_radius, cy + self.handle_radius,
+                                         fill="red" if i == self.selected_point_index else "green", outline="white")
+            self.point_ids.append(point_id)
+        
+        if self.command:
+            self.command()
+
+    def draw_grid(self):
+        # 0, 64, 128, 192, 255 のグリッド線
+        grid_values = [0, 64, 128, 192, 255]
+        
+        # 垂直グリッド線
+        for val in grid_values:
+            cx, _ = self._canvas_coords(val, 0)
+            self.create_line(cx, 0, cx, self.height, fill="#e0e0e0", dash=(2, 2))
+        
+        # 水平グリッド線
+        for val in grid_values:
+            _, cy = self._canvas_coords(0, val)
+            self.create_line(0, cy, self.width, cy, fill="#e0e0e0", dash=(2, 2))
+
+    def on_click(self, event):
+        x, y = event.x, event.y
+        self.selected_point_index = None
+
+        # 既存のポイントを選択
+        for i, (px, py) in enumerate(self.points):
+            cx, cy = self._canvas_coords(px, py)
+            if (cx - x)**2 + (cy - y)**2 &lt; self.handle_radius**2 * 4: # クリック領域を少し広げる
+                self.selected_point_index = i
+                break
+        
+        # 新しいポイントを追加 (端点以外)
+        if self.selected_point_index is None:
+            norm_x, norm_y = self._normalize_coords(x, y)
+            
+            # 端点 (0,0) と (255,255) は追加・削除できないようにする
+            # ただし、クリック位置が端点とあまりにも近い場合は追加しない
+            is_near_start = (abs(norm_x - 0) &lt; 10 and abs(norm_y - 0) &lt; 10)
+            is_near_end = (abs(norm_x - 255) &lt; 10 and abs(norm_y - 255) &lt; 10)
+
+            if not (is_near_start or is_near_end):
+                self.points.append((norm_x, norm_y))
+                self.selected_point_index = len(self.points) - 1
+        
+        self.draw_curve()
+
+    def on_drag(self, event):
+        if self.selected_point_index is not None:
+            norm_x, norm_y = self._normalize_coords(event.x, event.y)
+            
+            # 端点 (0,0) と (255,255) は移動できないようにする
+            if self.points[self.selected_point_index] in [(0,0), (255,255)]:
+                return
+
+            # x座標を0-255にクリップ
+            norm_x = max(0, min(255, norm_x))
+            
+            # y座標を0-255にクリップ
+            norm_y = max(0, min(255, norm_y))
+
+            self.points[self.selected_point_index] = (norm_x, norm_y)
+            self.draw_curve()
+
+    def on_release(self, event):
+        self.selected_point_index = None
+        self.draw_curve() # ハンドルの色をリセット
+
+    def on_right_click(self, event):
+        x, y = event.x, event.y
+        clicked_point_index = None
+
+        # 既存のポイントを選択
+        for i, (px, py) in enumerate(self.points):
+            cx, cy = self._canvas_coords(px, py)
+            if (cx - x)**2 + (cy - y)**2 &lt; self.handle_radius**2 * 4:
+                clicked_point_index = i
+                break
+        
+        if clicked_point_index is not None:
+            # 端点 (0,0) と (255,255) は削除できないようにする
+            if self.points[clicked_point_index] not in [(0,0), (255,255)]:
+                del self.points[clicked_point_index]
+                self.selected_point_index = None # 削除したので選択を解除
+                self.draw_curve()
+
+    def get_lookup_table(self):
+        # 256要素のルックアップテーブルを返す (0-255)
+        if hasattr(self, 'interpolated_y'):
+            return self.interpolated_y
+        else:
+            return np.arange(256) # 初期状態は直線
+
+    def reset_curve(self):
+        self.points = [(0, 0), (255, 255)]
+        self.draw_curve()
+
+
+class ImageProcessorApp:
+    def __init__(self, root):
+        self.root = root
+        self.root.title("画像補正アプリ")
+        self.root.geometry("1100x800") # ウィンドウの初期サイズを少し大きく
+        self.root.resizable(True, True)
+        
+        # 変数の初期化
+        self.folder_path = tk.StringVar()
+        self.preview_image = None
+        self.original_image = None
+        self.image_files = []
+        self.current_preview_file = None
+        self.current_preview_index = 0
+        self.tk_image = None # PhotoImageの参照を保持するため
+
+        # 修正: トーンカーブエディタの初期サイズを計算 (ウィンドウ初期高さの0.7倍のさらに0.7倍)
+        self.tone_curve_fixed_size = int(800 * 0.7 * 0.7) # 約392
+        
+        # レイアウトの設定
+        self.create_widgets()
+        
+        # プログレスバー用の変数
+        self.progress_queue = queue.Queue()
+        self.processing = False
+        
+    def create_widgets(self):
+        # メインフレーム
+        main_frame = ttk.Frame(self.root, padding=10)
+        main_frame.pack(fill=tk.BOTH, expand=True)
+        
+        # 実行ボタン部分 - main_frameの下部に配置
+        # side=tk.BOTTOM とすることで、常に一番下に固定されます
+        button_frame = ttk.Frame(main_frame)
+        button_frame.pack(fill=tk.X, padx=5, pady=10, side=tk.BOTTOM)
+        
+        self.progress_bar = ttk.Progressbar(button_frame, orient=tk.HORIZONTAL, length=100, mode='determinate')
+        self.progress_bar.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=5)
+        
+        self.execute_button = ttk.Button(button_frame, text="実行", command=self.process_images)
+        self.execute_button.pack(side=tk.RIGHT, padx=5)
+        
+        # 上部コンテンツを含むフレーム (フォルダ選択、トーンカーブ、プレビュー)
+        content_frame = ttk.Frame(main_frame)
+        content_frame.pack(fill=tk.BOTH, expand=True) 
+        
+        # フォルダ選択部分
+        folder_frame = ttk.LabelFrame(content_frame, text="フォルダ選択", padding=10)
+        folder_frame.pack(fill=tk.X, padx=5, pady=5)
+        
+        folder_entry = ttk.Entry(folder_frame, textvariable=self.folder_path, width=50)
+        folder_entry.pack(side=tk.LEFT, padx=5, fill=tk.X, expand=True)
+        # Enterキー押下時にフォルダを読み込む
+        folder_entry.bind("&lt;Return&gt;", lambda e: self.load_folder_from_entry())
+        # フォーカスが外れたときにもフォルダを読み込む
+        folder_entry.bind("&lt;FocusOut&gt;", lambda e: self.load_folder_from_entry())
+        
+        ttk.Button(folder_frame, text="参照...", command=self.browse_folder).pack(side=tk.LEFT, padx=5)
+        
+        # トーンカーブ設定とプレビューを左右に配置するフレーム
+        editor_preview_frame = ttk.Frame(content_frame)
+        editor_preview_frame.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
+        
+        # editor_preview_frame のグリッド設定
+        editor_preview_frame.columnconfigure(0, weight=0) # param_frame (トーンカーブ) は固定幅
+        editor_preview_frame.columnconfigure(1, weight=1) # preview_frame は利用可能な水平スペースをすべて使用
+        editor_preview_frame.rowconfigure(0, weight=1) # 垂直方向はすべて利用
+        
+        # パラメータ設定部分 (トーンカーブ)
+        param_frame = ttk.LabelFrame(editor_preview_frame, text="トーンカーブ設定", padding=10)
+        # 修正: sticky="ns" から "n" に変更し、垂直方向の伸縮を抑制し上揃えにする
+        param_frame.grid(row=0, column=0, sticky="n", padx=(0, 5)) 
+        
+        # トーンカーブエディタの配置 - 固定サイズ
+        # widthとheightに計算した固定サイズを渡す
+        self.tone_curve_editor = ToneCurveEditor(param_frame, width=self.tone_curve_fixed_size, height=self.tone_curve_fixed_size, 
+                                                 borderwidth=1, relief="solid", command=self.update_preview)
+        self.tone_curve_editor.pack(padx=5, pady=5, anchor=tk.CENTER) # 固定サイズなので pack で中央寄せ
+        
+        # トーンカーブリセットボタン
+        ttk.Button(param_frame, text="トーンカーブリセット", command=self.tone_curve_editor.reset_curve).pack(padx=5, pady=5)
+        
+        # プレビュー部分
+        preview_frame = ttk.LabelFrame(editor_preview_frame, text="プレビュー", padding=10)
+        # grid を使用して配置。sticky="nsew" で利用可能な水平・垂直スペースをすべて使用
+        preview_frame.grid(row=0, column=1, sticky="nsew", padx=(5, 0)) 
+        
+        # プレビュー操作ボタンを含むフレーム
+        preview_nav_frame = ttk.Frame(preview_frame)
+        preview_nav_frame.pack(fill=tk.X, pady=5)
+        
+        # 前の画像ボタン
+        self.prev_button = ttk.Button(preview_nav_frame, text="←", command=self.show_prev_image, width=3)
+        self.prev_button.pack(side=tk.LEFT, padx=5)
+        
+        # ファイル名表示ラベル（中央に配置）
+        self.image_name_label = ttk.Label(preview_nav_frame, text="")
+        self.image_name_label.pack(side=tk.LEFT, expand=True, fill=tk.X, padx=5)
+        
+        # 次の画像ボタン
+        self.next_button = ttk.Button(preview_nav_frame, text="→", command=self.show_next_image, width=3)
+        self.next_button.pack(side=tk.RIGHT, padx=5)
+        
+        # プレビューコンテナ (tk.Canvasに変更)
+        self.preview_canvas = tk.Canvas(preview_frame, bg="lightgray", highlightthickness=0)
+        self.preview_canvas.pack(fill=tk.BOTH, expand=True)
+        
+    def show_prev_image(self):
+        """前の画像を表示"""
+        if not self.image_files or len(self.image_files) &lt;= 1:
+            return
+            
+        self.current_preview_index = (self.current_preview_index - 1) % len(self.image_files)
+        self.current_preview_file = os.path.join(self.folder_path.get(), self.image_files[self.current_preview_index])
+        self.load_preview_image()
+        self.update_image_name_label()
+        
+    def show_next_image(self):
+        """次の画像を表示"""
+        if not self.image_files or len(self.image_files) &lt;= 1:
+            return
+            
+        self.current_preview_index = (self.current_preview_index + 1) % len(self.image_files)
+        self.current_preview_file = os.path.join(self.folder_path.get(), self.image_files[self.current_preview_index])
+        self.load_preview_image()
+        self.update_image_name_label()
+        
+    def update_image_name_label(self):
+        """画像ファイル名表示を更新"""
+        if self.current_preview_file:
+            filename = os.path.basename(self.current_preview_file)
+            self.image_name_label.config(text=f"{self.current_preview_index + 1}/{len(self.image_files)}: {filename}")
+        else:
+            self.image_name_label.config(text="")
+    
+    def load_folder_from_entry(self):
+        """エントリに入力されたパスからフォルダを読み込む"""
+        folder_path = self.folder_path.get().strip()
+        if folder_path and os.path.isdir(folder_path):
+            self.load_image_files()
+        elif folder_path:  # パスがあるが存在しない場合
+            messagebox.showerror("エラー", "指定されたフォルダが見つかりません。")
+    
+    def browse_folder(self):
+        # 現在入力されているパスがあれば、それを初期ディレクトリとして使用
+        current_path = self.folder_path.get().strip()
+        initial_dir = current_path if current_path and os.path.isdir(current_path) else os.getcwd()
+        
+        folder_selected = filedialog.askdirectory(initialdir=initial_dir)
+        if folder_selected:
+            self.folder_path.set(folder_selected)
+            self.load_image_files()
+    
+    def load_image_files(self):
+        folder = self.folder_path.get()
+        if not os.path.isdir(folder):
+            return
+        
+        # 画像ファイルのみをリストアップ
+        valid_extensions = ['.jpg', '.jpeg', '.png', '.bmp', '.gif']
+        self.image_files = [f for f in os.listdir(folder) 
+                            if os.path.isfile(os.path.join(folder, f)) and 
+                            os.path.splitext(f)[1].lower() in valid_extensions]
+        
+        if self.image_files:
+            self.current_preview_index = 0
+            self.current_preview_file = os.path.join(folder, self.image_files[0])
+            self.load_preview_image()
+            self.update_image_name_label()
+        else:
+            messagebox.showinfo("情報", "指定されたフォルダには画像ファイルがありません。")
+            self.current_preview_file = None
+            self.update_image_name_label()
+    
+    def load_preview_image(self):
+        if not self.current_preview_file or not os.path.exists(self.current_preview_file):
+            return
+        
+        try:
+            # 元の画像を読み込み
+            self.original_image = Image.open(self.current_preview_file).convert("RGB") # RGBに変換して処理を統一
+            # プレビュー用にリサイズ
+            self.resize_preview_image()
+            # プレビューを更新
+            self.update_preview()
+        except Exception as e:
+            messagebox.showerror("エラー", f"画像の読み込みエラー: {str(e)}")
+    
+    def resize_preview_image(self):
+        if not self.original_image:
+            return
+            
+        # ここで update_idletasks() を呼び出し、ウィジェットの最新のサイズを取得
+        # これにより、ウィンドウがリサイズされた直後でも正しい幅と高さを取得できます
+        self.root.update_idletasks() 
+
+        # プレビュー領域のサイズを取得 (Canvasのサイズを使用)
+        preview_width = self.preview_canvas.winfo_width()
+        preview_height = self.preview_canvas.winfo_height()
+        
+        # 初回表示時や最小化時など、サイズがゼロになる可能性があるのでデフォルト値を設定
+        if preview_width &lt;= 10 or preview_height &lt;= 10: # 極端に小さい値の場合も考慮
+            # デフォルト値を大きくして、初期プレビューが見やすいようにする
+            preview_width = 600 
+            preview_height = 450 
+            
+        # 画像のアスペクト比を維持しながらリサイズ
+        img_width, img_height = self.original_image.size
+        
+        # ゼロ除算を避ける
+        if img_width == 0 or img_height == 0:
+            return
+
+        ratio = min(preview_width / img_width, preview_height / img_height)
+        new_width = int(img_width * ratio)
+        new_height = int(img_height * ratio)
+        
+        # 新しい幅または高さが0になるのを防ぐ
+        if new_width == 0: new_width = 1
+        if new_height == 0: new_height = 1
+
+        # リサイズした画像を保存
+        self.preview_image = self.original_image.resize((new_width, new_height), Image.LANCZOS)
+    
+    def apply_tone_curve(self, image):
+        """画像にトーンカーブを適用する"""
+        if image.mode != "RGB":
+            image = image.convert("RGB")
+        
+        # トーンカーブからルックアップテーブルを取得
+        lookup_table = self.tone_curve_editor.get_lookup_table()
+        
+        # 各チャンネルにルックアップテーブルを適用
+        # Image.eval は単一チャンネルの画像にしか使えないため、R,G,Bに分割して適用
+        r, g, b = image.split()
+        r = r.point(lookup_table)
+        g = g.point(lookup_table)
+        b = b.point(lookup_table)
+        
+        return Image.merge("RGB", (r, g, b))
+
+    def update_preview(self, *args):
+        # キャンバスの幅と高さが取得できるまで待つ
+        if not self.preview_image or not self.preview_canvas.winfo_width() or not self.preview_canvas.winfo_height():
+            return
+            
+        try:
+            # トーンカーブを適用したプレビュー画像を作成
+            processed = self.apply_tone_curve(self.preview_image.copy())
+            
+            # PhotoImageに変換し、参照を保持
+            self.tk_image = ImageTk.PhotoImage(processed)
+            
+            # キャンバスをクリア
+            self.preview_canvas.delete("all")
+            
+            # 画像をキャンバスに描画 (上揃え中央)
+            canvas_width = self.preview_canvas.winfo_width()
+            canvas_height = self.preview_canvas.winfo_height()
+            
+            # 画像の幅と高さ
+            img_width, img_height = self.tk_image.width(), self.tk_image.height()
+
+            # 画像を中央上部に配置
+            x_pos = canvas_width / 2
+            y_pos = 0 # 上揃え
+
+            self.preview_canvas.create_image(x_pos, y_pos, anchor=tk.N, image=self.tk_image)
+            
+        except Exception as e:
+            messagebox.showerror("エラー", f"プレビュー更新エラー: {str(e)}")
+    
+    def process_images(self):
+        if self.processing:
+            return
+            
+        folder = self.folder_path.get()
+        if not folder or not os.path.isdir(folder):
+            messagebox.showinfo("情報", "フォルダを選択してください。")
+            return
+            
+        if not self.image_files:
+            messagebox.showinfo("情報", "処理対象の画像ファイルがありません。")
+            return
+            
+        # 出力フォルダの作成
+        output_folder = os.path.join(folder, "トーンカーブ補正")
+        try:
+            if not os.path.exists(output_folder):
+                os.makedirs(output_folder)
+        except Exception as e:
+            messagebox.showerror("エラー", f"出力フォルダの作成に失敗しました: {str(e)}")
+            return
+            
+        # トーンカーブのルックアップテーブルを取得
+        lookup_table = self.tone_curve_editor.get_lookup_table()
+        
+        # プログレスバーの初期化
+        self.progress_bar["maximum"] = len(self.image_files)
+        self.progress_bar["value"] = 0
+        
+        # ボタンを無効化
+        self.execute_button.config(state=tk.DISABLED)
+        self.processing = True
+        
+        # バックグラウンドで処理を実行
+        processing_thread = threading.Thread(
+            target=self.process_images_thread,
+            args=(folder, output_folder, lookup_table)
+        )
+        processing_thread.daemon = True
+        processing_thread.start()
+        
+        # 進捗状況を定期的に確認
+        self.root.after(100, self.check_progress)
+    
+    def process_images_thread(self, input_folder, output_folder, lookup_table):
+        for i, file_name in enumerate(self.image_files):
+            try:
+                input_path = os.path.join(input_folder, file_name)
+                output_path = os.path.join(output_folder, file_name)
+                
+                # 画像を開く
+                img = Image.open(input_path).convert("RGB") # RGBに変換
+                
+                # トーンカーブ適用
+                img = self.apply_tone_curve_direct(img, lookup_table)
+                
+                # 保存
+                img.save(output_path)
+                
+                # 進捗状況をキューに追加
+                self.progress_queue.put(i + 1)
+            except Exception as e:
+                self.progress_queue.put(f"エラー: {file_name} - {str(e)}")
+        
+        # 完了をキューに追加
+        self.progress_queue.put("DONE")
+
+    def apply_tone_curve_direct(self, image, lookup_table):
+        """トーンカーブを直接画像に適用 (Image.evalの代わりに)"""
+        # NumPy配列に変換
+        img_array = np.array(image)
+        
+        # ルックアップテーブルを適用
+        # 各ピクセルのR, G, B値にlookup_tableを適用する
+        # 例えば、元のR値が100であれば、lookup_table[100]の値が新しいR値になる
+        processed_array = lookup_table[img_array]
+        
+        # Pillowイメージに戻す
+        return Image.fromarray(processed_array.astype(np.uint8))
+
+    def check_progress(self):
+        try:
+            while True:
+                message = self.progress_queue.get_nowait()
+                
+                if message == "DONE":
+                    self.processing = False
+                    self.execute_button.config(state=tk.NORMAL)
+                    messagebox.showinfo("完了", "画像の処理が完了しました。")
+                    break
+                elif isinstance(message, str) and message.startswith("エラー"):
+                    messagebox.showerror("エラー", message)
+                else:
+                    self.progress_bar["value"] = message
+        except queue.Empty:
+            # キューが空の場合は、まだ処理中なので続行
+            if self.processing:
+                self.root.after(100, self.check_progress)
+            else:
+                self.execute_button.config(state=tk.NORMAL)
+
+def main():
+    root = tk.Tk()
+    app = ImageProcessorApp(root)
+    
+    # ウィンドウサイズが変更されたらプレビューをリサイズ
+    # Tkinterの &lt;Configure&gt; イベントは子ウィジェットのサイズ変更でも発生するため、
+    # rootウィンドウ自体のサイズ変更時のみ処理するように `event.widget == root` でフィルタリング
+    def on_resize(event):
+        if event.widget == root: # rootウィンドウのサイズ変更のみを検出
+            if hasattr(app, 'original_image') and app.original_image:
+                app.resize_preview_image()
+                app.update_preview()
+    
+    root.bind("&lt;Configure&gt;", on_resize)
+    
+    root.mainloop()
+
+if __name__ == "__main__":
+    main()
+</pre>
+<p><a class="link-card" href="../../06/02/112022.html"><span class="lc-body"><span class="lc-title">Claude＆Gemini）Python）「写真のカラーバランス一括補正」Windowsアプリ作成。Pixel 9 Proの青被りを補正。</span><span class="lc-desc">スマホ「 Pixel 9 Pro 」を所有しているが、写真の青被りがきつい。特に人物の顔色が悪くなる。GIMP等でカラーバランスを調整することで補正できるが、枚数が多いと面倒。 複数画像を一括して補正できるツール が欲し…</span><span class="lc-site">晴歩雨描 · <time>2025-06-02</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250602/20250602110316.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../09/085200.html"><span class="lc-body"><span class="lc-title">Claude）Python）PowerPointに複数写真（画像）を順番に並べて貼り付けるプログラム作成（改訂版）。</span><span class="lc-desc">以前に、PowerPointに複数写真を順番に並べて貼り付けるプログラムをPythonで作成した。 今回、このプログラムの改訂版。前回と同じく、AI生成ツール「Claude」に作ってもらった。 基本機能はそのままで、オプ…</span><span class="lc-site">晴歩雨描 · <time>2025-05-09</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250509/20250509084045.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../04/20/093458.html"><span class="lc-body"><span class="lc-title">Claude）Python）「写真オブジェクト除去」Windowsアプリ作成。シミ消しにも使える。</span><span class="lc-desc">2日前、 JavaScript で「 写真スポッティング編集ツール 」を作成した。 今回、 Python で「 写真オブジェクト除去アプリ 」を作成。AIツールClaudeに作成してもらった。 写真の中のちょっとした不要…</span><span class="lc-site">晴歩雨描 · <time>2025-04-20</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250420/20250420091047.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../06/13/153014.html"><span class="lc-body"><span class="lc-title">Claude）Python）透過画像作成Windowsアプリ作成。</span><span class="lc-desc">Pythonで「透過画像作成」Windowsアプリ作成。画像の白に近い色を透過にする。元データはJPEGまたはPNG。白の範囲は指定できる。AIツールClaudeに作成してもらった。 【使い方】 元画像ファイルは、ドラッ…</span><span class="lc-site">晴歩雨描 · <time>2025-06-13</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250613/20250613151037.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../03/20/171056.html"><span class="lc-body"><span class="lc-title">JavaScript）AIツール「Claude」で、ブラウザに画像をアップロードしてトーンカーブで明るさ補正をしてダウンロードできるWebツール作成。</span><span class="lc-desc">以前に、ブラウザに画像をアップロードしてトーンカーブで明るさ補正できるツールを「jquery.iocurve」を使用して作成した。だが、難点として、新しい画像をアップロードして、現時点のトーンカーブを適用させることが難し…</span><span class="lc-site">晴歩雨描 · <time>2025-03-20</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250320/20250320170144.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../04/18/215613.html"><span class="lc-body"><span class="lc-title">Claude）JavaScript）「写真スポッティング編集ツール」作成。写真のオブジェクト除去やシミ消しに。</span><span class="lc-desc">JavaScriptで、「 写真スポッティング編集ツール 」を作成。 写真の中のちょっとした不要物を除去するためのツール。除去したい不要物をマウスなどで囲んで除去し、除去した後を目立たないように背景画像で補正するなどした…</span><span class="lc-site">晴歩雨描 · <time>2025-04-18</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250418/20250418213106.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../04/16/095722.html"><span class="lc-body"><span class="lc-title">Claude）JavaScript）画像フォーマットPNG、WEBP、AVIFをJPEGに変換するWebツール作成。複数ファイル一括も可。</span><span class="lc-desc">過去に、画像フォーマットPNGやWEBPをJPEGに変換するWebアプリを作成した。 今回、画像フォーマット PNG、WEBP、AVIFをJPEGに変換する Webアプリを作成。AIツールClaudeに作成してもらった。…</span><span class="lc-site">晴歩雨描 · <time>2025-04-16</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250416/20250416094324.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../04/10/172840.html"><span class="lc-body"><span class="lc-title">Claude）Python）PowerPointに複数写真（画像）を順番に並べて貼り付けるプログラム作成（Ver.1）。</span><span class="lc-desc">※ このプログラムについては、後日、改訂版を作成。（↓） PowerPoint に複数写真を順番に並べて貼り付けるプログラムを作成。AI生成ツール「 Claude 」に作ってもらった。 Python で作成。貼り付ける写…</span><span class="lc-site">晴歩雨描 · <time>2025-04-10</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250410/20250410165838.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../04/01/172305.html"><span class="lc-body"><span class="lc-title">Claudeは、無料枠で文章からSVG形式で日本語の4コマ漫画を生成してくれる。</span><span class="lc-desc">ChatGPT、Google Gemini、Microsoft Copilot、Perplexity、リートン、Claude それぞれ無料で使える範囲で、 文章から日本語の4コマ漫画が生成できるか試してみた。 Claud…</span><span class="lc-site">晴歩雨描 · <time>2025-04-01</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250401/20250401171134.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../03/20/115145.html"><span class="lc-body"><span class="lc-title">AIツール「ChatGPT、Gemini、Copilot、Perplexity、リートン、Claude」＋JavaScriptライブラリ「p5.js」で「物理シミュレーション」アプリ作成。Claudeはアプリケーション作成能力が高い。</span><span class="lc-desc">昨日、 JavaScriptライブラリ「p5.js」 を使った「魚の群れのシミュレーション」を、AIツール「ChatGPT、Gemini、Copilot、Perplexity、リートン、Claude」で作った。 今回、J…</span><span class="lc-site">晴歩雨描 · <time>2025-03-20</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250320/20250320114142.jpg" alt="" loading="lazy"></span></a></p></div></article>
+</body>
+</html>

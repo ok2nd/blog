@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>JavaScript）画像2倍アップスケーリング＆シャープネス・ツール作成。Windows高画質化アプリ「Aiarty Image Enhancer」に負ける。 - 晴歩雨描</title>
+<link rel="stylesheet" href="../../../../style.css">
+</head>
+<body>
+<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>JavaScript）画像2倍アップスケーリング＆シャープネス・ツール作成。Windows高画質化アプリ「Aiarty Image Enhancer」に負ける。</h1><p class="meta">2025-01-08 · <a href="../../../../category/c18.html">写真・カメラ</a> <a href="../../../../category/c13.html">ホームページ、Web作成</a> <a href="../../../../category/c42.html">＜AI＞</a> <a href="../../../../category/c38.html">野鳥</a></p><div class="entry-body"><p>最近、AIによる画像アップスケーリング・ツールがたくさん出ている。</p>
+<p>いずれも処理時間がかかるし、ノイズ低減処理なども合わせて行われ、写真によっては期待外れの結果に終わる場合もある。</p>
+<p>野鳥写真で、遠くて小さくしか撮れなかった鳥の画像を拡大する程度なら、単純な<em>画素補間（バイキュービック補間、バイリニア補間、最近傍補間etc.）</em>と<em>シャープネスを上げる</em>ことで見栄えの良い画像にならないかと考えて、<em>JavaScript</em>でツールを作ってみた。といっても、自力ではなく、AIツール<em>Gemini、ChatGPT、Copilot</em>で作った。バイキュービックによる画素補間はGemini、シャープネスはChatGPT、両方の機能の組み合わせはChatGPT、画面表示部分はCopilotで作成。順次コードを橋渡しして作成。</p>
+<p><strong>≪ 画像）2倍アップスケーリング＆シャープネス・ツール ≫</strong></p>
+<p><a href="https://ok2nd.github.io/tool/photo/upscaling-sharpness/tool.html" target="_blank">https://ok2nd.github.io/tool/photo/upscaling-sharpness/tool.html</a></p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250108/20250108084600.jpg" width="1200" height="714" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>≪ 画素補間前後の拡大画像 ≫</p>
+<div class="images-row mceNonEditable">
+<div class="images-row-item"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250108/20250108105657.jpg" width="424" height="420" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></div>
+<div class="images-row-item"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250108/20250108105700.jpg" width="848" height="842" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></div>
+</div>
+<p>小さめの画像（1000x1000ピクセル程度）を想定している。</p>
+<p>画像をアップロードすると縦横2倍に画素数が拡大されて、シャープネスを上げる設定ができる。シャープネスの強さはスライダーで変更できる。</p>
+<p>左右に処理前後の画像を表示する。画像表示枠は600x600ピクセル。それより大きな画像はマウス・ドラッグで違う部分の表示ができる。</p>
+<p>左側にオリジナル画像、右側の拡大画像は1/2に縮小表示して同じ大きさで確認できる。</p>
+<p>シャープネスの強度の変化は画面上で確認できる。</p>
+<p>結果の画像はダウンロードできる。ダウンロードファイル名には、シャープネスの強度が付く。</p>
+<p>実際に試してみた。Windows高解像度化ツール「<em>Aiarty Image Enhancer</em>」でアップスケーリングしたものと比較してみた。「Aiarty Image Enhancer」はバージョンアップされているので、<span style="color: #454545; font-family: 'Noto Sans JP', sans-serif; font-size: 15.2px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; background-color: #ffffff; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;">AIモデルは</span>「<em>More-Detail GAN v3</em>」「<em>AIGCsmooth v3</em>」を使用。</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250108/20250108090927.jpg" width="260" height="172" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p><em>結果的には、単純な画素補間とシャープネスだけの処理では、AIツールには敵わなかった。</em></p>
+<p>【オリジナル画像（600x600）】</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250108/20250108091247.jpg" width="600" height="600" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>【今回作成したJavaScriptツール（シャープネス：1.04）】</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250108/20250108091258.jpg" width="1200" height="1200" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>【Aiarty Image Enhancer「More-Detail GAN v3」】</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250108/20250108091306.jpg" width="1200" height="1200" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>【Aiarty Image Enhancer「AIGCsmooth v3」】</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250108/20250108091315.jpg" width="1200" height="1200" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>【オリジナル画像（600x600）】</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250108/20250108091328.jpg" width="600" height="600" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>【今回作成したJavaScriptツール（シャープネス：1.04）】</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250108/20250108091336.jpg" width="1200" height="1200" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>【Aiarty Image Enhancer「More-Detail GAN v3」】</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250108/20250108091350.jpg" width="1200" height="1200" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>【Aiarty Image Enhancer「AIGCsmooth v3」】</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250108/20250108091404.jpg" width="1200" height="1200" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>【オリジナル画像（600x600）】</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250108/20250108091415.jpg" width="600" height="600" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>【今回作成したJavaScriptツール（シャープネス：1.04）】</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250108/20250108091426.jpg" width="1200" height="1200" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>【Aiarty Image Enhancer「More-Detail GAN v3」】</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250108/20250108091436.jpg" width="1200" height="1200" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>【Aiarty Image Enhancer「AIGCsmooth v3」】</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250108/20250108091446.jpg" width="1200" height="1200" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p><a class="link-card" href="../../09/25/124757.html"><span class="lc-body"><span class="lc-title">Claude）Python）ローカル）写真のシャープネス、コントラスト、明度、彩度を調整するWindowsアプリ作成。野鳥写真で、等倍高画質化をTopaz Labs、Aiarty Image Enhancerと比較。</span><span class="lc-desc">Pythonで「 写真のシャープネス、コントラスト、明度、彩度を調整する 」Windowsアプリを作成。「Claude」で作成。 【機能概略】 写真画像(JPEG,PNG)をウインドウに、ドラッグ＆ドロップで取り込み。 …</span><span class="lc-site">晴歩雨描 · <time>2025-09-25</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250925/20250925123628.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../03/21/123804.html"><span class="lc-body"><span class="lc-title">JavaScript）AIツール「Claude」で画像2倍アップスケーリングツール作成。「Aiarty Image Enhancer」に負ける。</span><span class="lc-desc">以前に、JavaScriptで画像2倍アップスケーリングツールを作成した。しかし、Windows高画質化アプリ「Aiarty Image Enhancer」に画質で敵わなかった。 最近、AIツール「 Claude 」を試…</span><span class="lc-site">晴歩雨描 · <time>2025-03-21</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250321/20250321122327.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2024/10/06/204058.html"><span class="lc-body"><span class="lc-title">写真解像度を上げる（アップスケーリング、高画質化）無料Webツールアプリ「AI Ease」（AI画像高画質化）。</span><span class="lc-desc">先程、無料画像編集Webツールアプリ「 AI Ease 」の「 オブジェクト除去 」や「 高画質化（ノイズ除去＋シャープネスなど） 」を試した。 今回、「AI Ease」のAI画像拡大ツールつまりアップスケーリング（高画…</span><span class="lc-site">晴歩雨描 · <time>2024-10-06</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20241006/20241006202332.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2024/08/20/124709.html"><span class="lc-body"><span class="lc-title">写真解像度を上げる（アップスケーリング、高画質化）無料Webツール「AnyRec AI」比較。「Adobe スーパー解像度」「Aiarty Image Enhancer」「Upscayl」と。</span><span class="lc-desc">写真解像度を上げる（アップスケーリング）ツールを色々試している。 今回、Webツール「 AnyRec AI 」を試してみた。会員登録なしで無料で使える。 「 Adobe スーパー解像度 」「 Aiarty Image E…</span><span class="lc-site">晴歩雨描 · <time>2024-08-20</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20240820/20240820135752.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2024/08/17/141230.html"><span class="lc-body"><span class="lc-title">キヤノン「EOS R1 / R5 Mark II」カメラ内アップスケーリング（高画質化）とWindows高解像度化、高画質化ツール「Aiarty Image Enhancer」「Upscayl」によるアップスケーリングを比較してみた。</span><span class="lc-desc">キヤノン「 EOS R1 / R5 Mark II 」が発表されている。「 EOS R1 / R5 Mark II」には、「カメラ内アップスケーリング 」機能がある。 このページでは、以下のように説明されている。 【カメ…</span><span class="lc-site">晴歩雨描 · <time>2024-08-17</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20240817/20240817140256.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2024/08/14/130416.html"><span class="lc-body"><span class="lc-title">「Adobe スーパー解像度」と写真解像度を上げる（アップスケーリング、高画質化）Windowsアプリ「Aiarty Image Enhancer」を比較。</span><span class="lc-desc">写真解像度を上げる（アップスケーリング、高画質化）Windowsアプリ「 Aiarty Image Enhancer 」を試してきた。 今回、「 Adobe スーパー解像度 」と比較してみた。オリジナル画像とAdobe …</span><span class="lc-site">晴歩雨描 · <time>2024-08-14</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20240814/20240814124610.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2024/08/13/141824.html"><span class="lc-body"><span class="lc-title">写真解像度を上げる（アップスケーリング、高画質化）Windowsアプリ「Aiarty Image Enhancer」で、古いフイルム写真をスキャンした画像の解像度を上げてみた。</span><span class="lc-desc">先程、写真解像度を上げる（アップスケーリング、高画質化）Windowsアプリ「 Aiarty Image Enhancer 」を試してみた。 今回、昔フイルムカメラで撮ってアルバムに貼ってある写真を家庭用スキャナでスキャ…</span><span class="lc-site">晴歩雨描 · <time>2024-08-13</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20240813/20240813141445.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2024/08/13/113133.html"><span class="lc-body"><span class="lc-title">写真解像度を上げる（アップスケーリング、高画質化）Windowsアプリ「Aiarty Image Enhancer」を試してみた。使えるレベル。</span><span class="lc-desc">以前、写真の解像度を上げる（アップスケーリング）Webサービスアプリ「Upscale.media」、「AI Image Enlarger」、「StockPhotos Upscaler」、「Bigjpg」、「kakudai…</span><span class="lc-site">晴歩雨描 · <time>2024-08-13</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20240813/20240813105544.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../12/122130.html"><span class="lc-body"><span class="lc-title">JavaScript）写真画像補正編集ツール作成。写真の彩度、明るさ、色温度、シャープネスを調整。＋ノイズリダクション。</span><span class="lc-desc">写真・画像の編集ツールはたくさんある。が、どれも高機能でちょっとした補正程度の編集には手順が面倒なケースもある。 ということで、機能を絞った簡易画像編集ツール作成。AIツールChatGPT、Copilotで作った。 写真…</span><span class="lc-site">晴歩雨描 · <time>2025-01-12</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250112/20250112122355.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../05/131859.html"><span class="lc-body"><span class="lc-title">JavaScript）白黒（モノクロ）画像をブラウザにアップロードして、色（カラー）変換するWebツール作成。アンチエイリアシング対応。カラーピッカー使用。Copilotで作成。</span><span class="lc-desc">白黒（モノクロ）画像をブラウザにアップロードして、色（カラー）変換するWebツールをJavaScriptで作成。 白黒画像を簡単な手順でカラー変換できるツールは意外と見つからない。 なので、カラー変換できるツールを、HT…</span><span class="lc-site">晴歩雨描 · <time>2025-01-05</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250105/20250105131043.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2024/11/24/111430.html"><span class="lc-body"><span class="lc-title">JavaScript）ブラウザに画像をアップロードしてトーンカーブで色補正をしてダウンロードできるページ。「jquery.iocurve」使用。</span><span class="lc-desc">ブラウザに画像をアップロードして、トーンカーブ編集をしてダウンロードできるページを作成。 ※ PCでの利用を想定。スマホでは使えない。 https://ok2nd.github.io/tool/photo/tone-cu…</span><span class="lc-site">晴歩雨描 · <time>2024-11-24</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20241124/20241124111541.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2024/10/07/151803.html"><span class="lc-body"><span class="lc-title">JavaScriptで、複数のPNGファイルをアップロードして、JPEGに変換して一括ダウンロードするWebページ。Geminiで作成。</span><span class="lc-desc">JavaScriptで、複数のPNGファイルをアップロードして、JPEGに変換して一括ダウンロードするWebページを作成。コードは、Google Geminiに聞いた。 https://ok2nd.github.io/t…</span><span class="lc-site">晴歩雨描 · <time>2024-10-07</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20241007/20241007151529.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2024/12/23/093802.html"><span class="lc-body"><span class="lc-title">JavaScriptで、シンプルなHTMLカレンダーを作成。AIツールCopilotで作成。</span><span class="lc-desc">以前に、PHPでHTMLカレンダーを作成した。 今回、JavaScriptで、シンプルなHTMLカレンダーを作成。 JavaScriptを使ったHTMLカレンダーはネットで探すといくつも出てくる。今回、AIツール「Cha…</span><span class="lc-site">晴歩雨描 · <time>2024-12-23</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20241223/20241223092959.jpg" alt="" loading="lazy"></span></a></p></div></article>
+</body>
+</html>

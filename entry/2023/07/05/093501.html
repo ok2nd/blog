@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Windows）「WD ポータブルSSD 4TB」購入。Dドライブ交換。robocopyで丸ごとコピー。（xcopyではない） - 晴歩雨描</title>
+<link rel="stylesheet" href="../../../../style.css">
+</head>
+<body>
+<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>Windows）「WD ポータブルSSD 4TB」購入。Dドライブ交換。robocopyで丸ごとコピー。（xcopyではない）</h1><p class="meta">2023-07-05 · <a href="../../../../category/c8.html">コンピュータ</a> <a href="../../../../category/c18.html">写真・カメラ</a></p><div class="entry-body"><p>WindowsメインドライブのDドライブを2GBのSSDで運用してきたが、写真が増えて空き容量が減る都度、古い写真を別ドライブに移動するなど、不便だった。</p>
+<p><a class="link-card" href="../../../2022/08/29/163104.html"><span class="lc-body"><span class="lc-title">Windows）「Crucial X6 外付け ポータブル SSD 4TB」購入。PCデータ&amp;写真フルバックアップ。</span><span class="lc-desc">今年(2022年)の3月にバックアップ用に 4TB HDD を購入した。 この時、本当は 4TB SSD が欲しかったが、高価だったためHDDにした。 最近、アマゾン（直販）で見たら、 「 Crucial X6 外付け …</span><span class="lc-site">晴歩雨描 · <time>2022-08-29</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220827/20220827101943.jpg" alt="" loading="lazy"></span></a></p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20230704/20230704112156.jpg" width="522" height="114" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>最近、Western Digital のSSDの価格が下がってきたので4TB SDDをアマゾンで42,424円で購入。<span style="color: #dd830c;">（7月10日にAmazonプライムデー先行セールで、36,740円になっていた。）</span></p>
+<p><a href="https://www.amazon.co.jp/dp/B08RX3TWJZ?tag=osusumenavi_art-9105-22&amp;linkCode=osi&amp;th=1" target="_blank">WD ポータブルSSD 4TB（WDBAGF0040BGY-WESN）</a><br />（読み出し速度最大1,050MB/秒、書き込み速度最大1,000MB/秒）</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20230704/20230704112701.jpg" width="155" height="300" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>購入時は、exFATでフォーマットされている。（Eドライブ）</p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20230705/20230705093047.jpg" width="520" height="138" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>NTFS、アロケーションユニットサイズ4096バイトでフォーマット（クイックフォーマット）。</p>
+<p>旧のDドライブから、「<em>robocopy</em>」で、ドライブ丸ごとコピー。</p>
+<p>コマンドプロンプトを「管理者として実行」する。</p>
+<style>
+pre {
+ font-family: Consolas, 'Courier New', Courier, Monaco, monospace;
+ font-size: 14px;
+ line-height: 1.2;
+}
+</style>
+<pre style="white-space: pre-wrap;">robocopy D:\ E:\ /E /DCOPY:DAT /COPYALL /XD "D:\A-Photos" "D:\System Volume Information" "D:\$RECYCLE.BIN" /NP /R:0 /W:0 /MT:32 /LOG:C:\Work\work1\robocopy.log</pre>
+<div style="overflow-x: auto;">
+<table class="font-small">
+<thead>
+<tr>
+<th>オプション</th>
+<th>説明（簡易）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>/MIR</th>
+<td>ミラーコピー（削除も同期）。コピー元と同じ状態にする。コピー先が空ドライブの場合不要。</td>
+</tr>
+<tr>
+<th>/E</th>
+<td>※MIR の代替。空フォルダも含めて全コピー（削除はしない）。</td>
+</tr>
+<tr>
+<th>/DCOPY:DAT</th>
+<td>フォルダの D=データ、A=属性、T=タイムスタンプ をコピー。</td>
+</tr>
+<tr>
+<th>/COPYALL</th>
+<td>ファイルの属性をすべてコピー（データ・属性・タイムスタンプ・ACL・所有権など）。</td>
+</tr>
+<tr>
+<th>/XD "D:\System Volume Information" "D:\$RECYCLE.BIN</th>
+<td>指定フォルダをコピー対象から除外。</td>
+</tr>
+<tr>
+<th>/NP</th>
+<td>進捗のパーセンテージを表示しない（ログがスッキリ＆少し高速）。</td>
+</tr>
+<tr>
+<th>/LOG:o:\Work\work1\robocopy.log</th>
+<td>コピー結果をログファイルに出力。</td>
+</tr>
+<tr>
+<th>/R:0</th>
+<td>エラー時の再試行回数 0（デフォルト1万回を防ぐ）。</td>
+</tr>
+<tr>
+<th>/W:0</th>
+<td>再試行時の待ち時間 0 秒（デフォルト 30 秒×1万回を防ぐ）。</td>
+</tr>
+<tr>
+<th>/MT:32</th>
+<td>マルチスレッドコピーで高速化（SSD間に向いている）。</td>
+</tr>
+<tr>
+<th>/L</th>
+<td>実行せず “何をするかだけ” を表示するシミュレーション。</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>1.6TBのコピーに2時間20分かかった。</p>
+<p>Windows「ディスクの管理」で、ドライブ文字変更し、再起動。</p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20230705/20230705093055.jpg" width="528" height="141" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>新Dドライブの運用で支障がないことを確認した上で、M、Nドライブの2台の2TB SDDはバックアップ用として内容を見直し。Mドライブの「SanDisk Extreme Portable SSD」もNTFSでフォーマット。</p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20230706/20230706064315.jpg" width="526" height="137" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<div style="overflow-x: auto;">
+<table class="font-small">
+<thead>
+<tr>
+<th> </th>
+<th>名称</th>
+<th>容量</th>
+<th>最大<br />読込速度<br />MB/秒</th>
+<th>フォーマット</th>
+<th>購入</th>
+</tr>
+</thead>
+<tbody style="vertical-align: top;">
+<tr>
+<td>C:</td>
+<td>PC内蔵SSD</td>
+<td>512GB</td>
+<td>2400</td>
+<td>NTFS</td>
+<td>2020.12.15</td>
+</tr>
+<tr>
+<td>D:</td>
+<td>WD ポータブルSSD</td>
+<td>4TB</td>
+<td>1050</td>
+<td>NTFS</td>
+<td>2023.7.3</td>
+</tr>
+<tr>
+<td>G:</td>
+<td>Crucial X6</td>
+<td>4TB</td>
+<td>800</td>
+<td>NTFS</td>
+<td>2022.8.27</td>
+</tr>
+<tr>
+<td>M:</td>
+<td>SanDisk Extreme Portable SSD</td>
+<td>2TB</td>
+<td>550</td>
+<td>NTFS</td>
+<td>2020.12.15</td>
+</tr>
+<tr>
+<td>N:</td>
+<td>SanDisk Portable SSD</td>
+<td>2TB</td>
+<td>520</td>
+<td>NTFS</td>
+<td>2021.1.17</td>
+</tr>
+<tr>
+<td>O:</td>
+<td>WD ポータブルHDD</td>
+<td>4TB</td>
+<td>???</td>
+<td>NTFS</td>
+<td>2022.3.4</td>
+</tr>
+</tbody>
+</table>
+</div>
+<ul>
+<li>本体Cドライブ：<strong><span style="color: #cc00cc;">SSD</span></strong>：500GB</li>
+<li>Dドライブ（<strong>メイン</strong>/<strong><span style="color: #ff0000;">写真全て</span></strong>）：<strong><span style="color: #cc00cc;">SSD </span></strong>：<strong><span style="color: #ff0000;">4TB</span></strong></li>
+<li>Gドライブ（<strong>バックアップ</strong>/<strong><span style="color: #ff0000;">写真全て</span></strong>）：<strong><span style="color: #cc00cc;">SSD </span></strong>：<strong><span style="color: #ff0000;">4TB</span></strong></li>
+<li>Mドライブ（<strong><span style="color: #dd830c;">写真2022年まで</span></strong>）：<strong><span style="color: #cc00cc;">SSD</span></strong> ：2TB</li>
+<li>Nドライブ（<strong>バックアップ</strong>/<span style="color: #dd830c;"><strong>写真2023年以降</strong></span>）：<strong><span style="color: #cc00cc;">SSD</span></strong> ：2TB</li>
+<li>Oドライブ（<strong>バックアップ</strong>/<strong><span style="color: #ff0000;">写真全て</span></strong>）：<span style="color: #00cc00;"><strong>HDD</strong></span> ：4TB</li>
+<li>オフライン：2021年までの写真を含むバックアップ：<span style="color: #00cc00;"><strong>HDD</strong></span>：2TB</li>
+<li>オフライン：2021年までの写真を含むバックアップ：<span style="color: #00cc00;"><strong>HDD</strong></span>：2TB</li>
+</ul>
+<p><a class="link-card" href="../../../2024/07/25/091254.html"><span class="lc-body"><span class="lc-title">外付けSSD 8TB 比較。（2024.7時点）（2025.1追加）</span><span class="lc-desc">現在、4TB SSD 2台と2TB SSD 2台で運用している。まだ、空き容量に余裕があるが、2、3年後には8TB SSDが必要になるかもしれない。 現時点の8TB SSD を調べてみた。 Amazonサクラチェッカーで…</span><span class="lc-site">晴歩雨描 · <time>2024-07-25</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20240725/20240725091359.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2025/05/24/095015.html"><span class="lc-body"><span class="lc-title">「SanDisk エクストリーム ポータブル SSD 外付け 8TB」購入。</span><span class="lc-desc">WindowsパソコンのSSDドライブの空き容量がかなり減ってきた。 最近の傾向だと、1年で写真データが400GB程になっている。現在のメインドライブ、バックアップ用ドライブは、残り半年程度で一杯になる。 『 【Amaz…</span><span class="lc-site">晴歩雨描 · <time>2025-05-24</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250524/20250524110437.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2021/01/19/154625.html"><span class="lc-body"><span class="lc-title">Androidスマホ、iPadに、SSDを繋ぐ。PCの写真を共有。アロケーションユニットサイズにも注意。</span><span class="lc-desc">PCに保存してある写真を Android スマホ と iPad で共有するためにポータブル SSD を使ってみた。 NAS によるオンラインでの方法も試してみたが、 Android スマホ 、 iPad からのアクセスが…</span><span class="lc-site">晴歩雨描 · <time>2021-01-19</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20210119/20210119145337.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2021/01/17/134902.html"><span class="lc-body"><span class="lc-title">最近購入したUSB関連グッズ。SSD、USBハブ、USB変換ケーブル、USBメモリ。</span><span class="lc-desc">最近購入したUSB関連グッズ。備忘録として。 ■ SanDisk エクストリーム ポータブルSSD 2TB 読出最大550MB/秒 ［SDSSDE60-2T00-J25］ ＜ヨドバシ：29,810円（2,981ポイント）…</span><span class="lc-site">晴歩雨描 · <time>2021-01-17</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20210117/20210117130528.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2019/09/12/204449.html"><span class="lc-body"><span class="lc-title">Windows）「CrystalDiskInfo」「HWiNFO」「SSDLife」で、パソコンのHDD/SSDの健康状態をチェック。SSDのデフラグ、仮想メモリをオフ。TBWチェック。</span><span class="lc-desc">現在使っているパソコンを購入して5年以上経つので、HDDとSSDの健康診断をしてみた。 【CrystalDiskInfo】 ※ SMART情報を利用している。外付けUSB SSDは認識しないケースもあるようだ。外付けUS…</span><span class="lc-site">晴歩雨描 · <time>2019-09-12</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190912/20190912203502.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2021/10/23/133202.html"><span class="lc-body"><span class="lc-title">Windows10の暗号化機能「BitLocker」を使ってSSDを暗号化。</span><span class="lc-desc">外付けSSDを、Windows10の暗号化機能「 BitLocker 」で暗号化した。 【後日追記】 ※ 「BitLocker」には問題があるかもしれない。 以下のホームページを参考にした。 「 BitLocker 」の…</span><span class="lc-site">晴歩雨描 · <time>2021-10-23</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20211023/20211023124833.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2021/10/19/151720.html"><span class="lc-body"><span class="lc-title">外付けSSD（バッファロー250GB）に、XAMPP Portable + MyHome Portal を導入。</span><span class="lc-desc">サブのPCとして、新しいノートパソコンを購入。 新しいノートパソコンに「 XAMPP 」＋「 MyHome Portal 」を入れる。 パソコンのローカルディスク（C:）には直接入れず、 外付けSSD（今回はE:ドライブ…</span><span class="lc-site">晴歩雨描 · <time>2021-10-19</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20211019/20211019141314.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2021/09/27/133214.html"><span class="lc-body"><span class="lc-title">備忘録：WindowsパソコンのIPアドレス固定方法。（Windows10の場合）</span><span class="lc-desc">WindowsパソコンのIPアドレスを固定する方法。 ※ Windows11では設定画面が大きく変わっているので、以下を参照。 【以下はWindows10用】 １．「スタート」をクリックし、「設定」を開く。 ２．「ネット…</span><span class="lc-site">晴歩雨描 · <time>2021-09-27</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20210927/20210927132509.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2021/03/02/144911.html"><span class="lc-body"><span class="lc-title">WindowsパソコンのHDDドライブ・ディスクデータを完全消去（削除）。PC初期化。</span><span class="lc-desc">Windowsパソコンを廃棄する場合、ディスク（HDD）のデータを完全消去したい。 ファイルを削除するだけでは、ディレクトリ情報が消えているだけで、ファイル本体のデータは消えてない。 完全消去する手順。 ※ SSDでは、…</span><span class="lc-site">晴歩雨描 · <time>2021-03-02</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20210302/20210302164254.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../23/145157.html"><span class="lc-body"><span class="lc-title">Windows11）シャットダウン／再起動ボタンをスタートメニュー／タスクバーに配置する。</span><span class="lc-desc">昨日、Windows11にアップグレードした。 Windows10に比べて、使いにくくなった点がいくつかある。多少カスタマイズして改善できたが、もう一つあった。 スタートメニュー内の電源ボタンの位置がウインドウの一番右側…</span><span class="lc-site">晴歩雨描 · <time>2023-07-23</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20230723/20230723143715.jpg" alt="" loading="lazy"></span></a></p></div></article>
+</body>
+</html>

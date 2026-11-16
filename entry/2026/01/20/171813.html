@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Leaflet地図：地点名、住所検索「L.Control.OSMGeocoder」廃止。「Leaflet Control Geocoder」に置き換え。 - 晴歩雨描</title>
+<link rel="stylesheet" href="../../../../style.css">
+</head>
+<body>
+<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>Leaflet地図：地点名、住所検索「L.Control.OSMGeocoder」廃止。「Leaflet Control Geocoder」に置き換え。</h1><p class="meta">2026-01-20 · <a href="../../../../category/c21.html">地図・マップ</a> <a href="../../../../category/c13.html">ホームページ、Web作成</a></p><div class="entry-body"><p>Leaflet地図で、地点名、住所検索に「<em>L.Control.OSMGeocoder</em>」を使っていたが、廃止されたようだ。</p>
+<p>代替として「<em>Leaflet Control Geocoder</em>」に置き換え。</p>
+<p>Leaflet の公式プラグインリストでも推奨されている、事実上の標準プラグイン。OSM (Nominatim) をデフォルトで使用でき、Google Maps や Bing などの他のエンジンにも対応している。</p>
+<h5 id="削除コード">【削除コード】</h5>
+<pre>&lt;script src="//rawgit.com/k4r573n/leaflet-control-osm-geocoder/master/Control.OSMGeocoder.js"&gt;&lt;/script&gt;
+&lt;link rel="stylesheet" href="//rawgit.com/k4r573n/leaflet-control-osm-geocoder/master/Control.OSMGeocoder.css"&gt;
+
+var osmGeocoder = new L.Control.OSMGeocoder({
+	collapsed: false,
+	text: '検索',
+	placeholder: '地点名を入力してください。',
+	callback: function (results) {
+		var coords = L.latLng(results[0].lat,results[0].lon);
+		var foundIcon = L.divIcon({ className: 'found-icon', iconAnchor: [8, 8] });
+		L.marker(coords, {icon: foundIcon}).addTo(map);
+		map.setView(coords,17);
+	}
+});
+map.addControl(osmGeocoder);</pre>
+<p>　　　↓↓↓↓↓</p>
+<h5 id="差し替えコード">【差し替えコード】</h5>
+<p>※ イベントの受け取り方: callback オプションではなく、.on('markgeocode', function(e) { ... }) というイベントリスナー形式で記述するのが現在の標準。</p>
+<p>※ 座標のプロパティ: results[0].lat のような配列アクセスではなく、e.geocode.center で直接 L.latLng オブジェクトが取得できる。</p>
+<p>※ デフォルトマーカーの制御: 新しいプラグインは検索時に自動でマーカーを立てる機能がある。自分の foundIcon を使いたい場合は defaultMarkGeocode: false に設定する。</p>
+<pre>&lt;script src="<a href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js">https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js</a>"&gt;&lt;/script&gt;
+&lt;link rel="stylesheet" href="<a href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css">https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css</a>" /&gt;
+var geocoder = L.Control.geocoder({
+	defaultMarkGeocode: false, // デフォルトのマーカー表示を無効化
+	collapsed: false,
+	placeholder: '地点名を入力してください。',
+})
+.on('markgeocode', function(e) {
+	// 検索結果を取得
+	var result = e.geocode;
+	var coords = result.center; // L.latLng オブジェクトが返される
+	// カスタムアイコンの作成
+	var foundIcon = L.divIcon({ 
+		className: 'found-icon', 
+		iconAnchor: [8, 8] 
+	});
+	// マーカーを追加して移動
+	L.marker(coords, { icon: foundIcon }).addTo(map);
+	map.setView(coords, 17);
+})
+.addTo(map);
+</pre>
+<h5 id="検索画面イメージ">【検索画面イメージ】</h5>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260120/20260120170438.jpg" width="416" height="233" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<h5 id="サンプルページ">【サンプルページ】</h5>
+<p><a href="https://ok2nd.github.io/leaflet/me.html" target="_blank">https://ok2nd.github.io/leaflet/me.html</a></p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260120/20260120172346.jpg" width="828" height="579" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p><a class="link-card" href="https://ok2nd.github.io/sitemap/hatena-sitemap-table.html?search=leaflet" target="_blank" rel="noopener noreferrer"><span class="lc-body"><span class="lc-title">晴歩雨描：記事一覧</span><span class="lc-desc"></span><span class="lc-site">ok2nd.github.io</span></span></a></p>
+<p><a class="link-card" href="https://ok2nd.github.io/leaflet/" target="_blank" rel="noopener noreferrer"><span class="lc-body"><span class="lc-title">Leaflet地図 リスト by 晴歩雨描</span><span class="lc-desc"></span><span class="lc-site">ok2nd.github.io</span></span></a></p>
+<p><a class="link-card" href="../../../2021/06/12/101824.html"><span class="lc-body"><span class="lc-title">Leaflet地図：オープン時に現在地表示。地点名、住所検索機能。サンプルソース。</span><span class="lc-desc">地図データを扱うJavaScriptライブラリ「Leaflet」を使って、地図表示を試してきた。 今回、Leaflet地図に2つの機能を追加する方法。 【オープン時に現在地を表示をする】 ≪プログラムソース≫ 現在地にマ…</span><span class="lc-site">晴歩雨描 · <time>2021-06-12</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20210612/20210612101002.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2021/06/15/164145.html"><span class="lc-body"><span class="lc-title">Leaflet地図：国土地理院のジオコーダーで住所から緯度経度検索。CSVからも。サンプルソース。</span><span class="lc-desc">地図データを扱うJavaScript ライブラリ「Leaflet」を使って、地図表示を試してきた。 今回、国土地理院のジオコーダーを使って、住所から緯度経度を取得して地図にマッピングを試した。 【プログラムソースサンプル…</span><span class="lc-site">晴歩雨描 · <time>2021-06-15</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20210615/20210615163820.jpg" alt="" loading="lazy"></span></a></p></div></article>
+</body>
+</html>

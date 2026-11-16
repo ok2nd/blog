@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CSS＋JavaScriptで、HTMLページを縦書き＆ページネーションする。 - 晴歩雨描</title>
+<link rel="stylesheet" href="../../../../style.css">
+</head>
+<body>
+<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>CSS＋JavaScriptで、HTMLページを縦書き＆ページネーションする。</h1><p class="meta">2026-05-19 · <a href="../../../../category/c13.html">ホームページ、Web作成</a> <a href="../../../../category/c11.html">スマホ・タブレット</a></p><div class="entry-body"><p>先ほど、ChatGPTで<em>SF短編小説</em>を書いた。</p>
+<p><a class="link-card" href="173025.html"><span class="lc-body"><span class="lc-title">ChatGPTで、SF短編小説を書いてみた。縦書きで読める。</span><span class="lc-desc">生成AIのChatGPTで、SF短編小説をいくつか書いてみた。 それぞれのページは縦書きで読めるようにした。ページ送りもできる。 【 太陽系内 】 001 午前三時の月面コンビニ 002 月面郵便局、配達不能 003 土…</span><span class="lc-site">晴歩雨描 · <time>2026-05-19</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260519/20260519173230.jpg" alt="" loading="lazy"></span></a></p>
+<p>各ページのHTMLは、&lt;h1&gt;タグと&lt;p&gt;タグしかない。</p>
+<p>CSS＋JavaScriptで、これらのページを<em>縦書き</em>にして、なおかつ<em>ページネーション</em>（複数のページに分割して表示し、「1 / 5ページ」や「次へ / 前へ」のリンクで移動させる）機能を付けた。Androidスマホで、指でドラッグしてのページ送りもできる。</p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260519/20260519173812.jpg" width="590" height="581" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<h5 id="cssstylecss">【css/style.css】</h5>
+<pre>* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body {
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+	background: #FFF8E1;
+	color: #3A2F1E;
+}
+/* -- clip area -- */
+#content-wrapper {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	/* 修正1: 100dvh でモバイルブラウザUIを動的に考慮 */
+	height: calc(100vh - 44px);
+	height: calc(100dvh - 44px);
+	overflow: hidden;
+	cursor: grab;
+}
+#content-wrapper.is-dragging {
+	cursor: grabbing;
+}
+/* -- vertical content -- */
+#content {
+	position: absolute;
+	top: 0;
+	right: 0;
+	height: 100%;
+	width: max-content;
+	font-size: 2.8vh;
+	font-family: "Yu Mincho", "YuMincho", serif;
+	line-height: 1.7;
+	font-weight: normal;
+	-webkit-writing-mode: vertical-rl;
+	-ms-writing-mode: tb-rl;
+	writing-mode: vertical-rl;
+	padding: 4vh;
+	/* ページ遷移アニメーション */
+	transition: transform 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+	will-change: transform;
+	/* ドラッグ中のテキスト選択防止 */
+	user-select: none;
+	-webkit-user-select: none;
+}
+h1 { font-size: 4vh; text-indent: 3em; margin-left: 1em;}
+h2 { font-size: 3.2vh; text-align: right; padding-bottom: 2em; }
+h3 { font-size: 3.2vh; }
+h4 { font-size: 2.8vh; }
+/* -- page bar -- */
+#page-bar {
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	/* 修正1: iOSホームインジケーター分を追加 */
+	height: calc(44px + env(safe-area-inset-bottom, 0px));
+	padding-bottom: env(safe-area-inset-bottom, 0px);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: rgba(255, 248, 225, 0.95);
+	border-top: 1px solid rgba(58, 47, 30, 0.13);
+	z-index: 50;
+	user-select: none;
+}
+/* セーフエリア対応でcontent-wrapperの高さも連動 */
+@supports (height: 100dvh) {
+	#content-wrapper {
+		height: calc(100dvh - 44px - env(safe-area-inset-bottom, 0px));
+	}
+}
+#page-num {
+	font-family: "Yu Mincho", "YuMincho", serif;
+	font-size: 12px;
+	letter-spacing: 0.25em;
+	color: rgba(58, 47, 30, 0.55);
+}
+/* -- nav buttons -- */
+.nav-btn {
+	position: fixed;
+	top: 50%;
+	transform: translateY(-50%);
+	width: 52px;
+	height: 110px;
+	border: none;
+	background: transparent;
+	cursor: pointer;
+	padding: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	z-index: 100;
+	opacity: 0.38;
+	transition: opacity 0.22s ease;
+	-webkit-tap-highlight-color: transparent;
+	outline: none;
+}
+.nav-btn:hover	{ opacity: 0.72; }
+.nav-btn:active { opacity: 0.9; }
+.nav-btn.disabled {
+	opacity: 0.08;
+	pointer-events: none;
+}
+/* prev (right, triangle-right) */
+#btn-prev { right: 0; }
+/* next (left, triangle-left) */
+#btn-next { left: 0; }
+.nav-btn svg {
+	fill: #3A2F1E;
+	filter: drop-shadow(0 1px 2px rgba(255,248,225,0.7));
+}</pre>
+<h5 id="jsnavjs">【js/nav.js】</h5>
+<pre>(function () {
+  var html = [
+    '&lt;!--  ページ番号バー  --&gt;',
+    '&lt;div id="page-bar"&gt;',
+    '  &lt;span id="page-num"&gt;&lt;/span&gt;',
+    '&lt;/div&gt;',
+    '&lt;!--  前のページ（右端）右向き三角  --&gt;',
+    '&lt;button id="btn-prev" class="nav-btn disabled" title="前のページ" aria-label="前のページ"&gt;',
+    '  &lt;svg width="20" height="44" viewBox="0 0 20 44" xmlns="<a href="http://www.w3.org/2000/svg">http://www.w3.org/2000/svg</a>"&gt;',
+    '    &lt;polygon points="18,22 2,4 2,40"/&gt;',
+    '  &lt;/svg&gt;',
+    '&lt;/button&gt;',
+    '&lt;!--  次のページ（左端）左向き三角  --&gt;',
+    '&lt;button id="btn-next" class="nav-btn" title="次のページ" aria-label="次のページ"&gt;',
+    '  &lt;svg width="20" height="44" viewBox="0 0 20 44" xmlns="<a href="http://www.w3.org/2000/svg">http://www.w3.org/2000/svg</a>"&gt;',
+    '    &lt;polygon points="2,22 18,4 18,40"/&gt;',
+    '  &lt;/svg&gt;',
+    '&lt;/button&gt;'
+  ].join('\n');
+
+  document.body.insertAdjacentHTML('beforeend', html);
+})();</pre>
+<h5 id="jscommonjs">【js/common.js】</h5>
+<pre>(function () {
+'use strict';
+/* nav.js は同期的に実行済みなので、DOM 確定後にそのまま初期化 */
+function initReader() {
+	var currentPage  = 0;
+	var totalPages   = 1;
+	var scrollOffset = 0;   // 現在のスクロール位置（px）
+	var lineWidth    = 40;  // 行ひとつ分の幅（フォント確定後に更新）
+
+	var content = document.getElementById('content');
+	var wrapper = document.getElementById('content-wrapper');
+	var pageNum = document.getElementById('page-num');
+	var btnPrev = document.getElementById('btn-prev');
+	var btnNext = document.getElementById('btn-next');
+
+	/* ページ数・行幅を再計算 */
+	function computeMetrics() {
+		var cw = content.scrollWidth;
+		var vw = wrapper.clientWidth;
+		totalPages = Math.max(1, Math.ceil(cw / vw));
+		var fs = parseFloat(window.getComputedStyle(content).fontSize) || 16;
+		lineWidth = Math.max(1, Math.round(fs * 1.7));
+	}
+
+	/* offset の上限 */
+	function maxOffset() {
+		return (totalPages - 1) * wrapper.clientWidth;
+	}
+
+	/* offset を有効範囲にクランプ */
+	function clampOffset(v) {
+		return Math.max(0, Math.min(v, maxOffset()));
+	}
+
+	/* 行単位スナップ */
+	function snapToLine(offset) {
+		return Math.round(offset / lineWidth) * lineWidth;
+	}
+
+	/* 任意 offset を適用し、UI を更新 */
+	function applyOffset(offset, animate) {
+		scrollOffset = clampOffset(offset);
+		currentPage  = Math.min(
+			Math.round(scrollOffset / wrapper.clientWidth),
+			totalPages - 1
+		);
+		if (animate === false) {
+			content.style.transition = 'none';
+			content.style.transform  = 'translateX(' + scrollOffset + 'px)';
+			requestAnimationFrame(function () {
+				requestAnimationFrame(function () {
+					content.style.transition = '';
+				});
+			});
+		} else {
+			content.style.transform = 'translateX(' + scrollOffset + 'px)';
+		}
+		updateUI();
+	}
+
+	/* ページ単位移動（ナビボタン・キー用） */
+	function goToPage(page, animate) {
+		computeMetrics();
+		page = Math.max(0, Math.min(page, totalPages - 1));
+		applyOffset(page * wrapper.clientWidth, animate);
+	}
+
+	/* ボタン・ページ番号の表示更新 */
+	function updateUI() {
+		pageNum.textContent = (currentPage + 1) + ' ／ ' + totalPages;
+		btnPrev.classList.toggle('disabled', currentPage === 0);
+		btnNext.classList.toggle('disabled', currentPage &gt;= totalPages - 1);
+	}
+
+	/* ナビボタン */
+	btnPrev.addEventListener('click', function () { goToPage(currentPage - 1); });
+	btnNext.addEventListener('click', function () { goToPage(currentPage + 1); });
+
+	/* キーボード */
+	window.addEventListener('keydown', function (e) {
+		if (e.key === 'ArrowLeft'  || e.key === 'PageDown') goToPage(currentPage + 1);
+		if (e.key === 'ArrowRight' || e.key === 'PageUp')   goToPage(currentPage - 1);
+	});
+
+	/* ──────
+	   ドラッグ：中央エリアで行単位スクロール
+	   三角ボタン幅 52px の外側をナビゾーンとして除外
+	   ────── */
+	var NAV_ZONE  = 56;   // ボタン幅 + 余裕（px）
+	var isDragging    = false;
+	var dragStartX    = 0;
+	var dragStartOff  = 0;
+
+	function inNavZone(clientX) {
+		var rect = wrapper.getBoundingClientRect();
+		var rx   = clientX - rect.left;
+		return rx &lt; NAV_ZONE || rx &gt; rect.width - NAV_ZONE;
+	}
+
+	function onDragStart(clientX) {
+		isDragging   = true;
+		dragStartX   = clientX;
+		dragStartOff = scrollOffset;
+		content.style.transition = 'none';
+		wrapper.classList.add('is-dragging');
+	}
+
+	function onDragMove(clientX) {
+		if (!isDragging) return;
+		var delta = clientX - dragStartX;
+		/* 右ドラッグ → 次ページ方向（offset 増加） */
+		var newOff = clampOffset(dragStartOff + delta);
+		content.style.transform = 'translateX(' + newOff + 'px)';
+	}
+
+	function onDragEnd(clientX) {
+		if (!isDragging) return;
+		isDragging = false;
+		wrapper.classList.remove('is-dragging');
+		content.style.transition = '';
+		var delta    = clientX - dragStartX;
+		var rawOff   = clampOffset(dragStartOff + delta);
+		var snapped  = snapToLine(rawOff);
+		applyOffset(snapped, true);
+	}
+
+	/* ── タッチ ── */
+	var activeTouchId = null;
+
+	wrapper.addEventListener('touchstart', function (e) {
+		if (activeTouchId !== null) return;
+		var t = e.changedTouches[0];
+		if (inNavZone(t.clientX)) return;
+		activeTouchId = t.identifier;
+		onDragStart(t.clientX);
+	}, { passive: true });
+
+	wrapper.addEventListener('touchmove', function (e) {
+		if (!isDragging) return;
+		for (var i = 0; i &lt; e.changedTouches.length; i++) {
+			if (e.changedTouches[i].identifier === activeTouchId) {
+				onDragMove(e.changedTouches[i].clientX);
+				break;
+			}
+		}
+	}, { passive: true });
+
+	wrapper.addEventListener('touchend', function (e) {
+		if (!isDragging) return;
+		for (var i = 0; i &lt; e.changedTouches.length; i++) {
+			if (e.changedTouches[i].identifier === activeTouchId) {
+				activeTouchId = null;
+				onDragEnd(e.changedTouches[i].clientX);
+				break;
+			}
+		}
+	}, { passive: true });
+
+	wrapper.addEventListener('touchcancel', function () {
+		if (!isDragging) return;
+		activeTouchId = null;
+		isDragging = false;
+		wrapper.classList.remove('is-dragging');
+		content.style.transition = '';
+		applyOffset(scrollOffset, true); /* 元位置に戻す */
+	}, { passive: true });
+
+	/* ── マウス ── */
+	wrapper.addEventListener('mousedown', function (e) {
+		if (e.button !== 0) return;
+		if (inNavZone(e.clientX)) return;
+		onDragStart(e.clientX);
+		e.preventDefault(); /* テキスト選択防止 */
+	});
+
+	window.addEventListener('mousemove', function (e) {
+		onDragMove(e.clientX);
+	});
+
+	window.addEventListener('mouseup', function (e) {
+		if (e.button !== 0) return;
+		onDragEnd(e.clientX);
+	});
+
+	/* リサイズ対応 */
+	window.addEventListener('resize', function () {
+		computeMetrics();
+		goToPage(Math.min(currentPage, totalPages - 1), false);
+	});
+
+	/* 初期化：フォント・レイアウト確定後に実行 */
+	function init() {
+		computeMetrics();
+		goToPage(0, false);
+	}
+	if (document.fonts &amp;&amp; document.fonts.ready) {
+		document.fonts.ready.then(init);
+	} else {
+		window.addEventListener('load', init);
+	}
+}
+initReader();
+})();</pre>
+<p><a class="link-card" href="../../07/10/115439.html"><span class="lc-body"><span class="lc-title">HTML+JavaScript音声読み上げWebページ生成をPythonで作成。（SF短編小説を縦書き＋音声読み上げ）</span><span class="lc-desc">以前に、生成AIのChatGPTで、SF短編小説を書いた。 SF短編小説は、Webブラウザで縦書きで読めるようにしている。 このHTMLページを音声読み上げできるHTML＋CSS＋JavaScriptに変換するプログラム…</span><span class="lc-site">晴歩雨描 · <time>2026-07-10</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260710/20260710113807.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="184835.html"><span class="lc-body"><span class="lc-title">Androidスマホ）「Simple HTTP Server」導入。HTML/CSS/JavaScriptをそのまま実行。機内モードでも使える。</span><span class="lc-desc">Androidスマートフォンのローカル環境に保存されているHTML、CSS、JavaScriptを、そのまま動作させるため、スマホに「 Simple HTTP Server 」導入した。 ■ 導入の背景と目的 通常、An…</span><span class="lc-site">晴歩雨描 · <time>2026-05-19</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260519/20260519182846.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../02/27/142444.html"><span class="lc-body"><span class="lc-title">CSS）ChromeとFirefoxでボタン&lt;button&gt;の見た目を同じにする。シンプルな影付きボタン。</span><span class="lc-desc">ブラウザのChromeとFirefoxで、ボタン&lt;button&gt;の見た目がなかなか同じにならない。 理由は、「ユーザーエージェント・スタイルシート（User Agent Stylesheet）」という各ブラウザが独自に持…</span><span class="lc-site">晴歩雨描 · <time>2026-02-27</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260227/20260227144236.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../02/11/121511.html"><span class="lc-body"><span class="lc-title">JavaScript）タクシー料金計算アプリ作成。</span><span class="lc-desc">JavaScriptで、「タクシー料金計算アプリ」を作成。 以下を入力して、「料金を計算」ボタンを押す。 初乗運賃：距離（メートル）、料金 加算運賃：距離（メートル）、料金 乗車予定距離（キロメートル） なお、時間距離併…</span><span class="lc-site">晴歩雨描 · <time>2026-02-11</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260211/20260211120430.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2025/08/03/110524.html"><span class="lc-body"><span class="lc-title">JavaScript）HTMLカレンダー）スマホのスワイプ操作で、前月、翌月へ画面遷移できるようにした。</span><span class="lc-desc">先日、PHP＋MySQLを使ったHTMLカレンダー＆スケジューラを作った。 ＜ スマホ画面 ＞ このHTMLカレンダーは、前月、翌月へ画面遷移できるが、スマホのスワイプ操作でも、前月、翌月へ画面遷移できるようにした。 【…</span><span class="lc-site">晴歩雨描 · <time>2025-08-03</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250805/20250805123315.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2025/06/14/093748.html"><span class="lc-body"><span class="lc-title">JavaScript＆Web、Python＆Windows）写真画像編集アプリ／ツールまとめ。</span><span class="lc-desc">写真画像編集アプリ／ツールを、JavaScriptとPythonでいくつか作成してきた。それらのツールまとめ。 ■ 画像縮小 【Webツール（JavaScript）】 https://ok2nd.github.io/to…</span><span class="lc-site">晴歩雨描 · <time>2025-06-14</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250614/20250614094138.jpg" alt="" loading="lazy"></span></a></p></div></article>
+</body>
+</html>

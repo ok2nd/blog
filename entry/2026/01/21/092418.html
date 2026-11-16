@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Leaflet地図：現在地情報取得の時間稼ぎに、最初に日本全国地図を表示。 - 晴歩雨描</title>
+<link rel="stylesheet" href="../../../../style.css">
+</head>
+<body>
+<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>Leaflet地図：現在地情報取得の時間稼ぎに、最初に日本全国地図を表示。</h1><p class="meta">2026-01-21 · <a href="../../../../category/c21.html">地図・マップ</a> <a href="../../../../category/c13.html">ホームページ、Web作成</a></p><div class="entry-body"><p>昨日、Leaflet地図の、地点名検索で利用する関数の置き換えをした。</p>
+<p><a class="link-card" href="../20/171813.html"><span class="lc-body"><span class="lc-title">Leaflet地図：地点名、住所検索「L.Control.OSMGeocoder」廃止。「Leaflet Control Geocoder」に置き換え。</span><span class="lc-desc">Leaflet地図で、地点名、住所検索に「 L.Control.OSMGeocoder 」を使っていたが、廃止されたようだ。 代替として「 Leaflet Control Geocoder 」に置き換え。 Leaflet…</span><span class="lc-site">晴歩雨描 · <time>2026-01-20</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260120/20260120170438.jpg" alt="" loading="lazy"></span></a></p>
+<h5 id="最初から現在地表示版">■《最初から現在地表示版》</h5>
+<p>※ このLeaflet地図は、最初に現在地情報取得後に地図表示するため、最初真っ白のページが数秒間表示されることがある。</p>
+<p><a href="https://ok2nd.github.io/leaflet/me.html" target="_blank">https://ok2nd.github.io/leaflet/me.html</a></p>
+<h5 id="最初に日本全国を表示後現在地表示版">■《最初に日本全国を表示後、現在地表示版》</h5>
+<p>※ 上記問題を改善するため、最初に日本全国地図を表示後に現在地表示をするようにしたバージョン。</p>
+<p><a href="https://ok2nd.github.io/leaflet/me3.html" target="_blank">https://ok2nd.github.io/leaflet/me3.html</a></p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260121/20260121085749.jpg" width="907" height="615" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<h5 id="JavaScript修正">■《JavaScript修正》</h5>
+<p>1. マップの初期表示を「日本全土」に設定する</p>
+<p>【修正前】</p>
+<pre>var map = L.map('map');</pre>
+<p>【修正後】</p>
+<pre>// 日本のほぼ中心を指定し、ズームレベル5（日本全体が見える程度）で初期化
+var map = L.map('map').setView([36.0, 138.0], 5);</pre>
+<p>2. タイルレイヤーを即座に表示する</p>
+<p>【修正前】</p>
+<pre>var tileLayer = L.tileLayer('<a href="https://mt1.google.com/vt/lyrs=r&x=">https://mt1.google.com/vt/lyrs=r&x=</a>{x}&amp;y={y}&amp;z={z}', {
+    maxZoom: 18,
+    attribution: '<a href="https://developers.google.com/maps/documentation" target="_blank">Google Map</a>'
+});</pre>
+<p>【修正後】</p>
+<pre>var tileLayer = L.tileLayer('<a href="https://mt1.google.com/vt/lyrs=r&x=">https://mt1.google.com/vt/lyrs=r&x=</a>{x}&amp;y={y}&amp;z={z}', {
+    maxZoom: 18,
+    attribution: '<a href="https://developers.google.com/maps/documentation" target="_blank">Google Map</a>'
+});
+tileLayer.addTo(map); // ← 追加</pre>
+<p>3. 自動的な位置取得（locate）の設定変更</p>
+<p>【修正前】</p>
+<pre>map.locate({setView: true, maxZoom: 16, timeout: 20000});</pre>
+<p>【修正後】</p>
+<pre>// setViewをfalseにし、位置が取れた時（onLocationFound）に移動させる
+map.locate({setView: false, timeout: 20000});</pre>
+<p>4. onLocationFound 関数内でズームレベルを調整</p>
+<p>【修正前】</p>
+<pre>function onLocationFound(e) {
+    var centerIcon = L.divIcon({ className: 'center-icon', iconAnchor: [8, 8] });
+    L.marker(e.latlng, {icon: centerIcon}).addTo(map);
+}</pre>
+<p>【修正後】</p>
+<pre>function onLocationFound(e) {
+    var centerIcon = L.divIcon({ className: 'center-icon', iconAnchor: [8, 8] });
+    L.marker(e.latlng, {icon: centerIcon}).addTo(map);
+    // 現在地にスムーズに移動（ズームレベル16）
+    map.setView(e.latlng, 16); 
+}</pre>
+<p><a class="link-card" href="https://ok2nd.github.io/sitemap/hatena-sitemap-table.html?search=leaflet" target="_blank" rel="noopener noreferrer"><span class="lc-body"><span class="lc-title">晴歩雨描：記事一覧</span><span class="lc-desc"></span><span class="lc-site">ok2nd.github.io</span></span></a></p>
+<p><a class="link-card" href="https://ok2nd.github.io/leaflet/" target="_blank" rel="noopener noreferrer"><span class="lc-body"><span class="lc-title">Leaflet地図 リスト by 晴歩雨描</span><span class="lc-desc"></span><span class="lc-site">ok2nd.github.io</span></span></a></p>
+<p><a class="link-card" href="../../../2021/06/12/101824.html"><span class="lc-body"><span class="lc-title">Leaflet地図：オープン時に現在地表示。地点名、住所検索機能。サンプルソース。</span><span class="lc-desc">地図データを扱うJavaScriptライブラリ「Leaflet」を使って、地図表示を試してきた。 今回、Leaflet地図に2つの機能を追加する方法。 【オープン時に現在地を表示をする】 ≪プログラムソース≫ 現在地にマ…</span><span class="lc-site">晴歩雨描 · <time>2021-06-12</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20210612/20210612101002.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2021/06/15/164145.html"><span class="lc-body"><span class="lc-title">Leaflet地図：国土地理院のジオコーダーで住所から緯度経度検索。CSVからも。サンプルソース。</span><span class="lc-desc">地図データを扱うJavaScript ライブラリ「Leaflet」を使って、地図表示を試してきた。 今回、国土地理院のジオコーダーを使って、住所から緯度経度を取得して地図にマッピングを試した。 【プログラムソースサンプル…</span><span class="lc-site">晴歩雨描 · <time>2021-06-15</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20210615/20210615163820.jpg" alt="" loading="lazy"></span></a></p></div></article>
+</body>
+</html>

@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>XAMPP（PHP,MySQL）の複数バージョンをWindowsPCローカルで共存する方法。同時に新旧のXAMPP併用できず。 - 晴歩雨描</title>
+<link rel="stylesheet" href="../../../../style.css">
+</head>
+<body>
+<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>XAMPP（PHP,MySQL）の複数バージョンをWindowsPCローカルで共存する方法。同時に新旧のXAMPP併用できず。</h1><p class="meta">2026-01-28 · <a href="../../../../category/c8.html">コンピュータ</a> <a href="../../../../category/c13.html">ホームページ、Web作成</a></p><div class="entry-body"><h5 id="-以下の手順を間違えると既存のMySQLデータベースを破壊する可能性ありMySQLデータベースは必ずバックアップしてから試すべき"><span style="color: #ff0000;">※ 以下の手順を間違えると、既存のMySQLデータベースを破壊する可能性あり。MySQLデータベースは必ずバックアップしてから試すべき。</span></h5>
+<h5 id="-既存のXAMPPのサービスを停止し別バージョンのXAMPPを起動して使うことは出来たしかし既存のXAMPPのサービスを残したまま別のXAMPPポータルを併用するのはうまくいかなかった"><span style="color: #ff0000;">※ 既存のXAMPPのサービスを停止し、別バージョンのXAMPPを起動して使うことは出来た。しかし、既存のXAMPPのサービスを残したまま、別のXAMPPポータルを併用するのはうまくいかなかった。</span></h5>
+<p>現在、WindowsPCローカルで、<em>XAMPP 1.8.3</em>を使ってる。これはサービス登録して使っている。</p>
+<ul>
+<li>PHP 5.5.15</li>
+<li>MySQL 5.6.20</li>
+</ul>
+<p>これを最新の<em>XAMPP 8.2.12</em>とWindowsPCローカルで共存させる方法を試した。</p>
+<ul>
+<li>PHP 8.2.12</li>
+<li>MariaDB (MySQL) 10.6.x</li>
+</ul>
+<p><strong>《 XAMPP 8.2.12 》</strong></p>
+<p><a href="https://sourceforge.net/projects/xampp/files/XAMPP%20Windows/8.2.12/" target="_blank">https://sourceforge.net/projects/xampp/files/XAMPP%20Windows/8.2.12/</a></p>
+<p>「<em>xampp-portable-windows-x64-8.2.12-0-VS16.zip</em>」を使用。</p>
+<h4 id="基本旧XAMPPを壊さず共存">■ 基本：旧XAMPPを壊さず共存</h4>
+<ul>
+<li>ポート番号を分ける</li>
+<li>サービス登録を混在させない</li>
+<li>インストール先フォルダを分離する</li>
+</ul>
+<h4 id="併用の基本方針">■ 併用の基本方針</h4>
+<table>
+<tbody>
+<tr>
+<th>項目</th>
+<th>XAMPP 1.8.3（旧）</th>
+<th>XAMPP 8.2.12 Portable（新）</th>
+</tr>
+<tr>
+<td>用途</td>
+<td>既存サイト・保守</td>
+<td>検証・新規開発</td>
+</tr>
+<tr>
+<td>起動方法</td>
+<td>Windowsサービス</td>
+<td>手動起動</td>
+</tr>
+<tr>
+<td>Apache</td>
+<td>80</td>
+<td>8080</td>
+</tr>
+<tr>
+<td>HTTPS</td>
+<td>443</td>
+<td>8443</td>
+</tr>
+<tr>
+<td>DBポート</td>
+<td>3306</td>
+<td>3307</td>
+</tr>
+</tbody>
+</table>
+<h4 id="-フォルダ構成例">■ フォルダ構成例</h4>
+<pre><code>C:\xampp\    ← 旧XAMPP（サービス）
+C:\xampp-82\    ← XAMPP 8.2.12 Portable</code></pre>
+<p>※ 環境変数 PATH に Portable 側の php / mysql を追加しないこと。</p>
+<h4 id="-XAMPPセットアップ">■ XAMPPセットアップ</h4>
+<p>xampp直下の「setup_xampp.bat」を実行。エクスプローラーでダブルクリックで実行すれば良いらしいが、コマンドプロンプトを管理者権限で実行し、コマンドを直接入れてみた。</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260128/20260128135939.jpg" width="610" height="489" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>これで、以下のファイルの中のXAMPPのパスが書き換えられる。</p>
+<p>［apache/conf/httpd.conf］</p>
+<pre><code>Define SRVROOT "/xampp-82/apache"
+ServerRoot "/xampp-82/apache"
+DocumentRoot "/xampp-82/htdocs"
+&lt;Directory "/xampp-82/htdocs"&gt;
+ScriptAlias /cgi-bin/ "/xampp-82/cgi-bin/"
+&lt;Directory "/xampp-82/cgi-bin"&gt;
+</code></pre>
+<p>［mysql/bin/my.ini］</p>
+<pre><code>socket = "/xampp-82/mysql/mysql.sock"
+socket = "/xampp-82/mysql/mysql.sock"
+basedir = "/xampp-82/mysql"
+tmpdir = "/xampp-82/tmp"
+datadir = "/xampp-82/mysql/data"
+plugin_dir = "/xampp-82/mysql/lib/plugin/"
+innodb_data_home_dir = "/xampp-82/mysql/data"
+innodb_log_group_home_dir = "/xampp-82/mysql/data"
+</code></pre>
+<h4 id="-中間検証">■ 中間検証</h4>
+<p>ここまでの状態で、「XAMPP 1.8.3」のコントロールパネルで、ApacheとMySQLをStopして、サービスのチェックも外す。</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260128/20260128145817.jpg" width="730" height="471" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>「XAMPP 8.2.12 Portable」のコントロールパネルで、ApacheとMySQLをStartする。</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260128/20260128140635.jpg" width="722" height="459" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p><a href="http://localhost/" target="_blank">http://localhost/</a></p>
+<p>を開くことができた。</p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260128/20260128140444.jpg" width="862" height="598" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<h4 id="-XAMPP-8212-Portable-側の設定">■ XAMPP 8.2.12 Portable 側の設定</h4>
+<p><em>※ 既存の「XAMPP 1.8.3」とポートを分けて使うための設定。</em></p>
+<h5 id="-Apache-のポート変更">● Apache のポート変更</h5>
+<p><strong>［apache/conf/httpd.conf］</strong></p>
+<pre><code>Listen 8080
+ServerName localhost:8080</code></pre>
+<p><strong>［apache/conf/extra/httpd-ssl.conf］</strong></p>
+<pre><code>Listen 8443
+&lt;VirtualHost _default_:8443&gt;
+</code></pre>
+<h5 id="-MariaDBMySQLのポート変更">● MariaDB（MySQL）のポート変更</h5>
+<p><strong>［mysql/bin/my.ini］</strong></p>
+<pre><code>[mysqld]
+port=3307
+[client]
+port=3307
+</code></pre>
+<h4 id="-XAMPP-183-停止">■ XAMPP 1.8.3 停止</h4>
+<p>コントロールパネルで、ApacheとMySQLを停止。</p>
+<p><span style="color: #ff0000;"><em>※ サービスのチェックも外す（重要）。</em></span></p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260128/20260128143117.jpg" width="730" height="471" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<h4 id="-XAMPP-8212-Portable-起動">■ XAMPP 8.2.12 Portable 起動</h4>
+<p>コントロールパネルで、以下の設定をする。</p>
+<p>XAMPP Control Panel（8.2.12側）の右上にある 「Config」 ボタンをクリック。</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260128/20260128143402.jpg" width="722" height="459" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>「Service and Port Settings」 をクリック。</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260128/20260128143412.jpg" width="360" height="447" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>「Apache」 タブを開き、Main Port を 8080 に、SSL Port を 8443 に変更して「Save」。</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260128/20260128143513.jpg" width="469" height="263" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>「MySQL」 タブを開き、Main Port を 3307 に変更して「Save」。</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260128/20260128143523.jpg" width="469" height="263" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>さらに「Config」画面自体の「Save」も押して閉じる。</p>
+<p>ApacheとMySQLをStartする。</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260128/20260128143547.jpg" width="722" height="459" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<h4 id="-アクセスURL">■ アクセスURL：</h4>
+<p><a href="http://localhost:8080/" target="_blank">http://localhost:8080/</a></p>
+<p>（<a href="https://localhost:8443/" target="_blank">https://localhost:8443/</a>）</p>
+<p>これでXAMPPページを開くことができた。</p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260128/20260128140444.jpg" width="862" height="598" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<h4 id="-phpMyAdmin設定">■ 「phpMyAdmin」設定</h4>
+<p>「phpMyAdmin」で、ログイン画面が出るように設定。</p>
+<p>［\xampp-82\phpMyAdmin\config.inc.php］</p>
+<pre><code>コメントアウト or 削除
+// $cfg['Servers'][$i]['controluser'] = 'pma';
+// $cfg['Servers'][$i]['controlpass'] = 'xxxxx';
+
+// 変更
+$cfg['Servers'][$i]['auth_type'] = 'config';
+　　　↓↓↓
+$cfg['Servers'][$i]['auth_type'] = 'cookie';
+
+// 追加
+$cfg['Servers'][$i]['port'] = '3307';</code></pre>
+<p><a href="http://localhost:8080/phpmyadmin/" target="_blank">http://localhost:8080/phpmyadmin/</a></p>
+<p>最初は、ユーザ名：root、パスワード：空白 でログインする。</p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260129/20260129113846.jpg" width="452" height="479" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<h4 id="-MySQLrootユーザーパスワード変更">■ 「MySQL」rootユーザーパスワード変更</h4>
+<p>「phpMyAdmin」で、「ユーザーアカウント」を開く。</p>
+<p>一覧の「root / localhost」の「権限を編集」をクリック。</p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260129/20260129113848.jpg" width="800" height="372" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>「Change password」</p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260129/20260129113850.jpg" width="706" height="387" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>パスワードを設定。</p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260129/20260129113853.jpg" width="731" height="479" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<h4 id="-PHPのMySQL接続の設定">■ PHPのMySQL接続の設定</h4>
+<p>データベース接続設定部分を以下のように設定。DB_PORTが必要。</p>
+<pre><code>define('DB_SERVER', 'localhost');
+define('DB_USER', 'root');
+define('DB_PASSWORD', '*******');
+define('DB_NAME', '*******');
+define('DB_PORT', 3307);
+
+$conn = mysqli_connect(DB_SERVER, DB_USER, DB_PASSWORD, DB_NAME, DB_PORT);
+</code></pre>
+<p><strong><span style="color: #ff0000;">※ 既存のXAMPPをサービスとして残したまま、別のXAMPPポータルを併用することは出来なかった。</span></strong></p>
+<p><a class="link-card" href="../23/165212.html"><span class="lc-body"><span class="lc-title">Windows）XAMPPのインストールドライブやディレクトリの移動は注意が必要。</span><span class="lc-desc">Windowsで、XAMPPを別ドライブへ移動させたり、ディレクトリ変更する場合は、注意が必要。 xamppディレクトリ丸ごとコピーして立ち上げると、古い環境（ドライブやディレクトリ）をそのまま継続して使おうとしてしまう…</span><span class="lc-site">晴歩雨描 · <time>2026-01-23</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250614/20250614223457.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2025/07/28/213747.html"><span class="lc-body"><span class="lc-title">XAMPP）phpMyAdminを開く時にログイン画面を出して、rootのパスワードを入力させる。（セキュリティ）</span><span class="lc-desc">備忘録として。 「phpMyAdmin」 http://localhost/phpmyadmin/ を開く時にログイン画面を出して、パスワード入力させる方法。 XAMPPの環境で、MySQLの管理者（root）にパスワー…</span><span class="lc-site">晴歩雨描 · <time>2025-07-28</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250728/20250728212523.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2025/06/14/225535.html"><span class="lc-body"><span class="lc-title">Windows11）MyHome Portal が立ち上がらなくなったので、XAMPPを再インストール。</span><span class="lc-desc">※ 後日追記：ドライブやディレクトリを変える場合は注意が必要。 今日、自分が作成したWebシステム「MyHome Portal」が立ち上がらなくなった。 XAMPPコントロールパネルを見るとエラーが出ている。原因を探して…</span><span class="lc-site">晴歩雨描 · <time>2025-06-14</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250614/20250614222301.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2022/08/06/224635.html"><span class="lc-body"><span class="lc-title">WindowsPCの古いXAMPPにWordPress（5.0.16）をインストール。</span><span class="lc-desc">※ 後日追記：ドライブやディレクトリを変える場合は注意が必要。 自宅のWindowsPCにWordPressをインストールした手順の備忘録。 自宅のWindowsPCには、古いバージョンのXAMPP（ XAMPP 1.8…</span><span class="lc-site">晴歩雨描 · <time>2022-08-06</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220806/20220806222743.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2021/10/19/151720.html"><span class="lc-body"><span class="lc-title">外付けSSD（バッファロー250GB）に、XAMPP Portable + MyHome Portal を導入。</span><span class="lc-desc">サブのPCとして、新しいノートパソコンを購入。 新しいノートパソコンに「 XAMPP 」＋「 MyHome Portal 」を入れる。 パソコンのローカルディスク（C:）には直接入れず、 外付けSSD（今回はE:ドライブ…</span><span class="lc-site">晴歩雨描 · <time>2021-10-19</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20211019/20211019141314.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../21/152702.html"><span class="lc-body"><span class="lc-title">無料でPHP＋MySQLが使えるWebホスティングサーバー「x10Hosting」を使ってみた。既存サービスからの移行検証。</span><span class="lc-desc">先日、無料でPHP＋MySQLが使えるWebホスティングサーバー「 InfinityFree 」を使ってみた。 「InfinityFree」は、レスポンスが遅い。 （※ 後日追記：「InfinityFree」で無料で立ち…</span><span class="lc-site">晴歩雨描 · <time>2026-01-21</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260121/20260121132031.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../19/163007.html"><span class="lc-body"><span class="lc-title">無料でPHP＋MySQLが使えるWebホスティングサーバー「InfinityFree」を使ってみた。既存サービスからの移行検証。</span><span class="lc-desc">無料でPHP＋MySQLが使えるWebホスティングサーバーは、いくつもあるようだ。 InfinityFree GoogieHost x10Hosting Free-Hosting.org ProPHP Free Host…</span><span class="lc-site">晴歩雨描 · <time>2026-01-19</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260119/20260119163724.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../25/121257.html"><span class="lc-body"><span class="lc-title">MySQLデータベースをphpMyAdminで別サーバーにコピーする時、ビューもコピーするには、「DEFINER=」を削除してインポートする。</span><span class="lc-desc">MySQLデータベースを別サーバーにコピーする時の注意点。 phpMyAdmin を使って、移行元サーバーで エクスポート して、移行先サーバーでそのファイルを インポート すればテーブルはコピーできる。 しかし、ビュー…</span><span class="lc-site">晴歩雨描 · <time>2026-01-25</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260125/20260125120448.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../23/104756.html"><span class="lc-body"><span class="lc-title">PHP）MySQL関数新旧「mysqli_」vs「mysql_」比較表。</span><span class="lc-desc">PHPのMySQL関数には「 mysql_ 」で始まる関数と「 mysqli_ 」で始まる関数の2種類ある。 「mysql_」は古いタイプで、PHP 5.5で非推奨、7.0で削除された。 「mysqli_」は、セキュリテ…</span><span class="lc-site">晴歩雨描 · <time>2026-01-23</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260123/20260123104744.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../26/151748.html"><span class="lc-body"><span class="lc-title">PHP）海外小説の和訳を無料で読めるサイト『Open Shelf』を縦書きで読めるようにするサイト作成。InfinityFree。CORS制限回避のためPHP使用。</span><span class="lc-desc">海外小説の和訳を無料で読めるサイト『 Open Shelf 』というのがある。著作権の切れた海外小説を有志の方々が翻訳したものらしい。 このサイトの小説を縦書きで読めるようにするサイトを作成。 JavaScriptでは、…</span><span class="lc-site">晴歩雨描 · <time>2026-01-26</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260126/20260126150615.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2025/07/30/092729.html"><span class="lc-body"><span class="lc-title">Gemini）PHP＋MySQLを使ったカレンダー＆スケジューラを作った。</span><span class="lc-desc">夫婦のスケジュール共有に「 Lifebear 」無料版を使ってきたが、Web版サービスが2025年12月中旬に終了すると発表されたので、無料でPCとスマホ両方で使えるスケジュール共有カレンダーアプリを探したが、良いものが…</span><span class="lc-site">晴歩雨描 · <time>2025-07-30</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250730/20250730084219.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2018/07/13/144317.html"><span class="lc-body"><span class="lc-title">PHP）シンプルなHTMLカレンダー。Google Calendar API v3で祝日表示。コードサンプル。</span><span class="lc-desc">先日作成したスマホ&amp;PC用検索ポータル「2nd Sch」にカレンダー表示のため、シンプルなHTMLカレンダーを作成。 祝日表示に「Google Calendar API v3」を使用。 ただ、祝日は当年の前後合わせて3年…</span><span class="lc-site">晴歩雨描 · <time>2018-07-13</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20180713/20180713143522.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="https://ok2nd.github.io/myportal/" target="_blank" rel="noopener noreferrer"><span class="lc-body"><span class="lc-title">MyHome Portal</span><span class="lc-desc">個人または家族で使える自宅用のWebポータルシステム「MyHome Portal」をオープンソース/フリーソフトとして公開しています。</span><span class="lc-site">ok2nd.github.io</span></span></a></p></div></article>
+</body>
+</html>

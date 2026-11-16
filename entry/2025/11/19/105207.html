@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Python）青空文庫をスマホで機内モード（オフライン）で縦書きで読むためにXHTMLを変換するWindowsアプリを作成。 - 晴歩雨描</title>
+<link rel="stylesheet" href="../../../../style.css">
+</head>
+<body>
+<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>Python）青空文庫をスマホで機内モード（オフライン）で縦書きで読むためにXHTMLを変換するWindowsアプリを作成。</h1><p class="meta">2025-11-19 · <a href="../../../../category/c13.html">ホームページ、Web作成</a> <a href="../../../../category/c11.html">スマホ・タブレット</a> <a href="../../../../category/c26.html">文学</a></p><div class="entry-body"><p>飛行機の機内で、スマホで青空文庫を縦書きで読みたい。</p>
+<p><a class="link-card" href="https://www.aozora.gr.jp/" target="_blank" rel="noopener noreferrer"><span class="lc-body"><span class="lc-title">青空文庫 Aozora Bunko</span><span class="lc-desc"></span><span class="lc-site">www.aozora.gr.jp</span></span></a></p>
+<p><a class="link-card" href="https://www.aozora.gr.jp/access_ranking/2009_01_txt.html" target="_blank" rel="noopener noreferrer"><span class="lc-body"><span class="lc-title">アクセスランキング</span><span class="lc-desc"></span><span class="lc-site">www.aozora.gr.jp</span></span></a></p>
+<p>スマホの青空文庫ビューアーアプリはたくさんあるが、機能が多すぎてかえって使いづらい。オフラインに対応していないものもある。広告が表示されて煩わしいものが多い。</p>
+<p><em>シンプルにスマホでオフラインで青空文庫を縦書きで読みたい。</em></p>
+<p>青空文庫のXHTMLファイルを縦書き用に変換するWindowsアプリをPythonで作成した。</p>
+<h5 id="--手順-">≪ ■ 手順 ≫</h5>
+<ol>
+<li>青空文庫から、PCでXHTMLをダウンロードする。<br />
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20251119/20251119134516.png" width="247" height="318" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+</li>
+<li>今回作成したアプリで、XHTMLファイルを縦書き用に変換する。フォルダー指定で複数ファイルを一括変換する。<br />
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20251119/20251119104424.png" width="502" height="212" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+</li>
+<li>PCからスマホにXHTML縦書きファイルをコピーする。</li>
+<li>スマホで、ブラウザでXHTML縦書きファイルを開く。</li>
+</ol>
+<p>【スマホファイルマネージャー画面例】</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20251119/20251119104300.jpg" width="537" height="1200" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>【スマホXHTML縦書きファイル表示サンプル】</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20251119/20251119104312.jpg" width="537" height="1200" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20251119/20251119104322.jpg" width="537" height="1200" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>【PCでのXHTML縦書きファイル表示サンプル】</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20251119/20251119104335.jpg" width="870" height="721" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<h5 id="--Pythonアプリ主な処理-">≪ ■ Pythonアプリ：主な処理 ≫</h5>
+<ul>
+<li>XHTML内の1行目から&lt;/head&gt;までを、&lt;title&gt;以外は「head.html」の中身と置き換える。<br /><em>縦書きの指定はCSSで「writing-mode: vertical-rl;」を入れるだけ。<br />背景色と文字色は、目にやさしい色にした。</em><br /><em>フォントサイズは自分のスマホに合わせて固定にした。とりあえずは「2.8vh」（スマホ縦サイズの2.8%の大きさ）。</em><br /><em>画面の拡大縮小はあえてできなくしている。</em><br />[ head.htmlソース ]<br />
+<pre>&lt;!DOCTYPE html&gt;
+&lt;html lang="ja"&gt;
+&lt;head&gt;
+&lt;meta charset="Shift_JIS"&gt;
+&lt;meta name="robots" content="noindex,nofollow,noarchive" /&gt;
+&lt;meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"&gt;
+&lt;title&gt;タイトル&lt;/title&gt;
+&lt;style type="text/css"&gt;
+html {
+	margin: 0px;
+	padding: 4vh;
+	font-size: 2.8vh;
+	font-family: "Yu Mincho",serif,sans-serif;
+	line-height: 1.7;
+	font-weight: normal;
+	-webkit-writing-mode: vertical-rl;
+	-ms-writing-mode: tb-rl;
+	writing-mode: vertical-rl;
+	background :#FFF8E1;
+	color: #3A2F1E;
+}
+h1 {
+	font-size: 4vh;
+	text-indent: 3em;
+}
+h2 {
+	font-size: 3.2vh;
+	text-align: right;
+	padding-bottom: 2em;
+}
+h3 {
+	font-size: 3.2vh;
+}
+h4 {
+	font-size: 2.8vh;
+}
+&lt;/style&gt;
+&lt;/head&gt;
+</pre>
+</li>
+<li>&lt;img&gt;タグを除去する。</li>
+<li>&lt;a href="…"&gt; の URL を 「#より前を削除」。</li>
+</ul>
+<h5 id="--Pythonアプリソース-">≪ ■ Pythonアプリ：ソース ≫</h5>
+<pre>import os
+import re
+import tkinter as tk
+from tkinter import filedialog, messagebox
+
+# ---------------------------------------------------------
+# HTML から charset を判定
+# ---------------------------------------------------------
+def detect_charset(html_bytes):
+    encodings = ["utf-8", "shift_jis", "euc-jp", "cp932"]
+
+    for enc in encodings:
+        try:
+            text = html_bytes.decode(enc)
+            if re.search(r'&lt;meta[^&gt;]*charset=["\']?([a-zA-Z0-9\-\_]+)', text, re.I):
+                return enc
+        except:
+            pass
+
+    return "utf-8"
+
+# ---------------------------------------------------------
+# HTML1件処理
+# ---------------------------------------------------------
+def process_html(path, head_html_original):
+    with open(path, "rb") as f:
+        raw = f.read()
+
+    enc = detect_charset(raw)
+
+    try:
+        text = raw.decode(enc)
+    except:
+        text = raw.decode("cp932", errors="ignore")
+        enc = "cp932"
+
+    original_text = text
+
+    # ---------------------------
+    # 元の &lt;title&gt; を抽出
+    # ---------------------------
+    title_match = re.search(r'&lt;title[^&gt;]*&gt;(.*?)&lt;/title&gt;', text, flags=re.I | re.S)
+    if title_match:
+        original_title = title_match.group(0)
+    else:
+        original_title = None
+
+    # ---------------------------
+    # style="..." の削除
+    # ---------------------------
+    text = re.sub(r'\s*style=["\'].*?["\']', '', text, flags=re.I | re.S)
+
+    # ---------------------------
+    # &lt;img ～&gt; を削除
+    # ---------------------------
+    text = re.sub(r"&lt;img[^&gt;]*&gt;", "", text, flags=re.I)
+
+    # ---------------------------
+    # &lt;a href="xxx"&gt; の変換
+    # ---------------------------
+    def fix_href(match):
+        href = match.group(1)
+        if "#" in href:
+            return f'&lt;a href="#{href.split("#",1)[1]}"&gt;'
+        else:
+            return f'&lt;a href="{href}"&gt;'
+
+    text = re.sub(r'&lt;a\s+href=["\'](.*?)["\']&gt;', fix_href, text, flags=re.I)
+
+    # -----------------------------------------------------
+    #   &lt;div class="notation_notes"&gt; 〜 &lt;/body の直前の &lt;/div&gt; を削除
+    # -----------------------------------------------------
+    text = re.sub(
+        r'&lt;div[^&gt;]*class=["\']notation_notes["\'][^&gt;]*&gt;.*?&lt;/div&gt;',
+        '',
+        text,
+        flags=re.I | re.S
+    )
+
+    # -----------------------------------------------------
+    # id="card" を持つ div を丸ごと削除
+    # -----------------------------------------------------
+    text = re.sub(
+        r'&lt;div[^&gt;]*id=["\']card["\'][^&gt;]*&gt;.*?&lt;/div&gt;',
+        '',
+        text,
+        flags=re.I | re.S
+    )
+
+    # -----------------------------------------------------
+    # head.html を基に head を置き換え（title は元のまま）
+    # -----------------------------------------------------
+    head_html = head_html_original
+
+    # head.html 内の title を削除
+    head_html = re.sub(r'&lt;title[^&gt;]*&gt;.*?&lt;/title&gt;', '', head_html, flags=re.I | re.S)
+
+    # 元タイトルを head の直後に挿入
+    if original_title:
+        head_html = re.sub(
+            r'&lt;head[^&gt;]*&gt;',
+            lambda m: m.group(0) + "\n    " + original_title,
+            head_html,
+            count=1,
+            flags=re.I
+        )
+
+    # head 差し替え
+    try:
+        text = re.sub(
+            r'&lt;head[^&gt;]*&gt;.*?&lt;/head&gt;',
+            head_html,
+            text,
+            flags=re.I | re.S
+        )
+    except:
+        text = original_text
+
+    # -----------------------------------------------------
+    # &lt;body&gt; 以降の空行削除
+    # -----------------------------------------------------
+    lines = text.splitlines()
+    cleaned = []
+    in_body = False
+
+    for line in lines:
+        if "&lt;body" in line.lower():
+            in_body = True
+            cleaned.append(line)
+            continue
+
+        if in_body:
+            if line.strip() == "":
+                continue
+
+        cleaned.append(line)
+
+    text = "\n".join(cleaned)
+
+    # ---------------------------
+    # 保存
+    # ---------------------------
+    with open(path, "w", encoding=enc, errors="ignore") as f:
+        f.write(text)
+
+
+# ---------------------------------------------------------
+# フォルダ処理
+# ---------------------------------------------------------
+def convert_folder(folder):
+    head_path = os.path.join(os.path.dirname(__file__), "head.html")
+
+    if not os.path.exists(head_path):
+        messagebox.showerror("エラー", "head.html がアプリのフォルダにありません。")
+        return
+
+    with open(head_path, "r", encoding="shift_jis", errors="ignore") as f:
+        head_html = f.read()
+
+    count = 0
+    for root, dirs, files in os.walk(folder):
+        for file in files:
+            if file.lower().endswith((".html", ".htm", ".xhtml")):
+                process_html(os.path.join(root, file), head_html)
+                count += 1
+
+    messagebox.showinfo("完了", f"{count} 件のHTML/XHTMLを処理しました。")
+
+
+# ---------------------------------------------------------
+# GUI
+# ---------------------------------------------------------
+def select_folder():
+    folder = filedialog.askdirectory()
+    if folder:
+        folder_var.set(folder)
+
+
+def run_convert():
+    folder = folder_var.get()
+    if not folder:
+        messagebox.showerror("エラー", "フォルダーを選択してください。")
+        return
+    convert_folder(folder)
+
+
+# ---------------------------------------------------------
+# メインウィンドウ
+# ---------------------------------------------------------
+root = tk.Tk()
+root.title("HTML 縦書き一括変換ツール")
+root.geometry("500x180")
+
+folder_var = tk.StringVar()
+
+tk.Label(root, text="処理するフォルダーを選択してください：").pack(pady=10)
+
+frame = tk.Frame(root)
+frame.pack()
+
+tk.Entry(frame, textvariable=folder_var, width=50).pack(side=tk.LEFT, padx=5)
+tk.Button(frame, text="フォルダー選択", command=select_folder).pack(side=tk.LEFT)
+
+tk.Button(root, text="変換実行", command=run_convert, width=20).pack(pady=20)
+
+root.mainloop()
+</pre>
+<p><em>スマホアプリ「読書尚友 Lite」を使えば、作成した縦書きHTMLをページ単位で読むことが出来る。（↓）</em></p>
+<p><a class="link-card" href="133754.html"><span class="lc-body"><span class="lc-title">縦書きHTMLファイルは、スマホアプリ「読書尚友 Lite」でページ割りして読める。（青空文庫）</span><span class="lc-desc">先程、青空文庫XHTMLファイルを縦書きに変換するWindowsアプリを作成した。 作成したHTMLファイルは、スマホブラウザで縦書きで読める。 ただし、ブラウザでは紙の書籍のようにページ単位で読むことはできない。スワイ…</span><span class="lc-site">晴歩雨描 · <time>2025-11-19</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20251119/20251119133400.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2026/01/13/101433.html"><span class="lc-body"><span class="lc-title">Windows）Python）.htmlファイルと「_files」フォルダーのリンク（コネクテッド・ファイル機能）を外すツール作成。フォルダー名一括変換アプリ。青空文庫HTMLなど。</span><span class="lc-desc">青空文庫HTMLなど、Windowsでウェブページを保存した際、 .htmlファイル と 「_files」フォルダー がセットになり、片方を移動・削除するともう一方も連動してしまう。 この挙動（コネクテッド・ファイル機能…</span><span class="lc-site">晴歩雨描 · <time>2026-01-13</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260113/20260113100226.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="https://ok2nd.github.io/sitemap/hatena-sitemap-table.html?search=Python" target="_blank" rel="noopener noreferrer"><span class="lc-body"><span class="lc-title">晴歩雨描：記事一覧</span><span class="lc-desc"></span><span class="lc-site">ok2nd.github.io</span></span></a></p>
+<p><a class="link-card" href="../../10/18/132848.html"><span class="lc-body"><span class="lc-title">Claude）Python）「写真スポット編集ツール」Windowsアプリ作成。シミ消し、オブジェクト除去に使える。スポット修正＋コピー修正。ICCプロファイル維持。</span><span class="lc-desc">以前に、「写真オブジェクト除去」Windowsアプリを作成した。 これは、写真の一部をスポット的に編集するアプリ。 これに加えて、クローンコピー修正もできるようにしたバージョンをPythonで作成。 ■ スポット修正 写…</span><span class="lc-site">晴歩雨描 · <time>2025-10-18</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20251018/20251018131038.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../06/13/153014.html"><span class="lc-body"><span class="lc-title">Claude）Python）透過画像作成Windowsアプリ作成。</span><span class="lc-desc">Pythonで「透過画像作成」Windowsアプリ作成。画像の白に近い色を透過にする。元データはJPEGまたはPNG。白の範囲は指定できる。AIツールClaudeに作成してもらった。 【使い方】 元画像ファイルは、ドラッ…</span><span class="lc-site">晴歩雨描 · <time>2025-06-13</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250613/20250613151037.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2022/04/28/221404.html"><span class="lc-body"><span class="lc-title">JavaScript版「ブラウザで縦書き表示＆印刷」作成。「window.opener」を使えば、親子ウインドウ間のデータ受け渡しは簡単。</span><span class="lc-desc">以前、「ブラウザでテキスト縦書き表示」するページを作成した。 この時作成したのは、サーバーサイドでPHPで処理して縦書きページを表示する方式だった。 今回、PHPを使わずにJavaScriptでクライアントサイドで縦書き…</span><span class="lc-site">晴歩雨描 · <time>2022-04-28</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220428/20220428213452.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../08/14/171505.html"><span class="lc-body"><span class="lc-title">Gemini Storybook）絵本作成。オオソリハシシギの長距離の渡りの物語。</span><span class="lc-desc">昨日から、 Gemini Storybook で絵本を4本作った。 また、新しい絵本を作成。 オオソリハシシギの長距離の渡りの物語。 生後5カ月のオオソリハシシギが、アラスカからオーストラリアのタスマニアまで、1万356…</span><span class="lc-site">晴歩雨描 · <time>2025-08-14</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250814/20250814170228.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../08/13/105134.html"><span class="lc-body"><span class="lc-title">Gemini Storybookで絵本を作った。日本の平安時代の清少納言の枕草子のような世界観で。</span><span class="lc-desc">Google Geminiに、絵本生成アプリ「 Storybook 」が出来たらしい。 10ページの絵本が簡単に出来てしまう。 試してみた。 入力したのは『 日本の平安時代の清少納言の枕草子のような世界観で絵本を作って …</span><span class="lc-site">晴歩雨描 · <time>2025-08-13</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250813/20250813105314.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../08/10/143530.html"><span class="lc-body"><span class="lc-title">AI清少納言の未発表随筆を、毛筆フォント「英椎行書」で縦書きで書いて、和紙テクスチャーと合成してPDFに。</span><span class="lc-desc">昨日、生成AIのChatGPT「 GPT-5 」を使って、 AI「清少納言」 に、未発表の随筆「未聞の草子：あはれをかしの記」を発表してもらった。 ■ ステップ１：毛筆フォント「英椎行書」にする この文章を入れた縦書きH…</span><span class="lc-site">晴歩雨描 · <time>2025-08-10</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250810/20250810140543.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../06/11/224547.html"><span class="lc-body"><span class="lc-title">AI詩人「萩原朔太郎、北原白秋、与謝野晶子、金子みすゞ」に、短歌を詠んでもらう。Google Geminiで。</span><span class="lc-desc">Google Geminiに、昔の詩人になったつもりで、短歌を詠んでもらった。 お題を変えて、いくつか試した。 それぞれの作家の作風を理解しているわけではないが、特徴が出ているように思う。とくに与謝野晶子と金子みすゞはそ…</span><span class="lc-site">晴歩雨描 · <time>2025-06-11</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250611/20250611224503.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../06/11/160710.html"><span class="lc-body"><span class="lc-title">清少納言に紫式部に対してどう思っているか聞いてみた。ChatGPT、Gemini、Copilot、Perplexity、Claude。</span><span class="lc-desc">ネット上に面白い記事があった。 『Google Geminiを使って紫式部と散歩しながら語彙力バトルをしてみた｜斉藤ナミ』 そこで、AIに次の質問をしてみた。AIは、 ChatGPT、Gemini、Copilot、Per…</span><span class="lc-site">晴歩雨描 · <time>2025-06-11</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250611/20250611160631.jpg" alt="" loading="lazy"></span></a></p></div></article>
+</body>
+</html>

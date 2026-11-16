@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>JavaScriptで生成・展開した（動的に書き換えられた）HTMLの中身を確認するためのデバッグ用のコード。 - 晴歩雨描</title>
+<link rel="stylesheet" href="../../../../style.css">
+</head>
+<body>
+<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>JavaScriptで生成・展開した（動的に書き換えられた）HTMLの中身を確認するためのデバッグ用のコード。</h1><p class="meta">2025-02-19 · <a href="../../../../category/c13.html">ホームページ、Web作成</a></p><div class="entry-body"><p>JavaScriptで生成・展開した（動的に書き換えられた）HTMLは、ブラウザで[Ctrl]+[u]キーでソース表示しても確認できない。</p>
+<p>デバッグ用に、JavaScriptで生成・展開した（動的に書き換えられた）HTMLの中身をテキストファイルとしてダウンロードするJavaScript関数を作成した。</p>
+<pre>function downloadUpdatedHTML() {
+	// 100ms 待機して最新のHTMLを取得（変更が反映されるのを待つ）
+	setTimeout(() =&gt; {
+		let htmlContent = document.documentElement.outerHTML;
+		// Blobを作成
+		let blob = new Blob([htmlContent], { type: 'text/plain' });
+		// ダウンロード用のリンクを作成
+		let a = document.createElement('a');
+		a.href = URL.createObjectURL(blob);
+		a.download = 'updated_page.html'; // ダウンロードするファイル名
+		document.body.appendChild(a);
+		// リンクをクリックしてダウンロード
+		a.click();
+		// 一時的な要素を削除
+		document.body.removeChild(a);
+	}, 100); // 100ms 待機してDOMの変更を確実に取得
+}</pre>
+<p>この関数を、JavaScriptロジックの最後でコールする。</p>
+<pre>downloadUpdatedHTML();
+</pre>
+<p><a class="link-card" href="../28/222942.html"><span class="lc-body"><span class="lc-title">JavaScriptで生成・展開した（動的に書き換えられた）HTMLの中身をテキストファイルとしてダウンロード保存するブックマークレット作成。</span><span class="lc-desc">JavaScriptで生成・展開した（動的に書き換えられた）HTMLは、ブラウザで[Ctrl]+[u]キーでソース表示しても確認できない。 以前に、JavaScriptで動的に書き換えられたHTMLの中身をテキストファイ…</span><span class="lc-site">晴歩雨描 · <time>2025-02-28</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250228/20250228222324.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../17/101447.html"><span class="lc-body"><span class="lc-title">JavaScript）CSVファイルを読み込んで、HTML&lt;table&gt;に変換する。jQueryプラグイン「DataTables」付き。</span><span class="lc-desc">JavaScriptで、サーバーローカルのCSVファイルを読み込んで、HTML&lt;table&gt;に変換するWebツールを作成。 作成されたHTML&lt;table&gt;は、jQueryプラグイン「DataTables」付きで、検索や…</span><span class="lc-site">晴歩雨描 · <time>2025-02-17</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250217/20250217173348.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="092003.html"><span class="lc-body"><span class="lc-title">JavaScript）HTMLから&lt;table&gt;を抽出して、CSVに変換するWebツール。</span><span class="lc-desc">JavaScriptで、HTMLから&lt;table&gt;を抽出して、CSVに変換するWebアプリを作成。 ホームページのURLを入れて、「変換＆ダウンロード」を押すと、CSVテキストファイルがダウンロードされる。 &lt;td&gt;&lt;/…</span><span class="lc-site">晴歩雨描 · <time>2025-02-19</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250219/20250219092048.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../01/29/130631.html"><span class="lc-body"><span class="lc-title">JavaScript）ExcelからHTML&lt;table&gt;へ変換するツール作成。ChatGPTで作成。</span><span class="lc-desc">JavaScriptで「Excel to HTML&lt;table&gt;変換」ツール作成。ChatGPTで作成。 ExcelからHTML&lt;table&gt;へ変換するページはネット上にたくさんあるが、シンプルなものが欲しかった。 Ex…</span><span class="lc-site">晴歩雨描 · <time>2025-01-29</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250129/20250129134540.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../01/26/085411.html"><span class="lc-body"><span class="lc-title">JavaScriptで、HTML12か月カレンダーを作成。ChatGPTで作成。</span><span class="lc-desc">今まで、HTMLカレンダーをいくつか作成してきた。 ≪ PHPで作成したカレンダー≫ ≪ JavaScriptで作成した1か月カレンダー ≫ 今回、JavaScriptで、HTML「 12か月 」カレンダーを作成。 ht…</span><span class="lc-site">晴歩雨描 · <time>2025-01-26</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250126/20250126084550.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2024/12/23/121252.html"><span class="lc-body"><span class="lc-title">HTML/JavaScriptカレンダーに「Holidays JP API 」で祝日表示。AIツールChatGPT、Copilotで作成。</span><span class="lc-desc">先程、JavaScriptでシンプルなHTMLカレンダーを作成した。 これは、祝日表示対応していない。 これに、祝日表示を追加した。「Google Calendar API 」を使う方法もあるが、Google API K…</span><span class="lc-site">晴歩雨描 · <time>2024-12-23</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20241223/20241223215858.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2024/12/23/093802.html"><span class="lc-body"><span class="lc-title">JavaScriptで、シンプルなHTMLカレンダーを作成。AIツールCopilotで作成。</span><span class="lc-desc">以前に、PHPでHTMLカレンダーを作成した。 今回、JavaScriptで、シンプルなHTMLカレンダーを作成。 JavaScriptを使ったHTMLカレンダーはネットで探すといくつも出てくる。今回、AIツール「Cha…</span><span class="lc-site">晴歩雨描 · <time>2024-12-23</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20241223/20241223092959.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2021/05/18/135819.html"><span class="lc-body"><span class="lc-title">JavaScript）HTML&lt;TABLE&gt;に、ソート機能や検索機能を付けるなら、jQueryプラグイン「DataTables」が簡単。</span><span class="lc-desc">HTML&lt;TABLE&gt; に、ソート機能や検索機能を付けるなら、 jQueryプラグイン「DataTables」 が簡単で便利。 以下の「Eマウント(AF)単焦点レンズ」一覧に、「DataTables」を使って、ソート機能…</span><span class="lc-site">晴歩雨描 · <time>2021-05-18</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20210517/20210517165654.jpg" alt="" loading="lazy"></span></a></p></div></article>
+</body>
+</html>

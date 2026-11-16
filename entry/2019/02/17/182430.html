@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>影付き枠＋ビネット効果付き写真サムネイルアルバム(神戸散歩)のポップアップ拡大画像にビネット効果。 - 晴歩雨描</title>
+<link rel="stylesheet" href="../../../../style.css">
+</head>
+<body>
+<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>影付き枠＋ビネット効果付き写真サムネイルアルバム(神戸散歩)のポップアップ拡大画像にビネット効果。</h1><p class="meta">2019-02-17 · <a href="../../../../category/c18.html">写真・カメラ</a> <a href="../../../../category/c13.html">ホームページ、Web作成</a></p><div class="entry-body"><p><a class="link-card" href="180201.html"><span class="lc-body"><span class="lc-title">影付き枠＋ビネット効果付き写真サムネイルアルバム(神戸散歩)にポップアップ拡大画像を追加。</span><span class="lc-desc">↑ で、影付き枠＋ ビネット 効果を使った写真のWebサムネイルアルバムをつくった。 このWebページのサムネイル画像をクリックした時に画像が拡大されたモーダルウィンドウがポップアップするようにした。 以下のLightb…</span><span class="lc-site">晴歩雨描 · <time>2019-02-17</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190217/20190217175405.jpg" alt="" loading="lazy"></span></a></p>
+<p>↑ で、影付き枠＋ビネット効果を使った写真のWebサムネイルアルバムに、ポップアップ拡大画像を追加した。</p>
+<p>しかし、この方法では、ポップアップ拡大画像にビネット効果はつかない。</p>
+<p>ビネット効果付きの拡大画像1枚を表示するHTMLページを別途用意し、サムネイルアルバムの各画像から&lt;a&gt;タグでリンクし、リンク先のHTMLでは&lt;a href="javascript:history.back()"&gt;で、元のページに戻るようにした。更に、キーボードの[Esc]キーでも、元のページに戻るようにした。</p>
+<p>厳密にはポップアップウィンドウとは言えないが、拡大画像を表示したページでマウスクリックするか[Esc]キーを押せば、元のサムネイルページに戻る。</p>
+<p>サムネイルと拡大画像では写真サイズが違うが、同じCSSを使っているのでビネット効果の写真全体に対しての効果の度合いは違う。</p>
+<pre>&lt;body&gt;
+&lt;a href="javascript:history.back()"&gt;
+&lt;div class="box-frame"&gt;
+	&lt;div class="vignette"&gt;
+		&lt;img src="xxx.jpg"&gt;
+	&lt;/div&gt;
+&lt;/div&gt;
+&lt;/a&gt;
+&lt;script&gt;
+document.onkeydown = keyPress;
+function keyPress( e ) {
+	e = e || window.event;
+	if (e.keyCode == 27) {	// ESC ：Exit, Return
+		history.back();
+		return false;
+	}
+	return true;	// その他 (ファンクションキーなどを有効にするため)
+}
+&lt;/script&gt;
+&lt;/body&gt;</pre>
+<p>拡大画像1枚を表示するHTMLを1つずつ作成するのは面倒なので、PHPを使って、ファイル名を引数で渡すようにしている。</p>
+<pre>&lt;a href="photo.php?photo=ファイル名" data-lightbox="group" class="thickbox"&gt;
+<br />---【photo.php】---
+&lt;body&gt;
+&lt;a href="javascript:history.back()"&gt;
+&lt;div class="box-frame"&gt;
+	&lt;div class="vignette"&gt;
+		&lt;img src="&lt;?= $_GET['photo']; ?&gt;"&gt;
+	&lt;/div&gt;
+&lt;/div&gt;
+&lt;/a&gt;
+&lt;/body&gt;
+</pre>
+<p><span style="color: #dd830c;">【Lightbox版によるポップアップウィンドウ 版の画面イメージ】</span></p>
+<p><img class="hatena-fotolife" title="f:id:art2nd:20190217181032j:plain" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190217/20190217181032.jpg" alt="f:id:art2nd:20190217181032j:plain" /></p>
+<p><span style="color: #dd830c;">【&lt;a&gt;タグ+javascript:history.back() 版の画面イメージ】</span></p>
+<p><img class="hatena-fotolife" title="f:id:art2nd:20190217181044j:plain" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190217/20190217181044.jpg" alt="f:id:art2nd:20190217181044j:plain" /></p>
+<p><em><span style="color: #ff0000;">※ 「ok2nd.sakura.ne.jp/...」は、すべて消えている。最新版は以下に。</span></em></p>
+<p><a href="https://ok2nd.github.io/index/photo/kobe1-v2.html" target="_blank">https://ok2nd.github.io/index/photo/kobe1-v2.html</a></p>
+<p><span style="color: #ff0000;"><em>※ 以下のサイトはすべて消えている。</em></span></p>
+<p>作成したWebページが以下。</p>
+<p><a href="https://ok2nd.sakura.ne.jp/album/kobe1-3.html" target="_blank">https://ok2nd.sakura.ne.jp/album/kobe1-3.html</a></p>
+<p><span class="link-card-plain"><a href="https://ok2nd.sakura.ne.jp/album/kobe1-3.html">https://ok2nd.sakura.ne.jp/album/kobe1-3.html</a></span></p>
+<p>ここまでやってきた事のまとめ。以下、ブログ記事リンク。</p>
+<p><a href="../15/091120.html" target="_blank">CSS「box-shadow」で、写真にビネット効果をつけてみた。</a></p>
+<p><a href="https://ok2nd.sakura.ne.jp/css-filter/box-shadow.html" target="_blank">https://ok2nd.sakura.ne.jp/css-filter/box-shadow.html</a></p>
+<p>↓↓↓</p>
+<p><a href="../15/150757.html" target="_blank">CSSで写真に影付きのシンプルな枠(フレーム)を付ける。</a></p>
+<p>↓↓↓</p>
+<p><a href="../15/155918.html" target="_blank">CSS）写真に影付きのシンプルな枠＋ビネット効果</a></p>
+<p><a href="https://ok2nd.sakura.ne.jp/css-filter/box-frame.html" target="_blank">https://ok2nd.sakura.ne.jp/css-filter/box-frame.html</a></p>
+<p>↓↓↓</p>
+<p><a href="../16/223049.html" target="_blank">CSS）影付き枠＋ビネット効果を使った写真のサムネイルアルバムをつくってみた。</a></p>
+<p><a href="https://ok2nd.sakura.ne.jp/album/kobe1.html" target="_blank">https://ok2nd.sakura.ne.jp/album/kobe1.html</a></p>
+<p>↓↓↓</p>
+<p><a href="../16/224057.html" target="_blank">Google 日本語WEBフォント「さわらび明朝」を使ってみた。</a></p>
+<p>↓↓↓</p>
+<p><a href="104451.html" target="_blank">スマホでページ全体を縮小表示したい時は、viewportのinitial-scaleで縮小値を指定する。</a></p>
+<p>↓↓↓</p>
+<p><a href="180201.html" target="_blank">影付き枠＋ビネット効果付き写真サムネイルアルバムにポップアップ拡大画像を追加。</a></p>
+<p><a href="https://ok2nd.sakura.ne.jp/album/kobe1-2.html" target="_blank">https://ok2nd.sakura.ne.jp/album/kobe1-2.html</a></p>
+<p>↓↓↓</p>
+<p>【このブログ】影付き枠＋ビネット効果を使った写真のサムネイルアルバムのポップアップ拡大画像にビネット効果。</p>
+<p><a href="https://ok2nd.sakura.ne.jp/album/kobe1-3.html" target="_blank">https://ok2nd.sakura.ne.jp/album/kobe1-3.html</a></p>
+<p><a href="https://ok2nd.sakura.ne.jp/album/kobe1-v.html" target="_blank">https://ok2nd.sakura.ne.jp/album/kobe1-v.html (CSS別ファイル化版)</a></p>
+<p><a class="link-card" href="../../../2022/04/26/152137.html"><span class="lc-body"><span class="lc-title">Web写真アルバム「神戸散歩」「大阪散歩」「京都散歩」ポップアップ画像表示ページを、JavaScriptを使う方法に変更。</span><span class="lc-desc">以前に作成したWeb写真アルバム「 神戸散歩 」「 大阪散歩 」「 京都散歩 」のポップアップ画像表示ページを、JavaScriptを使う方法に変更。 方法の詳細は以下の「My 野鳥図鑑」と同じ。</span><span class="lc-site">晴歩雨描 · <time>2022-04-26</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220426/20220426151258.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../23/111055.html"><span class="lc-body"><span class="lc-title">影付き枠＋ビネット効果付き写真サムネイルアルバムの大阪版、京都版作成。</span><span class="lc-desc">↑ で作成した写真サムネイルアルバム（神戸版）の大阪版と京都版を作成。</span><span class="lc-site">晴歩雨描 · <time>2019-02-23</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190223/20190223110926.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2020/04/13/141252.html"><span class="lc-body"><span class="lc-title">Pinterestに、自分が撮影した写真を登録してみた。</span><span class="lc-desc">Pinterest にボード「My フォト」を作成。 このブログにアップロードした写真の一部を登録した。</span><span class="lc-site">晴歩雨描 · <time>2020-04-13</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20200413/20200413135543.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../09/02/174735.html"><span class="lc-body"><span class="lc-title">JavaScript、jQuery、CSS）ポップアップ写真画像をブラウザのウインドウサイズに合わせて拡大縮小できるようにした。</span><span class="lc-desc">以前、HTMLで写真サムネイルアルバム＋ポップアップ画像ページを作成した。下はその時のブログ記事。 作成したサムネイルアルバムWebページは、以下。 https://ok2nd.sakura.ne.jp/album/ko…</span><span class="lc-site">晴歩雨描 · <time>2019-09-02</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190902/20190902154309.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../19/135849.html"><span class="lc-body"><span class="lc-title">CSSのブレンドモード&quot;background-blend-mode&quot;を使うと写真にカラーフィルタをかけたような色の加工ができる。</span><span class="lc-desc">CSS の&quot;background-blend-mode&quot;を使うと写真にカラーフィルタをかけたような色の加工ができる。 以下のWebページを参考にした。 使い方は、&lt;div&gt;で写真を入れるボックスを作成し、backgrou…</span><span class="lc-site">晴歩雨描 · <time>2019-02-19</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190219/20190219135707.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../28/112119.html"><span class="lc-body"><span class="lc-title">CSSのブレンドモード&quot;background-blend-mode&quot;を使って、写真を2枚重ねたイメージの作成を試した。</span><span class="lc-desc">先日、 CSS の ブレンド モード&quot;background-blend-mode&quot;を使って、写真にカラーフィルタをかけたような色の加工を試した。↓ 今回、 CSS の ブレンド モード&quot;background-blend-…</span><span class="lc-site">晴歩雨描 · <time>2019-02-28</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190228/20190228111348.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../28/132437.html"><span class="lc-body"><span class="lc-title">LUMIX DMC-GM1の代替となる小型のミラーレス一眼が欲しい。OLYMPUS OM-D E-M1Xとサイズを比較してみた。</span><span class="lc-desc">2月22日に オリンパス から マイクロフォーサーズ カメラ「OM-D E-M1X」が発売となったが、自分が所有している「 LUMIX DMC -GM1」と同じ マイクロフォーサーズ とは思えないほどに、恐ろしくでかい。…</span><span class="lc-site">晴歩雨描 · <time>2019-02-28</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190228/20190228130438.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2020/03/31/112337.html"><span class="lc-body"><span class="lc-title">CSSでインスタグラム風の写真加工が簡単にできる「instagram.css」を試してみた。</span><span class="lc-desc">CSS でインスタグラム風の写真加工が簡単にできる「 instagram . css 」を試してみた。レトロっぽい写真などが簡単にできる。 「 instagram . css 」は、以下からダウンロードできる。 使い方は…</span><span class="lc-site">晴歩雨描 · <time>2020-03-31</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20200331/20200331105938.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2017/03/13/143736.html"><span class="lc-body"><span class="lc-title">写真/画像をサムネイル一覧するHTMLサンプル（ブロック全体は中央揃え（センタリング）＋中の複数画像は左寄せ）</span><span class="lc-desc">写真/画像をサムネイル一覧するHTMLサンプルを作成。 「サムネイル一覧のブロック全体はページ内で左右中央揃えし、ブロック内の複数画像は左寄せする。」というのをCSSだけで実現したかったが、ブロック内の右側に余分な余白が…</span><span class="lc-site">晴歩雨描 · <time>2017-03-13</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20170313/20170313140402.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2022/08/18/130246.html"><span class="lc-body"><span class="lc-title">JavaScript、CSS）aタグ、divタグを使わずに、imgタグだけで画像をポップアップする。</span><span class="lc-desc">HTMLで画像をポップアップする場合、&lt;a&gt;タグや&lt;div&gt;タグで&lt;img&gt;タグを囲んで行うのが一般的。 &lt;a&gt;タグ、&lt;div&gt;タグを使わずに、&lt;img&gt;タグだけで画像をポップアップする方法を探した。以下に目的のものがあ…</span><span class="lc-site">晴歩雨描 · <time>2022-08-18</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220818/20220818150842.jpg" alt="" loading="lazy"></span></a></p></div></article>
+</body>
+</html>

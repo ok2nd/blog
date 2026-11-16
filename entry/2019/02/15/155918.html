@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CSS）写真に影付きのシンプルな枠＋ビネット効果 - 晴歩雨描</title>
+<link rel="stylesheet" href="../../../../style.css">
+</head>
+<body>
+<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>CSS）写真に影付きのシンプルな枠＋ビネット効果</h1><p class="meta">2019-02-15 · <a href="../../../../category/c18.html">写真・カメラ</a> <a href="../../../../category/c13.html">ホームページ、Web作成</a></p><div class="entry-body"><p><a class="link-card" href="150757.html"><span class="lc-body"><span class="lc-title">CSSで写真に影付きのシンプルな枠(フレーム)を付ける。</span><span class="lc-desc">CSS で写真にシンプルな枠(フレーム)を付ける。 枠に淡い影を付ける。 &lt;img class=&quot;box-frame&quot; src=&quot;img/xxx.jpg&quot;&gt; &lt;style&gt; .box-frame { padding:7p…</span><span class="lc-site">晴歩雨描 · <time>2019-02-15</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190215/20190215151027.jpg" alt="" loading="lazy"></span></a></p>
+<p>↑ で、写真に枠(フレーム)を付けた。</p>
+<p><img class="hatena-fotolife" title="f:id:art2nd:20190215155052j:plain" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190215/20190215155052.jpg" alt="f:id:art2nd:20190215155052j:plain" /></p>
+<p>この写真に、さらに<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%D3%A5%CD%A5%C3%A5%C8">ビネット</a>効果を付ける。<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%D3%A5%CD%A5%C3%A5%C8">ビネット</a>効果については、以下リンク先を参照。</p>
+<p><a class="link-card" href="091120.html"><span class="lc-body"><span class="lc-title">CSS「box-shadow」で、写真にビネット効果をつけてみた。</span><span class="lc-desc">先日、 Windows アプリ GIMP で写真に ビネット 効果を与える加工をやってみた。 ビネット 効果とは、写真の四隅周辺の光量を落として、昔のレンズで撮ったような味わいの雰囲気にすること。写真中央部が相対的に明る…</span><span class="lc-site">晴歩雨描 · <time>2019-02-15</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190215/20190215091236.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%D3%A5%CD%A5%C3%A5%C8">ビネット</a>効果を付ける&lt;div&gt;を、枠を付ける&lt;div&gt;で囲む。</p>
+<pre>&lt;div class="box-frame"&gt;
+	&lt;div class="vignette"&gt;
+		&lt;img src="img/xxx.jpg"&gt;
+	&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;style&gt;
+img {
+	margin: 0;
+	padding: 0;
+	display: block;	/* これがないと余分な枠が付いてしまう。*/
+}
+.box-frame {
+	display: inline-block;	/* 重要 */
+	padding:7px;
+	border:1px solid #ccc;
+	background:#fff;
+	box-shadow: 1px 1px 5px rgba(20,20,20,0.2);
+	border-<a class="keyword" href="http://d.hatena.ne.jp/keyword/radius">radius</a>: 4px;
+}
+.vignette {
+	position: relative;
+}
+.vignette:after {
+	position: absolute;
+	display: block;
+	content: "";
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	box-shadow: inset 0 0 200px rgba(0, 0, 0, 0.6),
+	inset 0 0 300px rgba(0, 0, 0, 0.4);
+}
+&lt;/style&gt;</pre>
+<p><img class="hatena-fotolife" title="f:id:art2nd:20190215172500j:plain" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190215/20190215172500.jpg" alt="f:id:art2nd:20190215172500j:plain" /></p>
+<p>★ 実際に試したHTMLと<a class="keyword" href="http://d.hatena.ne.jp/keyword/CSS">CSS</a>のサンプルは以下</p>
+<p><span class="link-card-plain"><a href="https://ok2nd.sakura.ne.jp/css-filter/box-frame.html">https://ok2nd.sakura.ne.jp/css-filter/box-frame.html</a></span></p>
+<p>↓ これを利用してサムネイルアルバムを作った。</p>
+<p><a class="link-card" href="../16/223049.html"><span class="lc-body"><span class="lc-title">CSS）影付き枠＋ビネット効果を使った写真のサムネイルアルバム(神戸散歩)をつくってみた。</span><span class="lc-desc">↑ で、CSSを使って、写真に影付き枠とビネット効果を付けてみた。 今回、これを使って、写真のサムネイルアルバムをつくってみた。写真は神戸を散歩して撮ったものの一部を使った。 サムネイルの各写真の枠は正方形とし、正方形の…</span><span class="lc-site">晴歩雨描 · <time>2019-02-16</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190216/20190216221449.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2017/03/15/092041.html"><span class="lc-body"><span class="lc-title">CSSで画像を正方形枠内で上下左右中央揃え（センタリング）するシンプルな方法</span><span class="lc-desc">前回の「 写真/画像をサムネイル一覧するHTMLサンプル 」で紹介したHTMLサンプルでは、画像を正方形枠内で上下左右中央揃えする方法として、&lt;span&gt;タグのbackground-imageとbackground-si…</span><span class="lc-site">晴歩雨描 · <time>2017-03-15</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20170315/20170315085112.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2017/04/11/193206.html"><span class="lc-body"><span class="lc-title">「ブロック(コンテナ)全体は中央揃え(センタリング)＋中の要素(複数画像)は左寄せ」をJavaScriptを使わないでCSSのみで実現できる方法</span><span class="lc-desc">このブログで以前に書いた「 ブロック全体は中央揃え＋中の複数画像は左寄 」をJavaScriptを使わないでCSSのみで実現できる方法が見つかったので、紹介。 「Webクリエイターボックス」の以下の記事のコメント欄で質問…</span><span class="lc-site">晴歩雨描 · <time>2017-04-11</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20170313/20170313140402.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2020/03/31/112337.html"><span class="lc-body"><span class="lc-title">CSSでインスタグラム風の写真加工が簡単にできる「instagram.css」を試してみた。</span><span class="lc-desc">CSS でインスタグラム風の写真加工が簡単にできる「 instagram . css 」を試してみた。レトロっぽい写真などが簡単にできる。 「 instagram . css 」は、以下からダウンロードできる。 使い方は…</span><span class="lc-site">晴歩雨描 · <time>2020-03-31</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20200331/20200331105938.jpg" alt="" loading="lazy"></span></a></p></div></article>
+</body>
+</html>

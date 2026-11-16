@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Claude）Python）「写真オブジェクト除去」Windowsアプリ作成。シミ消しにも使える。 - 晴歩雨描</title>
+<link rel="stylesheet" href="../../../../style.css">
+</head>
+<body>
+<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>Claude）Python）「写真オブジェクト除去」Windowsアプリ作成。シミ消しにも使える。</h1><p class="meta">2025-04-20 · <a href="../../../../category/c18.html">写真・カメラ</a> <a href="../../../../category/c42.html">＜AI＞</a> <a href="../../../../category/c8.html">コンピュータ</a></p><div class="entry-body"><p>2日前、<em>JavaScript</em>で「<em>写真スポッティング編集ツール</em>」を作成した。</p>
+<p><a class="link-card" href="../18/215613.html"><span class="lc-body"><span class="lc-title">Claude）JavaScript）「写真スポッティング編集ツール」作成。写真のオブジェクト除去やシミ消しに。</span><span class="lc-desc">JavaScriptで、「 写真スポッティング編集ツール 」を作成。 写真の中のちょっとした不要物を除去するためのツール。除去したい不要物をマウスなどで囲んで除去し、除去した後を目立たないように背景画像で補正するなどした…</span><span class="lc-site">晴歩雨描 · <time>2025-04-18</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250418/20250418213106.jpg" alt="" loading="lazy"></span></a></p>
+<p>今回、<em>Python</em>で「<em>写真オブジェクト除去アプリ</em>」を作成。AIツールClaudeに作成してもらった。</p>
+<p><em>写真の中のちょっとした不要物を除去するためのアプリ。除去した後を目立たないように周辺画像から背景画像を類推して補完する。</em></p>
+<p><em>補完レベルは、最近のAIツールに比較して満足できるレベルではない。実用的には、複雑な背景がある画像などには使えない。青空に小さなゴミが写ってしまった場合や、顔の小さなシミ消しには使えるかもしれないレベル。</em></p>
+<h5 id="使い方">【使い方】</h5>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250420/20250420091047.jpg" width="726" height="531" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<ul>
+<li>PNGまたはJPEG画像をドラッグ＆ドロップでウインドウに取り込む。</li>
+<li>「円モード」と「自由曲線モード」がある。</li>
+<li>「円モード」では、マウスでクリックした部分を中心とした円状にオブジェクトを除去する。円のサイズはスライダーで変更できる。</li>
+<li>「自由曲線モード」では、マウスで除去したい部分を囲む。囲み終わってマウスを離した時点で除去される。</li>
+<li>除去アルゴリズムに「NS（Navier-Stokes）」と「Telea」があるが、大きな違いはない。</li>
+<li>画像サイズが大きい場合は、ウインドウ内に入るように縮小表示する。実寸表示に切り替えることもできる。</li>
+<li>「戻す」や「全て戻す」で、除去したものを元に戻すことができる。</li>
+<li>「保存」ボタンで、JPEG画像として保存できる。</li>
+</ul>
+<h5 id="Pythonプログラム">【Pythonプログラム】</h5>
+<p>作成されたプログラムを、「写真オブジェクト除去.pyw」（名前は任意）という名前にして、デスクトップに置いておき、ダブルクリックで実行する。</p>
+<h5 id="実行画面サンプル">【実行画面サンプル】</h5>
+<p>以下、サンプル。サンプルの元画像はすべてChatGPTで生成したものをトリミングした。</p>
+<figure class="figure-image figure-image-fotolife mceNonEditable" title="円モード">
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250420/20250420091110.jpg" width="726" height="531" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<figcaption class="mceEditable">円モード</figcaption>
+</figure>
+<figure class="figure-image figure-image-fotolife mceNonEditable" title="自由曲線モード">
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250420/20250420091122.jpg" width="724" height="529" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<figcaption class="mceEditable">自由曲線モード</figcaption>
+</figure>
+<figure class="figure-image figure-image-fotolife mceNonEditable" title="除去後">
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250420/20250420091135.jpg" width="726" height="531" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<figcaption class="mceEditable">除去後</figcaption>
+</figure>
+<figure class="figure-image figure-image-fotolife mceNonEditable" title="円モード">
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250420/20250420091303.jpg" width="761" height="530" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<figcaption class="mceEditable">円モード</figcaption>
+</figure>
+<figure class="figure-image figure-image-fotolife mceNonEditable" title="除去後">
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250420/20250420091334.jpg" width="761" height="530" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<figcaption class="mceEditable">除去後</figcaption>
+</figure>
+<figure class="figure-image figure-image-fotolife mceNonEditable" title="自由曲線モード">
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250420/20250420091751.jpg" width="818" height="556" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<figcaption class="mceEditable">自由曲線モード</figcaption>
+</figure>
+<figure class="figure-image figure-image-fotolife mceNonEditable" title="除去後（きれいとは言えない）">
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250420/20250420091819.jpg" width="819" height="559" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<figcaption class="mceEditable">除去後（きれいとは言えない）</figcaption>
+</figure>
+<h5 id="Pythonインストール">【Pythonインストール】</h5>
+<p>Pythonがインストールされていなければ、インストールする。</p>
+<p><a class="link-card" href="../../../2023/09/08/210741.html"><span class="lc-body"><span class="lc-title">Windows）「Python（Ver.3.11.5）」インストール。</span><span class="lc-desc">Windows版Pythonのインストール手順の備忘録。 ■ Pythonダウンロード 現時点の最新、Ver.3.11.5。 ■ Python インストール 「 python-3.11.5-amd64.exe 」を実行。…</span><span class="lc-site">晴歩雨描 · <time>2023-09-08</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20230908/20230908204241.jpg" alt="" loading="lazy"></span></a></p>
+<p>Pythonのパッケージマネージャー「pip」を使って、必要なライブラリをインターネットから自動的にダウンロードしてインストールする。コマンドプロンプトで以下を実行。</p>
+<pre>pip install numpy opencv-python pillow torch segmentation-models-pytorch tkinterdnd2
+</pre>
+<h5 id="Pythonプログラムコード">【Pythonプログラムコード】</h5>
+<pre>import os
+import sys
+import numpy as np
+import cv2
+from PIL import Image, ImageTk
+import tkinter as tk
+from tkinter import ttk, filedialog, messagebox
+from tkinter.simpledialog import askstring
+
+class ObjectRemovalApp:
+    def __init__(self, root):
+        self.root = root
+        self.root.title("オブジェクト除去アプリ")
+        self.root.geometry("1200x800")
+        self.root.configure(bg='#f0f0f0')
+        
+        # アプリの状態を初期化
+        self.original_image = None
+        self.current_image = None
+        self.displayed_image = None
+        self.tk_image = None
+        self.image_path = None
+        self.history = []
+        self.drawing = False
+        self.curve_points = []
+        
+        # モード設定（円または自由曲線）
+        self.mode = "circle"  # 初期値は円モード
+        self.circle_radius = 20
+        
+        # スケール関連変数
+        self.scale_factor = 1.0
+        self.is_original_size = False
+        self.scroll_x = 0
+        self.scroll_y = 0
+        
+        # UI要素の配置
+        self.create_ui()
+        
+        # ファイルドロップの設定
+        self.canvas.drop_target_register('DND_Files')
+        self.canvas.dnd_bind('&lt;&lt;Drop&gt;&gt;', self.on_drop)
+        
+        # キーバインド
+        self.root.bind("&lt;Configure&gt;", self.on_resize)
+        
+    def create_ui(self):
+        # メインフレーム
+        main_frame = ttk.Frame(self.root)
+        main_frame.pack(fill=tk.BOTH, expand=True, padx=10, pady=10)
+        
+        # 左側のコントロールパネル
+        control_panel = ttk.Frame(main_frame, width=200)
+        control_panel.pack(side=tk.LEFT, fill=tk.Y, padx=(0, 10))
+        
+        # モード選択
+        mode_frame = ttk.LabelFrame(control_panel, text="モード選択")
+        mode_frame.pack(fill=tk.X, pady=5)
+        
+        self.mode_var = tk.StringVar(value="circle")
+        ttk.Radiobutton(mode_frame, text="円モード", variable=self.mode_var, value="circle", 
+                        command=self.set_circle_mode).pack(anchor=tk.W, padx=5, pady=2)
+        ttk.Radiobutton(mode_frame, text="自由曲線モード", variable=self.mode_var, value="curve", 
+                        command=self.set_curve_mode).pack(anchor=tk.W, padx=5, pady=2)
+        
+        # 円の半径設定
+        radius_frame = ttk.LabelFrame(control_panel, text="円の半径")
+        radius_frame.pack(fill=tk.X, pady=5)
+        
+        self.radius_var = tk.IntVar(value=20)
+        self.radius_scale = ttk.Scale(radius_frame, from_=1, to=100, variable=self.radius_var, 
+                                   orient=tk.HORIZONTAL, command=self.update_radius)
+        self.radius_scale.pack(fill=tk.X, padx=5, pady=5)
+        
+        self.radius_label = ttk.Label(radius_frame, text="20 px")
+        self.radius_label.pack(pady=(0, 5))
+        
+        # アルゴリズム選択
+        algo_frame = ttk.LabelFrame(control_panel, text="除去アルゴリズム")
+        algo_frame.pack(fill=tk.X, pady=5)
+        
+        self.algo_var = tk.StringVar(value="ns")
+        ttk.Radiobutton(algo_frame, text="NS (高品質)", variable=self.algo_var, value="ns").pack(anchor=tk.W, padx=5, pady=2)
+        ttk.Radiobutton(algo_frame, text="Telea (速度優先)", variable=self.algo_var, value="telea").pack(anchor=tk.W, padx=5, pady=2)
+        
+        # 表示サイズ切替
+        size_frame = ttk.LabelFrame(control_panel, text="表示サイズ")
+        size_frame.pack(fill=tk.X, pady=5)
+        
+        self.size_button = ttk.Button(size_frame, text="実寸表示に切替", command=self.toggle_size)
+        self.size_button.pack(fill=tk.X, padx=5, pady=5)
+        
+        # 操作ボタン
+        actions_frame = ttk.LabelFrame(control_panel, text="操作")
+        actions_frame.pack(fill=tk.X, pady=5)
+        
+        ttk.Button(actions_frame, text="戻す", command=self.undo).pack(fill=tk.X, padx=5, pady=2)
+        ttk.Button(actions_frame, text="全て戻す", command=self.undo_all).pack(fill=tk.X, padx=5, pady=2)
+        ttk.Button(actions_frame, text="初期状態に戻す", command=self.reset).pack(fill=tk.X, padx=5, pady=2)
+        ttk.Button(actions_frame, text="保存", command=self.save_image).pack(fill=tk.X, padx=5, pady=2)
+	
+        # キャンバスフレームの構成を変更
+        canvas_frame = ttk.Frame(main_frame)
+        canvas_frame.pack(side=tk.RIGHT, fill=tk.BOTH, expand=True)
+	
+        # スクロールバー
+        v_scrollbar = ttk.Scrollbar(canvas_frame, orient=tk.VERTICAL)
+        h_scrollbar = ttk.Scrollbar(canvas_frame, orient=tk.HORIZONTAL)
+	
+        # キャンバス
+        self.canvas = tk.Canvas(canvas_frame, bg="#e0e0e0", highlightthickness=0,
+                                xscrollcommand=h_scrollbar.set, yscrollcommand=v_scrollbar.set)
+	
+        # スクロールバーの設定
+        v_scrollbar.config(command=self.canvas.yview)
+        h_scrollbar.config(command=self.canvas.xview)
+	
+        # ウィジェットの配置
+        v_scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+        h_scrollbar.pack(side=tk.BOTTOM, fill=tk.X)
+        self.canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+	
+        # マウスイベントのバインド
+        self.canvas.bind("&lt;Button-1&gt;", self.on_mouse_down)
+        self.canvas.bind("&lt;B1-Motion&gt;", self.on_mouse_drag)
+        self.canvas.bind("&lt;ButtonRelease-1&gt;", self.on_mouse_up)
+        self.canvas.bind("&lt;Motion&gt;", self.on_mouse_move)
+        
+        # 初期メッセージ表示
+        self.show_welcome_message()
+    
+    def show_welcome_message(self):
+        self.canvas.create_text(
+            600, 400,
+            text="PNGまたはJPEG画像をここにドラッグ＆ドロップしてください",
+            font=("Helvetica", 14), fill="black"
+        )
+    
+    def on_drop(self, event):
+        file_path = event.data
+        # WindowsのパスからPythonのパスに変換
+        file_path = file_path.replace('{', '').replace('}', '')
+        if file_path.startswith('file:///'):
+            file_path = file_path[8:]
+        
+        # ファイルの存在確認と拡張子チェック
+        if not os.path.exists(file_path):
+            messagebox.showerror("エラー", "ファイルが見つかりません")
+            return
+        
+        _, ext = os.path.splitext(file_path.lower())
+        if ext not in ['.png', '.jpg', '.jpeg']:
+            messagebox.showerror("エラー", "PNGまたはJPEG画像のみサポートしています")
+            return
+        
+        self.load_image(file_path)
+    
+    def load_image(self, file_path):
+        try:
+            # PILで画像を開く
+            self.image_path = file_path
+            self.original_image = Image.open(file_path).convert("RGB")
+            self.current_image = self.original_image.copy()
+            self.history = []
+            
+            # 画像サイズを計算
+            self.calculate_scale_factor()
+            
+            # 画像を表示
+            self.update_display()
+            
+            # タイトル更新
+            self.root.title(f"オブジェクト除去アプリ - {os.path.basename(file_path)}")
+        except Exception as e:
+            messagebox.showerror("エラー", f"画像の読み込みに失敗しました: {e}")
+    
+    def calculate_scale_factor(self):
+        if self.original_image:
+            # キャンバスサイズを取得
+            canvas_width = self.canvas.winfo_width()
+            canvas_height = self.canvas.winfo_height()
+            
+            # キャンバスサイズが無効な場合（初期表示時など）
+            if canvas_width &lt;= 1 or canvas_height &lt;= 1:
+                canvas_width = 1000  # デフォルト値
+                canvas_height = 700  # デフォルト値
+            
+            # 画像サイズを取得
+            img_width, img_height = self.original_image.size
+            
+            # 画像がキャンバスに収まる場合
+            if img_width &lt;= canvas_width and img_height &lt;= canvas_height:
+                self.scale_factor = 1.0
+                self.is_original_size = True
+            else:
+                # スケールファクターを計算
+                width_ratio = canvas_width / img_width
+                height_ratio = canvas_height / img_height
+                self.scale_factor = min(width_ratio, height_ratio) * 0.9  # 余白のために0.9をかける
+                self.is_original_size = False
+    
+    def update_display(self):
+        if self.current_image:
+            # キャンバスをクリア
+            self.canvas.delete("all")
+            
+            if self.is_original_size:
+                # 実寸表示
+                img_width, img_height = self.current_image.size
+                self.displayed_image = self.current_image.copy()
+                
+                # スクロール領域を設定
+                self.canvas.config(scrollregion=(0, 0, img_width, img_height))
+                
+                # ボタンテキストを更新
+                self.size_button.config(text="縮小表示に切替")
+            else:
+                # 縮小表示
+                img_width, img_height = self.current_image.size
+                new_width = int(img_width * self.scale_factor)
+                new_height = int(img_height * self.scale_factor)
+                self.displayed_image = self.current_image.resize((new_width, new_height), Image.LANCZOS)
+                
+                # スクロールリージョンをリセット
+                self.canvas.config(scrollregion=(0, 0, new_width, new_height))
+                
+                # ボタンテキストを更新
+                self.size_button.config(text="実寸表示に切替")
+            
+            # PIL画像をTkinter画像に変換
+            self.tk_image = ImageTk.PhotoImage(self.displayed_image)
+            
+            # キャンバスに画像を描画
+            self.canvas.create_image(0, 0, anchor=tk.NW, image=self.tk_image)
+    
+    def toggle_size(self):
+        if self.current_image:
+            self.is_original_size = not self.is_original_size
+            self.update_display()
+    
+    def set_circle_mode(self):
+        self.mode = "circle"
+    
+    def set_curve_mode(self):
+        self.mode = "curve"
+        self.curve_points = []
+    
+    def update_radius(self, value=None):
+        self.circle_radius = self.radius_var.get()
+        self.radius_label.config(text=f"{self.circle_radius} px")
+    
+    def on_mouse_down(self, event):
+        if not self.current_image:
+            return
+        
+        # キャンバス座標を取得
+        canvas_x = self.canvas.canvasx(event.x)
+        canvas_y = self.canvas.canvasy(event.y)
+        
+        if self.mode == "circle":
+            # 円モード: マウスダウンで除去を開始
+            self.remove_object_circle(canvas_x, canvas_y)
+        elif self.mode == "curve":
+            # 曲線モード: 描画開始
+            self.drawing = True
+            self.curve_points = [(canvas_x, canvas_y)]
+            # 最初の点を描画
+            self.canvas.create_oval(canvas_x-2, canvas_y-2, canvas_x+2, canvas_y+2, fill="red", tags="curve")
+    
+    def on_mouse_drag(self, event):
+        if not self.current_image or not self.drawing:
+            return
+        
+        # キャンバス座標を取得
+        canvas_x = self.canvas.canvasx(event.x)
+        canvas_y = self.canvas.canvasy(event.y)
+        
+        if self.mode == "curve":
+            # 曲線モードの場合、点を追加
+            self.curve_points.append((canvas_x, canvas_y))
+            
+            # 線を描画
+            if len(self.curve_points) &gt; 1:
+                x1, y1 = self.curve_points[-2]
+                x2, y2 = self.curve_points[-1]
+                self.canvas.create_line(x1, y1, x2, y2, fill="red", width=2, tags="curve")
+    
+    def on_mouse_up(self, event):
+        if not self.current_image:
+            return
+        
+        # キャンバス座標を取得
+        canvas_x = self.canvas.canvasx(event.x)
+        canvas_y = self.canvas.canvasy(event.y)
+        
+        if self.mode == "curve" and self.drawing:
+            self.drawing = False
+            
+            # 曲線を閉じる
+            if len(self.curve_points) &gt; 2:
+                # 最後の点と最初の点を結ぶ
+                x1, y1 = self.curve_points[-1]
+                x2, y2 = self.curve_points[0]
+                self.canvas.create_line(x1, y1, x2, y2, fill="red", width=2, tags="curve")
+                
+                # 領域を除去
+                self.remove_object_curve()
+                
+                # 描画をクリア
+                self.canvas.delete("curve")
+    
+    def on_mouse_move(self, event):
+        if not self.current_image:
+            return
+        
+        # キャンバス座標を取得
+        canvas_x = self.canvas.canvasx(event.x)
+        canvas_y = self.canvas.canvasy(event.y)
+        
+        if self.mode == "circle":
+            # 円を表示（プレビュー）
+            self.canvas.delete("circle_preview")
+            radius = self.circle_radius
+            if not self.is_original_size:
+                radius = radius * self.scale_factor
+            
+            self.canvas.create_oval(
+                canvas_x - radius, canvas_y - radius,
+                canvas_x + radius, canvas_y + radius,
+                outline="red", width=2, tags="circle_preview"
+            )
+    
+    def convert_canvas_to_image_coords(self, canvas_x, canvas_y):
+        # キャンバス座標から実際の画像座標に変換
+        if self.is_original_size:
+            return int(canvas_x), int(canvas_y)
+        else:
+            return int(canvas_x / self.scale_factor), int(canvas_y / self.scale_factor)
+    
+    def remove_object_circle(self, canvas_x, canvas_y):
+        if not self.current_image:
+            return
+        
+        # キャンバス座標から画像座標に変換
+        img_x, img_y = self.convert_canvas_to_image_coords(canvas_x, canvas_y)
+        
+        # 現在の画像を履歴に保存
+        self.history.append(self.current_image.copy())
+        
+        # OpenCVで処理するためにnumpy配列に変換
+        img_array = np.array(self.current_image)
+        
+        # マスク作成（円）
+        mask = np.zeros((img_array.shape[0], img_array.shape[1]), dtype=np.uint8)
+        cv2.circle(mask, (img_x, img_y), self.circle_radius, 255, -1)
+        
+        # 修復画像を作成
+        inpainted_img = self.inpaint_image(img_array, mask)
+        
+        # PILイメージに戻す
+        self.current_image = Image.fromarray(inpainted_img)
+        
+        # 表示を更新
+        self.update_display()
+    
+    def remove_object_curve(self):
+        if not self.current_image or len(self.curve_points) &lt; 3:
+            return
+        
+        # 現在の画像を履歴に保存
+        self.history.append(self.current_image.copy())
+        
+        # キャンバス座標から画像座標に変換
+        image_points = [self.convert_canvas_to_image_coords(x, y) for x, y in self.curve_points]
+        
+        # OpenCVで処理するためにnumpy配列に変換
+        img_array = np.array(self.current_image)
+        
+        # マスク作成（多角形）
+        mask = np.zeros((img_array.shape[0], img_array.shape[1]), dtype=np.uint8)
+        points = np.array(image_points, dtype=np.int32)
+        cv2.fillPoly(mask, [points], 255)
+        
+        # 修復画像を作成
+        inpainted_img = self.inpaint_image(img_array, mask)
+        
+        # PILイメージに戻す
+        self.current_image = Image.fromarray(inpainted_img)
+        
+        # 表示を更新
+        self.update_display()
+    
+    def inpaint_image(self, img_array, mask):
+        try:
+            # 選択されたアルゴリズムを取得
+            algorithm = self.algo_var.get()
+            
+            # アルゴリズムに応じてinpaintingメソッドを選択
+            if algorithm == "ns":
+                # NSアルゴリズム
+                return cv2.inpaint(img_array, mask, 7, cv2.INPAINT_NS)
+            else:
+                # Teleaアルゴリズム
+                return cv2.inpaint(img_array, mask, 3, cv2.INPAINT_TELEA)
+                
+        except Exception as e:
+            print(f"修復中にエラーが発生しました: {e}")
+            # エラー時はTeleaを使用
+            return cv2.inpaint(img_array, mask, 3, cv2.INPAINT_TELEA)
+    
+    def undo(self):
+        if self.history:
+            self.current_image = self.history.pop()
+            self.update_display()
+    
+    def undo_all(self):
+        if self.history:
+            self.current_image = self.history[0]
+            self.history = []
+            self.update_display()
+    
+    def reset(self):
+        if self.original_image:
+            self.current_image = self.original_image.copy()
+            self.history = []
+            self.update_display()
+    
+    def save_image(self):
+        if not self.current_image:
+            messagebox.showinfo("情報", "保存する画像がありません")
+            return
+        
+        # 元のファイルパスから情報を取得
+        original_dir = os.path.dirname(self.image_path)
+        original_name = os.path.basename(self.image_path)
+        name_without_ext = os.path.splitext(original_name)[0]
+        
+        # デフォルトのファイル名を設定
+        default_filename = f"{name_without_ext}-edited.jpg"
+        
+        # ファイル保存ダイアログを表示
+        file_path = filedialog.asksaveasfilename(
+            initialdir=original_dir,
+            initialfile=default_filename,
+            defaultextension=".jpg",
+            filetypes=[("JPEG files", "*.jpg")]
+        )
+        
+        if file_path:
+            try:
+                # 保存
+                self.current_image.save(file_path, "JPEG", quality=95)
+                # --- コメントアウト --- messagebox.showinfo("成功", "画像を保存しました")
+            except Exception as e:
+                messagebox.showerror("エラー", f"保存中にエラーが発生しました: {e}")
+    
+    def on_resize(self, event):
+        # ウィンドウサイズ変更時に呼ばれる
+        if self.original_image and not self.is_original_size:
+            self.calculate_scale_factor()
+            self.update_display()
+
+if __name__ == "__main__":
+    # TkDnDライブラリをインポート
+    try:
+        from tkinterdnd2 import TkinterDnD, DND_FILES
+        root = TkinterDnD.Tk()
+    except ImportError:
+        messagebox.showerror("エラー", "TkinterDnD2ライブラリがインストールされていません。\npip install tkinterdnd2 でインストールしてください。")
+        root = tk.Tk()
+        
+    app = ObjectRemovalApp(root)
+    root.mainloop()
+</pre>
+<p><a class="link-card" href="../../../2026/05/26/164913.html"><span class="lc-body"><span class="lc-title">Windows）Python）写真「顔検出＋AI輪郭抽出＋AI自動シミ消し＋美肌効果」アプリ作成。</span><span class="lc-desc">Pythonで、写真の人物を美肌に編集加工するWindowsアプリなどを作成してきた。 AIによる顔検出＋AI輪郭抽出も行った。 写真のオブジェクト除去も作成した。シミ消しにも使える。 今回、 「顔検出＋AI輪郭抽出＋美…</span><span class="lc-site">晴歩雨描 · <time>2026-05-26</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260528/20260528114608.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../10/18/132848.html"><span class="lc-body"><span class="lc-title">Claude）Python）「写真スポット編集ツール」Windowsアプリ作成。シミ消し、オブジェクト除去に使える。スポット修正＋コピー修正。ICCプロファイル維持。</span><span class="lc-desc">以前に、「写真オブジェクト除去」Windowsアプリを作成した。 これは、写真の一部をスポット的に編集するアプリ。 これに加えて、クローンコピー修正もできるようにしたバージョンをPythonで作成。 ■ スポット修正 写…</span><span class="lc-site">晴歩雨描 · <time>2025-10-18</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20251018/20251018131038.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2026/03/25/094706.html"><span class="lc-body"><span class="lc-title">Claude）Python）「写真オブジェクト除去」Windowsアプリ作成。IOPaint＋LaMa使用。ICCプロファイル維持。</span><span class="lc-desc">以前に、Pythonを使って、「写真オブジェクト除去」Windowsアプリを作成した。 これらのアプリは、周辺ピクセルだけで補完する方式なので、顔の小さいシミを消すぐらいしか使い道がなかった。 画像生成AI系でも、オブジ…</span><span class="lc-site">晴歩雨描 · <time>2026-03-25</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260325/20260325083556.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2021/03/04/161910.html"><span class="lc-body"><span class="lc-title">SILKYPIX）写真に映り込んでしまった人物やゴミなど不要なものを消す（オブジェクト除去）。スポッティングツールを使う。写真部分修正。消しゴムマジック。</span><span class="lc-desc">写真画像調整ソフト「SILKYPIX JPEG Photography 10」で、映り込んでしまった人物を除去してみた。 オリジナル写真（右側に人物が映り込んでいる） 人物を空の色で消した。 ［操作モード］→［スポッティ…</span><span class="lc-site">晴歩雨描 · <time>2021-03-04</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20210304/20210304160141.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2021/02/02/164446.html"><span class="lc-body"><span class="lc-title">SILKYPIX）ポートレート写真のシミ消し・除去（スポッティングツール）補正、しみ抜き、美肌効果、軟調効果。</span><span class="lc-desc">写真画像調整ソフト「SILKYPIX JPEG Photography 10」でポートレート写真のシミ除去や美肌効果を試してみる。 ※ オリジナル写真はシミではなく「そばかす」の写真で代用。この女性の写真の場合、このそば…</span><span class="lc-site">晴歩雨描 · <time>2021-02-02</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20210202/20210202160819.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2024/05/28/171118.html"><span class="lc-body"><span class="lc-title">Windows無料アプリ「GIMP」で写真のシミ消しを試した。</span><span class="lc-desc">先程、「Windowsフォト」「Windows版 Photoshop Express」で、写真のシミ消しを試した。 今回、無料のWindowsアプリ「GIMP」で、写真のシミ消しを試した。 ※ オリジナル写真はシミではな…</span><span class="lc-site">晴歩雨描 · <time>2024-05-28</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20240528/20240528170249.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../10/13/121511.html"><span class="lc-body"><span class="lc-title">Claude）Python）写真を美肌に編集加工するWindowsアプリ作成（２）。毛穴やシミを目立たなくする。AIによる人物顔判別。</span><span class="lc-desc">先程、写真を美肌にするWindowsアプリを作成した。このバージョンでは、人物の顔判別はしていない。背景も含めて全体にソフトフォーカスをかける感じ。 今回、AIによる人物の顔を判別をしている。人物のみを美肌にし、背景はな…</span><span class="lc-site">晴歩雨描 · <time>2025-10-13</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20251013/20251013115756.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../05/18/090800.html"><span class="lc-body"><span class="lc-title">Claude）Python）「写真の明るさ＆コントラスト一括補正」Windowsアプリ作成。ICCプロファイル維持。</span><span class="lc-desc">Pythonで「 写真の明るさ＆コントラスト一括補正 」Windowsアプリ作成。 複数の画像を一括して補正できる。 AIツールClaudeに作成してもらった。 ※ 【後日追記】最初のバージョンでは、元の写真に埋め込まれ…</span><span class="lc-site">晴歩雨描 · <time>2025-05-18</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250518/20250518090322.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../10/172840.html"><span class="lc-body"><span class="lc-title">Claude）Python）PowerPointに複数写真（画像）を順番に並べて貼り付けるプログラム作成（Ver.1）。</span><span class="lc-desc">※ このプログラムについては、後日、改訂版を作成。（↓） PowerPoint に複数写真を順番に並べて貼り付けるプログラムを作成。AI生成ツール「 Claude 」に作ってもらった。 Python で作成。貼り付ける写…</span><span class="lc-site">晴歩雨描 · <time>2025-04-10</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250410/20250410165838.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../16/095722.html"><span class="lc-body"><span class="lc-title">Claude）JavaScript）画像フォーマットPNG、WEBP、AVIFをJPEGに変換するWebツール作成。複数ファイル一括も可。</span><span class="lc-desc">過去に、画像フォーマットPNGやWEBPをJPEGに変換するWebアプリを作成した。 今回、画像フォーマット PNG、WEBP、AVIFをJPEGに変換する Webアプリを作成。AIツールClaudeに作成してもらった。…</span><span class="lc-site">晴歩雨描 · <time>2025-04-16</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250416/20250416094324.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../08/145110.html"><span class="lc-body"><span class="lc-title">ChatGPTの画像生成AI「4o Image Generation」で、言葉で指示しての写真のオブジェクト除去機能を試した。</span><span class="lc-desc">先程、ChatGPTの画像生成AI「4o Image Generation」を使って、写真の高画質化を試した。高画質化の範疇を超えた、ある意味、恐ろしい能力だった。 今回、 消しゴムマジックのように写真に写り込んだ不要な…</span><span class="lc-site">晴歩雨描 · <time>2025-04-08</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250408/20250408143541.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2024/10/06/182845.html"><span class="lc-body"><span class="lc-title">JPEG写真の高画質化（ノイズ除去＋シャープネスなど）を無料でできるWebツールアプリ「AI Ease」。野鳥写真で試した。</span><span class="lc-desc">先程、オブジェクト除去Webツール「 AI Ease 」を試した。 「AI Ease」は、オブジェクト除去以外にも多くの機能を持っている。 AI画像編集ツール AI背景除去 AI画像高画質化（ノイズ除去、シャープネスなど…</span><span class="lc-site">晴歩雨描 · <time>2024-10-06</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20241006/20241006181719.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../02/12/100342.html"><span class="lc-body"><span class="lc-title">JavaScript）JPEG画像の白色部分を透過にしたPNG画像生成Webツール。Google Geminiで作成。</span><span class="lc-desc">以前に、ImageMagickを使って、JPEG画像の白色部分を透過にしたPNG画像を生成した。 今回、JavaScriptを使って、ブラウザにJPEG画像をアップロードして、白色部分を透過にしたPNG画像をダウンロード…</span><span class="lc-site">晴歩雨描 · <time>2025-02-12</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250212/20250212095643.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../03/09/142603.html"><span class="lc-body"><span class="lc-title">JavaScript）2枚の写真/画像をドラッグ＆ドロップして画像比較Webツール。横並び⇔重ねてスライダーを切り替え。Image Compare Viewerを使用。</span><span class="lc-desc">先程、パソコンローカルの2枚の写真/画像をドラッグ＆ドロップして、TwentyTwentyでスライダーで画像比較するWebツールを作成した。 以前に、パソコンローカルの2枚の写真/画像をドラッグ＆ドロップして横並びに表示…</span><span class="lc-site">晴歩雨描 · <time>2025-03-09</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250309/20250309141249.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2019/06/30/174808.html"><span class="lc-body"><span class="lc-title">写真でアート：GIMPを使って、写真画像の一部を透過にして、別の画像と重ね合わせ合成してアートを作成する。レイヤー使用。</span><span class="lc-desc">GIMP を使って、写真の一部を透過にして、別の画像と合成してみた。 オリジナル画像は、GIMPのプラグイン「G&#x27;MIC」を使って写真を加工したものを使用。 【オリジナル画像】 １．透過手順 まず、GIMPで、白っぽい背…</span><span class="lc-site">晴歩雨描 · <time>2019-06-30</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190630/20190630170626.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../01/05/131859.html"><span class="lc-body"><span class="lc-title">JavaScript）白黒（モノクロ）画像をブラウザにアップロードして、色（カラー）変換するWebツール作成。アンチエイリアシング対応。カラーピッカー使用。Copilotで作成。</span><span class="lc-desc">白黒（モノクロ）画像をブラウザにアップロードして、色（カラー）変換するWebツールをJavaScriptで作成。 白黒画像を簡単な手順でカラー変換できるツールは意外と見つからない。 なので、カラー変換できるツールを、HT…</span><span class="lc-site">晴歩雨描 · <time>2025-01-05</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250105/20250105131043.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2024/11/24/111430.html"><span class="lc-body"><span class="lc-title">JavaScript）ブラウザに画像をアップロードしてトーンカーブで色補正をしてダウンロードできるページ。「jquery.iocurve」使用。</span><span class="lc-desc">ブラウザに画像をアップロードして、トーンカーブ編集をしてダウンロードできるページを作成。 ※ PCでの利用を想定。スマホでは使えない。 https://ok2nd.github.io/tool/photo/tone-cu…</span><span class="lc-site">晴歩雨描 · <time>2024-11-24</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20241124/20241124111541.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../02/08/220841.html"><span class="lc-body"><span class="lc-title">AIツール「ChatGPT」「Gemini」「Copilot」「Perplexity」「リートン」にJavaScriptインベーダーゲームを作らせてみた。</span><span class="lc-desc">ちょっとしたコンピュータープログラムなら、AIツールに依頼すれば、簡単に出来てしまう。コメントも入っていたり、エラー処理もされているなど品質レベルも高い。 細かい仕様を記述する必要はない。やりたい事をシンプルに要求するだ…</span><span class="lc-site">晴歩雨描 · <time>2025-02-08</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250208/20250208215451.jpg" alt="" loading="lazy"></span></a></p></div></article>
+</body>
+</html>

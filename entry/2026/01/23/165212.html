@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Windows）XAMPPのインストールドライブやディレクトリの移動は注意が必要。 - 晴歩雨描</title>
+<link rel="stylesheet" href="../../../../style.css">
+</head>
+<body>
+<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>Windows）XAMPPのインストールドライブやディレクトリの移動は注意が必要。</h1><p class="meta">2026-01-23 · <a href="../../../../category/c8.html">コンピュータ</a> <a href="../../../../category/c13.html">ホームページ、Web作成</a></p><div class="entry-body"><p>Windowsで、XAMPPを別ドライブへ移動させたり、ディレクトリ変更する場合は、注意が必要。</p>
+<p>xamppディレクトリ丸ごとコピーして立ち上げると、古い環境（ドライブやディレクトリ）をそのまま継続して使おうとしてしまう。</p>
+<p>例えば、以下のファイルの中に、直接、ドライブやディレクトリが書かれていたりする。</p>
+<p><strong>【\xampp\mysql\bin\my.ini】</strong></p>
+<pre>socket = "D:/xampp/mysql/mysql.sock"
+plugin_dir = "D:/xampp/mysql/lib/plugin/"
+innodb_data_home_dir = "D:/xampp/mysql/data"
+innodb_data_file_path = ibdata1:10M:autoextend
+innodb_log_group_home_dir = "D:/xampp/mysql/data"</pre>
+<p><strong>【\xampp\apache\conf\httpd.conf】</strong></p>
+<pre>ServerRoot "D:/xampp/apache"
+DocumentRoot "D:/xampp/htdocs"</pre>
+<h4 id="-問題を起こさないXAMPPの移行方法">■ 問題を起こさないXAMPPの移行方法</h4>
+<p>xamppディレクトリ丸ごとコピーせずに、XAMPPを初期インストールした上で、htdocsファイルとMySQLデータをコピーする。</p>
+<p><em><span style="color: #dd830c;">（以下、「XAMPP 1.8.3」の例。）</span></em></p>
+<p><strong>●「XAMPP」インストール</strong></p>
+<p>インストーラー版を使わずに、ZIP版「<span style="color: #ff0000;"><em>xampp-win32-1.8.3-5-VC11.zip</em></span>」を使う。<span style="color: #dd830c;">そもそも「xampp-win32-1.8.3-5-VC11.zip」を使えば、今回のような問題は起きないのかもしれない。</span></p>
+<p>「XAMPP 1.8.3」の場合、以下から「xampp-win32-1.8.3-5-VC11.zip」を入手して、展開したファイルをそのままディレクトリに配置する。</p>
+<p><a href="https://sourceforge.net/projects/xampp/files/XAMPP%20Windows/1.8.3/" target="_blank">https://sourceforge.net/projects/xampp/files/XAMPP%20Windows/1.8.3/</a></p>
+<ul>
+<li>\xampp</li>
+</ul>
+<p><strong>● 運用していたHTMLファイルとMySQLデータベースをコピー</strong></p>
+<ul>
+<li><em>\xampp\htdocs</em></li>
+<li><em>\xampp\mysql\data</em></li>
+</ul>
+<p><strong>● PHPタイムゾーンを確認/変更</strong></p>
+<p>「\xampp\php\php.ini」</p>
+<pre>date.timezone = Europe/Berlin
+↓↓↓<br />date.timezone = Asia/Tokyo</pre>
+<p><strong>● phpMyAdminが使えるようにする</strong></p>
+<p><strong>【\xampp\phpMyAdmin\config.inc.php】</strong></p>
+<p>'user'や'password'を環境に合わせて修正する。'auth_type'は必要に応じて、'cookie'にする。</p>
+<pre>/* Authentication type and info */
+$cfg['Servers'][$i]['auth_type'] = 'config';
+$cfg['Servers'][$i]['user'] = 'xxx';
+$cfg['Servers'][$i]['password'] = 'xxx';
+$cfg['Servers'][$i]['extension'] = 'mysqli';
+$cfg['Servers'][$i]['AllowNoPassword'] = true;
+$cfg['Lang'] = '';</pre>
+<p><strong>● XAMPPコントロールパネルを管理者で実行するように設定</strong></p>
+<p>「xampp/xampp-control.exe」のプロパティを開いて、「管理者としてこのプログラムを実行する」にチェックを入れる。</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250614/20250614223143.png" width="470" height="580" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p><strong>● XAMPPコントロールパネル</strong></p>
+<p>ApacheとMySQLをサービスとして実行するように設定する。</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250614/20250614223502.png" width="743" height="430" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250614/20250614223505.png" width="743" height="430" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p><strong>● XAMPP動作確認</strong></p>
+<p>ブラウザで、「<a href="http://localhost/">http://localhost/</a>」と入れて初期画面を表示。表示されたページで「日本語」を選択。</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250614/20250614223457.png" width="938" height="750" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p><a class="link-card" href="../../08/01/132040.html"><span class="lc-body"><span class="lc-title">「XAMPP」「MyHome Portal」DドライブからCドライブへ変更。XAMPPインストール備忘録。SSDドライブ現状構成。</span><span class="lc-desc">「 XAMPP（Apache、PHP、MySQL） 」を入れているDドライブが最近2度ほど認識しなくなることがあった。原因がPC本体なのか、SSDなのか、USBケーブルなのか不明。不安定な状態を回避するため、 XAMPP…</span><span class="lc-site">晴歩雨描 · <time>2026-08-01</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260801/20260801091856.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../28/111720.html"><span class="lc-body"><span class="lc-title">XAMPP（PHP,MySQL）の複数バージョンをWindowsPCローカルで共存する方法。同時に新旧のXAMPP併用できず。</span><span class="lc-desc">※ 以下の手順を間違えると、既存のMySQLデータベースを破壊する可能性あり。MySQLデータベースは必ずバックアップしてから試すべき。 ※ 既存のXAMPPのサービスを停止し、別バージョンのXAMPPを起動して使うこと…</span><span class="lc-site">晴歩雨描 · <time>2026-01-28</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260128/20260128111656.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2025/06/14/225535.html"><span class="lc-body"><span class="lc-title">Windows11）MyHome Portal が立ち上がらなくなったので、XAMPPを再インストール。</span><span class="lc-desc">※ 後日追記：ドライブやディレクトリを変える場合は注意が必要。 今日、自分が作成したWebシステム「MyHome Portal」が立ち上がらなくなった。 XAMPPコントロールパネルを見るとエラーが出ている。原因を探して…</span><span class="lc-site">晴歩雨描 · <time>2025-06-14</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250614/20250614222301.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2025/07/28/213747.html"><span class="lc-body"><span class="lc-title">XAMPP）phpMyAdminを開く時にログイン画面を出して、rootのパスワードを入力させる。（セキュリティ）</span><span class="lc-desc">備忘録として。 「phpMyAdmin」 http://localhost/phpmyadmin/ を開く時にログイン画面を出して、パスワード入力させる方法。 XAMPPの環境で、MySQLの管理者（root）にパスワー…</span><span class="lc-site">晴歩雨描 · <time>2025-07-28</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250728/20250728212523.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2022/08/06/224635.html"><span class="lc-body"><span class="lc-title">WindowsPCの古いXAMPPにWordPress（5.0.16）をインストール。</span><span class="lc-desc">※ 後日追記：ドライブやディレクトリを変える場合は注意が必要。 自宅のWindowsPCにWordPressをインストールした手順の備忘録。 自宅のWindowsPCには、古いバージョンのXAMPP（ XAMPP 1.8…</span><span class="lc-site">晴歩雨描 · <time>2022-08-06</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220806/20220806222743.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2021/10/19/151720.html"><span class="lc-body"><span class="lc-title">外付けSSD（バッファロー250GB）に、XAMPP Portable + MyHome Portal を導入。</span><span class="lc-desc">サブのPCとして、新しいノートパソコンを購入。 新しいノートパソコンに「 XAMPP 」＋「 MyHome Portal 」を入れる。 パソコンのローカルディスク（C:）には直接入れず、 外付けSSD（今回はE:ドライブ…</span><span class="lc-site">晴歩雨描 · <time>2021-10-19</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20211019/20211019141314.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2020/12/03/222133.html"><span class="lc-body"><span class="lc-title">Windows）XAMPP）運用中の「MyHome Portal」を別のPCに移植する手順。</span><span class="lc-desc">※ 後日追記：ドライブやディレクトリを変える場合は注意が必要。 運用中の「MyHome Portal」 を別のPCに移植する手順の備忘録。 【システム環境】 Windows 10 XAMPP 1.8.3 「 MyHome…</span><span class="lc-site">晴歩雨描 · <time>2020-12-03</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20201203/20201203215128.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2025/12/19/105155.html"><span class="lc-body"><span class="lc-title">Windows 11 Pro）セットアップ備忘録。ローカルアカウントで。使いやすくする設定も。</span><span class="lc-desc">新PCを購入した。 新PCのWindows 11 Pro のセットアップ備忘録。 ■ Windows 11 Pro セットアップ ※ アカウントは、Microsoft アカウントを使わず、ローカルアカウントを使う。 ※ …</span><span class="lc-site">晴歩雨描 · <time>2025-12-19</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20251215/20251215173700.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2025/01/20/222401.html"><span class="lc-body"><span class="lc-title">Windows11）セットアップでMicrosoftアカウントをスキップし、ローカルアカウントで使う。</span><span class="lc-desc">Windwos10では、セットアップでMicrosoftアカウントの入力をスキップできたが、Windows11ではスキップができなくなった。 だが、それを回避する方法がある。 ※ 以下の「手順 A」は、最新のWindow…</span><span class="lc-site">晴歩雨描 · <time>2025-01-20</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250120/20250120220649.jpg" alt="" loading="lazy"></span></a></p></div></article>
+</body>
+</html>

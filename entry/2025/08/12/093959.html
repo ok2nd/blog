@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gemini）Python）「ファイル拡張子別フォルダー移動」Windowsアプリ作成。 - 晴歩雨描</title>
+<link rel="stylesheet" href="../../../../style.css">
+</head>
+<body>
+<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>Gemini）Python）「ファイル拡張子別フォルダー移動」Windowsアプリ作成。</h1><p class="meta">2025-08-12 · <a href="../../../../category/c18.html">写真・カメラ</a> <a href="../../../../category/c42.html">＜AI＞</a> <a href="../../../../category/c8.html">コンピュータ</a></p><div class="entry-body"><p>Pythonで「ファイル拡張子別フォルダー移動」Windowsアプリを作成。</p>
+<p>生成AI「<em>Gemini</em>」「<em>Claude</em>」「<em>ChatGPT GPT-5</em>」で、以下のプロンプトで作成してみた。</p>
+<h5 id="生成AI-プロンプト">【生成AI プロンプト】</h5>
+<p>Windows環境のPythonでアプリを作って。</p>
+<ul>
+<li>Windowsフォルダ内のファイルを拡張子別に、拡張子名フォルダーに分類する。</li>
+<li>拡張子は、大文字小文字は区別せず、フォルダー名は、大文字にする。</li>
+<li>拡張子のJPGとJPEGは同じものとして扱う。フォルダー名は、JPGとする。</li>
+<li>処理対象フォルダーは、アプリのGUIで指定できるようにする。</li>
+<li>処理対象フォルダー選択用のフォルダー入力欄は、Windowsフォルダー等からコピー&amp;ペーストできる。</li>
+<li>処理対象フォルダー選択ボタンを押したら、その時点のフォルダー入力欄のパスを開く。</li>
+<li>実行状況のログも表示して。</li>
+</ul>
+<p>-------------------------</p>
+<p>どの生成AIも、基本機能は一発で実現できた。フォルダー選択の動作とシンプルさで、「<em>Gemini</em>」版を採用。</p>
+<h5 id="Pythonインストール">【Pythonインストール】</h5>
+<p>Pythonがインストールされていなければ、インストールする。</p>
+<p><a class="link-card" href="../../../2023/09/08/210741.html"><span class="lc-body"><span class="lc-title">Windows）「Python（Ver.3.11.5）」インストール。</span><span class="lc-desc">Windows版Pythonのインストール手順の備忘録。 ■ Pythonダウンロード 現時点の最新、Ver.3.11.5。 ■ Python インストール 「 python-3.11.5-amd64.exe 」を実行。…</span><span class="lc-site">晴歩雨描 · <time>2023-09-08</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20230908/20230908204241.jpg" alt="" loading="lazy"></span></a></p>
+<h5 id="Pythonプログラム">【Pythonプログラム】</h5>
+<p><span style="color: #ff0000;">※ このプログラムを利用する場合は、自己責任でお願いします。不具合の保証はできません。</span></p>
+<p>作成されたプログラムを、「拡張子別フォルダー移動.pyw」（名前は任意）という名前にして、デスクトップに置いておき、ダブルクリックで実行する。</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250812/20250812093352.jpg" width="602" height="432" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<h5 id="Pythonプログラムコード">【Pythonプログラムコード】</h5>
+<pre>import tkinter as tk
+from tkinter import filedialog, messagebox
+import os
+import shutil
+
+class FileOrganizerApp:
+    def __init__(self, root):
+        self.root = root
+        self.root.title("ファイル整理アプリ")
+        self.root.geometry("600x400")
+
+        # UI要素の配置
+        self.create_widgets()
+
+    def create_widgets(self):
+        # フォルダーパス入力欄とボタン
+        frame_path = tk.Frame(self.root, padx=10, pady=10)
+        frame_path.pack(fill=tk.X)
+
+        label_path = tk.Label(frame_path, text="対象フォルダーパス:")
+        label_path.pack(side=tk.LEFT)
+
+        self.entry_path = tk.Entry(frame_path, width=50)
+        self.entry_path.pack(side=tk.LEFT, expand=True, fill=tk.X, padx=5)
+
+        btn_browse = tk.Button(frame_path, text="フォルダー選択", command=self.browse_folder)
+        btn_browse.pack(side=tk.LEFT)
+
+        # 実行ボタン
+        btn_run = tk.Button(self.root, text="実行", command=self.run_organizer, font=("", 12), bg="#4CAF50", fg="white")
+        btn_run.pack(pady=10)
+
+        # ログ表示エリア
+        self.log_text = tk.Text(self.root, height=15, state="disabled", bg="#333", fg="#FFF")
+        self.log_text.pack(fill=tk.BOTH, expand=True, padx=10, pady=5)
+
+    def log_message(self, message):
+        """ログをテキストボックスに追記する"""
+        self.log_text.config(state="normal")
+        self.log_text.insert(tk.END, message + "\n")
+        self.log_text.see(tk.END)  # 最新の行を表示
+        self.log_text.config(state="disabled")
+        self.root.update()
+
+    def browse_folder(self):
+        """フォルダー選択ダイアログを開く"""
+        current_path = self.entry_path.get()
+        if os.path.exists(current_path):
+            initial_dir = current_path
+        else:
+            initial_dir = os.path.expanduser("~")
+        
+        folder_selected = filedialog.askdirectory(initialdir=initial_dir)
+        if folder_selected:
+            self.entry_path.delete(0, tk.END)
+            self.entry_path.insert(0, folder_selected)
+
+    def run_organizer(self):
+        """ファイル整理処理を実行する"""
+        target_path = self.entry_path.get()
+        if not os.path.isdir(target_path):
+            messagebox.showerror("エラー", "指定されたパスは存在しないか、フォルダーではありません。")
+            return
+
+        self.log_text.config(state="normal")
+        self.log_text.delete(1.0, tk.END)
+        self.log_text.config(state="disabled")
+        self.log_message(f"--- 整理を開始します: {target_path} ---")
+
+        try:
+            for filename in os.listdir(target_path):
+                file_path = os.path.join(target_path, filename)
+                
+                # ファイルのみを対象とする
+                if os.path.isfile(file_path):
+                    _, ext = os.path.splitext(filename)
+                    
+                    if not ext:
+                        continue # 拡張子がないファイルはスキップ
+                    
+                    # 拡張子を小文字に変換
+                    ext_lower = ext.lstrip('.').lower()
+                    
+                    # JPGとJPEGを統合
+                    if ext_lower in ["jpg", "jpeg"]:
+                        folder_name = "JPG"
+                    else:
+                        folder_name = ext_lower.upper()
+
+                    destination_folder = os.path.join(target_path, folder_name)
+                    
+                    # 存在しない場合はフォルダーを作成
+                    if not os.path.exists(destination_folder):
+                        os.makedirs(destination_folder)
+                        self.log_message(f"新しいフォルダーを作成しました: {folder_name}")
+                    
+                    destination_path = os.path.join(destination_folder, filename)
+                    
+                    # ファイルを移動
+                    shutil.move(file_path, destination_path)
+                    self.log_message(f"ファイル '{filename}' を '{folder_name}' に移動しました。")
+
+            self.log_message("\n--- 整理が完了しました！?? ---")
+
+        except Exception as e:
+            self.log_message(f"エラーが発生しました: {e}")
+            messagebox.showerror("エラー", f"処理中にエラーが発生しました: {e}")
+
+if __name__ == "__main__":
+    root = tk.Tk()
+    app = FileOrganizerApp(root)
+    root.mainloop()
+</pre>
+<p><a class="link-card" href="130210.html"><span class="lc-body"><span class="lc-title">Claude）Python）「写真をEXIF機種毎のフォルダーに分類」Windowsアプリ作成。</span><span class="lc-desc">Pythonで「写真をEXIF機種毎のフォルダーに分類」Windowsアプリを作成。 生成AI「 Claude 」「 Gemini 」「 Copilot 」で、以下のプロンプトで作成した。 【生成AI プロンプト】 Wi…</span><span class="lc-site">晴歩雨描 · <time>2025-08-12</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250812/20250812125530.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../06/14/093748.html"><span class="lc-body"><span class="lc-title">JavaScript＆Web、Python＆Windows）写真画像編集アプリ／ツールまとめ。</span><span class="lc-desc">写真画像編集アプリ／ツールを、JavaScriptとPythonでいくつか作成してきた。それらのツールまとめ。 ■ 画像縮小 【Webツール（JavaScript）】 https://ok2nd.github.io/to…</span><span class="lc-site">晴歩雨描 · <time>2025-06-14</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250614/20250614094138.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../06/13/153014.html"><span class="lc-body"><span class="lc-title">Claude）Python）透過画像作成Windowsアプリ作成。</span><span class="lc-desc">Pythonで「透過画像作成」Windowsアプリ作成。画像の白に近い色を透過にする。元データはJPEGまたはPNG。白の範囲は指定できる。AIツールClaudeに作成してもらった。 【使い方】 元画像ファイルは、ドラッ…</span><span class="lc-site">晴歩雨描 · <time>2025-06-13</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250613/20250613151037.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../02/12/100342.html"><span class="lc-body"><span class="lc-title">JavaScript）JPEG画像の白色部分を透過にしたPNG画像生成Webツール。Google Geminiで作成。</span><span class="lc-desc">以前に、ImageMagickを使って、JPEG画像の白色部分を透過にしたPNG画像を生成した。 今回、JavaScriptを使って、ブラウザにJPEG画像をアップロードして、白色部分を透過にしたPNG画像をダウンロード…</span><span class="lc-site">晴歩雨描 · <time>2025-02-12</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250212/20250212095643.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../06/13/162926.html"><span class="lc-body"><span class="lc-title">Claude）JavaScript）透過画像作成Webツール作成。</span><span class="lc-desc">先程、Pythonで「透過画像作成」Windowsアプリを作成した。 今回、ほぼ同等の機能のWebアプリをJavaScriptで作成した。AIツールClaudeに作成してもらった。 以前に、JavaScriptで同様のア…</span><span class="lc-site">晴歩雨描 · <time>2025-06-13</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250613/20250613162135.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../02/05/223009.html"><span class="lc-body"><span class="lc-title">Windows）JPEG画像の白色部分を透過にしたPNG画像生成方法。ImageMagickで複数ファイルを一括バッチ処理。</span><span class="lc-desc">Windowsで、JPEG画像の白色部分を透過にしたPNG画像の生成方法。 ImageMagickを使用。 ※注：ImageMagick7以降では、「convert」コマンドが「magick」に変更されている。以下の記述…</span><span class="lc-site">晴歩雨描 · <time>2025-02-05</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250205/20250205221642.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2019/06/30/174808.html"><span class="lc-body"><span class="lc-title">写真でアート：GIMPを使って、写真画像の一部を透過にして、別の画像と重ね合わせ合成してアートを作成する。レイヤー使用。</span><span class="lc-desc">GIMP を使って、写真の一部を透過にして、別の画像と合成してみた。 オリジナル画像は、GIMPのプラグイン「G&#x27;MIC」を使って写真を加工したものを使用。 【オリジナル画像】 １．透過手順 まず、GIMPで、白っぽい背…</span><span class="lc-site">晴歩雨描 · <time>2019-06-30</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190630/20190630170626.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../06/02/112022.html"><span class="lc-body"><span class="lc-title">Claude＆Gemini）Python）「写真のカラーバランス一括補正」Windowsアプリ作成。Pixel 9 Proの青被りを補正。</span><span class="lc-desc">スマホ「 Pixel 9 Pro 」を所有しているが、写真の青被りがきつい。特に人物の顔色が悪くなる。GIMP等でカラーバランスを調整することで補正できるが、枚数が多いと面倒。 複数画像を一括して補正できるツール が欲し…</span><span class="lc-site">晴歩雨描 · <time>2025-06-02</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250602/20250602110316.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../05/25/211331.html"><span class="lc-body"><span class="lc-title">Claude＆Gemini）Python）「写真のトーンカーブ一括補正」Windowsアプリ作成。</span><span class="lc-desc">先日、Pythonで「写真の明るさ＆コントラスト一括補正」Windowsアプリを作成した。 今回、 トーンカーブを使って写真の明るさを補正するWindowsアプリ をPythonで作成。 複数画像を一括して補正できる。 …</span><span class="lc-site">晴歩雨描 · <time>2025-05-25</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250525/20250525210152.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../05/18/090800.html"><span class="lc-body"><span class="lc-title">Claude）Python）「写真の明るさ＆コントラスト一括補正」Windowsアプリ作成。ICCプロファイル維持。</span><span class="lc-desc">Pythonで「 写真の明るさ＆コントラスト一括補正 」Windowsアプリ作成。 複数の画像を一括して補正できる。 AIツールClaudeに作成してもらった。 ※ 【後日追記】最初のバージョンでは、元の写真に埋め込まれ…</span><span class="lc-site">晴歩雨描 · <time>2025-05-18</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250518/20250518090322.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../04/20/093458.html"><span class="lc-body"><span class="lc-title">Claude）Python）「写真オブジェクト除去」Windowsアプリ作成。シミ消しにも使える。</span><span class="lc-desc">2日前、 JavaScript で「 写真スポッティング編集ツール 」を作成した。 今回、 Python で「 写真オブジェクト除去アプリ 」を作成。AIツールClaudeに作成してもらった。 写真の中のちょっとした不要…</span><span class="lc-site">晴歩雨描 · <time>2025-04-20</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250420/20250420091047.jpg" alt="" loading="lazy"></span></a></p></div></article>
+</body>
+</html>

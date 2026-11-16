@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>JavaScript）『日本市区町村人口比較ゲーム』＋『市区町村別人口一覧』作成。ゲームはClaudeで作成。 - 晴歩雨描</title>
+<link rel="stylesheet" href="../../../../style.css">
+</head>
+<body>
+<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>JavaScript）『日本市区町村人口比較ゲーム』＋『市区町村別人口一覧』作成。ゲームはClaudeで作成。</h1><p class="meta">2025-06-24 · <a href="../../../../category/c13.html">ホームページ、Web作成</a> <a href="../../../../category/c42.html">＜AI＞</a></p><div class="entry-body"><p>『日本市区町村人口比較ゲーム』を作成してみた。AIツール「Claude」で作成。</p>
+<h5 id="-日本市区町村人口比較ゲーム-">≪ 日本市区町村人口比較ゲーム ≫</h5>
+<p><a href="https://ok2nd.github.io/tool/jinkou/shikuchouson/compare.html" target="_blank">https://ok2nd.github.io/tool/jinkou/shikuchouson/compare.html</a></p>
+<p>レベルを1～5で選べる。レベル1では人口が200,000人以上の市区から比較する。レべルが上がると、人口の少ない市区町村同士の比較になる。</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250624/20250624122307.jpg" width="705" height="373" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>市区町村名をクリックすると、当たりかはずれが表示され、それぞれの人口が表示される。</p>
+<p>「地図」をクリックすると、Googleマップで場所が表示される。</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250624/20250624122309.jpg" width="707" height="549" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250624/20250624122312.jpg" width="707" height="549" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>市区町村人口データは、総務省の2024年住民基本台帳人口を元にしている。</p>
+<p>≪ 総務省｜住民基本台帳等｜住民基本台帳に基づく人口、人口動態及び世帯数 ≫</p>
+<p><a href="https://www.soumu.go.jp/main_sosiki/jichi_gyousei/daityo/jinkou_jinkoudoutai-setaisuu.html" target="_blank">https://www.soumu.go.jp/main_sosiki/jichi_gyousei/daityo/jinkou_jinkoudoutai-setaisuu.html</a></p>
+<h5 id="-2024年市区町村別人口一覧-">≪ 2024年　市区町村別人口（一覧） ≫</h5>
+<p>総務省の2024年市区町村人口データを一覧にもしてみた。</p>
+<p><a href="https://ok2nd.github.io/tool/jinkou/shikuchouson/table.html" target="_blank">https://ok2nd.github.io/tool/jinkou/shikuchouson/table.html</a></p>
+<p>市区町村名をクリックすると、Googleマップで場所が表示される。</p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250624/20250624173921.jpg" width="650" height="479" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>列名をクリックすると、並び替えできる。</p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250624/20250624173936.jpg" width="651" height="479" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>都道府県名や市区町村名で検索もできる。</p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250624/20250624173948.jpg" width="657" height="495" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<h5 id="-2024年市区町村別人口一覧OR検索対応版-">≪ 2024年　市区町村別人口（一覧）：「OR」検索対応版 ≫</h5>
+<p>「OR」検索対応版も作成。「神戸市 or 京都市」みたいな検索ができる。任意の市区町村で、どちらが人口が多いか比較できる。</p>
+<p><a href="https://ok2nd.github.io/tool/jinkou/shikuchouson/table-or.html" target="_blank">https://ok2nd.github.io/tool/jinkou/shikuchouson/table-or.html</a></p>
+<p>ただし、並び替えると、検索文字列のハイライトが消えるなど、動作が不安定。</p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250624/20250624174001.jpg" width="644" height="285" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p><a class="link-card" href="../../03/20/141502.html"><span class="lc-body"><span class="lc-title">AIツール「Claude」でJavaScript＋p5.jsアプリ作成。花火、水の流れや波紋、マウス操作で遊ぶゲーム。</span><span class="lc-desc">先程、AIツール「ChatGPT、Gemini、Copilot、Perplexity、リートン、Claude」＋JavaScriptライブラリ「p5.js」で「物理シミュレーション」アプリを作成した。 この時、Claud…</span><span class="lc-site">晴歩雨描 · <time>2025-03-20</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250320/20250320140055.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../08/02/132106.html"><span class="lc-body"><span class="lc-title">JavaScript）「無料対戦オセロゲーム」をClaudeとGeminiで作成。（ローカルストレージ版）</span><span class="lc-desc">「 無料対戦オセロゲーム 」を、 Claude と Geminiを使って 作成した。 ローカルストレージ 版なので、同一のPCやスマホの同一ブラウザ内同志でないと対戦できない。（ネットワーク対戦化版は下記にリンク） Ja…</span><span class="lc-site">晴歩雨描 · <time>2025-08-02</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250802/20250802131152.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../02/08/220841.html"><span class="lc-body"><span class="lc-title">AIツール「ChatGPT」「Gemini」「Copilot」「Perplexity」「リートン」にJavaScriptインベーダーゲームを作らせてみた。</span><span class="lc-desc">ちょっとしたコンピュータープログラムなら、AIツールに依頼すれば、簡単に出来てしまう。コメントも入っていたり、エラー処理もされているなど品質レベルも高い。 細かい仕様を記述する必要はない。やりたい事をシンプルに要求するだ…</span><span class="lc-site">晴歩雨描 · <time>2025-02-08</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250208/20250208215451.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../03/20/141502.html"><span class="lc-body"><span class="lc-title">AIツール「Claude」でJavaScript＋p5.jsアプリ作成。花火、水の流れや波紋、マウス操作で遊ぶゲーム。</span><span class="lc-desc">先程、AIツール「ChatGPT、Gemini、Copilot、Perplexity、リートン、Claude」＋JavaScriptライブラリ「p5.js」で「物理シミュレーション」アプリを作成した。 この時、Claud…</span><span class="lc-site">晴歩雨描 · <time>2025-03-20</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250320/20250320140055.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../04/01/172305.html"><span class="lc-body"><span class="lc-title">Claudeは、無料枠で文章からSVG形式で日本語の4コマ漫画を生成してくれる。</span><span class="lc-desc">ChatGPT、Google Gemini、Microsoft Copilot、Perplexity、リートン、Claude それぞれ無料で使える範囲で、 文章から日本語の4コマ漫画が生成できるか試してみた。 Claud…</span><span class="lc-site">晴歩雨描 · <time>2025-04-01</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250401/20250401171134.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../04/18/215613.html"><span class="lc-body"><span class="lc-title">Claude）JavaScript）「写真スポッティング編集ツール」作成。写真のオブジェクト除去やシミ消しに。</span><span class="lc-desc">JavaScriptで、「 写真スポッティング編集ツール 」を作成。 写真の中のちょっとした不要物を除去するためのツール。除去したい不要物をマウスなどで囲んで除去し、除去した後を目立たないように背景画像で補正するなどした…</span><span class="lc-site">晴歩雨描 · <time>2025-04-18</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250418/20250418213106.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../05/25/211331.html"><span class="lc-body"><span class="lc-title">Claude＆Gemini）Python）「写真のトーンカーブ一括補正」Windowsアプリ作成。</span><span class="lc-desc">先日、Pythonで「写真の明るさ＆コントラスト一括補正」Windowsアプリを作成した。 今回、 トーンカーブを使って写真の明るさを補正するWindowsアプリ をPythonで作成。 複数画像を一括して補正できる。 …</span><span class="lc-site">晴歩雨描 · <time>2025-05-25</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250525/20250525210152.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../13/153014.html"><span class="lc-body"><span class="lc-title">Claude）Python）透過画像作成Windowsアプリ作成。</span><span class="lc-desc">Pythonで「透過画像作成」Windowsアプリ作成。画像の白に近い色を透過にする。元データはJPEGまたはPNG。白の範囲は指定できる。AIツールClaudeに作成してもらった。 【使い方】 元画像ファイルは、ドラッ…</span><span class="lc-site">晴歩雨描 · <time>2025-06-13</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250613/20250613151037.png" alt="" loading="lazy"></span></a></p></div></article>
+</body>
+</html>

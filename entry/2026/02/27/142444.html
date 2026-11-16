@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CSS）ChromeとFirefoxでボタン&lt;button&gt;の見た目を同じにする。シンプルな影付きボタン。 - 晴歩雨描</title>
+<link rel="stylesheet" href="../../../../style.css">
+</head>
+<body>
+<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>CSS）ChromeとFirefoxでボタン&lt;button&gt;の見た目を同じにする。シンプルな影付きボタン。</h1><p class="meta">2026-02-27 · <a href="../../../../category/c13.html">ホームページ、Web作成</a></p><div class="entry-body"><p>ブラウザのChromeとFirefoxで、ボタン&lt;button&gt;の見た目がなかなか同じにならない。</p>
+<p>理由は、「ユーザーエージェント・スタイルシート（User Agent Stylesheet）」という各ブラウザが独自に持っているデフォルト設定が異なるため。</p>
+<p>極力、ChromeとFirefoxで見た目が同じになるCSSを作成。</p>
+<p>ただし、<span id="line15">font-family:が</span><span id="line15">sans-serifでは、同じフォントにならない</span>。<span id="line15">font-family:で、Webフォント</span><strong>"Noto Sans JP"</strong>を使うことで同じになる。</p>
+<p>■ サンプル</p>
+<p><a href="https://ok2nd.github.io/tool/css/button.html" target="_blank">https://ok2nd.github.io/tool/css/button.html</a></p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260227/20260227144236.png" width="431" height="105" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p><strong>《 <span id="line15">font-family の指定 </span>》</strong></p>
+<pre>&lt;link href="<a href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap">https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap</a>" rel="stylesheet"&gt;
+
+&lt;style&gt;
+body {
+	font-family: "Noto Sans JP", sans-serif;
+}
+&lt;/style&gt;
+</pre>
+<p><strong>《 CSS 》</strong></p>
+<pre>button,
+input[type=button],
+input[type=reset],
+input[type=submit] {
+	margin: 2px 0;
+	padding: 0 5px;
+	height: 28px;
+	font-size: 14px;
+	box-shadow: 0 1px 0 rgba(0,0,0,0.15), inset 0 1px 1px 0 rgba(255,255,255,0.6);
+	border-radius: 4px;
+	background-image: linear-gradient(to bottom, #ffffff, #e1e1e1);
+	border: 1px solid #dadada;
+	border-bottom-color: #a9a9a9;
+	cursor: pointer;
+}
+.btn-blue {
+	background-image: linear-gradient(to bottom, #e0f7ff, #c4f1ff);
+}
+.btn-green {
+	background-image: linear-gradient(to bottom, #d0f2d0, #a8f4a8);
+}
+.btn-yellow {
+	background-image: linear-gradient(to bottom, #ffffe0, #ffff56);
+}
+.btn-orange {
+	background-image: linear-gradient(to bottom, #ffe7c9, #ffd7a0);
+}
+.btn-pink {
+	background-image: linear-gradient(to bottom, #ffe2eb, #ffccdc);
+}</pre>
+<p><a class="link-card" href="https://ok2nd.github.io/sitemap/hatena-sitemap-table.html?search=css" target="_blank" rel="noopener noreferrer"><span class="lc-body"><span class="lc-title">晴歩雨描：記事一覧</span><span class="lc-desc"></span><span class="lc-site">ok2nd.github.io</span></span></a></p>
+<p><a class="link-card" href="../../../2025/09/17/112330.html"><span class="lc-body"><span class="lc-title">CSSレスポンシブ対応）スマホの機種によらず、画面横の文字数を同じにしたければ、font-sizeにvwを使う。</span><span class="lc-desc">スマホは、機種によって画面の横幅のサイズが違う。ブラウザのpixelサイズも違う。 ＜ ブラウザの表示幅・ピクセル(pixel)チェック ＞ https://ok2nd.github.io/tool/html/pixel…</span><span class="lc-site">晴歩雨描 · <time>2025-09-17</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250917/20250917105139.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2025/08/03/103937.html"><span class="lc-body"><span class="lc-title">CSS）テーブルのセル内などで、文字列を短縮して溢れた部分を3点リーダー（...）にする方法。text-overflow: ellipsis;。</span><span class="lc-desc">備忘録として。 Webカレンダーページ等のHTMLテーブル・セル内などで、文字列が1行以内に収まらない時に、文字列を短縮して溢れた部分を3点リーダー（...）にする方法。CSSで実現。 【CSS】 white-space…</span><span class="lc-site">晴歩雨描 · <time>2025-08-03</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250803/20250803102921.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2025/01/08/150158.html"><span class="lc-body"><span class="lc-title">CSS）印刷時に特定のクラスの背景色を適用しないようにする。HTMLカレンダーの当日色を消す。</span><span class="lc-desc">備忘録として。 印刷時に特定のクラスの背景色を適用しないようにする方法。 ≪ うまくいかない方法 ≫ ※ この方法では、元の要素に別の色が定義されていても、透明になってしまう。例えば、カレンダーの土日の背景で色指定をして…</span><span class="lc-site">晴歩雨描 · <time>2025-01-08</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250108/20250108145657.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2023/07/29/143503.html"><span class="lc-body"><span class="lc-title">CSS）「mix-blend-mode」の「multiply」で、JPEG画像を半透明（透過）に重ねて表示。</span><span class="lc-desc">CSSの「mix-blend-mode」の「multiply」のテスト。 以下の3つのJPG画像を「multiply（乗算）」で半透明に重ねて表示。 ≪HTMLとCSS≫ &lt;style&gt; div { position: …</span><span class="lc-site">晴歩雨描 · <time>2023-07-29</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20230729/20230729142726.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2023/07/01/131315.html"><span class="lc-body"><span class="lc-title">CSS）&lt;pre&gt;で等幅フォントを使う。</span><span class="lc-desc">はてなブログ の&lt;pre&gt; で 等幅フォント を使う方法の備忘録。 以下のスタイルを追加。 &lt;style&gt; pre { font-family: Consolas , &#x27;Courier New&#x27;, Courier, Mo…</span><span class="lc-site">晴歩雨描 · <time>2023-07-01</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20230701/20230701131301.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2019/02/16/223049.html"><span class="lc-body"><span class="lc-title">CSS）影付き枠＋ビネット効果を使った写真のサムネイルアルバム(神戸散歩)をつくってみた。</span><span class="lc-desc">↑ で、CSSを使って、写真に影付き枠とビネット効果を付けてみた。 今回、これを使って、写真のサムネイルアルバムをつくってみた。写真は神戸を散歩して撮ったものの一部を使った。 サムネイルの各写真の枠は正方形とし、正方形の…</span><span class="lc-site">晴歩雨描 · <time>2019-02-16</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190216/20190216221449.jpg" alt="" loading="lazy"></span></a></p></div></article>
+</body>
+</html>

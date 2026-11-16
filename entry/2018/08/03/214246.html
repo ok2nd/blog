@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>無料版はてなブログでスマホのCSSをJavaScriptを使ってカスタマイズする方法。成功せず。 - 晴歩雨描</title>
+<link rel="stylesheet" href="../../../../style.css">
+</head>
+<body>
+<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>無料版はてなブログでスマホのCSSをJavaScriptを使ってカスタマイズする方法。成功せず。</h1><p class="meta">2018-08-03 · <a href="../../../../category/c13.html">ホームページ、Web作成</a> <a href="../../../../category/c4.html">はてなブログ</a></p><div class="entry-body"><p>無料版<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A4%CF%A4%C6%A4%CA%A5%D6%A5%ED%A5%B0">はてなブログ</a>では、<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%B9%A5%DE%A5%DB">スマホ</a>のデザイン(<a class="keyword" href="http://d.hatena.ne.jp/keyword/CSS">CSS</a>)を設定で一律に変更することができない。レスポンシブ対応のテーマを使えばできるが、そうでない場合、<a class="keyword" href="http://d.hatena.ne.jp/keyword/CSS">CSS</a>を設定できない。</p>
+<p>詳細設定で、headに<a class="keyword" href="http://d.hatena.ne.jp/keyword/JavaScript">JavaScript</a>を追加できるので、<a class="keyword" href="http://d.hatena.ne.jp/keyword/JavaScript">JavaScript</a>を使って<a class="keyword" href="http://d.hatena.ne.jp/keyword/CSS">CSS</a>を追加することを考えたが試した限りでは成功していない。</p>
+<p>【試した方法 １】<a class="keyword" href="http://d.hatena.ne.jp/keyword/jQuery">jQuery</a>を使って。</p>
+<pre style="margin: 0px; padding: 4px; color: #00a;">$(function(){
+	$('#content pre').<a class="keyword" href="http://d.hatena.ne.jp/keyword/css">css</a>('color', '#00a');
+});
+</pre>
+<p>【試した方法 ２】<a class="keyword" href="http://d.hatena.ne.jp/keyword/jQuery">jQuery</a>を使わず。</p>
+<pre style="margin: 0px; padding: 4px; color: #00a;">window.onload = function() {
+	var els = document.querySelectorAll('#content pre');
+	for (var i=0, l=els.length; i&lt;l; i++) {
+		var el = els[i];
+		el.style.color = '#00a';
+	}
+};
+</pre>
+<p>【試した方法 ３】<a class="keyword" href="http://d.hatena.ne.jp/keyword/jQuery">jQuery</a>を使わず。</p>
+<pre style="margin: 0px; padding: 4px; color: #00a;">window.addEventListener('load', function() {
+	var els = document.querySelectorAll('#content pre');
+	for (var i=0, l=els.length; i&lt;l; i++) {
+		var el = els[i];
+		el.style.color = '#00a';
+	}
+});
+</pre>
+<p>【試した方法 ４】<a class="keyword" href="http://d.hatena.ne.jp/keyword/CSS">CSS</a>ファイルを別サイトに置いて読み込む。</p>
+<pre style="margin: 0px; padding: 4px; color: #00a;">document.write('&lt;link rel="stylesheet" href="<a href="https://ok2nd.sakura.ne.jp/css/hatenablog.css">https://ok2nd.sakura.ne.jp/css/hatenablog.css</a>"&gt;');
+</pre></div></article>
+</body>
+</html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>WordPress）はてなブログのブログカードをWordPressローカルリンクのショートコードに変更するJScript作成。 - 晴歩雨描</title>
+<link rel="stylesheet" href="../../../../style.css">
+</head>
+<body>
+<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>WordPress）はてなブログのブログカードをWordPressローカルリンクのショートコードに変更するJScript作成。</h1><p class="meta">2022-08-12 · <a href="../../../../category/c13.html">ホームページ、Web作成</a> <a href="../../../../category/c2.html">WordPress</a> <a href="../../../../category/c4.html">はてなブログ</a></p><div class="entry-body"><p>自宅のWindowsPCローカルに<a class="keyword" href="http://d.hatena.ne.jp/keyword/WordPress">WordPress</a>をインストールしている。</p>
+<p><a class="link-card" href="../06/224635.html"><span class="lc-body"><span class="lc-title">WindowsPCの古いXAMPPにWordPress（5.0.16）をインストール。</span><span class="lc-desc">※ 後日追記：ドライブやディレクトリを変える場合は注意が必要。 自宅のWindowsPCにWordPressをインストールした手順の備忘録。 自宅のWindowsPCには、古いバージョンのXAMPP（ XAMPP 1.8…</span><span class="lc-site">晴歩雨描 · <time>2022-08-06</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220806/20220806222743.png" alt="" loading="lazy"></span></a></p>
+<p><a class="keyword" href="http://d.hatena.ne.jp/keyword/%A4%CF%A4%C6%A4%CA%A5%D6%A5%ED%A5%B0">はてなブログ</a>をエクスポートして、<a class="keyword" href="http://d.hatena.ne.jp/keyword/WordPress">WordPress</a>にインポートした。</p>
+<p><a class="link-card" href="../08/122922.html"><span class="lc-body"><span class="lc-title">WordPress）画像格納ディレクトリ確認。はてなブログからのインポートテスト。</span><span class="lc-desc">先日、自宅のWindowsPCに WordPress をインストールした。 画像格納 ディレクト リ確認、 はてなブログ からのインポート、他、試しごとの備忘録。 【デザイン変更】 ダッシュ ボードの「外観」で「テーマ」…</span><span class="lc-site">晴歩雨描 · <time>2022-08-08</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220807/20220807123827.png" alt="" loading="lazy"></span></a></p>
+<p>ブログカードは、<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A4%CF%A4%C6%A4%CA%A5%D6%A5%ED%A5%B0">はてなブログ</a>に依存したままになる。自分のブログ記事へのリンクをクリックすると、<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A4%CF%A4%C6%A4%CA%A5%D6%A5%ED%A5%B0">はてなブログ</a>の記事が開いてしまう。</p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220812/20220812141852.jpg" width="516" height="198" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>自分のブログ記事へのリンクになっているブログカードの参照先を、自宅PCローカルの<a class="keyword" href="http://d.hatena.ne.jp/keyword/WordPress">WordPress</a>の自分のブログを参照するようにする。</p>
+<p><a class="link-card" href="../10/215653.html"><span class="lc-body"><span class="lc-title">WordPress）リンク埋め込みブログカード表示のカスタマイズ。ショートコード使用。</span><span class="lc-desc">先日、自宅のWindowsPCローカルに WordPress を入れた。 リンク埋め込みブログカード表示のカスタマイズについての備忘録。 URLを挿入すると、自動的に表示されるブログカードのデザインは以下。 はてなブログ…</span><span class="lc-site">晴歩雨描 · <time>2022-08-10</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220809/20220809142934.png" alt="" loading="lazy"></span></a></p>
+<p>下の形式のブログカードを、<a class="keyword" href="http://d.hatena.ne.jp/keyword/WordPress">WordPress</a>ショートコードに変換する。</p>
+<p>≪<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A4%CF%A4%C6%A4%CA%A5%D6%A5%ED%A5%B0">はてなブログ</a>・ブログカード・サンプル≫</p>
+<pre>&lt;p&gt;&lt;iframe src="<a href="https://hatenablog-parts.com/embed?url=https%3A%2F%2F2ndart.hatenablog.com%2Fentry%2F2020%2F07%2F16%2F145622">https://hatenablog-parts.com/embed?url=https%3A%2F%2F2ndart.hatenablog.com%2Fentry%2F2020%2F07%2F16%2F145622</a>" title="タイトル" class="embed-card embed-blogcard" scrolling="no" frameborder="0" style="display: block; width: 100%; height: 190px; max-width: 500px; margin: 10px 0px;" loading="lazy"&gt;&lt;/iframe&gt;&lt;/p&gt;
+</pre>
+<p>↓↓↓↓↓</p>
+<p>≪<a class="keyword" href="http://d.hatena.ne.jp/keyword/WordPress">WordPress</a>・ブログカード用ショートコード・サンプル≫</p>
+<pre>&lt;p&gt;[nmblogcard url="/<a class="keyword" href="http://d.hatena.ne.jp/keyword/wordpress">wordpress</a>/2020/07/16/2020-07-16-14562/"]&lt;/p&gt;
+</pre>
+<h5 id="-スクリプトJScriptblogcard-chgjseを作成">■ <a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%B9%A5%AF%A5%EA%A5%D7%A5%C8">スクリプト</a><a class="keyword" href="http://d.hatena.ne.jp/keyword/JScript">JScript</a>「blogcard-chg.jse」を作成。</h5>
+<p>エクスポートファイル内の画像リンクを<a class="keyword" href="http://d.hatena.ne.jp/keyword/WordPress">WordPress</a>ローカルに変える<a class="keyword" href="http://d.hatena.ne.jp/keyword/JScript">JScript</a>の後で使う。</p>
+<p><a class="link-card" href="../08/123707.html"><span class="lc-body"><span class="lc-title">はてなブログのエクスポートファイルの画像リンクをWordPressローカルに変えるJScriptを作成。</span><span class="lc-desc">自宅のWindowsPCローカルに WordPress をインストールしている。 はてなブログ のエクスポートファイルでは写真画像は、 はてなフォトライフ を参照する形になっている。 ≪サンプル≫ https://cdn…</span><span class="lc-site">晴歩雨描 · <time>2022-08-08</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220808/20220808125307.png" alt="" loading="lazy"></span></a></p>
+<p>※ エクスポートファイルをこの<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%B9%A5%AF%A5%EA%A5%D7%A5%C8">スクリプト</a>ファイル「hatena-img-chg.jse」に、ドラッグ＆ドロップして使う。</p>
+<pre>xxx.hatenablog.com.export-imgchg.txt
+</pre>
+<p>↓↓↓（変更後のファイル）</p>
+<pre>xxx.hatenablog.com.export-imgchg-blogcard.txt
+</pre>
+<p><em>≪blogcard-chg.jse≫</em></p>
+<pre>//	*** ドラッグ＆ドロップしたパス情報を取得
+var args = WScript.Arguments;
+var inputFile = args(0);
+
+var adTypeText = 2;
+var adSaveCreateOverWrite = 2;	// 上書き
+var adReadAll = -1;		// 全行
+
+var sr1 = new ActiveXObject("ADODB.Stream");
+sr1.Type = adTypeText;
+sr1.charset = "<a class="keyword" href="http://d.hatena.ne.jp/keyword/utf-8">utf-8</a>";
+sr1.Open();
+sr1.LoadFromFile(inputFile);	//  <a class="keyword" href="http://d.hatena.ne.jp/keyword/%A4%CF%A4%C6%A4%CA%A5%D6%A5%ED%A5%B0">はてなブログ</a> エクスポート・ファイル
+
+var str = sr1.ReadText( adReadAll );
+sr1.Close();
+
+var stw = new ActiveXObject("ADODB.Stream");
+stw.type = adTypeText;
+stw.charset = "<a class="keyword" href="http://d.hatena.ne.jp/keyword/utf-8">utf-8</a>";
+stw.Open();
+
+var out = "";
+var lines = str.split(/\r?\n/);
+var card = false;
+for (var i=0, z=lines.length; i&lt;z; i++) {
+	card = false;
+	var iframe = lines[i].match(/&lt;iframe(.*)&lt;\/iframe&gt;/);
+	if (iframe) {
+		var src = iframe[1].match(/src="<a class="keyword" href="http://d.hatena.ne.jp/keyword/https">https</a>?:\/\/hatenablog-parts.com\/embed\?url\=<a class="keyword" href="http://d.hatena.ne.jp/keyword/https">https</a>?%3A%2F%2F2ndart\.hatenablog.com%2Fentry%2F(.*)" /);		// 何故か "以降も入ってくる。
+		if (src) {
+			var urlymd = src[1].split('"');
+			if (urlymd) {
+				var spt = urlymd[0] .split('%2F');
+				var ymd = spt[0] + '/' + spt[1] + '/' + spt[2] + '/' + spt[0] + '-' + spt[1] + '-' + spt[2] + '-' + spt[3];
+				out = out + '&lt;p&gt;[nmblogcard url="/<a class="keyword" href="http://d.hatena.ne.jp/keyword/wordpress">wordpress</a>/' + ymd + '/"]&lt;/p&gt;\n';
+				card = true;
+			}
+		}
+	}
+	if (!card) {
+		out = out + lines[i] + "\n";
+	}
+}
+stw.WriteText(out);
+stw.SaveToFile(inputFile.slice(0,-4) + "-blogcard.txt", adSaveCreateOverWrite);
+stw.Close();
+</pre>
+<p>変換したエクスポートファイルを<a class="keyword" href="http://d.hatena.ne.jp/keyword/WordPress">WordPress</a>でインポートすることで、ブログカードがショートコードによるタイプになり、自宅PCローカルの<a class="keyword" href="http://d.hatena.ne.jp/keyword/WordPress">WordPress</a>の自分のブログを参照するようになる。</p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220812/20220812141901.jpg" width="639" height="209" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p><a class="link-card" href="../16/105039.html"><span class="lc-body"><span class="lc-title">WordPress）はてなブログから移行（インポート）する手順まとめ。メディアライブラリを使わないバージョン。</span><span class="lc-desc">自宅WindowsPCローカルに WordPress をインストールしている。 「 はてなブログ 」からエクスポートして WordPress にインポートしてみた。 以前、移行（インポート）する手順まとめを書いた。この時…</span><span class="lc-site">晴歩雨描 · <time>2022-08-16</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220817/20220817223605.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="160116.html"><span class="lc-body"><span class="lc-title">WordPress）はてなブログから移行（インポート）する手順まとめ。メディアライブラリを使うバージョン。</span><span class="lc-desc">自宅のWindowsPCローカルに WordPress をインストールしている。 「 はてなブログ 」からエクスポートして WordPress にインポートしてみた。 ※ メディアライブラリを使わない前提の移行（インポー…</span><span class="lc-site">晴歩雨描 · <time>2022-08-12</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220807/20220807132140.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="153111.html"><span class="lc-body"><span class="lc-title">WordPress）設定まとめ。メディアライブラリを使うバージョン。</span><span class="lc-desc">自宅のWindowsPCローカルに WordPress をインストールしている。 設定をいくつかやってみたので、備忘録としてまとめ。 ※ メディアライブラリを使わない前提の設定まとめは以下。 １－Ａ．外観テーマを「 Se…</span><span class="lc-site">晴歩雨描 · <time>2022-08-12</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220812/20220812153057.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../14/225205.html"><span class="lc-body"><span class="lc-title">WordPress）はてなブログのアイキャッチ画像をメディアライブラリを使わずに記事一覧とブログカードに反映させる。</span><span class="lc-desc">自宅WindowsPCローカルに WordPress をインストールしている。 「 はてなブログ 」から WordPress への移行の検証をしている。 ※ ↓は、本対策を行う前のインポート手順。 どうにか、やりたいこと…</span><span class="lc-site">晴歩雨描 · <time>2022-08-14</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220814/20220814225145.jpg" alt="" loading="lazy"></span></a></p></div></article>
+</body>
+</html>

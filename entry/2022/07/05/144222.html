@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Leaflet地図：都道府県別「りんご」vs「みかん」を円グラフ（Google Image Charts）で表示。 - 晴歩雨描</title>
+<link rel="stylesheet" href="../../../../style.css">
+</head>
+<body>
+<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>Leaflet地図：都道府県別「りんご」vs「みかん」を円グラフ（Google Image Charts）で表示。</h1><p class="meta">2022-07-05 · <a href="../../../../category/c21.html">地図・マップ</a> <a href="../../../../category/c13.html">ホームページ、Web作成</a></p><div class="entry-body"><p>地図データを扱うJavaScript ライブラリ「Leaflet」を使って、地図をいくつか作成してきた。</p>
+<p><a class="link-card" href="https://ok2nd.github.io/leaflet/" target="_blank" rel="noopener noreferrer"><span class="lc-body"><span class="lc-title">Leaflet地図 リスト by 晴歩雨描</span><span class="lc-desc"></span><span class="lc-site">ok2nd.github.io</span></span></a></p>
+<p>今回、『都道府県別「りんご」vs「みかん」』を作成。</p>
+<p><em><span style="color: rgb(255, 0, 0);">【後日追記】円グラフには、Google Image Chartsを使っている。現在使用できない。</span></em></p>
+<p><a class="link-card" href="https://ok2nd.github.io/leaflet/ringo-mikan.html" target="_blank" rel="noopener noreferrer"><span class="lc-body"><span class="lc-title">都道府県別「りんご」vs「みかん」</span><span class="lc-desc"></span><span class="lc-site">ok2nd.github.io</span></span></a></p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220705/20220705142457.jpg" width="715" height="586" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<p>元データは、「統計局ホームページ/家計調査（二人以上の世帯）品目別都道府県庁所在市及び政令指定都市ランキング（2019年～2021年平均）」の『<em>果物</em>』。</p>
+<p><a class="link-card" href="https://www.stat.go.jp/data/kakei/5.html" target="_blank" rel="noopener noreferrer"><span class="lc-body"><span class="lc-title">統計局ホームページ/家計調査（二人以上の世帯） 品目別都道府県庁所在市及び政令指定都市ランキング（2023年（令和5年）〜2025年（令和7年）平均）</span><span class="lc-desc">総務省統計局、統計研究研修所の共同運営によるサイトです。国勢の基本に関する統計の企画・作成・提供、国及び地方公共団体の統計職員に専門的な研修を行っています。</span><span class="lc-site">www.stat.go.jp</span></span></a></p>
+<p>都道府県庁所在市のデータを、その都道府県のデータとして利用。このデータによると、全国の二人以上の世帯平均での「りんご」と「みかん」の使用量はほぼ同じ。</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220705/20220705144120.jpg" width="296" height="303" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<p>しかし、青森と長野ではやはり「りんご」が多い。</p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220705/20220705142446.jpg" width="238" height="279" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220705/20220705142449.jpg" width="238" height="279" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<p>また、静岡、和歌山、愛媛ではやはり「みかん」が多い。</p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220705/20220705145025.jpg" width="238" height="279" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220705/20220705142451.jpg" width="238" height="279" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220705/20220705142454.jpg" width="238" height="279" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<p>当然の結果となった。</p>
+<p>円グラフの作り方は、以下の「三大コンビニ都道府県別店舗数」と同じ。</p>
+<p><a class="link-card" href="../04/100606.html"><span class="lc-body"><span class="lc-title">Leaflet地図：三大コンビニ都道府県別店舗数を円グラフ（Google Image Charts）で表示。</span><span class="lc-desc">地図データを扱うJavaScript ライブラリ「Leaflet」を使って、地図をいくつか作成してきた。 今回、「 三大コンビニ都道府県別店舗数 」を作成。 【後日追記】円グラフには、Google Image Chart…</span><span class="lc-site">晴歩雨描 · <time>2022-07-04</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220704/20220704094405.jpg" alt="" loading="lazy"></span></a></p>
+<h5 id="JavaScriptサンプルソース抜粋">≪JavaScriptサンプルソース（抜粋）≫</h5>
+<pre>var todofuken = [
+	['',0,0],	// ダミー
+	['北海道',42.80,140.90],
+	['青森県',40.65,140.65],
+	['岩手県',39.55,141.30],
+	['宮城県',38.30,140.78],
+	['秋田県',39.60,140.35],
+	['山形県',38.44,139.97],
+	['福島県',37.40,140.20],
+	['茨城県',36.07,140.19],
+	['栃木県',36.67,139.75],
+	['群馬県',36.42,138.91],
+	['埼玉県',35.95,139.28],
+	['千葉県',35.31,140.13],
+	['東京都',35.62,139.45],
+	['神奈川県',35.38,139.25],
+	['新潟県',37.47,138.87],
+	['富山県',36.57,137.23],
+	['石川県',36.40,136.51],
+	['福井県',35.88,136.21],
+	['山梨県',35.56,138.58],
+	['長野県',36.08,138.00],
+	['岐阜県',35.60,136.95],
+	['静岡県',34.84,137.99],
+	['愛知県',34.97,137.10],
+	['三重県',34.53,136.37],
+	['滋賀県',35.12,136.06],
+	['京都県',35.15,135.50],
+	['大阪府',34.55,135.46],
+	['兵庫県',34.91,134.90],
+	['奈良県',34.28,135.84],
+	['和歌山県',33.76,135.40],
+	['鳥取県',35.40,133.72],
+	['島根県',34.96,132.28],
+	['岡山県',34.77,133.78],
+	['広島県',34.50,132.78],
+	['山口県',34.19,131.41],
+	['徳島県',33.85,134.23],
+	['香川県',34.17,133.95],
+	['愛媛県',33.68,132.83],
+	['高知県',33.58,133.38],
+	['福岡県',33.58,130.68],
+	['佐賀県',33.20,130.06],
+	['長崎県',32.76,129.94],
+	['熊本県',32.58,130.74],
+	['大分県',33.20,131.40],
+	['宮崎県',32.20,131.26],
+	['鹿児島県',31.75,130.50],
+	['沖縄県',26.40,127.82]
+];
+// -----------------------------------
+var map = L.map('map');
+var ChiriinWhiteMap = L.tileLayer('<a href="https://cyberjapandata.gsi.go.jp/xyz/blank/">https://cyberjapandata.gsi.go.jp/xyz/blank/</a>{z}/{x}/{y}.png', {
+	attribution: "&lt;a href='<a href="https://maps.gsi.go.jp/development/ichiran.html'">https://maps.gsi.go.jp/development/ichiran.html'</a> target='_blank'&gt;地理院タイル&lt;/a&gt;"
+});
+var OpenStreetMap = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+	attribution: '© &lt;a href="<a href="https://www.openstreetmap.org/copyright">https://www.openstreetmap.org/copyright</a>"&gt;OpenStreetMap&lt;/a&gt; contributors',
+	continuousWorld: false
+});
+var GoogleMap = L.tileLayer('<a href="https://mt1.google.com/vt/lyrs=r&x=">https://mt1.google.com/vt/lyrs=r&x=</a>{x}&amp;y={y}&amp;z={z}', {
+	attribution: "&lt;a href='<a href="https://developers.google.com/maps/documentation'">https://developers.google.com/maps/documentation'</a> target='_blank'&gt;Google Map&lt;/a&gt;"
+});
+var baseMap = {
+	"白地図": ChiriinWhiteMap,
+	"OpenStreetMap": OpenStreetMap,
+	"Google Map": GoogleMap
+};
+ChiriinWhiteMap.addTo(map);
+L.control.layers(baseMap).addTo(map);
+// -----------------------------------
+fetch('csv/ringo-mikan.csv')		// コンビニ都道府県別店舗数データ
+.then((response) =&gt; {
+	if(response.ok) {
+		return response.text();
+	} else {
+		throw new Error();
+	}
+})
+.then((text) =&gt; {
+	csv2marker(text);
+	marker2map();
+})
+function csv2marker(csv) {
+	var line = csv.split("\n");
+	for (var i=0; i&lt;line.length; ++i) {
+		var data = line[i].split(',');
+		if (data.length &gt; 2) {
+/*
+			data[0] 都道府県コード
+			data[1] 都道府県名
+			data[2] 県庁所在地
+			data[3] りんご
+			data[4] みかん
+*/
+			var popStr = '&lt;span class="kenmei"&gt;' + data[1] + '&lt;/span&gt;';
+			popStr += '&lt;br&gt;&lt;span class="city-name"&gt;' + data[2] + '&lt;/span&gt;';
+			popStr += '&lt;br&gt;&lt;span class="ringo"&gt;りんご&lt;/span&gt;：&lt;span class="data"&gt;' + Number(data[3]).toLocaleString() + ' g&lt;/span&gt;';
+			popStr += '&lt;br&gt;&lt;span class="mikan"&gt;みかん&lt;/span&gt;：&lt;span class="data"&gt;' + Number(data[4]).toLocaleString() + ' g&lt;/span&gt;';
+			var total = Number(data[3]) + Number(data[4]);
+			var pie_data = ratio(data[3], total);
+			pie_data += ',' + ratio(data[4], total);
+			var chartIcon = L.icon({
+				iconUrl: '<a href="https://chart.apis.google.com/chart?cht=p&chs=80x80&chco=FF0000">https://chart.apis.google.com/chart?cht=p&chs=80x80&chco=FF0000</a>|FF8C00|8B4513&amp;chf=bg,s,ffffff00&amp;chd=t:' + pie_data,
+				iconSize: [80, 80],
+				iconAnchor: [30, 50],
+				popupAnchor: [10, -42]
+			});
+			L.marker([todofuken[data[0]][1], todofuken[data[0]][2]], {icon:chartIcon}).addTo(map).bindPopup(popStr);
+		}
+	}
+}
+function ratio(val, all) {
+	return Math.round((Number(val) / Number(all) * 100));
+}
+function marker2map() {
+	var popStr = '&lt;span class="pop-title"&gt;統計局/家計調査（二人以上の世帯）&lt;/span&gt;';
+	popStr += '&lt;br&gt;2019年～2021年平均';
+	popStr += '&lt;br&gt;&lt;span class="kenmei"&gt;日本全国平均&lt;/span&gt;';
+	popStr += '&lt;br&gt;&lt;span class="ringo"&gt;りんご&lt;/span&gt;：&lt;span class="data"&gt;10,325 g&lt;/span&gt;';
+	popStr += '&lt;br&gt;&lt;span class="mikan"&gt;みかん&lt;/span&gt;：&lt;span class="data"&gt;9,726 g&lt;/span&gt;';
+	var chartIcon = L.icon({
+		iconUrl: '<a href="https://chart.apis.google.com/chart?cht=p&chs=200x200&chco=FF0000">https://chart.apis.google.com/chart?cht=p&chs=200x200&chco=FF0000</a>|FF8C00&amp;chf=bg,s,ffffff00&amp;chd=t:51,49&amp;chdl=りんご|みかん',
+		iconSize: [200, 200],
+		iconAnchor: [60, 240],
+		popupAnchor: [10, -205],
+	});
+	L.marker([36, 135], {icon: chartIcon}).addTo(map).bindPopup(popStr);
+	map.setView([36, 136], 7);
+	map.on('click', onMapClick);
+}
+</pre>
+<p><a class="link-card" href="../../../2021/06/16/143619.html"><span class="lc-body"><span class="lc-title">Leaflet地図：「新潟酒蔵マップ」作成。CSVファイルから。サンプルソース。</span><span class="lc-desc">地図データを扱う JavaScript ライブラリ「Leaflet」を使って、地図表示を試してきた。 今回、「新潟酒蔵マップ」を作成した。 「LinkData」のデータを使わせてもらった。 「LinkData」のデータを…</span><span class="lc-site">晴歩雨描 · <time>2021-06-16</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20210616/20210616143304.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2021/08/21/161534.html"><span class="lc-body"><span class="lc-title">Leaflet地図：複数地点マーカー表示。CSVファイルをURL指定。</span><span class="lc-desc">地図データを扱うJavaScript ライブラリ「Leaflet」を使ってKMLやCSVファイルで地点表示をいくつか行ってきた。 今回、シンプルなCSVファイルをURLで指定するタイプを作成。 CSV形式は、以下。 地点…</span><span class="lc-site">晴歩雨描 · <time>2021-08-21</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20210821/20210821160851.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../06/15/123352.html"><span class="lc-body"><span class="lc-title">Leaflet地図：「日本酒生産量：都道府県別マップ」の「白地図＋Google Charts（Image Charts）版」作成。</span><span class="lc-desc">地図データを扱う JavaScript ライブラリ「Leaflet」を使って、地図をいくつか作成してきた。 以前に「日本酒生産量： 都道 府県別マップ」を作成した。 最近、「日本 白地図 」を作成した。 今回、「日本酒生…</span><span class="lc-site">晴歩雨描 · <time>2022-06-15</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220615/20220615111331.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../06/03/221404.html"><span class="lc-body"><span class="lc-title">Leaflet地図：「Jawg Maps」世界地図に国旗表示（１）。逆ジオコーディング「Reverse - Nominatim」使用。</span><span class="lc-desc">先日、「Leaflet」＋「Jawg Maps」を使った世界地図を作成した。 この世界地図に、国旗表示機能を追加。（雨雲は廃止） 緯度経度から国名検索には、「 Reverse - Nominatim 」の 逆ジオコーディ…</span><span class="lc-site">晴歩雨描 · <time>2022-06-03</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220603/20220603220015.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../06/24/100921.html"><span class="lc-body"><span class="lc-title">Leaflet地図：世界地図に国別宗教構成を円グラフ（Google Image Charts）で表示。</span><span class="lc-desc">先日、Leafletで世界地図に国別宗教構成を表示するページを作成した。 前回は、世界地図に国旗を表示し、国旗をクリックすると、その国の宗教構成を表示する方式だった。 今回は、全世界の各国の宗教構成を円グラフで一覧表示す…</span><span class="lc-site">晴歩雨描 · <time>2022-06-24</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220624/20220624085444.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2021/04/29/111336.html"><span class="lc-body"><span class="lc-title">Leaflet地図：Google MAPS APIなしでGoogleマップが使える。APIキーも不要。サンプルソース。</span><span class="lc-desc">昨日、「 Leaflet 」を使って「 OpenStreetMap 」「 国土地理院 」「 Esri World Topo Map 」の地図表示を試した。 「 Leaflet 」を使えば、「 Google MAPS AP…</span><span class="lc-site">晴歩雨描 · <time>2021-04-29</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20210429/20210429110223.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2021/11/24/154403.html"><span class="lc-body"><span class="lc-title">Leaflet地図：GPXファイルを複数個、URLで指定。</span><span class="lc-desc">地図データを扱う JavaScript ライブラリ「Leaflet」を使って、 GPSログ (GPXファイル)の地図表示をいくつか作成してきた。 今回、GPXファイルをURLで複数指定できるタイプを作成。 形式： htt…</span><span class="lc-site">晴歩雨描 · <time>2021-11-24</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20211124/20211124153831.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2021/06/27/134220.html"><span class="lc-body"><span class="lc-title">Leaflet地図：国土地理院のハザードマップ（津波、洪水 etc.）を重ねて表示。Googleマップにも重ねて表示できる。サンプルソース。</span><span class="lc-desc">地図データを扱うJavaScript ライブラリ「Leaflet」を使って、地図表示を試してきた。 今回、国土地理院の「ハザードマップ」を重ねて表示してみた。 以下の7つを重ねて表示できるようにした。 洪水浸水想定区域（…</span><span class="lc-site">晴歩雨描 · <time>2021-06-27</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20210627/20210627133723.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2021/06/15/164145.html"><span class="lc-body"><span class="lc-title">Leaflet地図：国土地理院のジオコーダーで住所から緯度経度検索。CSVからも。サンプルソース。</span><span class="lc-desc">地図データを扱うJavaScript ライブラリ「Leaflet」を使って、地図表示を試してきた。 今回、国土地理院のジオコーダーを使って、住所から緯度経度を取得して地図にマッピングを試した。 【プログラムソースサンプル…</span><span class="lc-site">晴歩雨描 · <time>2021-06-15</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20210615/20210615163820.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2019/05/01/113241.html"><span class="lc-body"><span class="lc-title">ヨーロッパ鉄道時刻表と鉄道地図。ヨーロッパ鉄道旅行の思い出。</span><span class="lc-desc">「 朝日新聞 GLOBE＋」で、中国では無くなった紙の時刻表を日本で発行している団体があるという記事を見た。発行部数は約2500部。採算度外視の趣味＆ボランティアの領域と思われる。 昔、ヨーロッパへ行く時にお世話になった…</span><span class="lc-site">晴歩雨描 · <time>2019-05-01</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190501/20190501100037.jpg" alt="" loading="lazy"></span></a></p></div></article>
+</body>
+</html>

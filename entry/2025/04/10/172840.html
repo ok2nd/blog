@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Claude）Python）PowerPointに複数写真（画像）を順番に並べて貼り付けるプログラム作成（Ver.1）。 - 晴歩雨描</title>
+<link rel="stylesheet" href="../../../../style.css">
+</head>
+<body>
+<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>Claude）Python）PowerPointに複数写真（画像）を順番に並べて貼り付けるプログラム作成（Ver.1）。</h1><p class="meta">2025-04-10 · <a href="../../../../category/c42.html">＜AI＞</a> <a href="../../../../category/c8.html">コンピュータ</a></p><div class="entry-body"><p><em><span style="color: #dd830c;">※ このプログラムについては、後日、改訂版を作成。（↓）</span></em></p>
+<p><a class="link-card" href="../../05/09/085200.html"><span class="lc-body"><span class="lc-title">Claude）Python）PowerPointに複数写真（画像）を順番に並べて貼り付けるプログラム作成（改訂版）。</span><span class="lc-desc">以前に、PowerPointに複数写真を順番に並べて貼り付けるプログラムをPythonで作成した。 今回、このプログラムの改訂版。前回と同じく、AI生成ツール「Claude」に作ってもらった。 基本機能はそのままで、オプ…</span><span class="lc-site">晴歩雨描 · <time>2025-05-09</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250509/20250509084045.jpg" alt="" loading="lazy"></span></a></p>
+<p><em>PowerPoint</em>に複数写真を順番に並べて貼り付けるプログラムを作成。AI生成ツール「<em>Claude</em>」に作ってもらった。<em>Python</em>で作成。貼り付ける写真のサイズは指定できる。</p>
+<h5 id="仕様">【仕様】</h5>
+<ul>
+<li>PowerPoint用紙はA4横サイズ（29.7cm × 21.0cm）とする。</li>
+<li>写真画像は、特定のフォルダーに入っている。</li>
+<li>各画像の縦横比は維持。</li>
+<li>写真画像は、長辺が長い方を横にして、左上から順番に右下へ並べていく。（縦長画像は横倒しにする。）</li>
+<li>指定のアスペクト比で貼り付け枠の大きさを設定し、枠に入りきらないサイズの画像は縮小して貼り付ける。</li>
+<li>スライドが一杯になると新しいスライドを追加。</li>
+<li>実行時にダイアログを表示して以下を指定できる。</li>
+<ul>
+<li>画像フォルダの選択</li>
+<li>保存先PowerPointファイルの指定（指定ファイル名で新規作成される）</li>
+<li>標準アスペクト比の選択（4:3、3:2、1:1）<br />
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250411/20250411105455.png" width="302" height="232" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+</li>
+<li>画像幅の指定（ミリメートル）<br />
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250410/20250410170937.png" width="270" height="118" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+</li>
+<li>横方向の間隔指定（ミリメートル）<br />
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250410/20250410170951.png" width="290" height="118" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+</li>
+<li>縦方向の間隔指定（ミリメートル）<br />
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250410/20250410171004.png" width="290" height="118" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+</li>
+<li>ページ余白の指定（ミリメートル）<br />
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250410/20250410171017.png" width="236" height="118" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+</li>
+</ul>
+</ul>
+<h5 id="Pythonプログラム">【Pythonプログラム】</h5>
+<p>作成されたプログラムを、「PP画像貼り付け.pyw」（名前は任意）という名前にして、デスクトップに置いておき、ダブルクリックで実行する。</p>
+<p><span style="color: #dd830c;">※ Pythonプログラムの拡張子は通常「py」だが、コンソールウィンドウが開いてしまうので、拡張子を「pyw」にすることで、それを防げる。</span></p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250411/20250411092736.png" width="158" height="142" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<h5 id="Pythonインストール">【Pythonインストール】</h5>
+<p>Pythonがインストールされていなければ、インストールする。</p>
+<p><a class="link-card" href="../../../2023/09/08/210741.html"><span class="lc-body"><span class="lc-title">Windows）「Python（Ver.3.11.5）」インストール。</span><span class="lc-desc">Windows版Pythonのインストール手順の備忘録。 ■ Pythonダウンロード 現時点の最新、Ver.3.11.5。 ■ Python インストール 「 python-3.11.5-amd64.exe 」を実行。…</span><span class="lc-site">晴歩雨描 · <time>2023-09-08</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20230908/20230908204241.jpg" alt="" loading="lazy"></span></a></p>
+<p>次のライブラリが必要なので、インストールする。</p>
+<ul>
+<li>python-pptx: PowerPointファイルを操作するライブラリ</li>
+<li>Pillow (PIL): 画像処理用ライブラリ</li>
+</ul>
+<p>Pythonのパッケージマネージャー「pip」を使って、必要なライブラリをインターネットから自動的にダウンロードしてインストールする。コマンドプロンプトで以下を実行。</p>
+<pre>pip install python-pptx Pillow
+</pre>
+<h5 id="Pythonプログラムコード">【Pythonプログラムコード】</h5>
+<p>UTF-8で保存する。プログラム名は、一例として「PP画像貼り付け.pyw」とする。</p>
+<pre>import os
+import sys
+import tkinter as tk
+from tkinter import filedialog, simpledialog, messagebox, ttk
+from pptx import Presentation
+from pptx.util import Mm
+from PIL import Image
+
+# コンソールウィンドウを非表示にするためのコード
+if sys.platform.startswith('win'):
+    # Windowsの場合は以下のコードを追加
+    import ctypes
+    ctypes.windll.user32.ShowWindow(ctypes.windll.kernel32.GetConsoleWindow(), 0)
+
+def create_presentation_with_images():
+    # GUIの初期化
+    root = tk.Tk()
+    root.withdraw()  # メインウィンドウを非表示にする（ここで最初に非表示に）
+    
+    # アスペクト比の選択ダイアログを作成
+    aspect_ratio_window = tk.Toplevel(root)
+    aspect_ratio_window.title("アスペクト比の選択")
+    aspect_ratio_window.geometry("300x200")
+    aspect_ratio_window.protocol("WM_DELETE_WINDOW", lambda: os._exit(0))  # ウィンドウを閉じたら終了
+    
+    # ウィンドウを画面中央に配置
+    aspect_ratio_window.update_idletasks()
+    width = aspect_ratio_window.winfo_width()
+    height = aspect_ratio_window.winfo_height()
+    x = (aspect_ratio_window.winfo_screenwidth() // 2) - (width // 2)
+    y = (aspect_ratio_window.winfo_screenheight() // 2) - (height // 2)
+    aspect_ratio_window.geometry('{}x{}+{}+{}'.format(width, height, x, y))
+    
+    # アスペクト比のオプション
+    aspect_ratio_var = tk.StringVar()
+    aspect_ratio_var.set("4:3")  # デフォルト値
+    
+    aspect_label = tk.Label(aspect_ratio_window, text="画像の標準アスペクト比を選択してください:")
+    aspect_label.pack(pady=10)
+    
+    aspect_frame = tk.Frame(aspect_ratio_window)
+    aspect_frame.pack(pady=10)
+    
+    tk.Radiobutton(aspect_frame, text="4:3", variable=aspect_ratio_var, value="4:3").pack(anchor=tk.W)
+    tk.Radiobutton(aspect_frame, text="3:2", variable=aspect_ratio_var, value="3:2").pack(anchor=tk.W)
+    tk.Radiobutton(aspect_frame, text="1:1", variable=aspect_ratio_var, value="1:1").pack(anchor=tk.W)
+    
+    # 選択ボタン
+    continue_button = tk.Button(aspect_ratio_window, text="続ける", 
+                               command=aspect_ratio_window.destroy)
+    continue_button.pack(pady=10)
+    
+    # ウィンドウが閉じられるまで待機
+    root.wait_window(aspect_ratio_window)
+    
+    # アスペクト比を数値に変換
+    selected_aspect = aspect_ratio_var.get()
+    if selected_aspect == "4:3":
+        aspect_ratio = 3/4  # 縦:横の比率
+    elif selected_aspect == "3:2":
+        aspect_ratio = 2/3
+    else:  # 1:1
+        aspect_ratio = 1
+    
+    # フォルダとファイルの選択ダイアログ
+    folder_path = filedialog.askdirectory(title="画像が保存されているフォルダを選択してください")
+    if not folder_path:
+        messagebox.showinfo("中止", "フォルダが選択されませんでした。")
+        root.destroy()
+        return
+    
+    output_pptx_path = filedialog.asksaveasfilename(
+        title="保存先のPowerPointファイルを指定してください",
+        defaultextension=".pptx",
+        filetypes=[("PowerPoint Presentation", "*.pptx")]
+    )
+    if not output_pptx_path:
+        messagebox.showinfo("中止", "保存先が指定されませんでした。")
+        root.destroy()
+        return
+    
+    # 画像サイズとマージンの指定を取得
+    image_width_mm = simpledialog.askfloat(
+        "画像幅の指定", 
+        "貼り付ける画像の幅をミリメートルで指定してください:", 
+        initialvalue=35.0,
+        minvalue=1.0,
+        maxvalue=297.0
+    )
+    if image_width_mm is None:
+        messagebox.showinfo("中止", "画像幅が指定されませんでした。")
+        root.destroy()
+        return
+    
+    # 選択したアスペクト比から高さを自動計算
+    image_height_mm = image_width_mm * aspect_ratio
+    
+    horizontal_spacing_mm = simpledialog.askfloat(
+        "画像間の横間隔", 
+        "画像間の横方向の間隔をミリメートルで指定してください:", 
+        initialvalue=5.0,
+        minvalue=0.0,
+        maxvalue=50.0
+    )
+    if horizontal_spacing_mm is None:
+        messagebox.showinfo("中止", "横間隔が指定されませんでした。")
+        root.destroy()
+        return
+    
+    vertical_spacing_mm = simpledialog.askfloat(
+        "画像間の縦間隔", 
+        "画像間の縦方向の間隔をミリメートルで指定してください:", 
+        initialvalue=5.0,
+        minvalue=0.0,
+        maxvalue=50.0
+    )
+    if vertical_spacing_mm is None:
+        messagebox.showinfo("中止", "縦間隔が指定されませんでした。")
+        root.destroy()
+        return
+    
+    margin_mm = simpledialog.askfloat(
+        "ページ余白", 
+        "ページの余白をミリメートルで指定してください:", 
+        initialvalue=10.0,
+        minvalue=0.0,
+        maxvalue=50.0
+    )
+    if margin_mm is None:
+        messagebox.showinfo("中止", "余白が指定されませんでした。")
+        root.destroy()
+        return
+    
+    # ミリメートルをPowerPointのポイントに変換
+    target_width = Mm(image_width_mm)
+    target_height = Mm(image_height_mm)
+    h_spacing = Mm(horizontal_spacing_mm)
+    v_spacing = Mm(vertical_spacing_mm)
+    margin = Mm(margin_mm)
+    
+    # 新しいプレゼンテーションを作成
+    prs = Presentation()
+    
+    # A4横サイズのスライドを設定（A4は幅297mm, 高さ210mm）
+    prs.slide_width = Mm(297)
+    prs.slide_height = Mm(210)
+    
+    # スライドレイアウトの選択（白紙のレイアウト）
+    blank_layout = prs.slide_layouts[6]
+    slide = prs.slides.add_slide(blank_layout)
+    
+    # 指定されたフォルダから画像ファイルを取得
+    image_files = []
+    for filename in os.listdir(folder_path):
+        # 一般的な画像形式をチェック
+        if filename.lower().endswith(('.png', '.jpg', '.jpeg', '.bmp', '.gif', '.tiff')):
+            image_files.append(os.path.join(folder_path, filename))
+    
+    # 画像が見つからない場合
+    if not image_files:
+        messagebox.showinfo("エラー", "指定されたフォルダに画像ファイルが見つかりませんでした。")
+        root.destroy()
+        return
+    
+    # 配置パラメータ
+    x_start = margin
+    y_start = margin
+    x_pos = x_start
+    y_pos = y_start
+    max_width = prs.slide_width - margin
+    max_height = prs.slide_height - margin
+    
+    # 進捗表示用
+    total_images = len(image_files)
+    progress_window = tk.Toplevel(root)
+    progress_window.title("処理中...")
+    progress_window.geometry("400x120")
+    
+    # 進捗ウィンドウを画面中央に配置
+    progress_window.update_idletasks()
+    width = progress_window.winfo_width()
+    height = progress_window.winfo_height()
+    x = (progress_window.winfo_screenwidth() // 2) - (width // 2)
+    y = (progress_window.winfo_screenheight() // 2) - (height // 2)
+    progress_window.geometry('{}x{}+{}+{}'.format(width, height, x, y))
+    
+    progress_label = tk.Label(progress_window, text=f"画像を処理中: 0/{total_images}")
+    progress_label.pack(pady=10)
+    
+    status_label = tk.Label(progress_window, text="", wraplength=380)
+    status_label.pack(pady=5)
+    
+    progress_bar = ttk.Progressbar(progress_window, orient="horizontal", length=380, mode="determinate")
+    progress_bar.pack(pady=10)
+    
+    progress_window.update()
+    
+    # 画像を順番に配置
+    for i, img_path in enumerate(image_files):
+        try:
+            # PILで画像のサイズと向きを取得
+            with Image.open(img_path) as img:
+                orig_width, orig_height = img.size
+                
+                # 縦長の画像を90度回転させる準備
+                rotated = False
+                if orig_height &gt; orig_width:
+                    rotated = True
+                    # 画像サイズを入れ替え（90度回転を想定）
+                    orig_width, orig_height = orig_height, orig_width
+                
+                # 現在の画像のアスペクト比を計算
+                img_aspect = orig_height / orig_width
+                
+                # 画像を標準アスペクト比に合わせるために必要なサイズを計算
+                if img_aspect &gt; aspect_ratio:
+                    # 画像が標準よりも縦長の場合、高さを基準に合わせる
+                    actual_width = target_width
+                    actual_height = target_width * img_aspect
+                    status_text = f"画像 {os.path.basename(img_path)} は標準より縦長です (比率 1:{1/img_aspect:.2f})"
+                else:
+                    # 画像が標準よりも横長または同じ場合、幅を基準に合わせる
+                    actual_width = target_width
+                    actual_height = target_width * img_aspect
+                    status_text = f"画像 {os.path.basename(img_path)} は標準サイズ内です (比率 1:{1/img_aspect:.2f})"
+            
+            # 次の行に移動する必要があるか確認
+            if x_pos + actual_width &gt; max_width:
+                x_pos = x_start
+                y_pos += target_height + v_spacing  # 標準の高さを使用して行間隔を一定に
+            
+            # 新しいスライドが必要か確認
+            if y_pos + target_height &gt; max_height:
+                slide = prs.slides.add_slide(blank_layout)
+                x_pos = x_start
+                y_pos = y_start
+            
+            # 一時的に回転した画像を保存（必要な場合）
+            if rotated:
+                with Image.open(img_path) as img:
+                    # 画像を90度回転
+                    rotated_img = img.transpose(Image.ROTATE_90)
+                    temp_path = os.path.join(os.path.dirname(img_path), f"_temp_rotated_{os.path.basename(img_path)}")
+                    rotated_img.save(temp_path)
+                    
+                    # 回転した画像をスライドに追加
+                    pic = slide.shapes.add_picture(temp_path, x_pos, y_pos, width=actual_width)
+                    
+                    # 画像のサイズ調整（高さが標準枠を超える場合は枠内に収める）
+                    if actual_height &gt; target_height:
+                        # 縦横比を維持したまま、高さを標準枠に合わせる
+                        scale_factor = target_height / actual_height
+                        pic.width = int(actual_width * scale_factor)
+                        pic.height = int(target_height)
+                        status_text += " - 縮小して配置しました"
+                    
+                    # 一時ファイルを削除
+                    os.remove(temp_path)
+            else:
+                # 画像をそのままスライドに追加
+                pic = slide.shapes.add_picture(img_path, x_pos, y_pos, width=actual_width)
+                
+                # 画像のサイズ調整（高さが標準枠を超える場合は枠内に収める）
+                if actual_height &gt; target_height:
+                    # 縦横比を維持したまま、高さを標準枠に合わせる
+                    scale_factor = target_height / actual_height
+                    pic.width = int(actual_width * scale_factor)
+                    pic.height = int(target_height)
+                    status_text += " - 縮小して配置しました"
+            
+            # 次の画像のX位置を更新
+            x_pos += target_width + h_spacing  # 常に標準幅で間隔を取る
+            
+            # 進捗更新
+            progress_label.config(text=f"画像を処理中: {i+1}/{total_images}")
+            status_label.config(text=status_text)
+            progress_bar["value"] = ((i+1) / total_images) * 100
+            progress_window.update()
+            
+        except Exception as e:
+            messagebox.showerror("エラー", f"画像 {os.path.basename(img_path)} の処理中にエラーが発生しました\n{str(e)}")
+    
+    # 進捗ウィンドウを閉じる
+    progress_window.destroy()
+    
+    # プレゼンテーションを保存
+    try:
+        prs.save(output_pptx_path)
+        messagebox.showinfo("完了", f"プレゼンテーションを保存しました。\n{output_pptx_path}")
+    except Exception as e:
+        messagebox.showerror("エラー", f"保存中にエラーが発生しました\n{str(e)}")
+    
+    root.destroy()
+
+if __name__ == "__main__":
+    create_presentation_with_images()
+</pre>
+<h5 id="作成されるPowerPoint文書イメージ">【作成されるPowerPoint文書イメージ】</h5>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250410/20250410165838.jpg" width="1200" height="848" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p><a class="link-card" href="../../03/20/171056.html"><span class="lc-body"><span class="lc-title">JavaScript）AIツール「Claude」で、ブラウザに画像をアップロードしてトーンカーブで明るさ補正をしてダウンロードできるWebツール作成。</span><span class="lc-desc">以前に、ブラウザに画像をアップロードしてトーンカーブで明るさ補正できるツールを「jquery.iocurve」を使用して作成した。だが、難点として、新しい画像をアップロードして、現時点のトーンカーブを適用させることが難し…</span><span class="lc-site">晴歩雨描 · <time>2025-03-20</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250320/20250320170144.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../03/20/115145.html"><span class="lc-body"><span class="lc-title">AIツール「ChatGPT、Gemini、Copilot、Perplexity、リートン、Claude」＋JavaScriptライブラリ「p5.js」で「物理シミュレーション」アプリ作成。Claudeはアプリケーション作成能力が高い。</span><span class="lc-desc">昨日、 JavaScriptライブラリ「p5.js」 を使った「魚の群れのシミュレーション」を、AIツール「ChatGPT、Gemini、Copilot、Perplexity、リートン、Claude」で作った。 今回、J…</span><span class="lc-site">晴歩雨描 · <time>2025-03-20</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250320/20250320114142.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../03/20/141502.html"><span class="lc-body"><span class="lc-title">AIツール「Claude」でJavaScript＋p5.jsアプリ作成。花火、水の流れや波紋、マウス操作で遊ぶゲーム。</span><span class="lc-desc">先程、AIツール「ChatGPT、Gemini、Copilot、Perplexity、リートン、Claude」＋JavaScriptライブラリ「p5.js」で「物理シミュレーション」アプリを作成した。 この時、Claud…</span><span class="lc-site">晴歩雨描 · <time>2025-03-20</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250320/20250320140055.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../03/29/100520.html"><span class="lc-body"><span class="lc-title">太陽系の惑星「水星、金星、地球、火星、木星、土星、天王星、海王星、冥王星」をテーマに、Claudeに物語を考えてもらった。ChatGPT、Gemini、Ideogramで、物語の文章から画像生成も。</span><span class="lc-desc">先程、太陽系の惑星をテーマに、ChatGPTにエッセイを考えてもらった。 今回、太陽系の惑星「 水星、金星、地球、火星、木星、土星、天王星、海王星、冥王星（準惑星） 」をテーマに、AIツール「 Claude 」物語を考え…</span><span class="lc-site">晴歩雨描 · <time>2025-03-29</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250329/20250329100452.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2023/09/10/140435.html"><span class="lc-body"><span class="lc-title">Python）ローカル）写真解像度を上げる（アップスケーリング、高画質化）Pythonツール「SwinIR」を試してみた。</span><span class="lc-desc">写真解像度を上げる「 SwinIR 」を試してみた。 「SwinIR」を利用するためには、「 Python 」が必要になるので、Pythonをインストールしておく。 【SwinIR 導入手順】 ■ 「Python」パッケ…</span><span class="lc-site">晴歩雨描 · <time>2023-09-10</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20230910/20230910135149.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../08/095058.html"><span class="lc-body"><span class="lc-title">ChatGPTの画像生成AI「4o Image Generation」の写真の高画質化は凄まじい（？）。一般的なアップスケーリングツールとは一線を画す。「DALL・E」との比較も。</span><span class="lc-desc">先日、写真の高画質化/鮮明化Windowsアプリ「Aiarty Image Enhancer」「Upscayl」で、アップスケーリングなしの1倍で、野鳥写真を使って高画質化/鮮明化レベルを検証した。 ChatGPT「4o…</span><span class="lc-site">晴歩雨描 · <time>2025-04-08</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250408/20250408091610.png" alt="" loading="lazy"></span></a></p></div></article>
+</body>
+</html>

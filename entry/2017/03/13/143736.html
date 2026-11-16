@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>写真/画像をサムネイル一覧するHTMLサンプル（ブロック全体は中央揃え（センタリング）＋中の複数画像は左寄せ） - 晴歩雨描</title>
+<link rel="stylesheet" href="../../../../style.css">
+</head>
+<body>
+<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>写真/画像をサムネイル一覧するHTMLサンプル（ブロック全体は中央揃え（センタリング）＋中の複数画像は左寄せ）</h1><p class="meta">2017-03-13 · <a href="../../../../category/c13.html">ホームページ、Web作成</a></p><div class="entry-body"><p>写真/画像をサムネイル一覧するHTMLサンプルを作成。</p>
+<p><img class="hatena-fotolife" title="f:id:art2nd:20170313140402j:plain" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20170313/20170313140402.jpg" alt="f:id:art2nd:20170313140402j:plain" /></p>
+<p>「サムネイル一覧のブロック全体はページ内で左右中央揃えし、ブロック内の複数画像は左寄せする。」というのをCSSだけで実現したかったが、ブロック内の右側に余分な余白が付いてしまうのを解除する方法が見つからず。</p>
+<p>（【2017/4/11追記】CSSのみで実現する方法が分かった。詳細は以下。</p>
+<p>　　<a href="../../04/11/193206.html" target="_blank">http://2ndart.hatenablog.com/entry/2017/04/11/193206</a></p>
+<p>）</p>
+<p>Yahoo!知恵袋で質問して、oishii_mahouさんからJavaScriptで実現する方法を教えてもらって解決。方法としては、ブロック内の横一列に並ぶ画像の数に合わせてブロックの横幅を調整し、余分の余白が出来ないようにする。</p>
+<p><a href="http://detail.chiebukuro.yahoo.co.jp/qa/question_detail/q14171622404" target="_blank">画像サムネイル一覧のブロック全体をページ内で左右中央揃えしたい。... - Yahoo!知恵袋</a></p>
+<p>画像サムネイルHTMLサンプルページは以下。なお、ブロック内の各画像はそれぞれ正方形ボックス内で上下左右中央揃えしている。</p>
+<p>≪画像サムネイル・サンプル≫</p>
+<p><a target="_blank" href="https://ok2nd.github.io/tool/html/thumbnail-sample.html">https://ok2nd.github.io/tool/html/thumbnail-sample.html</a></p>
+<p><span style="color: #3d3f44; font-family: 'Helvetica Neue', Helvetica, Arial, 'ヒラギノ角ゴ Pro W3', 'Hiragino Kaku Gothic Pro', メイリオ, Meiryo, 'ＭＳ Ｐゴシック', 'MS PGothic', sans-serif; font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: normal; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: #ffffff; display: inline !important; float: none;">≪8cm×12cm</span>の小さなアート≫にも適用。（2017/4/13：Media Queriesを使う方法に変更。）</p>
+<p><a href="https://ok2nd.sakura.ne.jp/art/" target="_blank">https://ok2nd.sakura.ne.jp/art/</a></p>
+<p><a href="https://ok2nd.github.io/tool/2nd-art/p1.html" target="_blank">https://ok2nd.github.io/tool/2nd-art/p1.html</a></p>
+<p>以下関係部分のHTML+CSS+JavaScript。</p>
+<pre>&lt;div id="contents"&gt;
+	&lt;div id="gallery"&gt;
+		&lt;span style="background-image: url('thumbs/001.jpg')"&gt;&lt;/span&gt;
+		&lt;span style="background-image: url('thumbs/002.jpg')"&gt;&lt;/span&gt;
+		...
+	&lt;/div&gt;
+&lt;/div&gt;
+&lt;style&gt;
+#contents {
+	margin: 0 auto;
+}
+#gallery {
+	margin: 0 auto;
+	padding: 0;
+	text-align: left;
+}
+&lt;/style&gt;
+&lt;script&gt;
+function initGallery() {
+	gallery = document.getElementById("gallery");
+	imgItem = gallery.getElementsByTagName("span");
+	gallery.innerHTML = gallery.innerHTML.replace( /\r?\n|\r/g, "" );	// 改行コードを除去
+	adjustGallery();
+}
+function adjustGallery() {
+	var imgStyle = imgItem[0].currentStyle || document.defaultView.getComputedStyle(imgItem[0], "");
+	var imgMargin = parseInt(imgStyle.marginLeft, 10) + parseInt(imgStyle.marginRight, 10);
+	var imgWidth = imgItem[0].offsetWidth + 5;
+	var winWidth = document.body.offsetWidth || document.documentElement.offsetWidth;	// ウィンドウ幅
+	var imgNum = Math.min(Math.floor(winWidth/imgWidth), imgItem.length);	// 横に並んでいる画像の数
+	gallery.style.width = imgNum * imgWidth + (imgNum - 1) * imgMargin + "px";
+}
+window.addEventListener( "load", initGallery, false );
+window.addEventListener( "resize", adjustGallery, false );
+&lt;/script&gt;
+</pre>
+<p><a href="https://ok2nd.sakura.ne.jp/index/sch/calendar/?y=2019" target="_blank"><img class="hatena-fotolife" title="f:id:art2nd:20181129081355j:plain" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20181129/20181129081355.jpg" alt="f:id:art2nd:20181129081355j:plain" /></a></p>
+<p><a href="https://ok2nd.sakura.ne.jp/index/sch/calendar/month.php?y=2019&amp;m=5" target="_blank"><img class="hatena-fotolife" title="f:id:art2nd:20181129082500j:plain" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20181129/20181129082500.jpg" alt="f:id:art2nd:20181129082500j:plain" /></a></p>
+<p><a class="link-card" href="../../../2018/12/01/145527.html"><span class="lc-body"><span class="lc-title">自分で撮った写真で卓上型カレンダーをつくってみた。（CubePDF使用）</span><span class="lc-desc">先日、自分で撮った写真で2019年カレンダーをつくってみた。 今回、自分で撮った写真で卓上型カレンダーをつくってみた。片面6か月で両面で1年タイプのカレンダー。家庭のプリンターでA4サイズで印刷して半分に折って使う。 【…</span><span class="lc-site">晴歩雨描 · <time>2018-12-01</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20181201/20181201140923.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2018/07/13/144317.html"><span class="lc-body"><span class="lc-title">PHP）シンプルなHTMLカレンダー。Google Calendar API v3で祝日表示。コードサンプル。</span><span class="lc-desc">先日作成したスマホ&amp;PC用検索ポータル「2nd Sch」にカレンダー表示のため、シンプルなHTMLカレンダーを作成。 祝日表示に「Google Calendar API v3」を使用。 ただ、祝日は当年の前後合わせて3年…</span><span class="lc-site">晴歩雨描 · <time>2018-07-13</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20180713/20180713143522.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2018/07/07/144138.html"><span class="lc-body"><span class="lc-title">HTML(TABLE)クリッカブルマップ「日本地図」を作成。スマホ対応。</span><span class="lc-desc">HTML(TABLE)で、クリッカブルマップとしての日本地図を作成。（昔、作ったものを手直し） スマホを想定して、縦長画面の時は都道府県名を縦書きにして画面内に収まるようにした。スマホ画面を横位置にした場合の縦が狭い画面…</span><span class="lc-site">晴歩雨描 · <time>2018-07-07</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20180707/20180707224156.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2019/02/17/182430.html"><span class="lc-body"><span class="lc-title">影付き枠＋ビネット効果付き写真サムネイルアルバム(神戸散歩)のポップアップ拡大画像にビネット効果。</span><span class="lc-desc">↑ で、影付き枠＋ビネット効果を使った写真のWebサムネイルアルバムに、ポップアップ拡大画像を追加した。 しかし、この方法では、ポップアップ拡大画像にビネット効果はつかない。 ビネット効果付きの拡大画像1枚を表示するHT…</span><span class="lc-site">晴歩雨描 · <time>2019-02-17</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190217/20190217181044.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2019/02/19/135849.html"><span class="lc-body"><span class="lc-title">CSSのブレンドモード&quot;background-blend-mode&quot;を使うと写真にカラーフィルタをかけたような色の加工ができる。</span><span class="lc-desc">CSS の&quot;background-blend-mode&quot;を使うと写真にカラーフィルタをかけたような色の加工ができる。 以下のWebページを参考にした。 使い方は、&lt;div&gt;で写真を入れるボックスを作成し、backgrou…</span><span class="lc-site">晴歩雨描 · <time>2019-02-19</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190219/20190219135707.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2019/02/15/155918.html"><span class="lc-body"><span class="lc-title">CSS）写真に影付きのシンプルな枠＋ビネット効果</span><span class="lc-desc">↑ で、写真に枠(フレーム)を付けた。 この写真に、さらに ビネット 効果を付ける。 ビネット 効果については、以下リンク先を参照。 ビネット 効果を付ける&lt;div&gt;を、枠を付ける&lt;div&gt;で囲む。 &lt;div class…</span><span class="lc-site">晴歩雨描 · <time>2019-02-15</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190215/20190215172500.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2019/02/15/150757.html"><span class="lc-body"><span class="lc-title">CSSで写真に影付きのシンプルな枠(フレーム)を付ける。</span><span class="lc-desc">CSS で写真にシンプルな枠(フレーム)を付ける。 枠に淡い影を付ける。 &lt;img class=&quot;box-frame&quot; src=&quot;img/xxx.jpg&quot;&gt; &lt;style&gt; .box-frame { padding:7p…</span><span class="lc-site">晴歩雨描 · <time>2019-02-15</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190215/20190215151027.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2019/09/09/200129.html"><span class="lc-body"><span class="lc-title">HTML、jQuery）HTMLフォトギャラリー＆スライドショー（Unite Gallery版）</span><span class="lc-desc">JavaScript ライブラリ「Unite Gallery」を使って、HTMLフォトギャラリー＆スライドショーを作成。 フォトギャラリー用の JavaScript ライブラリでは「Fotorama」「lightgall…</span><span class="lc-site">晴歩雨描 · <time>2019-09-09</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190909/20190909195107.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2019/02/15/135029.html"><span class="lc-body"><span class="lc-title">CSSで写真を鉛筆画、色鉛筆画、水彩画風にエフェクト</span><span class="lc-desc">写真を鉛筆画、色鉛筆画、水彩画風にエフェクトをかける CSS が見つかったので、試してみた。その CSS は以下。 下の「coliss」の紹介記事で知った。 【オリジナル写真】 【鉛筆画】 &lt;div class=&quot;pen…</span><span class="lc-site">晴歩雨描 · <time>2019-02-15</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190215/20190215134430.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2019/02/14/152603.html"><span class="lc-body"><span class="lc-title">CSS Filterを使えば、簡単に色調（明度、彩度、色相、透過度 etc.）加工ができる。</span><span class="lc-desc">CSS Filterを試してみた。 CSS Filterを使えば、写真そのものを加工しなくても、ブラウザ上で彩度、明度、色相、コントラスト等色調を変えて表示できる。 CSSは簡単。例えばグレースケールにしたければ、&lt;im…</span><span class="lc-site">晴歩雨描 · <time>2019-02-14</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190214/20190214142149.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2019/02/12/141537.html"><span class="lc-body"><span class="lc-title">はてなブログ）スマホ等でページ横からはみ出た表&lt;table&gt;を横スクロールできるようにする最も（？）簡単な方法。</span><span class="lc-desc">はてなブログ を スマホ で閲覧する場合、テーブルが横にはみ出てしまうことがある。レスポンシブ対応含め一般的なデザインテーマでは横スクロールできない。 これを、横スクロールできるようにする最も（？）簡単な方法。 ネットで…</span><span class="lc-site">晴歩雨描 · <time>2019-02-12</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190212/20190212141216.jpg" alt="" loading="lazy"></span></a></p></div></article>
+</body>
+</html>

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Leaflet地図：三大コンビニ都道府県別店舗数を円グラフ（Google Image Charts）で表示。 - 晴歩雨描</title>
+<link rel="stylesheet" href="../../../../style.css">
+</head>
+<body>
+<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>Leaflet地図：三大コンビニ都道府県別店舗数を円グラフ（Google Image Charts）で表示。</h1><p class="meta">2022-07-04 · <a href="../../../../category/c21.html">地図・マップ</a> <a href="../../../../category/c13.html">ホームページ、Web作成</a></p><div class="entry-body"><p>地図データを扱うJavaScript ライブラリ「Leaflet」を使って、地図をいくつか作成してきた。</p>
+<p><a class="link-card" href="https://ok2nd.github.io/leaflet/" target="_blank" rel="noopener noreferrer"><span class="lc-body"><span class="lc-title">Leaflet地図 リスト by 晴歩雨描</span><span class="lc-desc"></span><span class="lc-site">ok2nd.github.io</span></span></a></p>
+<p>今回、「<em>三大コンビニ都道府県別店舗数</em>」を作成。</p>
+<p><em><span style="color: rgb(255, 0, 0);">【後日追記】円グラフには、Google Image Chartsを使っている。現在使用できない。</span></em></p>
+<p><a class="link-card" href="https://ok2nd.github.io/leaflet/japan-convenience-store.html" target="_blank" rel="noopener noreferrer"><span class="lc-body"><span class="lc-title">日本）三大コンビニ都道府県別店舗数（CSV使用）</span><span class="lc-desc"></span><span class="lc-site">ok2nd.github.io</span></span></a></p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220704/20220704094405.jpg" width="773" height="599" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<p>データは、大手コンビニ3社の公式サイトの数字を使用。</p>
+<ul>
+<li><a href="https://www.sej.co.jp/company/tenpo.html" target="_blank">国内店舗数｜セブン‐イレブン（2022年6月末）</a></li>
+<li><a href="https://www.family.co.jp/company/familymart/store.html" target="_blank">店舗数｜会社案内｜ファミリーマート（2022年5月末）</a></li>
+<li><a href="https://www.lawson.co.jp/company/corporate/data/sales/" target="_blank">売上高/店舗数｜ローソン公式サイト（2022年2月末）</a></li>
+</ul>
+<p>各社データの日付が違う。ミニストップ、デイリーヤマザキ、セイコーマートを含めた店舗数一覧を掲載しているサイトもあるが、データを使うには支障がありそうだったので、やめた。大手3社（<em>セブン－イレブン、ファミリーマート、ローソン</em>）に限定して店舗数を都道府県別に円グラフにして日本地図に重ねた。</p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220704/20220704094408.jpg" width="773" height="488" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<p>東日本では<em>セブン－イレブンが多い。</em></p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220704/20220704094410.jpg" width="748" height="469" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<p><em>中部地区ではファミリーマート、西日本ではローソンが多い。</em></p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220704/20220704094412.jpg" width="748" height="499" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<p>円グラフには「<em>Google Charts &gt; Image Charts</em>」を使っている。</p>
+<p><a class="link-card" href="https://developers.google.com/chart/image/docs/gallery/pie_charts" target="_blank" rel="noopener noreferrer"><span class="lc-body"><span class="lc-title">Charts | Google for Developers</span><span class="lc-desc">ブラウザやモバイル デバイス向けのインタラクティブなグラフを追加するためのリソースをご紹介します。</span><span class="lc-site">Google for Developers</span></span><span class="lc-thumb"><img src="https://www.gstatic.com/devrel-devsite/prod/v579d635a54d6e1f40caad46ce407560c5106c8915e5ff7e6341f5b13eb245c5a/developers/images/opengraph/google-blue.png" alt="" loading="lazy"></span></a></p>
+<p><span style="color: #454545; font-family: 'Noto Sans JP', sans-serif; font-size: 15.2px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: #ffffff; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;">URLでパラメーター指定で</span><a class="keyword" href="http://d.hatena.ne.jp/keyword/PNG" style="font-family: 'Noto Sans JP', sans-serif; background: #ffffff; color: inherit !important; overflow-wrap: break-word; text-decoration: none; border-bottom: 1px dotted #dddddd; font-size: 15.2px; cursor: pointer !important; font-style: normal; font-weight: 400; pointer-events: auto !important; font-variant-ligatures: normal; font-variant-caps: normal; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px;">PNG</a><span style="color: #454545; font-family: 'Noto Sans JP', sans-serif; font-size: 15.2px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: #ffffff; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;">画像で円グラフを取得できる。</span></p>
+<pre><a href="https://chart.apis.google.com/chart?cht=p&chs=200x200&chco=ee1d23">https://chart.apis.google.com/chart?cht=p&chs=200x200&chco=ee1d23</a>|00c64f|1f5fa8&amp;chf=bg,s,ffffff00&amp;chd=t:40,31,28&amp;chdl=セブンイレブン|ファミリーマート|ローソン
+</pre>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220704/20220704100048.png" width="200" height="200" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<h5 id="JavaScriptサンプルソース抜粋">≪JavaScriptサンプルソース（抜粋）≫</h5>
+<pre>var todofuken = [
+	['',0,0],
+	['北海道',42.80,140.90],
+	['青森県',40.65,140.65],
+	['岩手県',39.55,141.30],
+	['宮城県',38.30,140.78],
+	['秋田県',39.60,140.35],
+	['山形県',38.44,139.97],
+	['福島県',37.40,140.20],
+	['茨城県',36.07,140.19],
+	['栃木県',36.67,139.75],
+	['群馬県',36.42,138.91],
+	['埼玉県',35.95,139.28],
+	['千葉県',35.31,140.13],
+	['東京都',35.62,139.45],
+	['神奈川県',35.38,139.25],
+	['新潟県',37.47,138.87],
+	['富山県',36.57,137.23],
+	['石川県',36.40,136.51],
+	['福井県',35.88,136.21],
+	['山梨県',35.56,138.58],
+	['長野県',36.08,138.00],
+	['岐阜県',35.60,136.95],
+	['静岡県',34.84,137.99],
+	['愛知県',34.97,137.10],
+	['三重県',34.53,136.37],
+	['滋賀県',35.12,136.06],
+	['京都県',35.15,135.50],
+	['大阪府',34.55,135.46],
+	['兵庫県',34.91,134.90],
+	['奈良県',34.28,135.84],
+	['和歌山県',33.76,135.40],
+	['鳥取県',35.40,133.72],
+	['島根県',34.96,132.28],
+	['岡山県',34.77,133.78],
+	['広島県',34.50,132.78],
+	['山口県',34.19,131.41],
+	['徳島県',33.85,134.23],
+	['香川県',34.17,133.95],
+	['愛媛県',33.68,132.83],
+	['高知県',33.58,133.38],
+	['福岡県',33.58,130.68],
+	['佐賀県',33.20,130.06],
+	['長崎県',32.76,129.94],
+	['熊本県',32.58,130.74],
+	['大分県',33.20,131.40],
+	['宮崎県',32.20,131.26],
+	['鹿児島県',31.75,130.50],
+	['沖縄県',26.40,127.82]
+];
+// --------------
+fetch('csv/convenience-store.csv')		// コンビニ都道府県別店舗数データ
+.then((response) =&gt; {
+	if(response.ok) {
+		return response.text();
+	} else {
+		throw new Error();
+	}
+})
+.then((text) =&gt; {
+	csv2marker(text);
+	marker2map();
+})
+function csv2marker(csv) {
+	var line = csv.split("\n");
+	for (var i=0; i&lt;line.length; ++i) {
+		var data = line[i].split(',');
+		if (data.length &gt; 2) {
+/*
+			data[0] 都道府県コード
+			data[1] 都道府県名
+			data[2] セブンイレブン
+			data[3] ファミリーマート
+			data[4] ローソン
+			data[5] 合計
+*/
+			var popStr = '&lt;span class="kenmei"&gt;' + data[1] + '&lt;/span&gt;';
+			popStr += '&lt;br&gt;&lt;span class="SevenEleven"&gt;セブンイレブン&lt;/span&gt;：&lt;span class="data"&gt;' + data[2] + '&lt;/span&gt;';
+			popStr += '&lt;br&gt;&lt;span class="FamilyMart"&gt;ファミリーマート&lt;/span&gt;：&lt;span class="data"&gt;' + data[3] + '&lt;/span&gt;';
+			popStr += '&lt;br&gt;&lt;span class="Lawson"&gt;ローソン&lt;/span&gt;：&lt;span class="data"&gt;' + data[4] + '&lt;/span&gt;';
+			var pie_data = ratio(data[2], data[5]);
+			pie_data += ',' + ratio(data[3], data[5]);
+			pie_data += ',' + ratio(data[4], data[5]);
+			var chartIcon = L.icon({
+				iconUrl: '<a href="https://chart.apis.google.com/chart?cht=p&chs=80x80&chco=ee1d23">https://chart.apis.google.com/chart?cht=p&chs=80x80&chco=ee1d23</a>|00c64f|1f5fa8&amp;chf=bg,s,ffffff00&amp;chd=t:' + pie_data,
+				iconSize: [80, 80],
+				iconAnchor: [30, 50],
+				popupAnchor: [-10, -42]
+			});
+			L.marker([todofuken[data[0]][1], todofuken[data[0]][2]], {icon:chartIcon}).addTo(map).bindPopup(popStr);
+		}
+	}
+}
+function ratio(val, all) {
+	return Math.round((Number(val) / Number(all) * 100));
+}
+function marker2map() {
+	var popStr = '&lt;span class="kenmei"&gt;日本全国&lt;/span&gt;';
+	popStr += '&lt;br&gt;&lt;span class="SevenEleven"&gt;セブンイレブン&lt;/span&gt;：&lt;span class="data"&gt;21,337&lt;/span&gt;（2022.6）';
+	popStr += '&lt;br&gt;&lt;span class="FamilyMart"&gt;ファミリーマート&lt;/span&gt;：&lt;span class="data"&gt;16,564&lt;/span&gt;（2022.5）';
+	popStr += '&lt;br&gt;&lt;span class="Lawson"&gt;ローソン&lt;/span&gt;：&lt;span class="data"&gt;14,660&lt;/span&gt;（2022.2）';
+	var chartIcon = L.icon({
+		iconUrl: '<a href="https://chart.apis.google.com/chart?cht=p&chs=200x200&chco=ee1d23">https://chart.apis.google.com/chart?cht=p&chs=200x200&chco=ee1d23</a>|00c64f|1f5fa8&amp;chf=bg,s,ffffff00&amp;chd=t:40,31,28&amp;chdl=セブンイレブン|ファミリーマート|ローソン',
+		iconSize: [200, 200],
+		iconAnchor: [60, 240],
+		popupAnchor: [-18, -185],
+	});
+	L.marker([36, 135], {icon: chartIcon}).addTo(map).bindPopup(popStr);
+	map.setView([36, 136], 7);
+	map.on('click', onMapClick);
+}
+</pre>
+<p><a class="link-card" href="../../../2021/06/16/143619.html"><span class="lc-body"><span class="lc-title">Leaflet地図：「新潟酒蔵マップ」作成。CSVファイルから。サンプルソース。</span><span class="lc-desc">地図データを扱う JavaScript ライブラリ「Leaflet」を使って、地図表示を試してきた。 今回、「新潟酒蔵マップ」を作成した。 「LinkData」のデータを使わせてもらった。 「LinkData」のデータを…</span><span class="lc-site">晴歩雨描 · <time>2021-06-16</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20210616/20210616143304.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../05/144222.html"><span class="lc-body"><span class="lc-title">Leaflet地図：都道府県別「りんご」vs「みかん」を円グラフ（Google Image Charts）で表示。</span><span class="lc-desc">地図データを扱うJavaScript ライブラリ「Leaflet」を使って、地図をいくつか作成してきた。 今回、『都道府県別「りんご」vs「みかん」』を作成。 【後日追記】円グラフには、Google Image Char…</span><span class="lc-site">晴歩雨描 · <time>2022-07-05</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220705/20220705142457.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2021/08/21/161534.html"><span class="lc-body"><span class="lc-title">Leaflet地図：複数地点マーカー表示。CSVファイルをURL指定。</span><span class="lc-desc">地図データを扱うJavaScript ライブラリ「Leaflet」を使ってKMLやCSVファイルで地点表示をいくつか行ってきた。 今回、シンプルなCSVファイルをURLで指定するタイプを作成。 CSV形式は、以下。 地点…</span><span class="lc-site">晴歩雨描 · <time>2021-08-21</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20210821/20210821160851.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../06/15/123352.html"><span class="lc-body"><span class="lc-title">Leaflet地図：「日本酒生産量：都道府県別マップ」の「白地図＋Google Charts（Image Charts）版」作成。</span><span class="lc-desc">地図データを扱う JavaScript ライブラリ「Leaflet」を使って、地図をいくつか作成してきた。 以前に「日本酒生産量： 都道 府県別マップ」を作成した。 最近、「日本 白地図 」を作成した。 今回、「日本酒生…</span><span class="lc-site">晴歩雨描 · <time>2022-06-15</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220615/20220615111331.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../06/03/221404.html"><span class="lc-body"><span class="lc-title">Leaflet地図：「Jawg Maps」世界地図に国旗表示（１）。逆ジオコーディング「Reverse - Nominatim」使用。</span><span class="lc-desc">先日、「Leaflet」＋「Jawg Maps」を使った世界地図を作成した。 この世界地図に、国旗表示機能を追加。（雨雲は廃止） 緯度経度から国名検索には、「 Reverse - Nominatim 」の 逆ジオコーディ…</span><span class="lc-site">晴歩雨描 · <time>2022-06-03</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220603/20220603220015.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../06/24/100921.html"><span class="lc-body"><span class="lc-title">Leaflet地図：世界地図に国別宗教構成を円グラフ（Google Image Charts）で表示。</span><span class="lc-desc">先日、Leafletで世界地図に国別宗教構成を表示するページを作成した。 前回は、世界地図に国旗を表示し、国旗をクリックすると、その国の宗教構成を表示する方式だった。 今回は、全世界の各国の宗教構成を円グラフで一覧表示す…</span><span class="lc-site">晴歩雨描 · <time>2022-06-24</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220624/20220624085444.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2021/04/29/111336.html"><span class="lc-body"><span class="lc-title">Leaflet地図：Google MAPS APIなしでGoogleマップが使える。APIキーも不要。サンプルソース。</span><span class="lc-desc">昨日、「 Leaflet 」を使って「 OpenStreetMap 」「 国土地理院 」「 Esri World Topo Map 」の地図表示を試した。 「 Leaflet 」を使えば、「 Google MAPS AP…</span><span class="lc-site">晴歩雨描 · <time>2021-04-29</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20210429/20210429110223.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2021/11/24/154403.html"><span class="lc-body"><span class="lc-title">Leaflet地図：GPXファイルを複数個、URLで指定。</span><span class="lc-desc">地図データを扱う JavaScript ライブラリ「Leaflet」を使って、 GPSログ (GPXファイル)の地図表示をいくつか作成してきた。 今回、GPXファイルをURLで複数指定できるタイプを作成。 形式： htt…</span><span class="lc-site">晴歩雨描 · <time>2021-11-24</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20211124/20211124153831.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2021/06/27/134220.html"><span class="lc-body"><span class="lc-title">Leaflet地図：国土地理院のハザードマップ（津波、洪水 etc.）を重ねて表示。Googleマップにも重ねて表示できる。サンプルソース。</span><span class="lc-desc">地図データを扱うJavaScript ライブラリ「Leaflet」を使って、地図表示を試してきた。 今回、国土地理院の「ハザードマップ」を重ねて表示してみた。 以下の7つを重ねて表示できるようにした。 洪水浸水想定区域（…</span><span class="lc-site">晴歩雨描 · <time>2021-06-27</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20210627/20210627133723.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2021/06/15/164145.html"><span class="lc-body"><span class="lc-title">Leaflet地図：国土地理院のジオコーダーで住所から緯度経度検索。CSVからも。サンプルソース。</span><span class="lc-desc">地図データを扱うJavaScript ライブラリ「Leaflet」を使って、地図表示を試してきた。 今回、国土地理院のジオコーダーを使って、住所から緯度経度を取得して地図にマッピングを試した。 【プログラムソースサンプル…</span><span class="lc-site">晴歩雨描 · <time>2021-06-15</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20210615/20210615163820.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2019/05/01/113241.html"><span class="lc-body"><span class="lc-title">ヨーロッパ鉄道時刻表と鉄道地図。ヨーロッパ鉄道旅行の思い出。</span><span class="lc-desc">「 朝日新聞 GLOBE＋」で、中国では無くなった紙の時刻表を日本で発行している団体があるという記事を見た。発行部数は約2500部。採算度外視の趣味＆ボランティアの領域と思われる。 昔、ヨーロッパへ行く時にお世話になった…</span><span class="lc-site">晴歩雨描 · <time>2019-05-01</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190501/20190501100037.jpg" alt="" loading="lazy"></span></a></p></div></article>
+</body>
+</html>

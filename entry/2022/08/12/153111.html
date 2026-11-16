@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>WordPress）設定まとめ。メディアライブラリを使うバージョン。 - 晴歩雨描</title>
+<link rel="stylesheet" href="../../../../style.css">
+</head>
+<body>
+<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>WordPress）設定まとめ。メディアライブラリを使うバージョン。</h1><p class="meta">2022-08-12 · <a href="../../../../category/c13.html">ホームページ、Web作成</a> <a href="../../../../category/c2.html">WordPress</a></p><div class="entry-body"><p>自宅のWindowsPCローカルに<a class="keyword" href="http://d.hatena.ne.jp/keyword/WordPress">WordPress</a>をインストールしている。</p>
+<p><a class="link-card" href="../06/224635.html"><span class="lc-body"><span class="lc-title">WindowsPCの古いXAMPPにWordPress（5.0.16）をインストール。</span><span class="lc-desc">※ 後日追記：ドライブやディレクトリを変える場合は注意が必要。 自宅のWindowsPCにWordPressをインストールした手順の備忘録。 自宅のWindowsPCには、古いバージョンのXAMPP（ XAMPP 1.8…</span><span class="lc-site">晴歩雨描 · <time>2022-08-06</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220806/20220806222743.png" alt="" loading="lazy"></span></a></p>
+<p>設定をいくつかやってみたので、備忘録としてまとめ。</p>
+<p> </p>
+<p><em><span style="color: #dd830c;">※ メディアライブラリを使わない前提の設定まとめは以下。</span></em></p>
+<p><a class="link-card" href="../15/231115.html"><span class="lc-body"><span class="lc-title">WordPress）設定まとめ。メディアライブラリを使わないバージョン。</span><span class="lc-desc">自宅WindowsPCローカルに WordPress をインストールしている。 以前、 WordPress 設定まとめを書いた。この時はメディアライブラリを使う前提だった。 メディアライブラリを使わない方法が分かったので…</span><span class="lc-site">晴歩雨描 · <time>2022-08-15</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220811/20220811140646.jpg" alt="" loading="lazy"></span></a></p>
+<p> </p>
+<h5 id="１Ａ外観テーマをSemplicementeに変更">１－Ａ．外観テーマを「<em>Semplicemente</em>」に変更。</h5>
+<p><a class="link-card" href="../08/171242.html"><span class="lc-body"><span class="lc-title">WordPress）外観テーマを「Semplicemente」に変更。</span><span class="lc-desc">先日、自宅のWindowsPCローカルに WordPress を入れた。 この WordPress の外観テーマを「Semplicemente」に変更。 【 はてなブログ 「晴歩雨描」のテーマ：Minimalism】 一…</span><span class="lc-site">晴歩雨描 · <time>2022-08-08</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220808/20220808170200.jpg" alt="" loading="lazy"></span></a></p>
+<p>テーマ「Semplicemente」は、一部カスタマイズをした。</p>
+<ul>
+<li>［外観］＞［カスタマイズ］＞［<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%A6%A5%A3%A5%B8%A5%A7%A5%C3%A5%C8">ウィジェット</a>］＞［サイドバー］で、「最近の投稿」と「最近のコメント」を削除。</li>
+</ul>
+<ul>
+<li>［固定ページ］で、「サンプルページ」を削除。</li>
+<li>記事一覧の「編集」と「続きを読む」を表示しないようにする。「\wp-content\themes\semplicemente\<em>style.<a class="keyword" href="http://d.hatena.ne.jp/keyword/css">css</a></em>」 の以下の部分を変更する。
+<pre>footer.entry-footer {
+	<em>display: none;</em>
+	padding: 1.5em;
+	border-top: 1px solid rgba(0,0,0,.05);
+}
+.entry-content {
+	<em>margin: 1.5em 0 1.5em 0;</em>
+	padding: 0 1.5em;
+}
+</pre>
+</li>
+</ul>
+<h5 id="１Ｂ外観テーマをIconic-Oneに変更カスタマイズも">１－Ｂ．外観テーマを「<em>Iconic One</em>」に変更。カスタマイズも。</h5>
+<p>その後、テーマを「Iconic One」に変更した。</p>
+<p><span style="color: #dd830c;">※ カスタマイズをいくつか行っている。詳細は以下の記事参照。</span></p>
+<p><a class="link-card" href="../13/124011.html"><span class="lc-body"><span class="lc-title">WordPress）外観テーマを「Iconic One」に変更。 「Iconic One」カスタマイズ。</span><span class="lc-desc">先日、自宅のWindowsPCローカルに WordPress を入れた。 外観テーマを一旦「Semplicemente」に変更したが、 今回、外観テーマを「 Iconic One 」に変更してみた。 ※ この記事の以下の…</span><span class="lc-site">晴歩雨描 · <time>2022-08-13</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220813/20220813123456.jpg" alt="" loading="lazy"></span></a></p>
+<h5 id="２外観--カスタマイズ--追加CSSへのCSS追加">２．外観 &gt; カスタマイズ &gt; ［<em>追加<a class="keyword" href="http://d.hatena.ne.jp/keyword/CSS">CSS</a></em>］への<a class="keyword" href="http://d.hatena.ne.jp/keyword/CSS">CSS</a>追加。</h5>
+<ul>
+<li><a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%A2%A5%A4%A5%AD%A5%E3%A5%C3%A5%C1">アイキャッチ</a>画像を記事本文内で表示しないようにする。</li>
+<li>記事一覧の要約文を<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%A2%A5%A4%A5%AD%A5%E3%A5%C3%A5%C1">アイキャッチ</a>画像の右に回り込ませる。</li>
+<li>ブログカードでショートコードを使用。</li>
+<li>ショートコードによるブログカードの画像を正方形にするため<a class="keyword" href="http://d.hatena.ne.jp/keyword/CSS">CSS</a>を変更。</li>
+</ul>
+<p><a class="link-card" href="../10/170905.html"><span class="lc-body"><span class="lc-title">WordPress）記事内には、アイキャッチ画像を表示しないようにする。</span><span class="lc-desc">WordPress で、ブログカードに画像を表示したい場合、 アイキャッチ 画像を設定する。 しかし、 アイキャッチ 画像を設定すると、記事の先頭に大きく アイキャッチ 画像が表示されてしまう。 アイキャッチ 画像は、あ…</span><span class="lc-site">晴歩雨描 · <time>2022-08-10</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220810/20220810170658.jpg" alt="" loading="lazy"></span></a></p>
+<pre>/* === テーマ「<em>Iconic One</em>」=== */
+/* 記事一覧の要約を表示しない */
+.entry-summary {
+	display: none;
+}
+/* 個別記事内で<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%A2%A5%A4%A5%AD%A5%E3%A5%C3%A5%C1">アイキャッチ</a>画像非表示 */
+.entry-featuredImg {
+	display: none;
+}
+/* 記事一覧の<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%A2%A5%A4%A5%AD%A5%E3%A5%C3%A5%C1">アイキャッチ</a>画像を縮小して正方形に */
+.entry-header img {
+	width:120px;
+	height:120px;
+	object-fit:cover;
+	margin-right:16px;
+	float:left;
+}
+/* === テーマ「<em>Semplicemente</em>」=== */
+/* <a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%A2%A5%A4%A5%AD%A5%E3%A5%C3%A5%C1">アイキャッチ</a>画像非表示 */
+.entry-featuredImg {
+	display: none;
+}
+/* 記事一覧の要約文を<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%A2%A5%A4%A5%AD%A5%E3%A5%C3%A5%C1">アイキャッチ</a>画像の右に回り込ませる */
+.entry-content &gt; img {
+	width:120px;
+	height:120px;
+	object-fit:cover;
+	float: left;
+	margin-right: 14px;
+}
+/* === <em>ブログカードでショートコードを使用</em> === */
+a.nm-card {
+	border: 1px solid #e1e1e1;
+	box-shadow: 0 3px 5px rgba(0, 0, 0, 0.22);
+	display: block;
+	padding: 20px;
+	position: relative;
+	-<a class="keyword" href="http://d.hatena.ne.jp/keyword/webkit">webkit</a>-transition: 0.3s ease-in-out;
+	-moz-transition: 0.3s ease-in-out;
+	-o-transition: 0.3s ease-in-out;
+	transition: 0.3s ease-in-out;
+	width: 100%;
+	text-decoration: none;
+}
+a.nm-card:hover {
+	box-shadow: none;
+	opacity: .8;
+}
+.nm-card-box {
+	display: -<a class="keyword" href="http://d.hatena.ne.jp/keyword/webkit">webkit</a>-<a class="keyword" href="http://d.hatena.ne.jp/keyword/flex">flex</a>;
+	display: -moz-<a class="keyword" href="http://d.hatena.ne.jp/keyword/flex">flex</a>;
+	display: -ms-<a class="keyword" href="http://d.hatena.ne.jp/keyword/flex">flex</a>;
+	display: -o-<a class="keyword" href="http://d.hatena.ne.jp/keyword/flex">flex</a>;
+	display: <a class="keyword" href="http://d.hatena.ne.jp/keyword/flex">flex</a>;
+}
+.nm-card-title {
+	font-size: 18px;
+	font-weight: 600;
+	color: #428bca;
+	padding-bottom: 5px;
+}
+.nm-card-thumbnail {
+	<a class="keyword" href="http://d.hatena.ne.jp/keyword/flex">flex</a>: 1;
+	margin-right: 15px;
+	padding-top: 5px;
+}<br /><em>/* ブログカードの画像を正方形に */</em>
+.nm-card-thumbnail img {
+	width:120px;
+	height:120px;
+	object-fit:cover;
+}
+.nm-card-content {
+	<a class="keyword" href="http://d.hatena.ne.jp/keyword/flex">flex</a>: 2.5;
+}
+.nm-card-excerpt {
+	color: #808080;
+	font-size: 13px;
+	padding-bottom: 15px;
+}
+.nm-card-site {
+	border-top: dashed 1px #a4a4a4;
+	color: #b2b2b2;
+	font-size: 11px;
+	text-align:right;
+	padding-left: 5px;
+}
+.nm-card-site img {
+	margin-right: 5px;
+	vertical-align: bottom;
+	width: 20px;
+}
+@media (max-width: 980px) {
+	.nm-card-excerpt {
+		border: none;
+	}
+}
+@media (max-width: 640px) {
+	a.nm-card {
+		padding: 10px 10px 20px 10px;
+	}
+	.nm-card-thumbnail {
+		margin-right: 10px;
+		padding-top: 10px;
+	}
+	.nm-card-title {
+		font-size: 14px;
+	}
+	.nm-card-excerpt {
+		display: none;
+	}
+}
+</pre>
+<h5 id="３wp-contentthemesテーマフォルダcontentphp">３．「wp-content\themes\テーマフォルダ\<em>content.<a class="keyword" href="http://d.hatena.ne.jp/keyword/php">php</a></em>」</h5>
+<ul>
+<li>記事一覧に<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%A2%A5%A4%A5%AD%A5%E3%A5%C3%A5%C1">アイキャッチ</a>画像を表示させる。（テーマ「Semplicemente」の場合）</li>
+</ul>
+<p><a class="link-card" href="../10/215302.html"><span class="lc-body"><span class="lc-title">WordPress）記事一覧にアイキャッチ画像を表示させる。</span><span class="lc-desc">WordPress テーマ「Semplicemente」では、 アイキャッチ 画像を設定しても記事一覧に アイキャッチ 画像が表示されない。 テーマ「Semplicemente」で、 アイキャッチ 画像を記事一覧に表示す…</span><span class="lc-site">晴歩雨描 · <time>2022-08-10</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220810/20220810214942.jpg" alt="" loading="lazy"></span></a></p>
+<p>「content.<a class="keyword" href="http://d.hatena.ne.jp/keyword/php">php</a>」の以下の部分に、「the_post_thumbnail('thumbnail');」を追加する。</p>
+<pre>&lt;div class="entry-content"&gt;
+	<em>&lt;?<a class="keyword" href="http://d.hatena.ne.jp/keyword/php">php</a> the_post_thumbnail('thumbnail'); /* ！追加した<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%A2%A5%A4%A5%AD%A5%E3%A5%C3%A5%C1">アイキャッチ</a>画像表示タグ */ ?&gt;</em>
+	&lt;?<a class="keyword" href="http://d.hatena.ne.jp/keyword/php">php</a> the_excerpt(); ?&gt;
+	&lt;?<a class="keyword" href="http://d.hatena.ne.jp/keyword/php">php</a>
+		wp_link_pages( array(
+			'before' =&gt; '&lt;div class="page-links"&gt;' . esc_html__( 'Pages:', 'semplicemente' ),
+			'after'  =&gt; '&lt;/div&gt;',
+		) );
+	?&gt;
+&lt;/div&gt;&lt;!-- .entry-content --&gt;
+</pre>
+<h5 id="４wp-contentthemesテーマフォルダfunctionsphp">４．「wp-content\themes\テーマフォルダ\<em>functions.<a class="keyword" href="http://d.hatena.ne.jp/keyword/php">php</a></em>」</h5>
+<ul>
+<li>ブログカードでショートコードを使用。</li>
+<li>余分なサイズの画像自動生成を停止する。</li>
+</ul>
+<p><a class="link-card" href="../10/215653.html"><span class="lc-body"><span class="lc-title">WordPress）リンク埋め込みブログカード表示のカスタマイズ。ショートコード使用。</span><span class="lc-desc">先日、自宅のWindowsPCローカルに WordPress を入れた。 リンク埋め込みブログカード表示のカスタマイズについての備忘録。 URLを挿入すると、自動的に表示されるブログカードのデザインは以下。 はてなブログ…</span><span class="lc-site">晴歩雨描 · <time>2022-08-10</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220809/20220809142934.png" alt="" loading="lazy"></span></a></p>
+<p>「functions.<a class="keyword" href="http://d.hatena.ne.jp/keyword/php">php</a>」に以下のコードを追加。</p>
+<pre>//ブログカードのレイアウトを生成
+function nm_create_blogcard_layout($url, $title, $excerpt, $image_url, $site, $prefix) {
+	return '&lt;a href="'. $url .'" class="'. $prefix .'-card" target="_blank" rel="noopener noreferrer"&gt;' .
+			   '&lt;div class="'. $prefix .'-card-box"&gt;' .
+				   '&lt;div class="'. $prefix .'-card-thumbnail"&gt;' . 
+					   '&lt;img src="' . $image_url . '" alt="' . $title . '"/&gt;' .
+				   '&lt;/div&gt;' .
+				   '&lt;div class="'. $prefix .'-card-content"&gt;' .
+					   '&lt;div class="'. $prefix .'-card-title"&gt;'. $title .' &lt;/div&gt;' .
+					   '&lt;div class="'. $prefix .'-card-excerpt"&gt;'. $excerpt .'&lt;/div&gt;' .
+					   '&lt;div class="'. $prefix .'-card-site"&gt;'. $site .'&lt;/div&gt;' .
+				   '&lt;/div&gt;' .				  
+			   '&lt;/div&gt;' .			   
+		   '&lt;/a&gt;';
+}
+//記事の文章を抜粋して取得する
+function nm_get_excerpt_post( $post_id, $length = 55 ) {
+	//指定された投稿を取得
+	$post = get_post( $post_id );
+	//投稿からショートコードを削除
+	$post_non_code_content = strip_shortcodes( $post-&gt;post_content );
+	//指定した文字列文返却する
+	return wp_trim_words($post_non_code_content, $length);
+}
+//ショートコード
+function nm_create_blogcard($atts) {
+	//imageがない場合の画像の設定
+	$no_image = "";	
+	//エラーになった時の文字を指定しておく
+	$err_msg = "&lt;p&gt;ブログカード取得失敗&lt;/p&gt;";
+	//初期値を設定して<a class="keyword" href="http://d.hatena.ne.jp/keyword/%CF%A2%C1%DB%C7%DB%CE%F3">連想配列</a>($atts)を変数($url, $title, $excerpt)に変換
+	extract(shortcode_atts(array('url'=&gt;"", 'title'=&gt;"", 'excerpt'=&gt;"", 'length'=&gt;55, 'image_url'=&gt;"", 'site'=&gt;"", 'prefix'=&gt;"nm" ), $atts));
+	//エラーチェック(urlが空の場合) エラー表示
+	if (empty($url)) return $err_msg;
+	//urlからpostIDを取得
+	$post_id = url_to_postid($url);
+	//タイトルの取得(title未設定の場合)
+	if (empty($title)) $title = esc_html(get_the_title($post_id));
+	//記事の抜粋
+	if (empty($excerpt)) $excerpt = esc_html(nm_get_excerpt_post($post_id, $length));
+	//指定イメージがない場合、<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%A2%A5%A4%A5%AD%A5%E3%A5%C3%A5%C1">アイキャッチ</a>画像を取得する
+	if (empty($image_url)) {
+		//<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%A2%A5%A4%A5%AD%A5%E3%A5%C3%A5%C1">アイキャッチ</a>存在チェック
+		if (has_post_thumbnail($post_id)) {
+			//<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%A2%A5%A4%A5%AD%A5%E3%A5%C3%A5%C1">アイキャッチ</a>取得
+			$image = wp_get_attachment_image_src(get_post_thumbnail_id($post_id),'medium');
+			$image_url = $image[0];
+		} else {
+			$image_url = $no_image;
+		}
+	}
+	if (empty($site)) $site = $url;
+	//ブログカードのレイアウトを作成
+	$blogcard = nm_create_blogcard_layout($url, $title, $excerpt, $image_url, $site, $prefix);
+	//ショートコードを呼び出したところに挿入する場合、returnで返す。
+	return $blogcard;
+}
+add_shortcode("nmblogcard", "nm_create_blogcard");
+</pre>
+<p>「functions.<a class="keyword" href="http://d.hatena.ne.jp/keyword/php">php</a>」の以下の行を<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%B3%A5%E1%A5%F3%A5%C8%A5%A2%A5%A6%A5%C8">コメントアウト</a>する。</p>
+<pre>//	add_image_size( 'normal-post' , 720, 9999);
+</pre>
+<h5 id="５余分なサイズの画像自動生成を停止する">５．余分なサイズの画像自動生成を停止する。</h5>
+<p>以下の設定をする。</p>
+<p><a class="link-card" href="../11/141208.html"><span class="lc-body"><span class="lc-title">WordPress）余分なサイズの画像自動生成を停止する方法。</span><span class="lc-desc">WordPress では、画像をアップロードすると、余分なサイズの画像が自動生成される。 これを停止する方法。 以下の2つを実施。 【１．設定 &gt; メディア】 以下の画像サイズを全て0にする。 【２．options. p…</span><span class="lc-site">晴歩雨描 · <time>2022-08-11</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220811/20220811140646.jpg" alt="" loading="lazy"></span></a></p>
+<h5 id="６プラグインツールの追加">６．<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%D7%A5%E9%A5%B0%A5%A4%A5%F3">プラグイン</a>ツールの追加。</h5>
+<ul>
+<li><a class="keyword" href="http://d.hatena.ne.jp/keyword/WordPress">WordPress</a>のローカル<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%C7%A5%A3%A5%EC%A5%AF%A5%C8">ディレクト</a>リにダウンロードした画像ファイルを、<a class="keyword" href="http://d.hatena.ne.jp/keyword/WordPress">WordPress</a>の「メディアライブラリ」に登録する<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%D7%A5%E9%A5%B0%A5%A4%A5%F3">プラグイン</a>ツール「<em>Bulk Media Register</em>」</li>
+</ul>
+<p><a class="link-card" href="../11/152729.html"><span class="lc-body"><span class="lc-title">WordPress）はてなブログからダウンロードした画像を、「メディアライブラリ」に登録するプラグイン「Bulk Media Register」。</span><span class="lc-desc">自宅のWindowsPCに WordPress をインストールしている。 はてなブログ から、 WordPress のローカル ディレクト リにダウンロードした画像ファイルを、 WordPress の「メディアライブラリ…</span><span class="lc-site">晴歩雨描 · <time>2022-08-11</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220811/20220811142011.jpg" alt="" loading="lazy"></span></a></p>
+<ul>
+<li><a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%D7%A5%E9%A5%B0%A5%A4%A5%F3">プラグイン</a>「<em><a class="keyword" href="http://d.hatena.ne.jp/keyword/%A4%CF%A4%C6%A4%CA%A5%D6%A5%ED%A5%B0">はてなブログ</a><a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%A2%A5%A4%A5%AD%A5%E3%A5%C3%A5%C1">アイキャッチ</a>画像登録</em>」</li>
+</ul>
+<p><a class="link-card" href="../11/231938.html"><span class="lc-body"><span class="lc-title">WordPress）はてなブログからインポートした記事にアイキャッチ画像を一括登録。</span><span class="lc-desc">............ 自分の はてなブログ ではすべて アイキャッチ 画像を登録しているので、エクスポートファイルの「IMAGE:」には必ずファイル名が入っている前提。 はてなブログ エクスポートファイルの「 IMA…</span><span class="lc-site">晴歩雨描 · <time>2022-08-11</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220811/20220811231738.jpg" alt="" loading="lazy"></span></a></p>
+<h5 id="99番外編WordPressのデータベース変更">99．【番外編】<a class="keyword" href="http://d.hatena.ne.jp/keyword/WordPress">WordPress</a>のデータベース変更。</h5>
+<p>「<em>wp-config.<a class="keyword" href="http://d.hatena.ne.jp/keyword/php">php</a></em>」ファイルの「DB_NAME」を変更する。</p>
+<pre>\xampp\htdocs\<a class="keyword" href="http://d.hatena.ne.jp/keyword/wordpress">wordpress</a>\wp-config.<a class="keyword" href="http://d.hatena.ne.jp/keyword/php">php</a>
+</pre>
+<pre>/** <a class="keyword" href="http://d.hatena.ne.jp/keyword/WordPress">WordPress</a> のためのデータベース名 */
+define('DB_NAME', 'wp_test');
+
+/** <a class="keyword" href="http://d.hatena.ne.jp/keyword/MySQL">MySQL</a> データベースのユーザー名 */
+define('DB_USER', 'root');
+
+/** <a class="keyword" href="http://d.hatena.ne.jp/keyword/MySQL">MySQL</a> データベースのパスワード */
+define('DB_PASSWORD', '*****');
+</pre>
+<p><a class="link-card" href="../07/111810.html"><span class="lc-body"><span class="lc-title">WordPressのデータベース変更。</span><span class="lc-desc">昨日、自宅のWindowsPCに WordPress をインストールした。 WordPress 用のデータベースを切り替えてみる。 http://localhost/xampp/ で、「 phpMyAdmin 」を開いて…</span><span class="lc-site">晴歩雨描 · <time>2022-08-07</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220807/20220807110458.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../14/094758.html"><span class="lc-body"><span class="lc-title">自宅PCローカルのWordPressをスマホなどで閲覧する方法。（Wi-Fi環境で）</span><span class="lc-desc">自宅のWindowsPCローカルに WordPress をインストールしている。 これをインストールしているPCローカル以外の自宅内 スマホ などで閲覧する方法。 Wi-Fi 環境がある前提で、WindowsPCの IP…</span><span class="lc-site">晴歩雨描 · <time>2022-08-14</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220814/20220814094039.jpg" alt="" loading="lazy"></span></a></p></div></article>
+</body>
+</html>

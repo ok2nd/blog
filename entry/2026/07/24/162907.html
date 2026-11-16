@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ローカル動画生成AI：RTX3050）静止画から動画生成できる環境構築。ComfyUI使わないFramePack公式 One-Click版。メモリ32GBでは使い物にならず。 - 晴歩雨描</title>
+<link rel="stylesheet" href="../../../../style.css">
+</head>
+<body>
+<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>ローカル動画生成AI：RTX3050）静止画から動画生成できる環境構築。ComfyUI使わないFramePack公式 One-Click版。メモリ32GBでは使い物にならず。</h1><p class="meta">2026-07-24 · <a href="../../../../category/c42.html">＜AI＞</a> <a href="../../../../category/c18.html">写真・カメラ</a> <a href="../../../../category/c8.html">コンピュータ</a></p><div class="entry-body"><p><em>PCローカル</em>Windows上で、<em>静止画から動画生成</em>できる環境構築を検証。</p>
+<p><em>ComfyUI</em>などを使わなくてもよい、環境構築が簡単な「<em>FramePack公式 One-Click版</em>」で検証。</p>
+<h5 id="-使うPCのスペック">■ 使うPCのスペック</h5>
+<p>画像生成AIをローカルで行うPCとしては最低限レベル。</p>
+<div style="overflow-x: auto;">
+<table>
+<tbody>
+<tr>
+<th>CPU</th>
+<td>インテル Core i5-14500T (14コア(6P+8E)/1.7GHz)</td>
+</tr>
+<tr>
+<th>GPU</th>
+<td><em>NVIDIA GeForce RTX 3050 LP 6GB</em></td>
+</tr>
+<tr>
+<th>メモリ</th>
+<td><em>32GB</em></td>
+</tr>
+<tr>
+<th>ストレージ</th>
+<td>1TB M.2 SSD PCI Express x4対応（Gen4対応）</td>
+</tr>
+<tr>
+<th>OS</th>
+<td>Windows 11 Pro 64bit</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h5 id="-結果">■ 結果</h5>
+<p><span style="color: #ff0000;">※ 結果的には、メモリをほぼ100%使用し（実際には60GB程度の実メモリを必要としている）、処理時間が膨大になり、冷却ファンもフル回転状態になり、使い物にならなかった。「FramePack公式 One-Click版」は、メモリ32GBでは使用に耐えない。</span></p>
+<p><span style="color: #ff0000;">※ その後、Pinokio＋Wan2GP＋Fun InP image2video 1.3B で動画生成を試した。（↓）</span></p>
+<p><a class="link-card" href="../30/171912.html"><span class="lc-body"><span class="lc-title">ローカル動画生成AI：RTX3050）静止画から動画生成できる環境構築。Pinokio＋Wan2GP＋Fun InP image2video 1.3B。ComfyUI不要。</span><span class="lc-desc">先日、PCローカル Windows上で、 静止画から動画生成 できる環境構築を「 FramePack公式 One-Click版 」で検証した。結果的には、自分のPC環境では「FramePack公式 One-Click版」…</span><span class="lc-site">晴歩雨描 · <time>2026-07-30</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260730/20260730163952.png" alt="" loading="lazy"></span></a></p>
+<hr />
+<h4 id="FramePack公式-One-Click版-インストール環境構築ガイド">FramePack公式 One-Click版 インストール＆環境構築ガイド</h4>
+<h5 id="FramePackとは">FramePackとは</h5>
+<p>FramePackは静止画1枚から動画を生成できるAIツール。公式のOne-Click版はPythonやGitなどを個別に準備する必要がほとんどなく、比較的簡単に導入できることが特徴。</p>
+<h5 id="One-Click版の特徴">One-Click版の特徴</h5>
+<ul>
+<li>インストール作業が簡単。</li>
+<li>Pythonを個別に設定する必要がほとんどない。</li>
+<li>ComfyUIのノード編集が不要。</li>
+<li>更新は update.bat を実行するだけでよい。</li>
+<li>起動は run.bat を実行するだけでよい。</li>
+</ul>
+<h4 id="-ダウンロード">■ ダウンロード</h4>
+<h5 id="公式サイトへアクセス">公式サイトへアクセス</h5>
+<p>FramePack公式GitHubのReleasesページを開く。</p>
+<p><a href="https://github.com/lllyasviel/FramePack/releases" target="_blank">https://github.com/lllyasviel/FramePack/releases</a></p>
+<ol>
+<li>FramePack公式GitHubを開く。</li>
+<li><strong>Releases</strong>をクリックする。</li>
+</ol>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260724/20260724115505.jpg" width="764" height="393" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<h5 id="One-Click版の選択">One-Click版の選択</h5>
+<p>Assets欄から最新版を選択する。「framepack_cu126_torch26.7z」をダウンロード。</p>
+<h5 id="保存場所自分のPCの場合">保存場所（自分のPCの場合）</h5>
+<ul>
+<li>D:\MyData\FramePack</li>
+</ul>
+<h5 id="確認するファイル">確認するファイル</h5>
+<table border="1">
+<tbody>
+<tr>
+<th>ファイル</th>
+<th>役割</th>
+</tr>
+<tr>
+<td>update.bat</td>
+<td>更新・初期セットアップ</td>
+</tr>
+<tr>
+<td>run.bat</td>
+<td>起動</td>
+</tr>
+</tbody>
+</table>
+<h4 id="-初回セットアップ">■ 初回セットアップ</h4>
+<h5 id="概要">概要</h5>
+<p>One-Click版は初回起動時に必要な環境を自動で準備する。初回のみ時間がかかるため、途中で終了させないことが重要。</p>
+<h5 id="updatebatの実行">update.batの実行</h5>
+<ol>
+<li>展開したFramePackフォルダーを開く。</li>
+<li><strong>update.bat</strong>をダブルクリックする。</li>
+<li>Windowsの確認画面が表示された場合は内容を確認して続行する。</li>
+<li>コマンドプロンプトの画面が開き、自動セットアップが始まる。</li>
+</ol>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260724/20260724121820.jpg" width="774" height="330" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<h5 id="初回に実行される内容">初回に実行される内容</h5>
+<ul>
+<li>Python実行環境の確認。</li>
+<li>必要ライブラリのインストール。</li>
+<li>動画生成に必要なモデルのダウンロード。</li>
+<li>起動環境の構築。</li>
+</ul>
+<h5 id="セットアップ完了の目安">セットアップ完了の目安</h5>
+<p>自分のPCでは、事前にPythonなどが入っているためか、数秒で終わった。</p>
+<h5 id="正常終了の確認">正常終了の確認</h5>
+<p>エラーが表示されずコマンド画面が終了、または完了メッセージが表示されれば初回セットアップは完了。</p>
+<h4 id="-初回起動と動作確認">■ 初回起動と動作確認</h4>
+<p>初回セットアップが完了したら、FramePackを起動して動作確認を行う。</p>
+<h5 id="runbatの実行">run.batの実行</h5>
+<ol>
+<li>FramePackフォルダーを開く。</li>
+<li><strong>run.bat</strong>をダブルクリックする。</li>
+<li>コマンドウィンドウが開くまで待つ。</li>
+<li>初回はモデル確認処理が行われる。</li>
+</ol>
+<p>※ 自分のPCでは、初回20秒ほど時間がかかった。2回目以降は数秒かかる。</p>
+<p><span style="color: #dd830c;">※ この黒いコマンドプロンプト画面は、ブラウザでFramePackの画面が表示されても、閉じないこと。</span></p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260724/20260724122046.jpg" width="925" height="628" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>・・・・・</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260724/20260724123930.jpg" width="925" height="107" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<h5 id="ブラウザの起動">ブラウザの起動</h5>
+<ol>
+<li>起動完了後、既定のブラウザが開く。</li>
+<li>自動で開かない場合は表示されたURLをブラウザへ入力する。<br /><a href="http://127.0.0.1:7860/" target="_blank">http://127.0.0.1:7860/</a></li>
+<li>FramePackの画面が表示されれば起動成功。</li>
+</ol>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260724/20260724123829.jpg" width="999" height="807" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<h5 id="動作確認">動作確認</h5>
+<ol>
+<li>JPEGまたはPNG画像を1枚読み込む。</li>
+<li>簡単な英語プロンプトを入力する。（日本語でも可能だが、英語推奨。）</li>
+<li>「Start Generation」をクリックする。</li>
+<li>処理が開始されることを確認する。</li>
+</ol>
+<h4 id="-更新アンインストール">■ 更新・アンインストール</h4>
+<h5 id="更新">更新</h5>
+<ol>
+<li>FramePackを終了する。</li>
+<li>update.batを実行する。</li>
+<li>更新完了後にrun.batで起動確認する。</li>
+</ol>
+<h5 id="アンインストール">アンインストール</h5>
+<ol>
+<li>FramePackを終了する。</li>
+<li>フォルダーごと削除する。</li>
+<li>不要であればダウンロードしたZIPも削除する。</li>
+</ol>
+<h4 id="-よくあるエラー">■ よくあるエラー</h4>
+<table border="1">
+<tbody>
+<tr>
+<th>症状</th>
+<th>原因</th>
+<th>対処</th>
+</tr>
+<tr>
+<td>起動しない</td>
+<td>更新未完了</td>
+<td>update.batを再実行する。</td>
+</tr>
+<tr>
+<td>VRAM不足</td>
+<td>設定が高すぎる</td>
+<td>解像度・動画長を下げる。</td>
+</tr>
+<tr>
+<td>画面が開かない</td>
+<td>起動中</td>
+<td>コマンド画面を確認し数分待つ。</td>
+</tr>
+<tr>
+<td>ダウンロード失敗</td>
+<td>通信切断</td>
+<td>回線を確認して再実行する。</td>
+</tr>
+</tbody>
+</table>
+<h4 id="-実際に試した">■ 実際に試した。</h4>
+<p>【オリジナル静止画（640x480ピクセル）】</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260724/20260724154126.jpg" width="640" height="480" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>プロンプト「Add some cute movements to the cat.」</p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260724/20260724154738.jpg" width="498" height="491" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260724/20260724141301.jpg" width="483" height="695" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>動画の長さを1秒にして、それ以外は初期値のまま、試してみた。</p>
+<ul>
+<li>Use TeaCache：ON</li>
+<li>Total Video Length：5秒→1秒</li>
+<li>Steps：25</li>
+<li>CFG Scale：10</li>
+<li>GPU Memory：6GB</li>
+<li>MP4 Compression：16</li>
+</ul>
+<p><span style="color: #ff0000;">動画生成処理中、CPU 10%近く、メモリはほぼ99%使用。</span></p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260724/20260724155243.jpg" width="768" height="253" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p><span style="color: #ff0000;">「パフォーマンス」→「メモリ」を見ると、実際には、FramePackは、60GB近いメモリを要求しており（コミット済み）、SSD上の仮想メモリを大きく使用している状態。これでは処理速度がかなり落ちる。</span></p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260724/20260724165224.png" width="784" height="676" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p><span style="color: #dd830c;"><em>その後、Pinokio＋Wan2GP＋Fun InP image2video 1.3B で動画生成を試した。（↓）</em></span></p>
+<p><a class="link-card" href="../30/171912.html"><span class="lc-body"><span class="lc-title">ローカル動画生成AI：RTX3050）静止画から動画生成できる環境構築。Pinokio＋Wan2GP＋Fun InP image2video 1.3B。ComfyUI不要。</span><span class="lc-desc">先日、PCローカル Windows上で、 静止画から動画生成 できる環境構築を「 FramePack公式 One-Click版 」で検証した。結果的には、自分のPC環境では「FramePack公式 One-Click版」…</span><span class="lc-site">晴歩雨描 · <time>2026-07-30</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260730/20260730163952.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2024/10/14/130158.html"><span class="lc-body"><span class="lc-title">動画生成AI）1枚の写真・画像から動画を生成できる無料AIサイト「Hailuo」で色々試す。猫の動きがリアル。</span><span class="lc-desc">最近、1枚の写真・画像から動画を生成できるAIサイト「Hailuo」を試している。1枚のJPEG画像から、6秒の動画が生成される。現時点では無料で利用できる。 今回も、過去に撮影した写真やアートっぽく加工した画像を使って…</span><span class="lc-site">晴歩雨描 · <time>2024-10-14</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20241014/20241014123258.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="https://ok2nd.github.io/sitemap/hatena-sitemap-table.html?search=%E5%8B%95%E7%94%BB%20%E7%94%9F%E6%88%90" target="_blank" rel="noopener noreferrer"><span class="lc-body"><span class="lc-title">晴歩雨描：記事一覧</span><span class="lc-desc"></span><span class="lc-site">ok2nd.github.io</span></span></a></p></div></article>
+</body>
+</html>

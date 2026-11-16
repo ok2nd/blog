@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HTML表&lt;table&gt;の列の横幅(width)を一括指定はcolgroupが便利。 - 晴歩雨描</title>
+<link rel="stylesheet" href="../../../../style.css">
+</head>
+<body>
+<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>HTML表&lt;table&gt;の列の横幅(width)を一括指定はcolgroupが便利。</h1><p class="meta">2022-05-12 · <a href="../../../../category/c13.html">ホームページ、Web作成</a> <a href="../../../../category/c4.html">はてなブログ</a></p><div class="entry-body"><p>HTML表の列の横幅(width)を一括して指定するなら、colgroupが便利。</p>
+<p>&lt;table&gt;の列幅を<a class="keyword" href="http://d.hatena.ne.jp/keyword/CSS">CSS</a>で統一する方法もあるが、colgroupを使うとまとめて設定できる。</p>
+<p><a class="keyword" href="http://d.hatena.ne.jp/keyword/%A4%CF%A4%C6%A4%CA%A5%D6%A5%ED%A5%B0">はてなブログ</a>の以下の記事内の表をcolgroupで設定してみた。</p>
+<p><a class="link-card" href="../../04/14/150203.html"><span class="lc-body"><span class="lc-title">大阪城公園で、春の渡りシーズン（4月、5月）に観察できる野鳥。探鳥案内地図。</span><span class="lc-desc">4月、5月は、夏鳥や旅鳥で賑わう季節。 以下のブログで、大阪城公園で観察できる野鳥をこまめに記録してくれている。 2020年、2021年の4月、5月の記録から、主な野鳥をまとめてみた。 大阪城公園内の場所は以下が参考にな…</span><span class="lc-site">晴歩雨描 · <time>2022-04-14</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220414/20220414150043.jpg" alt="" loading="lazy"></span></a></p>
+<pre>&lt;table&gt;
+&lt;<span style="color: #ff0000;">colgroup</span>&gt;
+&lt;<span style="color: #ff0000;">col</span> width="19%"&gt;
+&lt;<span style="color: #ff0000;">col</span> width="81%"&gt;
+&lt;<span style="color: #ff0000;">/colgroup</span>&gt;
+&lt;thead&gt;
+	・・・・・
+	・・・・・
+&lt;/thead&gt;
+&lt;tbody&gt;
+	・・・・・
+	・・・・・
+&lt;/tbody&gt;
+&lt;/table&gt;
+</pre>
+<p>上記設定で、以下のようになった。</p>
+<figure class="figure-image figure-image-fotolife mceNonEditable" title="パソコン・ブラウザ">
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220512/20220512095846.jpg" width="716" height="221" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<figcaption class="mceEditable">パソコン・ブラウザ</figcaption>
+</figure>
+<figure class="figure-image figure-image-fotolife mceNonEditable" title="スマホ・ブラウザ">
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220512/20220512095905.jpg" width="800" height="509" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<figcaption class="mceEditable"><a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%B9%A5%DE%A5%DB">スマホ</a>・ブラウザ</figcaption>
+</figure>
+<p><a class="link-card" href="../../../2019/02/12/141537.html"><span class="lc-body"><span class="lc-title">はてなブログ）スマホ等でページ横からはみ出た表&lt;table&gt;を横スクロールできるようにする最も（？）簡単な方法。</span><span class="lc-desc">はてなブログ を スマホ で閲覧する場合、テーブルが横にはみ出てしまうことがある。レスポンシブ対応含め一般的なデザインテーマでは横スクロールできない。 これを、横スクロールできるようにする最も（？）簡単な方法。 ネットで…</span><span class="lc-site">晴歩雨描 · <time>2019-02-12</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190212/20190212141216.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../04/26/164641.html"><span class="lc-body"><span class="lc-title">Web写真アルバム「神戸散歩(2)」「大阪散歩(2)」作成。JPEG画像一覧HTMLはPHPで自動生成。</span><span class="lc-desc">以前作成したWeb写真アルバム「 神戸散歩 2017.5 ～ 2019.3 」「 大阪散歩 2017.6 ～ 2019.3 」の続編「神戸散歩(2) 2019.4 ～ 2022.3」「大阪散歩(2) 2019.4 ～ 2…</span><span class="lc-site">晴歩雨描 · <time>2022-04-26</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220426/20220426162522.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2021/07/14/182154.html"><span class="lc-body"><span class="lc-title">HTMLとCSSで点線リーダー：目次や索引で項目名とページの間を点線で結ぶ。（Googleフォント）</span><span class="lc-desc">目次や索引で、項目名とページの間を点線で結ぶ（タブリ－ダー）のをHTMLと CSS で実現する方法の備忘録。 ≪完成イメージ≫ ≪参考にさせてもらったページ≫ 他の方法を公開しているページ。 【関連：Wordで点線リーダ…</span><span class="lc-site">晴歩雨描 · <time>2021-07-14</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20210714/20210714180559.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2021/05/18/154629.html"><span class="lc-body"><span class="lc-title">「PHP Simple HTML DOM Parser」で、Webスクレイピング（HTMLから情報を抽出）。</span><span class="lc-desc">「 PHP Simple HTML DOM Parser 」で、 Web スクレイピング （HTMLから情報を抽出）を試してみた。 以下のWebページを参考にした。 以下から PHP ライブラリをダウンロードする。 「s…</span><span class="lc-site">晴歩雨描 · <time>2021-05-18</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20210518/20210518154611.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2021/05/18/135819.html"><span class="lc-body"><span class="lc-title">JavaScript）HTML&lt;TABLE&gt;に、ソート機能や検索機能を付けるなら、jQueryプラグイン「DataTables」が簡単。</span><span class="lc-desc">HTML&lt;TABLE&gt; に、ソート機能や検索機能を付けるなら、 jQueryプラグイン「DataTables」 が簡単で便利。 以下の「Eマウント(AF)単焦点レンズ」一覧に、「DataTables」を使って、ソート機能…</span><span class="lc-site">晴歩雨描 · <time>2021-05-18</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20210517/20210517165654.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2019/09/09/200129.html"><span class="lc-body"><span class="lc-title">HTML、jQuery）HTMLフォトギャラリー＆スライドショー（Unite Gallery版）</span><span class="lc-desc">JavaScript ライブラリ「Unite Gallery」を使って、HTMLフォトギャラリー＆スライドショーを作成。 フォトギャラリー用の JavaScript ライブラリでは「Fotorama」「lightgall…</span><span class="lc-site">晴歩雨描 · <time>2019-09-09</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190909/20190909195107.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2019/07/27/164241.html"><span class="lc-body"><span class="lc-title">JavaScript）パソコンローカルの2枚の写真/画像をドラッグ＆ドロップして横並びに表示して比較するWebツール作成。</span><span class="lc-desc">2つの写真/画像を横に並べて比較したい時がある。似たような写真でどちらが良いかを確認したい時など。 画像を横に並べて比較できるツールはあるが、似たような写真がたくさんある場合、比較相手をとっかえひっかえしながら比べたい場…</span><span class="lc-site">晴歩雨描 · <time>2019-07-27</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190727/20190727160638.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../07/12/091148.html"><span class="lc-body"><span class="lc-title">JavaScript）HTML&lt;TABLE&gt;の&lt;TD&gt;に、セルの数値に合わせて、背景色を付ける。</span><span class="lc-desc">昨日、不快指数一覧図表を作成した。 このテーブルの背景色は、JavaScriptを使って、HTML&lt;TABLE&gt;の&lt;TD&gt;に、セル内の数値に合わせて付けている。 jQueryを使う方法もあるが、jQueryを使わないでJ…</span><span class="lc-site">晴歩雨描 · <time>2022-07-12</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220711/20220711220539.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2019/07/19/100328.html"><span class="lc-body"><span class="lc-title">HTML、CSSで背景画像を並べる＆透過風に白っぽくする。</span><span class="lc-desc">昨日、GIMPで同じ画像（写真）を継ぎ目なくきれいに壁紙状に並べるのを試した。 ここで作成した画像をHTMLで壁紙として並べる方法。 単純に同じ画像を背景一杯に並べるのは簡単。 &lt;body background=&quot;pho…</span><span class="lc-site">晴歩雨描 · <time>2019-07-19</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190718/20190718170706.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2019/06/24/002655.html"><span class="lc-body"><span class="lc-title">検索機能付き「はてなブログ記事一覧」HTML生成スクリプト(JScript)を作成。</span><span class="lc-desc">先日、はてなブログのHTMLサイトマップ（はてなブログ記事一覧）を生成するスクリプト(JScript)を作成した。 これは、Googleクローラーに読み込んでもらうのが目的だったが、今回は人間が利用するための「はてなブロ…</span><span class="lc-site">晴歩雨描 · <time>2019-06-24</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190623/20190623234257.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2018/07/13/144317.html"><span class="lc-body"><span class="lc-title">PHP）シンプルなHTMLカレンダー。Google Calendar API v3で祝日表示。コードサンプル。</span><span class="lc-desc">先日作成したスマホ&amp;PC用検索ポータル「2nd Sch」にカレンダー表示のため、シンプルなHTMLカレンダーを作成。 祝日表示に「Google Calendar API v3」を使用。 ただ、祝日は当年の前後合わせて3年…</span><span class="lc-site">晴歩雨描 · <time>2018-07-13</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20180713/20180713143522.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2017/03/13/143736.html"><span class="lc-body"><span class="lc-title">写真/画像をサムネイル一覧するHTMLサンプル（ブロック全体は中央揃え（センタリング）＋中の複数画像は左寄せ）</span><span class="lc-desc">写真/画像をサムネイル一覧するHTMLサンプルを作成。 「サムネイル一覧のブロック全体はページ内で左右中央揃えし、ブロック内の複数画像は左寄せする。」というのをCSSだけで実現したかったが、ブロック内の右側に余分な余白が…</span><span class="lc-site">晴歩雨描 · <time>2017-03-13</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20170313/20170313140402.jpg" alt="" loading="lazy"></span></a></p></div></article>
+</body>
+</html>

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Windows）「ショートカット」によく似た「シンボリックリンク」や「ジャンクション」と呼ばれるリンクが存在する。BunBackupでは実体がコピーされる。robocopyでも難しい。 - 晴歩雨描</title>
+<link rel="stylesheet" href="../../../../style.css">
+</head>
+<body>
+<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>Windows）「ショートカット」によく似た「シンボリックリンク」や「ジャンクション」と呼ばれるリンクが存在する。BunBackupでは実体がコピーされる。robocopyでも難しい。</h1><p class="meta">2026-01-13 · <a href="../../../../category/c8.html">コンピュータ</a></p><div class="entry-body"><p>Windowsには、「<em>ショートカット</em>」によく似た「<em>シンボリックリンク</em>」や「<em>ジャンクション</em>」と呼ばれるリンクが存在する。</p>
+<p>ローカル画像生成AIでStable Diffusionを使うために、Stability MatrixをPCに入れているが、このインストールディレクトリ内の</p>
+<pre>Stability Matrix\Data\Packages\stable-diffusion-webui-forge\models</pre>
+<p>このフォルダー内を見ると、以下のようにフォルダー一覧が見える。アイコンの形では一見ショートカットに見えるものが数多くあるが、種類はショートカットでなく、ファイルフォルダーと表示される。</p>
+<p>これは「シンボリックリンク」や「ジャンクション」と呼ばれる高度なリンク機能らしい。</p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260113/20260113171347.jpg" width="563" height="580" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>dirコマンドで調べると、「シンボリックリンク」ではなく「ジャンクション」らしい。</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260113/20260113174624.jpg" width="1115" height="628" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>「ジャンクション」と「シンボリックリンク」の違い。</p>
+<table>
+<thead>
+<tr>
+<th>特徴</th>
+<th>ジャンクション (Junction)</th>
+<th>シンボリックリンク (Symlink)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>主な用途</th>
+<td>フォルダーの転送・共有</td>
+<td>ファイルおよびフォルダー</td>
+</tr>
+<tr>
+<th>管理者権限</th>
+<td>不要（作成しやすい）</td>
+<td>原則として必要</td>
+</tr>
+<tr>
+<th>リンク先</th>
+<td>ローカルドライブのみ</td>
+<td>ネットワークパスも可能</td>
+</tr>
+</tbody>
+</table>
+<p>一般的なショートカット(.lnk ファイル)のプロパテイは以下。</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260113/20260113171417.jpg" width="470" height="580" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>「ジャンクション」のプロパテイは以下。</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260113/20260113171424.jpg" width="421" height="548" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<ul>
+<li>正体: システム（NTFS）レベルで作成された「分身」。</li>
+<li>動作: 通常のショートカットと違い、「<em>そこに本物のフォルダがある</em>」かのように振る舞う。Stable Diffusionなどのプログラムが「決まった場所」にデータを読み書きしにくる場合、この形式でないと正常に動作しない。</li>
+<li>リンク先: プロパティ画面からは簡単に変更できない。</li>
+</ul>
+<p>画像生成AIのモデルファイルは1つ数GBと非常に重いため、WebUIごとにファイルをコピーすると、すぐにストレージがいっぱいになってしまう。Stability Matrixはこの「リンク」機能を使うことで、「実体は1つ、見かけは各WebUIのフォルダー内にある」という状態を作り出し、容量を節約している。</p>
+<h4 id="-バックアップの問題点">■ バックアップの問題点</h4>
+<p>この「ジャンクション」を自分が使っているBunBackupでバックアップすると、「ジャンクション」ではなく、リンク先の実体がコピーされてしまう。</p>
+<p>試しに、「ジャンクション」をWindowsでコピー＆ペーストしてもコピーできない。</p>
+<p>robocopyを使えば、「ジャンクション」を「ジャンクション」のままコピーできるかと思ったが、できないようだ。オプション： /XJ (eXclude Junctions)を使えば、「ジャンクション」を除外はできるようだが、それでは意味がない。</p>
+<p>＜robocopy テストサンプル＞</p>
+<pre>robocopy "C:\MyProgram\Stability Matrix\Data\Packages\stable-diffusion-webui-forge\models" "D:\MyProgram-Bup\Stability Matrix\Data\Packages\stable-diffusion-webui-forge\models" /MIR /DCOPY:DAT /COPYALL /NP /R:0 /W:0 /MT:32 /XJ /LOG:C:\Work\work1\robocopy.log</pre>
+<p><em>「ジャンクション」を「ジャンクション」のままコピーする方法が良く分からない。</em></p>
+<p><a class="link-card" href="101433.html"><span class="lc-body"><span class="lc-title">Windows）Python）.htmlファイルと「_files」フォルダーのリンク（コネクテッド・ファイル機能）を外すツール作成。フォルダー名一括変換アプリ。青空文庫HTMLなど。</span><span class="lc-desc">青空文庫HTMLなど、Windowsでウェブページを保存した際、 .htmlファイル と 「_files」フォルダー がセットになり、片方を移動・削除するともう一方も連動してしまう。 この挙動（コネクテッド・ファイル機能…</span><span class="lc-site">晴歩雨描 · <time>2026-01-13</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260113/20260113100226.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../10/135347.html"><span class="lc-body"><span class="lc-title">Python）Windowsのエクスプローラーを2画面左右に並べて開くツール作成。Windows11のスナップ機能を使わずに実現。</span><span class="lc-desc">Windowsのエクスプローラーを2画面左右に並べて開きたい。 こういった機能のツールアプリは色々あるが、余分な機能があって使いづらい。 単純に、エクスプローラーを2画面左右に並べて開くだけのツールをPythonで作成し…</span><span class="lc-site">晴歩雨描 · <time>2026-01-10</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260110/20260110135334.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../06/130143.html"><span class="lc-body"><span class="lc-title">Windows：Python）特定のフォルダー（ディレクトリ）以下のフォルダー名一覧作成。→写真フォルダー名検索。</span><span class="lc-desc">以前に、PowerShellで、特定のフォルダー（ディレクトリ）以下のフォルダー名一覧をテキストファイルに書き出すスクリプトを作成。 同等の機能を実現するプログラムを、Pythonで作成。 【Pythonプログラムコード…</span><span class="lc-site">晴歩雨描 · <time>2026-01-06</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260106/20260106124942.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2025/12/31/163306.html"><span class="lc-body"><span class="lc-title">Windows）PowerPointで、「代替テキストの自動生成」や「アクセシビリティ」タブなどの表示を無くす。</span><span class="lc-desc">最近購入したPowerPoint で、「代替テキストの自動生成」や「アクセシビリティ」タブの表示が出てくる。 これらの表示を無くしたい。 上部メニュー［ファイル］→［オプション］で、 ［アクセシビリティ］ を選択 ［アク…</span><span class="lc-site">晴歩雨描 · <time>2025-12-31</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20251231/20251231162605.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2025/12/25/140235.html"><span class="lc-body"><span class="lc-title">Windows11の最新版で、キーボード「半角/全角」キーを半角切り替え専用にする。</span><span class="lc-desc">Windows11の最新版では、IMEが変わってしまったようで、キーボード左上の「半角/全角」キーを半角/全角のトグル切り替えでなく、半角切り替え専用にすることがで出来なくなった。 これを、「半角/全角」キーを半角切り替…</span><span class="lc-site">晴歩雨描 · <time>2025-12-25</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20251225/20251225134110.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2025/12/19/151921.html"><span class="lc-body"><span class="lc-title">Windows）PC移行して、ドライブ内のアクセス権のないファイルのアクセス権を一括取得。</span><span class="lc-desc">新PCを購入して、Windowsをセットアップした。 旧PCで使用していたSSDを新PCにつないで、フォルダーやファイルを開こうとすると、「アクセス権がありません」と表示されることがある。所有者（Owner）が旧PCのユ…</span><span class="lc-site">晴歩雨描 · <time>2025-12-19</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20251219/20251219151338.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2025/12/19/105155.html"><span class="lc-body"><span class="lc-title">Windows 11 Pro）セットアップ備忘録。ローカルアカウントで。使いやすくする設定も。</span><span class="lc-desc">新PCを購入した。 新PCのWindows 11 Pro のセットアップ備忘録。 ■ Windows 11 Pro セットアップ ※ アカウントは、Microsoft アカウントを使わず、ローカルアカウントを使う。 ※ …</span><span class="lc-site">晴歩雨描 · <time>2025-12-19</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20251215/20251215173700.jpg" alt="" loading="lazy"></span></a></p></div></article>
+</body>
+</html>

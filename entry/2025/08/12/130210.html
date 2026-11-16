@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Claude）Python）「写真をEXIF機種毎のフォルダーに分類」Windowsアプリ作成。 - 晴歩雨描</title>
+<link rel="stylesheet" href="../../../../style.css">
+</head>
+<body>
+<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>Claude）Python）「写真をEXIF機種毎のフォルダーに分類」Windowsアプリ作成。</h1><p class="meta">2025-08-12 · <a href="../../../../category/c18.html">写真・カメラ</a> <a href="../../../../category/c42.html">＜AI＞</a> <a href="../../../../category/c8.html">コンピュータ</a></p><div class="entry-body"><p>Pythonで「写真をEXIF機種毎のフォルダーに分類」Windowsアプリを作成。</p>
+<p>生成AI「<em>Claude</em>」「<em>Gemini</em>」「<em>Copilot</em>」で、以下のプロンプトで作成した。</p>
+<h5 id="生成AI-プロンプト">【生成AI プロンプト】</h5>
+<p>Windows環境のPythonでアプリを作って。</p>
+<p>Windowsフォルダ内の<em>JPEG画像ファイルをEXIFのカメラ機種毎のフォルダーに分類するアプリ</em>。</p>
+<ul>
+<li>Windowsフォルダ内のJPEG画像ファイルの<em>EXIFの「カメラのモデル（Model）」</em>を読み取って、モデル名のフォルダーを作成し、そこに「移動」する。（コピーではない。）</li>
+<li>処理対象フォルダーの階層を3階層下まで指定できる。何階層目を処理するかはラジオボタンで選択できる。</li>
+<li>2階層以降を指定した場合も、モデル名のフォルダーは、それぞれのフォルダーの下に作る。</li>
+<li>処理対象フォルダー（最上位階層）は、アプリのGUIで指定できるようにする。</li>
+<li>処理対象フォルダー（最上位階層）選択用のフォルダー入力欄は、Windowsフォルダー等からコピー&amp;ペーストできる。</li>
+<li>処理対象フォルダー（最上位階層）選択ボタンを押したら、その時点のフォルダー入力欄のパスを開く。</li>
+<li>実行状況のログ表示は不要。完了時だけ、完了メッセージを出す。</li>
+</ul>
+<p>出来が良かった「<em>Claude</em>」版を採用。</p>
+<h5 id="Pythonインストール">【Pythonインストール】</h5>
+<p>Pythonがインストールされていなければ、インストールする。</p>
+<p><a class="link-card" href="../../../2023/09/08/210741.html"><span class="lc-body"><span class="lc-title">Windows）「Python（Ver.3.11.5）」インストール。</span><span class="lc-desc">Windows版Pythonのインストール手順の備忘録。 ■ Pythonダウンロード 現時点の最新、Ver.3.11.5。 ■ Python インストール 「 python-3.11.5-amd64.exe 」を実行。…</span><span class="lc-site">晴歩雨描 · <time>2023-09-08</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20230908/20230908204241.jpg" alt="" loading="lazy"></span></a></p>
+<h5 id="Pythonライブラリインストール">【Pythonライブラリインストール】</h5>
+<p>次のライブラリが必要なので、インストールする。</p>
+<pre>pip install Pillow
+</pre>
+<h5 id="Pythonプログラム">【Pythonプログラム】</h5>
+<p><span style="color: #ff0000;">※ このプログラムを利用する場合は、自己責任でお願いします。不具合の保証はできません。</span></p>
+<p>作成されたプログラムを、「写真EXIF機種分類.pyw」（名前は任意）という名前にして、デスクトップに置いておき、ダブルクリックで実行する。</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250812/20250812125530.jpg" width="602" height="332" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>↓ 結果サンプル。</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250812/20250812125541.jpg" width="361" height="264" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<h5 id="Pythonプログラムコード">【Pythonプログラムコード】</h5>
+<pre>import os
+import tkinter as tk
+from tkinter import ttk, filedialog, messagebox
+import shutil
+from PIL import Image
+from PIL.ExifTags import TAGS
+import threading
+
+class JPEGClassifierApp:
+    def __init__(self, root):
+        self.root = root
+        self.root.title("JPEG画像カメラ機種別分類ツール")
+        self.root.geometry("600x300")
+        
+        # フォルダーパス入力フレーム
+        folder_frame = ttk.Frame(root, padding="10")
+        folder_frame.grid(row=0, column=0, sticky=(tk.W, tk.E))
+        
+        ttk.Label(folder_frame, text="処理対象フォルダー:").grid(row=0, column=0, sticky=tk.W, pady=5)
+        
+        # フォルダーパス入力欄
+        self.folder_var = tk.StringVar()
+        self.folder_entry = ttk.Entry(folder_frame, textvariable=self.folder_var, width=50)
+        self.folder_entry.grid(row=1, column=0, sticky=(tk.W, tk.E), pady=5)
+        
+        # フォルダー選択ボタン
+        ttk.Button(folder_frame, text="フォルダー選択", 
+                  command=self.browse_folder).grid(row=1, column=1, padx=(10, 0), pady=5)
+        
+        # 処理階層選択フレーム
+        level_frame = ttk.Frame(root, padding="10")
+        level_frame.grid(row=1, column=0, sticky=(tk.W, tk.E))
+        
+        ttk.Label(level_frame, text="処理階層:").grid(row=0, column=0, sticky=tk.W, pady=5)
+        
+        self.level_var = tk.IntVar(value=1)
+        
+        # ラジオボタン
+        ttk.Radiobutton(level_frame, text="1階層目のみ", variable=self.level_var, 
+                       value=1).grid(row=1, column=0, sticky=tk.W)
+        ttk.Radiobutton(level_frame, text="2階層目まで", variable=self.level_var, 
+                       value=2).grid(row=1, column=1, sticky=tk.W, padx=20)
+        ttk.Radiobutton(level_frame, text="3階層目まで", variable=self.level_var, 
+                       value=3).grid(row=1, column=2, sticky=tk.W, padx=20)
+        
+        # 実行ボタンフレーム
+        button_frame = ttk.Frame(root, padding="10")
+        button_frame.grid(row=2, column=0, sticky=(tk.W, tk.E))
+        
+        self.execute_button = ttk.Button(button_frame, text="実行", 
+                                        command=self.start_classification)
+        self.execute_button.grid(row=0, column=0, pady=20)
+        
+
+        
+        # グリッドの重み設定
+        root.columnconfigure(0, weight=1)
+        folder_frame.columnconfigure(0, weight=1)
+        button_frame.columnconfigure(0, weight=1)
+    
+    def browse_folder(self):
+        """フォルダー選択ダイアログを開く"""
+        current_path = self.folder_var.get()
+        if current_path and os.path.exists(current_path):
+            # 現在のパスが存在する場合はそれを初期ディレクトリに
+            initial_dir = current_path
+        else:
+            initial_dir = os.path.expanduser("~")
+            
+        folder_selected = filedialog.askdirectory(initialdir=initial_dir)
+        if folder_selected:
+            self.folder_var.set(folder_selected)
+    
+    def get_camera_model(self, image_path):
+        """JPEG画像からカメラモデル情報を取得"""
+        try:
+            image = Image.open(image_path)
+            exifdata = image.getexif()
+            
+            for tag_id in exifdata:
+                tag = TAGS.get(tag_id, tag_id)
+                if tag == "Model":
+                    model = exifdata.get(tag_id)
+                    if model:
+                        # ファイル名に使用できない文字を除去
+                        model = "".join(c for c in model if c.isalnum() or c in (' ', '-', '_')).strip()
+                        return model
+            return None
+        except Exception:
+            return None
+    
+    def collect_jpeg_files(self, base_path, max_level):
+        """指定された階層までのJPEGファイルを収集（親ディレクトリ情報も含む）"""
+        jpeg_files = []
+        
+        def scan_directory(path, current_level):
+            if current_level &gt; max_level:
+                return
+            
+            try:
+                for item in os.listdir(path):
+                    item_path = os.path.join(path, item)
+                    
+                    if os.path.isfile(item_path):
+                        # JPEGファイルかチェック
+                        if item.lower().endswith(('.jpg', '.jpeg')):
+                            # ファイルパスと親ディレクトリのペアで保存
+                            jpeg_files.append((item_path, path))
+                    elif os.path.isdir(item_path) and current_level &lt; max_level:
+                        # 次の階層をスキャン
+                        scan_directory(item_path, current_level + 1)
+            except PermissionError:
+                pass  # アクセス権限がない場合はスキップ
+        
+        scan_directory(base_path, 1)
+        return jpeg_files
+    
+    def classify_images(self):
+        """画像の分類処理"""
+        base_folder = self.folder_var.get()
+        max_level = self.level_var.get()
+        
+        if not base_folder or not os.path.exists(base_folder):
+            messagebox.showerror("エラー", "有効なフォルダーを指定してください。")
+            return
+        
+        # JPEGファイルを収集（親ディレクトリ情報も含む）
+        jpeg_files = self.collect_jpeg_files(base_folder, max_level)
+        
+        if not jpeg_files:
+            messagebox.showinfo("完了", "処理対象のJPEGファイルが見つかりませんでした。")
+            return
+        
+        processed_count = 0
+        created_folders = set()
+        
+        for image_path, parent_dir in jpeg_files:
+            model = self.get_camera_model(image_path)
+            
+            if model:
+                # 親ディレクトリの下にカメラモデル用のフォルダーを作成
+                model_folder = os.path.join(parent_dir, model)
+                
+                if model_folder not in created_folders:
+                    if not os.path.exists(model_folder):
+                        try:
+                            os.makedirs(model_folder)
+                        except Exception as e:
+                            continue
+                    created_folders.add(model_folder)
+                
+                # 画像ファイルを移動
+                try:
+                    filename = os.path.basename(image_path)
+                    destination = os.path.join(model_folder, filename)
+                    
+                    # 同名ファイルが存在する場合のファイル名調整
+                    counter = 1
+                    original_destination = destination
+                    while os.path.exists(destination):
+                        name, ext = os.path.splitext(filename)
+                        new_filename = f"{name}_{counter}{ext}"
+                        destination = os.path.join(model_folder, new_filename)
+                        counter += 1
+                    
+                    shutil.move(image_path, destination)
+                    processed_count += 1
+                except Exception as e:
+                    continue
+        
+        messagebox.showinfo("完了", f"処理が完了しました。\n{processed_count}個のファイルを分類しました。")
+    
+    def start_classification(self):
+        """分類処理を別スレッドで開始"""
+        self.execute_button.config(state="disabled")
+        
+        def run_classification():
+            try:
+                self.classify_images()
+            finally:
+                self.root.after(0, self.finish_classification)
+        
+        thread = threading.Thread(target=run_classification)
+        thread.daemon = True
+        thread.start()
+    
+    def finish_classification(self):
+        """分類処理完了時の処理"""
+        self.execute_button.config(state="normal")
+
+def main():
+    root = tk.Tk()
+    app = JPEGClassifierApp(root)
+    root.mainloop()
+
+if __name__ == "__main__":
+    main()
+</pre>
+<p><a class="link-card" href="093959.html"><span class="lc-body"><span class="lc-title">Gemini）Python）「ファイル拡張子別フォルダー移動」Windowsアプリ作成。</span><span class="lc-desc">Pythonで「ファイル拡張子別フォルダー移動」Windowsアプリを作成。 生成AI「 Gemini 」「 Claude 」「 ChatGPT GPT-5 」で、以下のプロンプトで作成してみた。 【生成AI プロンプト…</span><span class="lc-site">晴歩雨描 · <time>2025-08-12</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250812/20250812093352.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../06/14/093748.html"><span class="lc-body"><span class="lc-title">JavaScript＆Web、Python＆Windows）写真画像編集アプリ／ツールまとめ。</span><span class="lc-desc">写真画像編集アプリ／ツールを、JavaScriptとPythonでいくつか作成してきた。それらのツールまとめ。 ■ 画像縮小 【Webツール（JavaScript）】 https://ok2nd.github.io/to…</span><span class="lc-site">晴歩雨描 · <time>2025-06-14</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250614/20250614094138.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../06/13/153014.html"><span class="lc-body"><span class="lc-title">Claude）Python）透過画像作成Windowsアプリ作成。</span><span class="lc-desc">Pythonで「透過画像作成」Windowsアプリ作成。画像の白に近い色を透過にする。元データはJPEGまたはPNG。白の範囲は指定できる。AIツールClaudeに作成してもらった。 【使い方】 元画像ファイルは、ドラッ…</span><span class="lc-site">晴歩雨描 · <time>2025-06-13</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250613/20250613151037.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../02/12/100342.html"><span class="lc-body"><span class="lc-title">JavaScript）JPEG画像の白色部分を透過にしたPNG画像生成Webツール。Google Geminiで作成。</span><span class="lc-desc">以前に、ImageMagickを使って、JPEG画像の白色部分を透過にしたPNG画像を生成した。 今回、JavaScriptを使って、ブラウザにJPEG画像をアップロードして、白色部分を透過にしたPNG画像をダウンロード…</span><span class="lc-site">晴歩雨描 · <time>2025-02-12</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250212/20250212095643.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../06/13/162926.html"><span class="lc-body"><span class="lc-title">Claude）JavaScript）透過画像作成Webツール作成。</span><span class="lc-desc">先程、Pythonで「透過画像作成」Windowsアプリを作成した。 今回、ほぼ同等の機能のWebアプリをJavaScriptで作成した。AIツールClaudeに作成してもらった。 以前に、JavaScriptで同様のア…</span><span class="lc-site">晴歩雨描 · <time>2025-06-13</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250613/20250613162135.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../02/05/223009.html"><span class="lc-body"><span class="lc-title">Windows）JPEG画像の白色部分を透過にしたPNG画像生成方法。ImageMagickで複数ファイルを一括バッチ処理。</span><span class="lc-desc">Windowsで、JPEG画像の白色部分を透過にしたPNG画像の生成方法。 ImageMagickを使用。 ※注：ImageMagick7以降では、「convert」コマンドが「magick」に変更されている。以下の記述…</span><span class="lc-site">晴歩雨描 · <time>2025-02-05</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250205/20250205221642.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2019/06/30/174808.html"><span class="lc-body"><span class="lc-title">写真でアート：GIMPを使って、写真画像の一部を透過にして、別の画像と重ね合わせ合成してアートを作成する。レイヤー使用。</span><span class="lc-desc">GIMP を使って、写真の一部を透過にして、別の画像と合成してみた。 オリジナル画像は、GIMPのプラグイン「G&#x27;MIC」を使って写真を加工したものを使用。 【オリジナル画像】 １．透過手順 まず、GIMPで、白っぽい背…</span><span class="lc-site">晴歩雨描 · <time>2019-06-30</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190630/20190630170626.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../06/02/112022.html"><span class="lc-body"><span class="lc-title">Claude＆Gemini）Python）「写真のカラーバランス一括補正」Windowsアプリ作成。Pixel 9 Proの青被りを補正。</span><span class="lc-desc">スマホ「 Pixel 9 Pro 」を所有しているが、写真の青被りがきつい。特に人物の顔色が悪くなる。GIMP等でカラーバランスを調整することで補正できるが、枚数が多いと面倒。 複数画像を一括して補正できるツール が欲し…</span><span class="lc-site">晴歩雨描 · <time>2025-06-02</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250602/20250602110316.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../05/25/211331.html"><span class="lc-body"><span class="lc-title">Claude＆Gemini）Python）「写真のトーンカーブ一括補正」Windowsアプリ作成。</span><span class="lc-desc">先日、Pythonで「写真の明るさ＆コントラスト一括補正」Windowsアプリを作成した。 今回、 トーンカーブを使って写真の明るさを補正するWindowsアプリ をPythonで作成。 複数画像を一括して補正できる。 …</span><span class="lc-site">晴歩雨描 · <time>2025-05-25</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250525/20250525210152.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../05/18/090800.html"><span class="lc-body"><span class="lc-title">Claude）Python）「写真の明るさ＆コントラスト一括補正」Windowsアプリ作成。ICCプロファイル維持。</span><span class="lc-desc">Pythonで「 写真の明るさ＆コントラスト一括補正 」Windowsアプリ作成。 複数の画像を一括して補正できる。 AIツールClaudeに作成してもらった。 ※ 【後日追記】最初のバージョンでは、元の写真に埋め込まれ…</span><span class="lc-site">晴歩雨描 · <time>2025-05-18</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250518/20250518090322.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../04/20/093458.html"><span class="lc-body"><span class="lc-title">Claude）Python）「写真オブジェクト除去」Windowsアプリ作成。シミ消しにも使える。</span><span class="lc-desc">2日前、 JavaScript で「 写真スポッティング編集ツール 」を作成した。 今回、 Python で「 写真オブジェクト除去アプリ 」を作成。AIツールClaudeに作成してもらった。 写真の中のちょっとした不要…</span><span class="lc-site">晴歩雨描 · <time>2025-04-20</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250420/20250420091047.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2023/06/30/121450.html"><span class="lc-body"><span class="lc-title">ソニーのデジカメ写真のEXIFから、「クリエイティブルック」情報を抜き出して、画像ファイル名に「クリエイティブルック名」を付け足す。（ExifTool/JScript）</span><span class="lc-desc">以前、「 ソニー のデジカメ写真の EXIF から、クリエイティブスタイル、ピクチャーエフェクト情報を抜き出して、画像ファイル名に EXIF 情報を付け足す。」という記事を書いた。 これは、「 DSC-RX100M6 」…</span><span class="lc-site">晴歩雨描 · <time>2023-06-30</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20230630/20230630120338.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2020/01/17/145532.html"><span class="lc-body"><span class="lc-title">PowerShot SX70 HSの35mm判換算焦点距離をExifToolで調べる。</span><span class="lc-desc">先日、キヤノン PowerShot SX70 HS を購入した。 SX70 HS では、撮影した写真の35mm判換算焦点距離が知りたくても、Windowsフォルダの詳細ウインドウや一般的な画像ビューアソフトでは表示されな…</span><span class="lc-site">晴歩雨描 · <time>2020-01-17</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20200117/20200117141013.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../09/20/205629.html"><span class="lc-body"><span class="lc-title">Claude）Python）写真のEXIF情報を表示するWindowsアプリ（ExifTool）を作成。</span><span class="lc-desc">Pythonで「 写真のEXIF情報を表示する 」Windowsアプリを作成。「Claude」で作成。 【機能概略】 JPEGファイルを画面にドラッグ＆ドロップすると、その写真のEXIF情報一覧を表示する。 メーカー独自…</span><span class="lc-site">晴歩雨描 · <time>2025-09-20</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250920/20250920175347.jpg" alt="" loading="lazy"></span></a></p></div></article>
+</body>
+</html>

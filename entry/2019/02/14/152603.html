@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CSS Filterを使えば、簡単に色調（明度、彩度、色相、透過度 etc.）加工ができる。 - 晴歩雨描</title>
+<link rel="stylesheet" href="../../../../style.css">
+</head>
+<body>
+<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>CSS Filterを使えば、簡単に色調（明度、彩度、色相、透過度 etc.）加工ができる。</h1><p class="meta">2019-02-14 · <a href="../../../../category/c18.html">写真・カメラ</a> <a href="../../../../category/c13.html">ホームページ、Web作成</a></p><div class="entry-body"><p>CSS Filterを試してみた。</p>
+<p>CSS Filterを使えば、写真そのものを加工しなくても、ブラウザ上で彩度、明度、色相、コントラスト等色調を変えて表示できる。</p>
+<p>CSSは簡単。例えばグレースケールにしたければ、&lt;img&gt;にgrayscaleフィルタを指定するだけで良い。</p>
+<pre>    -webkit-filter: grayscale(100%);
+    filter: grayscale(100%);
+</pre>
+<p>明度を変えるなら、下のようにbrightnessフィルタを指定する。</p>
+<pre>    -webkit-filter: brightness(1.2);
+    filter: brightness(1.2);
+</pre>
+<p>【フィルタ種類】</p>
+<pre>filter: grayscale(50%); /* グレースケール */
+filter: sepia(50%); /* セピア */
+filter: saturate(140%); /* 彩度 */
+filter: brightness(0.8); /* 明度 */
+filter: contrast(120%); /* コントラスト */
+filter: hue-rotate(45deg); /* 色相変換 */
+filter: opacity(0.6); /* 透明度 */
+filter: blur(2px); /* ぼかし */
+filter: invert(80%); /* 階調反転 */</pre>
+<p>実際に試したサンプルが以下。</p>
+<figure class="figure-image"><img style="margin: 0; padding: 0; width: 280px;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190214/20190214142149.jpg" />
+<figcaption>↑ オリジナル写真</figcaption>
+</figure>
+<div style="overflow-x: auto;">
+<table style="margin: 0; padding: 0; width: 100%; border: 0;">
+<tbody>
+<tr>
+<td style="width: 50%; border: 0; margin: 0; padding: 0;">
+<figure class="figure-image"><img style="margin: 0; padding: 0; width: 280px; -webkit-filter: grayscale(100%); filter: grayscale(100%);" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190214/20190214142149.jpg" />
+<figcaption>↑ グレースケール：grayscale(100%)</figcaption>
+</figure>
+</td>
+<td style="width: 50%; border: 0; margin: 0; padding: 0;">
+<figure class="figure-image"><img style="margin: 0; padding: 0; width: 280px; -webkit-filter: grayscale(50%); filter: grayscale(50%);" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190214/20190214142149.jpg" />
+<figcaption>↑ グレースケール：grayscale(50%)</figcaption>
+</figure>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div style="overflow-x: auto;">
+<table style="margin: 0; padding: 0; width: 100%; border: 0;">
+<tbody>
+<tr>
+<td style="width: 50%; border: 0; margin: 0; padding: 0;">
+<figure class="figure-image"><img style="margin: 0; padding: 0; width: 280px; -webkit-filter: sepia(100%); filter: sepia(100%);" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190214/20190214142149.jpg" />
+<figcaption>↑ セピア：sepia(100%)</figcaption>
+</figure>
+</td>
+<td style="width: 50%; border: 0; margin: 0; padding: 0;">
+<figure class="figure-image"><img style="margin: 0; padding: 0; width: 280px; -webkit-filter: sepia(50%); filter: sepia(50%);" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190214/20190214142149.jpg" />
+<figcaption>↑ セピア：sepia(50%)</figcaption>
+</figure>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div style="overflow-x: auto;">
+<table style="margin: 0; padding: 0; width: 100%; border: 0;">
+<tbody>
+<tr>
+<td style="width: 50%; border: 0; margin: 0; padding: 0;">
+<figure class="figure-image"><img style="margin: 0; padding: 0; width: 280px; -webkit-filter: saturate(200%); filter: saturate(200%);" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190214/20190214142149.jpg" />
+<figcaption>↑ 彩度：saturate(200%)</figcaption>
+</figure>
+</td>
+<td style="width: 50%; border: 0; margin: 0; padding: 0;">
+<figure class="figure-image"><img style="margin: 0; padding: 0; width: 280px; -webkit-filter: saturate(140%); filter: saturate(140%);" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190214/20190214142149.jpg" />
+<figcaption>↑ 彩度：saturate(140%)</figcaption>
+</figure>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div style="overflow-x: auto;">
+<table style="margin: 0; padding: 0; width: 100%; border: 0;">
+<tbody>
+<tr>
+<td style="width: 50%; border: 0; margin: 0; padding: 0;">
+<figure class="figure-image"><img style="margin: 0; padding: 0; width: 280px; -webkit-filter: brightness(1.2); filter: brightness(1.2);" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190214/20190214142149.jpg" />
+<figcaption>↑ 明度：brightness(1.2)</figcaption>
+</figure>
+</td>
+<td style="width: 50%; border: 0; margin: 0; padding: 0;">
+<figure class="figure-image"><img style="margin: 0; padding: 0; width: 280px; -webkit-filter: brightness(0.8); filter: brightness(0.8);" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190214/20190214142149.jpg" />
+<figcaption>↑ 明度：brightness(0.8)</figcaption>
+</figure>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div style="overflow-x: auto;">
+<table style="margin: 0; padding: 0; width: 100%; border: 0;">
+<tbody>
+<tr>
+<td style="width: 50%; border: 0; margin: 0; padding: 0;">
+<figure class="figure-image"><img style="margin: 0; padding: 0; width: 280px; -webkit-filter: contrast(140%); filter: contrast(140%);" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190214/20190214142149.jpg" />
+<figcaption>↑ コントラスト：contrast(140%)</figcaption>
+</figure>
+</td>
+<td style="width: 50%; border: 0; margin: 0; padding: 0;">
+<figure class="figure-image"><img style="margin: 0; padding: 0; width: 280px; -webkit-filter: contrast(120%); filter: contrast(120%);" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190214/20190214142149.jpg" />
+<figcaption>↑ コントラスト：contrast(120%)</figcaption>
+</figure>
+</td>
+</tr>
+</tbody>
+</table>
+<p>色相「hue-rotate」は、色相環に基づいて、回転させる。</p>
+<p><a target="_blank" href="http://zokeifile.musabi.ac.jp/%E8%89%B2%E7%9B%B8%E7%92%B0/">色相環 - しきそうかん | 武蔵野美術大学 造形ファイル</a></p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20230805/20230805140131.jpg" width="800" height="680" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+</div>
+<div style="overflow-x: auto;">
+<table style="margin: 0; padding: 0; width: 100%; border: 0;">
+<tbody>
+<tr>
+<td style="width: 50%; border: 0; margin: 0; padding: 0;">
+<figure class="figure-image"><img style="margin: 0; padding: 0; width: 280px; -webkit-filter: hue-rotate(45deg); filter: hue-rotate(45deg);" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190214/20190214142149.jpg" />
+<figcaption>↑ 色相変換：hue-rotate(45deg)</figcaption>
+</figure>
+</td>
+<td style="width: 50%; border: 0; margin: 0; padding: 0;">
+<figure class="figure-image"><img style="margin: 0; padding: 0; width: 280px; -webkit-filter: hue-rotate(90deg); filter: hue-rotate(90deg);" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190214/20190214142149.jpg" />
+<figcaption>↑ 色相変換：hue-rotate(90deg)</figcaption>
+</figure>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div style="overflow-x: auto;">
+<table style="margin: 0; padding: 0; width: 100%; border: 0;">
+<tbody>
+<tr>
+<td style="width: 50%; border: 0; margin: 0; padding: 0;">
+<figure class="figure-image"><img style="margin: 0; padding: 0; width: 280px; -webkit-filter: hue-rotate(90deg); filter: hue-rotate(180deg);" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190214/20190214142149.jpg" />
+<figcaption>↑ 色相変換：hue-rotate(180deg)</figcaption>
+</figure>
+</td>
+<td style="width: 50%; border: 0; margin: 0; padding: 0;">
+<figure class="figure-image"><img style="margin: 0; padding: 0; width: 280px; -webkit-filter: hue-rotate(45deg); filter: hue-rotate(270deg);" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190214/20190214142149.jpg" />
+<figcaption>↑ 色相変換：hue-rotate(270deg)</figcaption>
+</figure>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div style="overflow-x: auto;">
+<table style="margin: 0; padding: 0; width: 100%; border: 0;">
+<tbody>
+<tr>
+<td style="width: 50%; border: 0; margin: 0; padding: 0;">
+<figure class="figure-image"><img style="margin: 0; padding: 0; width: 280px; -webkit-filter: opacity(0.8); filter: opacity(0.8);" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190214/20190214142149.jpg" />
+<figcaption>↑ 透明度：opacity(0.8)</figcaption>
+</figure>
+</td>
+<td style="width: 50%; border: 0; margin: 0; padding: 0;">
+<figure class="figure-image"><img style="margin: 0; padding: 0; width: 280px; -webkit-filter: opacity(0.6); filter: opacity(0.6);" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190214/20190214142149.jpg" />
+<figcaption>↑ 透明度：opacity(0.6)</figcaption>
+</figure>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div style="overflow-x: auto;">
+<table style="margin: 0; padding: 0; width: 100%; border: 0;">
+<tbody>
+<tr>
+<td style="width: 50%; border: 0; margin: 0; padding: 0;">
+<figure class="figure-image"><img style="margin: 0; padding: 0; width: 280px; -webkit-filter: blur(3px); filter: blur(3px);" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190214/20190214142149.jpg" />
+<figcaption>↑ ぼかし：blur(3px)</figcaption>
+</figure>
+</td>
+<td style="width: 50%; border: 0; margin: 0; padding: 0;">
+<figure class="figure-image"><img style="margin: 0; padding: 0; width: 280px; -webkit-filter: blur(2px); filter: blur(2px);" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190214/20190214142149.jpg" />
+<figcaption>↑ ぼかし：blur(2px)</figcaption>
+</figure>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div style="overflow-x: auto;">
+<table style="margin: 0; padding: 0; width: 100%; border: 0;">
+<tbody>
+<tr>
+<td style="width: 50%; border: 0; margin: 0; padding: 0;">
+<figure class="figure-image"><img style="margin: 0; padding: 0; width: 280px; -webkit-filter: invert(100%); filter: invert(100%);" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190214/20190214142149.jpg" />
+<figcaption>↑ 階調（色と輝度）反転：invert(100%)</figcaption>
+</figure>
+</td>
+<td style="width: 50%; border: 0; margin: 0; padding: 0;">
+<figure class="figure-image"><img style="margin: 0; padding: 0; width: 280px; -webkit-filter: invert(80%); filter: invert(80%);" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190214/20190214142149.jpg" />
+<figcaption>↑ 階調（色と輝度）反転：invert(80%)</figcaption>
+</figure>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><a class="link-card" href="../19/135849.html"><span class="lc-body"><span class="lc-title">CSSのブレンドモード&quot;background-blend-mode&quot;を使うと写真にカラーフィルタをかけたような色の加工ができる。</span><span class="lc-desc">CSS の&quot;background-blend-mode&quot;を使うと写真にカラーフィルタをかけたような色の加工ができる。 以下のWebページを参考にした。 使い方は、&lt;div&gt;で写真を入れるボックスを作成し、backgrou…</span><span class="lc-site">晴歩雨描 · <time>2019-02-19</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190219/20190219135707.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2023/08/07/122742.html"><span class="lc-body"><span class="lc-title">CSS Filter「hue-rotate」で、画像を色相変換するWebツール作成。（ChatGPT）</span><span class="lc-desc">以前に、「CSS Filterを使えば、簡単に色調（明度、彩度、色相、透過度 etc.）加工ができる。」という記事を書いた。 CSS Filter「hue-rotate」を使って、画像（写真）を色相変換するWebページを…</span><span class="lc-site">晴歩雨描 · <time>2023-08-07</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20230807/20230807113225.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2025/07/14/151811.html"><span class="lc-body"><span class="lc-title">JavaScript）既存のWebページに、画像モノトーン（モノクロ）表示機能追加。CSS Filter grayscale(100%) 使用。</span><span class="lc-desc">既存のWebページに、画像モノトーン表示機能を追加するJavaScriptを作成。Claudeで作成。 ≪ 利用例：モノトーン表示機能追加サンプル ≫ https://ok2nd.github.io/index/phot…</span><span class="lc-site">晴歩雨描 · <time>2025-07-14</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250714/20250714145505.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../03/21/165144.html"><span class="lc-body"><span class="lc-title">GIMPで、写真の色相を変えてみた。（カラーバランス調整、色補正、色加工）</span><span class="lc-desc">Windows アプリ「 GIMP 2.10」で、写真の色相を変えてみた。 メニュー[色] → [Color Balance] を使う。シアン、マゼンダ、イエローの3つのスライドバーでカラーバランスを調整するだけ。シンプ…</span><span class="lc-site">晴歩雨描 · <time>2019-03-21</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190321/20190321164144.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2020/04/11/135815.html"><span class="lc-body"><span class="lc-title">無料アプリ「Photoshop Express」のフィルター機能を試す。納戸料の百年桜で。色加工。</span><span class="lc-desc">スマホ用の無料アプリ「 Adobe Photoshop Express 」のWindows版「 Adobe Photoshop Express for Windows 10 」を試してみた。 フィルター機能、トリミング機…</span><span class="lc-site">晴歩雨描 · <time>2020-04-11</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20200411/20200411132246.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2018/11/24/101431.html"><span class="lc-body"><span class="lc-title">露出アンダー、露出オーバー写真のJTrimガンマ補正を実験</span><span class="lc-desc">デジカメで撮った写真が暗すぎたり（露出アンダー）、明るすぎる（ 露出オーバー ）場合、画像編集ソフトを使えばある程度補正ができる。 明るさを調整するには、画像編集ソフトの「ガンマ補正」が簡単で便利。 ガンマ補正を使わずに…</span><span class="lc-site">晴歩雨描 · <time>2018-11-24</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20181124/20181124100417.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2018/11/25/213654.html"><span class="lc-body"><span class="lc-title">デジカメ写真の色相を変えると、アートっぽくなる。色の三大要素（色相、明度、彩度）。</span><span class="lc-desc">色には三大要素がある。色相、明度、彩度。色相は赤、黄、青といった色合いの事。色相を円にして並べたものを色相環という。 デジカメ写真を、色相環に従って、色合いを変えてみたら、それだけでアートっぽくなった。（後日、写真を入れ…</span><span class="lc-site">晴歩雨描 · <time>2018-11-25</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20200704/20200704094801.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../01/29/135013.html"><span class="lc-body"><span class="lc-title">GIMPで、写真のビネット効果（周辺減光補正）を試してみた。</span><span class="lc-desc">Windows アプリ「 GIMP 2.10.8」で、写真の ビネット 効果加工を試してみた。 ビネット 効果とは、写真の四隅周辺の光量を落として、昔のレンズで撮ったような味わいの雰囲気にすること。写真中央部が相対的に明…</span><span class="lc-site">晴歩雨描 · <time>2019-01-29</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190129/20190129134746.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../08/224853.html"><span class="lc-body"><span class="lc-title">「ImageMagick」で写真のヒストグラム平坦化（equalize）を試してみた。ImageMagickで一括バッチ処理。</span><span class="lc-desc">撮った写真をもう少し明るく鮮やかな印象にしたい場合、画像処理ソフトを使って明度やコントラストを補正することで可能だが、補正の程度の調整が結構面倒。 ヒストグラムの平坦化で簡単に補正できる場合がある。（あくまでも、「できる…</span><span class="lc-site">晴歩雨描 · <time>2019-02-08</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190208/20190208224351.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2020/01/27/212651.html"><span class="lc-body"><span class="lc-title">GIMPプラグインスクリプトFX-Foundry「Cross processing effect...」で写真をレトロ調に加工してみる。レイヤー使用。色加工。</span><span class="lc-desc">Photoshopには写真をおしゃれに加工できるアクションというものがあるらしい。 今回、Windowsフリーソフト「 GIMP 」でプラグインスクリプトを使って写真をレトロ調に加工してみる。GIMP用プラグインスクリプ…</span><span class="lc-site">晴歩雨描 · <time>2020-01-27</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20200127/20200127203749.jpg" alt="" loading="lazy"></span></a></p></div></article>
+</body>
+</html>

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ローカル画像生成AI：RTX3050）Stability Matrix＋Forge＋「FLUX.2 [klein] GGUF版」を試したが、RuntimeErrorで使えない。 - 晴歩雨描</title>
+<link rel="stylesheet" href="../../../../style.css">
+</head>
+<body>
+<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>ローカル画像生成AI：RTX3050）Stability Matrix＋Forge＋「FLUX.2 [klein] GGUF版」を試したが、RuntimeErrorで使えない。</h1><p class="meta">2025-12-24 · <a href="../../../../category/c18.html">写真・カメラ</a> <a href="../../../../category/c5.html">アート・美術</a> <a href="../../../../category/c42.html">＜AI＞</a></p><div class="entry-body"><p><span style="color: #ff0000;">※ 以下で試した結果、Stability Matrix＋Forgeの環境では、「FLUX.2 [klein]」の GGUF版」は、RuntimeErrorで使えなかった。</span></p>
+<p>WindowsPCローカルで画像生成AIを試している。モデルとして、</p>
+<ul>
+<li>「FLUX.1 [dev] GGUF版」</li>
+<li>「FLUX.1 [schnell] GGUF版」</li>
+</ul>
+<p>を試した。「FLUX.1 [dev] GGUF版」の方が処理時間はかかるが、画質は良い。</p>
+<p>「FLUX.1 [dev] GGUF版」でも、1200x800ピクセルで5分程で画像生成できる。</p>
+<p><a class="link-card" href="../21/220610.html"><span class="lc-body"><span class="lc-title">ローカル画像生成AI：RTX3050）Stability Matrix＋Stable Diffusion WebUI Forgeで「FLUX.1 [dev] GGUF版」を使う。</span><span class="lc-desc">WindowsPCローカルで画像生成AIを使う「 Fooocus（Stable Diffusion） 」を試したみたが、期待通りの画質を得られなかった。 ● 画像生成AIを使うには、以下の3つが必要。 UI（操作するため…</span><span class="lc-site">晴歩雨描 · <time>2025-12-21</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20251221/20251221213735.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../23/164434.html"><span class="lc-body"><span class="lc-title">ローカル画像生成AI：RTX3050）Stability Matrix＋Stable Diffusion WebUI Forgeで「FLUX.1 [schnell] GGUF版」を使う。</span><span class="lc-desc">WindowsPCローカルで、画像生成AIのモデル「 FLUX.1 [dev] の GGUF版 」を使ったが、800x600ピクセルの画像生成に10分ほどかかった。 ※【後日追加】その後試したら、「FLUX.1 [dev…</span><span class="lc-site">晴歩雨描 · <time>2025-12-23</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20251223/20251223161527.png" alt="" loading="lazy"></span></a></p>
+<p>● 使うPCのスペックは以下。画像生成AIをローカルで行うPCとしては最低限レベル。</p>
+<div style="overflow-x: auto;">
+<table>
+<tbody>
+<tr>
+<th>CPU</th>
+<td>インテル Core i5-14500T (14コア(6P+8E)/1.7GHz)</td>
+</tr>
+<tr>
+<th>GPU</th>
+<td>NVIDIA GeForce RTX 3050 LP 6GB</td>
+</tr>
+<tr>
+<th>メモリー</th>
+<td>32GB</td>
+</tr>
+<tr>
+<th>ストレージ</th>
+<td>1TB M.2 SSD PCI Express x4対応（Gen4対応）</td>
+</tr>
+<tr>
+<th>OS</th>
+<td>Windows 11 Pro 64bit</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>● 画像生成AIを使うには、以下の3つが必要。</p>
+<ul style="font-family: 'Noto Sans JP', sans-serif; color: #454545; font-size: 15.2px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; background-color: #ffffff; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;">
+<li style="font-family: 'Noto Sans JP', sans-serif;">UI（操作するための画面＋VRAM効率化など）</li>
+<li style="font-family: 'Noto Sans JP', sans-serif;">エンジン（実際に画像を作る仕組み）</li>
+<li style="font-family: 'Noto Sans JP', sans-serif;">モデル（AIの知識・作風）</li>
+</ul>
+<p>最近、新しいモデルがいくつかリリースされている。</p>
+<p>その中で、現在もっとも勢いがあるのは「FLUX.2」と銘打たれた「klein」。</p>
+<ul>
+<li>理由: FLUX.1 [dev] の重厚な質感を維持しつつ、計算効率が最適化されている。14コアのCPUと32GBのメモリがあれば、GGUFの量子化版（Q4_K_S や Q5_K_M 等）を使用することで、現在の「FLUX.1 [dev] の GGUF版」で5分という生成時間を短縮できる可能性が高い。</li>
+<li>画質: 指の描写や、プロンプトへの忠実度がFLUX.1より向上している。</li>
+</ul>
+<p>● モデル「FLUX.2 [klein] GGUF版」を使ってみる。</p>
+<ul>
+<li>ツール管理：Stability Matrix</li>
+<li>UI：Forge（Stable Diffusion WebUI Forge）</li>
+<li>エンジン：Stable Diffusion</li>
+<li>モデル：<em>FLUX.2 [klein]」の GGUF版</em></li>
+</ul>
+<h5 id="-FLUX2-kleinの-GGUF版のダウンロード">■ FLUX.2 [klein]」の GGUF版のダウンロード</h5>
+<p>入手先：<a href="https://huggingface.co/city96/FLUX.2-dev-gguf/tree/main" target="_blank">https://huggingface.co/city96/FLUX.2-dev-gguf/tree/main</a></p>
+<p>入手ファイル：2種類を試してみたい。</p>
+<p><span style="color: #dd830c;">※ 結果的には、「flux2-dev-Q4_K_S.gguf」がダメだったので、「flux2-dev-Q5_K_S.gguf」は試していない。</span></p>
+<ul>
+<li>ファイル：<strong>flux2-dev-Q4_K_S.gguf</strong><br />画質と速度のバランスが完璧。VRAM 6GBの環境で最も「サクサク」動く可能性が高いサイズ。</li>
+<li>ファイル：<strong>flux2-dev-Q5_K_S.gguf</strong><br />Q4よりも少し高品質（精密）だが、ファイルサイズと計算負荷が少し上がる。現在の [dev] GGUF と同等か、それより少し軽いくらいの挙動になるはず。</li>
+</ul>
+<p>保存場所：Data/Models/Stable-diffusion</p>
+<h5 id="-テキストエンコーダーのダウンロード">■ テキストエンコーダーのダウンロード</h5>
+<p>入手先：<a href="https://huggingface.co/chatpig/encoder/blob/main/t5xxl-encoder-q4_k_m.gguf" target="_blank">https://huggingface.co/chatpig/encoder/blob/main/t5xxl-encoder-q4_k_m.gguf</a></p>
+<ul>
+<li>ファイル：<strong>t5xxl-encoder-q4_k_m.gguf</strong></li>
+<li>保存場所：Data/Models/TextEncoder</li>
+</ul>
+<h5 id="-使い方">■ 使い方</h5>
+<p>※「FLUX.1 [dev] GGUF」をすでに使っている前提で、</p>
+<p>「Stability Matrix＋Stable Diffusion WebUI Forge」</p>
+<p><strong>Checkpoint</strong>で、</p>
+<ul>
+<li><strong>sd\flux2-dev-Q4_K_S.gguf</strong> を選択。</li>
+</ul>
+<p><strong>VAE / Text Encoder</strong>で、</p>
+<ul>
+<li>t5xxl_fp16.safetensors のチェックを外し、</li>
+<li><strong>t5xxl-encoder-q4_k_m.gguf</strong> をチェックする。</li>
+</ul>
+<h5 id="-結果">■ 結果</h5>
+<p>RuntimeErrorが出て使えなかった。</p>
+<p>Forgeの内部処理がFLUX.2の新しい構造に対応しきれていない可能性がある。</p>
+<p><a class="link-card" href="142809.html"><span class="lc-body"><span class="lc-title">ローカル画像生成AI：RTX3050）Stability Matrix＋Stable Diffusion WebUI Forgeで「FLUX FP8版」を使う。</span><span class="lc-desc">WindowsPCローカルで画像生成AIを試している。モデルとして、 「FLUX.1 [dev] の GGUF版」 「FLUX.1 [schnell] の GGUF版」 を試した。「FLUX.1 [dev] の GGUF…</span><span class="lc-site">晴歩雨描 · <time>2025-12-24</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20251224/20251224135757.png" alt="" loading="lazy"></span></a></p></div></article>
+</body>
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Windows11パソコンのIPアドレス固定方法。 - 晴歩雨描</title>
+<link rel="stylesheet" href="../../../../style.css">
+</head>
+<body>
+<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>Windows11パソコンのIPアドレス固定方法。</h1><p class="meta">2024-12-13 · <a href="../../../../category/c8.html">コンピュータ</a></p><div class="entry-body"><p>以前に「WindowsパソコンのIPアドレス固定方法。」という記事を書いた。</p>
+<p><a class="link-card" href="../../../2021/09/27/133214.html"><span class="lc-body"><span class="lc-title">備忘録：WindowsパソコンのIPアドレス固定方法。（Windows10の場合）</span><span class="lc-desc">WindowsパソコンのIPアドレスを固定する方法。 ※ Windows11では設定画面が大きく変わっているので、以下を参照。 【以下はWindows10用】 １．「スタート」をクリックし、「設定」を開く。 ２．「ネット…</span><span class="lc-site">晴歩雨描 · <time>2021-09-27</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20210927/20210927132509.jpg" alt="" loading="lazy"></span></a></p>
+<p>Windows11で、Windows10とは設定画面が大きく変わっているようなので、Windows11用の設定手順を以下に示す。</p>
+<p>１．「スタート」をクリックし、「設定」を開く。</p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20241213/20241213134452.jpg" width="211" height="229" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>２．「ネットワークとインターネット」を選択。</p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20241213/20241213134502.jpg" width="310" height="244" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>３．「Wi-Fi」を選択。</p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20241213/20241213134516.jpg" width="812" height="274" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>４．「ハードウェアのプロパティ」を選択。</p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20241213/20241213134525.jpg" width="641" height="358" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>５．「IP 割り当て」の「編集」を選択。</p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20241214/20241214081108.jpg" width="565" height="188" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>６．「IP 設定の編集」を、「自動（DHCP）」から「手動」に変更する。</p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20241214/20241214081557.jpg" width="507" height="238" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>　　　↓↓↓</p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20241214/20241214081601.jpg" width="507" height="262" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>７．「コマンド プロンプト」で「ipconfig」と入力し、現在のアドレスを確認する。</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20241214/20241214082432.jpg" width="544" height="222" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>８．以下の設定をする。（一般的な家庭内LANの例）<br /><span style="white-space: normal;"><span style="white-space: pre;">　</span></span>サブネット マスク、ゲートウェイは、上記で確認したアドレスを使う。優先 DNSも、ゲートウェイと同じにする。</p>
+<ul>
+<li>「IPv4」をオンにする。</li>
+<li>IP アドレス：192.168.1.30（一般家庭なら、多分重複しない）</li>
+<li>サブネット マスク：255.255.255.0</li>
+<li>ゲートウェイ：192.168.1.1</li>
+<li>優先 DNS：192.168.1.1</li>
+</ul>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20241213/20241213134551.jpg" width="487" height="585" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p><a class="link-card" href="../../../2023/07/24/223854.html"><span class="lc-body"><span class="lc-title">Windows11）ネットワークに共有コンピューター名(PC名)が表示されない、共有コンピュータを開けない、ファイル共有できない時の対処。家庭内ネットワークの場合。</span><span class="lc-desc">先日、Windows11にアップグレードしたが、ネットワーク上にコンピューター名が表示されなくなった。 その対処の備忘録。以下のサイトを参考。 ■１．SMB 1.0 を有効にする。 【後日記載】※ これは間違いかもしれな…</span><span class="lc-site">晴歩雨描 · <time>2023-07-24</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20230724/20230724222333.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2023/07/24/214123.html"><span class="lc-body"><span class="lc-title">Windows11）アップグレード後、共有フォルダ・ファイルにアクセスできない時の対処。《間違い情報》</span><span class="lc-desc">先日、Windows11にアップグレードしたが、別PCから共有フォルダにアクセスできなくなった。 その対処の備忘録。以下のサイトを参考。 【後日記載】 以下の情報は正しくない可能性があるので、全面的に削除。 通常、「パス…</span><span class="lc-site">晴歩雨描 · <time>2023-07-24</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20230724/20230724213500.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../11/12/155548.html"><span class="lc-body"><span class="lc-title">Windows）フォルダー内のファイル数一覧を取得するツールアプリ「TreeSize Free」。</span><span class="lc-desc">Windowsで特定のフォルダー内のファイル数やディスク容量を知りたい時には「TreeSize Free」が便利。階層構造で表示できる。 「TreeSize Free」をダウンロードする。</span><span class="lc-site">晴歩雨描 · <time>2024-11-12</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20241112/20241112154723.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2023/12/21/130821.html"><span class="lc-body"><span class="lc-title">Windows11「フォトアプリ」で、背景ぼかしや画像切り抜きができる。</span><span class="lc-desc">Windows11標準の「フォトアプリ」の最新版で、写真の背景ぼかしや画像切り抜きができる。 「フォトアプリ」で写真を開き、編集を選ぶ。 「背景ぼかし」を選択すると、画像の背景部分を自動認識する。 写真によっては、結構正…</span><span class="lc-site">晴歩雨描 · <time>2023-12-21</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20231221/20231221112058.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2023/07/23/145157.html"><span class="lc-body"><span class="lc-title">Windows11）シャットダウン／再起動ボタンをスタートメニュー／タスクバーに配置する。</span><span class="lc-desc">昨日、Windows11にアップグレードした。 Windows10に比べて、使いにくくなった点がいくつかある。多少カスタマイズして改善できたが、もう一つあった。 スタートメニュー内の電源ボタンの位置がウインドウの一番右側…</span><span class="lc-site">晴歩雨描 · <time>2023-07-23</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20230723/20230723143715.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2021/01/22/151511.html"><span class="lc-body"><span class="lc-title">Androidスマホから(PC)Windows共有フォルダにWi-Fiでアクセスする。ファイルマネージャーで。（SMB）</span><span class="lc-desc">先日、 SSD を使ってPCに保存してある写真を iPad で観る方法を試した。 今回、 Android スマホ から Windows 共有フォルダーに無線でアクセスする方法を試した。 【 Windows 側の手順】 １…</span><span class="lc-site">晴歩雨描 · <time>2021-01-22</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20210122/20210122150129.jpg" alt="" loading="lazy"></span></a></p></div></article>
+</body>
+</html>

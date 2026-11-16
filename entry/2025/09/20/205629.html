@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Claude）Python）写真のEXIF情報を表示するWindowsアプリ（ExifTool）を作成。 - 晴歩雨描</title>
+<link rel="stylesheet" href="../../../../style.css">
+</head>
+<body>
+<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>Claude）Python）写真のEXIF情報を表示するWindowsアプリ（ExifTool）を作成。</h1><p class="meta">2025-09-20 · <a href="../../../../category/c18.html">写真・カメラ</a> <a href="../../../../category/c42.html">＜AI＞</a> <a href="../../../../category/c8.html">コンピュータ</a></p><div class="entry-body"><p>Pythonで「<em>写真のEXIF情報を表示する</em>」Windowsアプリを作成。「Claude」で作成。</p>
+<h5 id="機能概略">【機能概略】</h5>
+<ul>
+<li>JPEGファイルを画面にドラッグ＆ドロップすると、その写真のEXIF情報一覧を表示する。</li>
+<li>メーカー独自のEXIF情報も表示する。</li>
+<li>[Ctrl]＋[F]キーで文字列の検索が出来る。</li>
+</ul>
+<h5 id="Pythonプログラム">【Pythonプログラム】</h5>
+<p>作成されたプログラムを、「ExifTool.pyw」（名前は任意）という名前にして、デスクトップに置いておき、ダブルクリックで実行する。</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250920/20250920205433.jpg" width="602" height="303" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>JPEGファイルを画面にドラッグ＆ドロップする。</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250920/20250920175347.jpg" width="602" height="832" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>[Ctrl]＋[F]キーで文字列の検索が出来る。</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250920/20250920175400.jpg" width="602" height="831" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<h5 id="Pythonライブラリインストール">【Pythonライブラリインストール】</h5>
+<p>次のライブラリが必要なので、インストールする。</p>
+<pre>pip install Pillow tkinterdnd2 exifread</pre>
+<h5 id="Pythonプログラムコード">【Pythonプログラムコード】</h5>
+<pre>import tkinter as tk
+from tkinter import ttk
+from PIL import Image, ImageTk, ExifTags
+import tkinterdnd2 as tkdnd
+import os
+import re
+try:
+    from exifread import process_file
+    EXIFREAD_AVAILABLE = True
+except ImportError:
+    EXIFREAD_AVAILABLE = False
+
+class ExifTool:
+    def __init__(self):
+        self.root = tkdnd.Tk()
+        self.root.title("Exif Tool")
+        self.root.geometry("600x800")
+        self.root.configure(bg='white')
+        
+        # 検索関連の変数
+        self.search_dialog = None
+        self.search_index = 0
+        self.search_results = []
+        self.current_text = ""
+        
+        self.setup_ui()
+        self.setup_bindings()
+        self.root.drop_target_register(tkdnd.DND_FILES)
+        self.root.dnd_bind('&lt;&lt;Drop&gt;&gt;', self.drop_file)
+        
+    def setup_ui(self):
+        # メインフレーム
+        main_frame = tk.Frame(self.root, bg='white')
+        main_frame.pack(fill=tk.BOTH, expand=True, padx=10, pady=10)
+        
+        # 画像表示エリア（ドラッグ＆ドロップエリア）
+        self.image_frame = tk.Frame(main_frame, width=320, height=240, 
+                                   bg='lightgray', relief=tk.SUNKEN, bd=2)
+        self.image_frame.pack(pady=(0, 10))
+        self.image_frame.pack_propagate(False)
+        
+        # ドラッグ＆ドロップのヒント
+        self.hint_label = tk.Label(self.image_frame, 
+                                  text="JPEGファイルをここにドラッグ＆ドロップ",
+                                  bg='lightgray', fg='gray')
+        self.hint_label.pack(expand=True)
+        
+        # 画像表示用ラベル
+        self.image_label = tk.Label(self.image_frame, bg='lightgray')
+        
+        # ファイル名表示
+        self.filename_label = tk.Label(main_frame, text="", 
+                                     font=("Arial", 10, "bold"), bg='white')
+        self.filename_label.pack(anchor=tk.W, pady=(0, 5))
+        
+        # EXIF情報表示エリア用のフレーム
+        text_frame = tk.Frame(main_frame, bg='white')
+        text_frame.pack(fill=tk.BOTH, expand=True)
+        
+        # EXIF情報表示エリア（スクロールバー付き）
+        self.exif_text = tk.Text(text_frame, height=30, width=70,
+                                font=("Consolas", 9), bg='white', 
+                                relief=tk.FLAT, bd=0, wrap=tk.WORD)
+        
+        # 垂直スクロールバー
+        scrollbar = tk.Scrollbar(text_frame, orient="vertical", command=self.exif_text.yview)
+        self.exif_text.configure(yscrollcommand=scrollbar.set)
+        
+        # テキストエリアとスクロールバーを配置
+        self.exif_text.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+        scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+        
+    def setup_bindings(self):
+        """キーバインドの設定"""
+        self.root.bind('&lt;Control-f&gt;', self.show_search_dialog)
+        self.root.bind('&lt;Control-F&gt;', self.show_search_dialog)
+        
+    def show_search_dialog(self, event=None):
+        """検索ダイアログを表示"""
+        if self.search_dialog is not None and self.search_dialog.winfo_exists():
+            self.search_dialog.lift()
+            self.search_dialog.focus()
+            return
+            
+        # 検索ダイアログを作成
+        self.search_dialog = tk.Toplevel(self.root)
+        self.search_dialog.title("検索")
+        self.search_dialog.geometry("350x120")
+        self.search_dialog.resizable(False, False)
+        self.search_dialog.transient(self.root)
+        
+        # ダイアログの中央配置
+        self.search_dialog.geometry("+%d+%d" % (
+            self.root.winfo_rootx() + 125,
+            self.root.winfo_rooty() + 100))
+        
+        # 検索フレーム
+        search_frame = tk.Frame(self.search_dialog)
+        search_frame.pack(fill=tk.BOTH, expand=True, padx=10, pady=10)
+        
+        # 検索入力
+        tk.Label(search_frame, text="検索文字列:").pack(anchor=tk.W)
+        self.search_entry = tk.Entry(search_frame, width=40)
+        self.search_entry.pack(fill=tk.X, pady=(2, 5))
+        self.search_entry.focus()
+        
+        # ボタンフレーム
+        button_frame = tk.Frame(search_frame)
+        button_frame.pack(fill=tk.X, pady=5)
+        
+        tk.Button(button_frame, text="検索", command=self.search_text, width=8).pack(side=tk.LEFT, padx=(0, 5))
+        tk.Button(button_frame, text="次を検索", command=self.search_next, width=10).pack(side=tk.LEFT, padx=(0, 5))
+        tk.Button(button_frame, text="前を検索", command=self.search_prev, width=10).pack(side=tk.LEFT, padx=(0, 5))
+        tk.Button(button_frame, text="閉じる", command=self.close_search_dialog, width=8).pack(side=tk.RIGHT)
+        
+        # キーバインド
+        self.search_entry.bind('&lt;Return&gt;', lambda e: self.search_text())
+        self.search_entry.bind('&lt;F3&gt;', lambda e: self.search_next())
+        self.search_entry.bind('&lt;Shift-F3&gt;', lambda e: self.search_prev())
+        self.search_dialog.bind('&lt;Escape&gt;', lambda e: self.close_search_dialog())
+        
+    def search_text(self):
+        """テキストを検索"""
+        search_term = self.search_entry.get().strip()
+        if not search_term:
+            return
+            
+        # 現在のテキストを取得
+        self.current_text = self.exif_text.get(1.0, tk.END)
+        if not self.current_text.strip():
+            return
+        
+        # 既存のハイライトをクリア
+        self.exif_text.tag_remove("search_highlight", 1.0, tk.END)
+        
+        # 検索結果を取得（大文字小文字を区別しない）
+        self.search_results = []
+        pattern = re.compile(re.escape(search_term), re.IGNORECASE)
+        
+        for match in pattern.finditer(self.current_text):
+            start_pos = f"1.0+{match.start()}c"
+            end_pos = f"1.0+{match.end()}c"
+            self.search_results.append((start_pos, end_pos))
+        
+        if self.search_results:
+            # 検索結果をハイライト
+            for start_pos, end_pos in self.search_results:
+                self.exif_text.tag_add("search_highlight", start_pos, end_pos)
+            
+            # ハイライトの色設定
+            self.exif_text.tag_configure("search_highlight", background="yellow", foreground="black")
+            
+            # 最初の結果にジャンプ
+            self.search_index = 0
+            self.highlight_current_result()
+            
+            # 検索結果の数を表示
+            self.search_dialog.title(f"検索 - {len(self.search_results)}件見つかりました")
+        else:
+            self.search_dialog.title("検索 - 見つかりませんでした")
+            
+    def search_next(self):
+        """次の検索結果に移動"""
+        if not self.search_results:
+            return
+            
+        self.search_index = (self.search_index + 1) % len(self.search_results)
+        self.highlight_current_result()
+        
+    def search_prev(self):
+        """前の検索結果に移動"""
+        if not self.search_results:
+            return
+            
+        self.search_index = (self.search_index - 1) % len(self.search_results)
+        self.highlight_current_result()
+        
+    def highlight_current_result(self):
+        """現在の検索結果をハイライト"""
+        if not self.search_results:
+            return
+            
+        # 既存の現在位置ハイライトをクリア
+        self.exif_text.tag_remove("current_search", 1.0, tk.END)
+        
+        # 現在の結果をハイライト
+        start_pos, end_pos = self.search_results[self.search_index]
+        self.exif_text.tag_add("current_search", start_pos, end_pos)
+        self.exif_text.tag_configure("current_search", background="orange", foreground="black")
+        
+        # 該当箇所にスクロール
+        self.exif_text.see(start_pos)
+        
+        # ダイアログタイトルを更新
+        self.search_dialog.title(f"検索 - {self.search_index + 1}/{len(self.search_results)}")
+        
+    def close_search_dialog(self):
+        """検索ダイアログを閉じる"""
+        if self.search_dialog and self.search_dialog.winfo_exists():
+            # ハイライトをクリア
+            self.exif_text.tag_remove("search_highlight", 1.0, tk.END)
+            self.exif_text.tag_remove("current_search", 1.0, tk.END)
+            
+            self.search_dialog.destroy()
+            self.search_dialog = None
+            self.search_results = []
+            self.search_index = 0
+            
+    def drop_file(self, event):
+        files = self.root.tk.splitlist(event.data)
+        if files:
+            file_path = files[0]
+            if file_path.lower().endswith(('.jpg', '.jpeg')):
+                self.load_image(file_path)
+                
+    def load_image(self, file_path):
+        try:
+            # 画像を開く
+            image = Image.open(file_path)
+            
+            # 画像を300px幅にリサイズ
+            original_width, original_height = image.size
+            new_width = 300
+            new_height = int((original_height * new_width) / original_width)
+            resized_image = image.resize((new_width, new_height), Image.Resampling.LANCZOS)
+            
+            # tkinter用に変換
+            photo = ImageTk.PhotoImage(resized_image)
+            
+            # ヒントラベルを隠して画像を表示
+            self.hint_label.pack_forget()
+            self.image_label.configure(image=photo)
+            self.image_label.image = photo  # 参照を保持
+            self.image_label.pack(expand=True)
+            
+            # フレームサイズを画像に合わせて調整
+            self.image_frame.configure(width=new_width + 20, height=new_height + 20)
+            
+            # ファイル名を表示
+            filename = os.path.basename(file_path)
+            self.filename_label.configure(text=f"ファイル名: {filename}")
+            
+            # EXIF情報を表示
+            self.display_exif_info(image, file_path)
+            
+        except Exception as e:
+            self.exif_text.delete(1.0, tk.END)
+            self.exif_text.insert(tk.END, f"エラー: {str(e)}")
+            
+    def display_exif_info(self, image, file_path):
+        self.exif_text.delete(1.0, tk.END)
+        
+        try:
+            # ファイル情報
+            file_stat = os.stat(file_path)
+            file_size = file_stat.st_size
+            
+            info_text = f"=== ファイル情報 ===\n"
+            info_text += f"ファイルパス: {file_path}\n"
+            info_text += f"ファイルサイズ: {file_size:,} bytes\n"
+            info_text += f"画像サイズ: {image.size[0]} x {image.size[1]} pixels\n"
+            info_text += f"画像モード: {image.mode}\n"
+            info_text += f"画像フォーマット: {image.format}\n\n"
+            
+            # ExifReadを使用してより詳細な情報を取得
+            if EXIFREAD_AVAILABLE:
+                info_text += self.get_detailed_exif_with_exifread(file_path)
+            else:
+                info_text += "より詳細なExif情報を表示するには 'pip install exifread' を実行してください。\n\n"
+                info_text += self.get_basic_exif_info(image)
+                
+        except Exception as e:
+            info_text = f"EXIF情報の読み取り中にエラーが発生しました: {str(e)}"
+            
+        self.exif_text.insert(tk.END, info_text)
+        
+    def get_detailed_exif_with_exifread(self, file_path):
+        """ExifReadを使用してメーカー独自情報を含む詳細なExif情報を取得"""
+        info_text = ""
+        
+        try:
+            with open(file_path, 'rb') as f:
+                tags = process_file(f, details=True, debug=False)
+                
+            if tags:
+                info_text += "=== 詳細EXIF情報（メーカー独自情報含む） ===\n"
+                
+                # カテゴリ別に分類
+                categories = {
+                    'Image': [],
+                    'EXIF': [],
+                    'GPS': [],
+                    'Interoperability': [],
+                    'Thumbnail': [],
+                    'Canon': [],
+                    'Nikon': [],
+                    'Sony': [],
+                    'Panasonic': [],
+                    'Olympus': [],
+                    'Fujifilm': [],
+                    'Others': []
+                }
+                
+                # タグを分類
+                for tag, value in tags.items():
+                    tag_str = str(tag)
+                    if tag_str.startswith('Image '):
+                        categories['Image'].append((tag, value))
+                    elif tag_str.startswith('EXIF '):
+                        categories['EXIF'].append((tag, value))
+                    elif tag_str.startswith('GPS '):
+                        categories['GPS'].append((tag, value))
+                    elif tag_str.startswith('Interoperability '):
+                        categories['Interoperability'].append((tag, value))
+                    elif tag_str.startswith('Thumbnail '):
+                        categories['Thumbnail'].append((tag, value))
+                    elif 'Canon' in tag_str or 'MakerNote Canon' in tag_str:
+                        categories['Canon'].append((tag, value))
+                    elif 'Nikon' in tag_str or 'MakerNote Nikon' in tag_str:
+                        categories['Nikon'].append((tag, value))
+                    elif 'Sony' in tag_str or 'MakerNote Sony' in tag_str:
+                        categories['Sony'].append((tag, value))
+                    elif 'Panasonic' in tag_str or 'MakerNote Panasonic' in tag_str:
+                        categories['Panasonic'].append((tag, value))
+                    elif 'Olympus' in tag_str or 'MakerNote Olympus' in tag_str:
+                        categories['Olympus'].append((tag, value))
+                    elif 'Fujifilm' in tag_str or 'MakerNote Fujifilm' in tag_str:
+                        categories['Fujifilm'].append((tag, value))
+                    else:
+                        categories['Others'].append((tag, value))
+                
+                # カテゴリ別に表示
+                for category, items in categories.items():
+                    if items:
+                        info_text += f"\n--- {category} ---\n"
+                        items.sort(key=lambda x: str(x[0]))
+                        
+                        for tag, value in items:
+                            value_str = str(value)
+                            # 長すぎる値は切り詰め
+                            if len(value_str) &gt; 200:
+                                value_str = value_str[:197] + "..."
+                            # バイナリデータの場合
+                            if hasattr(value, 'values') and len(str(value.values)) &gt; 50:
+                                value_str = f"&lt;binary data: {len(str(value.values))} chars&gt;"
+                            
+                            info_text += f"{str(tag).ljust(35)}: {value_str}\n"
+                            
+            else:
+                info_text += "詳細EXIF情報が見つかりません。\n"
+                
+        except Exception as e:
+            info_text += f"詳細EXIF情報の読み取りエラー: {str(e)}\n"
+            
+        return info_text
+        
+    def get_basic_exif_info(self, image):
+        """Pillowを使用した基本的なExif情報取得（フォールバック）"""
+        info_text = ""
+        
+        try:
+            # EXIF情報を取得
+            exifdata = image.getexif()
+            
+            if exifdata:
+                info_text += "=== 基本EXIF情報 ===\n"
+                
+                # 全てのEXIFタグを表示（未知のタグも含む）
+                all_tags = {}
+                
+                # 標準的なEXIFタグ
+                for tag_id, value in exifdata.items():
+                    tag_name = ExifTags.TAGS.get(tag_id, f"Unknown_{tag_id:04X}")
+                    all_tags[tag_name] = value
+                
+                # IFDデータも取得
+                try:
+                    # Exif IFD
+                    exif_ifd = exifdata.get_ifd(0x8769)
+                    if exif_ifd:
+                        for tag_id, value in exif_ifd.items():
+                            tag_name = ExifTags.TAGS.get(tag_id, f"Exif_Unknown_{tag_id:04X}")
+                            all_tags[f"Exif {tag_name}"] = value
+                    
+                    # GPS IFD
+                    gps_ifd = exifdata.get_ifd(0x8825)
+                    if gps_ifd:
+                        for tag_id, value in gps_ifd.items():
+                            tag_name = ExifTags.GPSTAGS.get(tag_id, f"GPS_Unknown_{tag_id:04X}")
+                            all_tags[f"GPS {tag_name}"] = value
+                            
+                    # Interoperability IFD
+                    try:
+                        interop_ifd = exif_ifd.get_ifd(0xA005) if exif_ifd else None
+                        if interop_ifd:
+                            for tag_id, value in interop_ifd.items():
+                                tag_name = ExifTags.TAGS.get(tag_id, f"Interop_Unknown_{tag_id:04X}")
+                                all_tags[f"Interop {tag_name}"] = value
+                    except:
+                        pass
+                        
+                except AttributeError:
+                    # get_ifdメソッドが利用できない場合
+                    pass
+                
+                # ソートして表示
+                sorted_tags = sorted(all_tags.items(), key=lambda x: x[0])
+                
+                for tag_name, value in sorted_tags:
+                    # 値の型によって表示方法を調整
+                    if isinstance(value, bytes):
+                        try:
+                            value_str = value.decode('utf-8', errors='ignore')
+                            if len(value_str) &gt; 100:
+                                value_str = value_str[:97] + "..."
+                        except:
+                            value_str = f"&lt;bytes: {len(value)} bytes&gt;"
+                    elif isinstance(value, (tuple, list)):
+                        if len(value) &gt; 10:
+                            value_str = f"&lt;{type(value).__name__}: {len(value)} items&gt;"
+                        else:
+                            value_str = str(value)
+                    else:
+                        value_str = str(value)
+                    
+                    # 長すぎる値は切り詰める
+                    if len(value_str) &gt; 150:
+                        value_str = value_str[:147] + "..."
+                    
+                    info_text += f"{tag_name.ljust(35)}: {value_str}\n"
+                        
+            else:
+                info_text += "EXIF情報が見つかりません。\n"
+                
+        except Exception as e:
+            info_text += f"基本EXIF情報の読み取りエラー: {str(e)}\n"
+            
+        return info_text
+        
+    def run(self):
+        self.root.mainloop()
+
+if __name__ == "__main__":
+    app = ExifTool()
+    app.run()</pre>
+<p><a class="link-card" href="../../08/12/130210.html"><span class="lc-body"><span class="lc-title">Claude）Python）「写真をEXIF機種毎のフォルダーに分類」Windowsアプリ作成。</span><span class="lc-desc">Pythonで「写真をEXIF機種毎のフォルダーに分類」Windowsアプリを作成。 生成AI「 Claude 」「 Gemini 」「 Copilot 」で、以下のプロンプトで作成した。 【生成AI プロンプト】 Wi…</span><span class="lc-site">晴歩雨描 · <time>2025-08-12</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250812/20250812125530.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2023/07/01/130254.html"><span class="lc-body"><span class="lc-title">ソニーデジカメ）コントラストやシャープネスなどの設定値は、EXIFの標準項目には書かれず、メーカー独自の項目に書かれる。</span><span class="lc-desc">「SONY VLOGCAM ZV-1 II」では、「クリエイティブルック」で、コントラストやシャープネスなどを微調整できることになっているが、EXIFの標準項目には書かれず、メーカー独自の項目に設定値が書かれる。 【クリ…</span><span class="lc-site">晴歩雨描 · <time>2023-07-01</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20230701/20230701131719.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2023/06/30/121450.html"><span class="lc-body"><span class="lc-title">ソニーのデジカメ写真のEXIFから、「クリエイティブルック」情報を抜き出して、画像ファイル名に「クリエイティブルック名」を付け足す。（ExifTool/JScript）</span><span class="lc-desc">以前、「 ソニー のデジカメ写真の EXIF から、クリエイティブスタイル、ピクチャーエフェクト情報を抜き出して、画像ファイル名に EXIF 情報を付け足す。」という記事を書いた。 これは、「 DSC-RX100M6 」…</span><span class="lc-site">晴歩雨描 · <time>2023-06-30</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20230630/20230630120338.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2020/01/17/145532.html"><span class="lc-body"><span class="lc-title">PowerShot SX70 HSの35mm判換算焦点距離をExifToolで調べる。</span><span class="lc-desc">先日、キヤノン PowerShot SX70 HS を購入した。 SX70 HS では、撮影した写真の35mm判換算焦点距離が知りたくても、Windowsフォルダの詳細ウインドウや一般的な画像ビューアソフトでは表示されな…</span><span class="lc-site">晴歩雨描 · <time>2020-01-17</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20200117/20200117141013.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2018/12/21/143023.html"><span class="lc-body"><span class="lc-title">パナソニックのデジカメ写真のEXIFから、フォトスタイル、クリエイティブコントロール情報を抜き出して、画像ファイル名にEXIF情報を付け足す。（ExifTool/JScript）</span><span class="lc-desc">先日、 ソニー のデジカメ写真の EXIF から、クリエイティブスタイル、ピクチャーエフェクト情報を抜き出して、画像ファイル名に EXIF 情報を付け足す JScript を作成した。 今回、 パナソニック のデジカメ写…</span><span class="lc-site">晴歩雨描 · <time>2018-12-21</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20181221/20181221142044.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2018/11/29/093518.html"><span class="lc-body"><span class="lc-title">ソニーのデジカメ写真のEXIFから、クリエイティブスタイル、ピクチャーエフェクト情報を抜き出して、画像ファイル名にEXIF情報を付け足す。（ExifTool/JScript）</span><span class="lc-desc">先日、 価格.com 掲示 板で、DSC-RX100M6でクリエイティブスタイルやピクチャーエフェクトを設定して撮影した写真の EXIF 情報を確認する方法を質問して、ExifToolというのを教えてもらった。 Wind…</span><span class="lc-site">晴歩雨描 · <time>2018-11-29</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20181129/20181129091633.jpg" alt="" loading="lazy"></span></a></p></div></article>
+</body>
+</html>

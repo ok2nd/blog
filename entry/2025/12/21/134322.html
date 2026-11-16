@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ローカル画像生成AI：RTX3050）Fooocus（Stable Diffusion）の設定を見直してみた。効果なし。プロンプトを英語にしても成果なし。モデルを変えたら少し効果あり。 - 晴歩雨描</title>
+<link rel="stylesheet" href="../../../../style.css">
+</head>
+<body>
+<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>ローカル画像生成AI：RTX3050）Fooocus（Stable Diffusion）の設定を見直してみた。効果なし。プロンプトを英語にしても成果なし。モデルを変えたら少し効果あり。</h1><p class="meta">2025-12-21 · <a href="../../../../category/c18.html">写真・カメラ</a> <a href="../../../../category/c5.html">アート・美術</a> <a href="../../../../category/c42.html">＜AI＞</a></p><div class="entry-body"><p>先日、WindowsPCローカルで画像生成AIができるFooocus（画像生成エンジンはStable Diffusion）を試してみたが、結果は大きく期待外れだった。</p>
+<p><a class="link-card" href="../20/131254.html"><span class="lc-body"><span class="lc-title">ローカル画像生成AI：RTX3050）Fooocusで、Stable Diffusionを使う。Fooocus、ComfyUI、AUTOMATIC1111、Forge、Stability Matrix比較表。</span><span class="lc-desc">（※ 結果的には、Fooocusは画質的に期待外れ。） WindowsPCローカル環境で、画像生成AIを使う。 使うPCのスペックは以下。画像生成AIをローカルで行うPCとしては最低限レベル（？）。 CPU インテル C…</span><span class="lc-site">晴歩雨描 · <time>2025-12-20</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20251215/20251215172107.jpg" alt="" loading="lazy"></span></a></p>
+<h4 id="-オンラインAIとFooocusStable-Diffusionの比較">■ オンラインAIとFooocus（Stable Diffusion）の比較</h4>
+<p>✅ オンラインAI（例：Midjourney、Leonardo、Bing Image Creatorなど）</p>
+<ul>
+<li>大規模モデル＋独自訓練済みプロンプト理解</li>
+<ul>
+<li>プロンプトをかなり理解・補完してくれる</li>
+<li>“推測”や“スタイル強化”が入る</li>
+</ul>
+<li>組み込みのネガティブプロンプト/強力な後処理</li>
+<ul>
+<li>不要要素除去が自動的に効く</li>
+</ul>
+<li>大規模チューニング済み</li>
+<ul>
+<li>画像内容の整合性や構図に強い</li>
+</ul>
+</ul>
+<p>✅ Fooocus（＝Stable Diffusionローカル）</p>
+<ul>
+<li>基本はStable Diffusionモデルの実行環境</li>
+<ul>
+<li>画像生成の核はStable Diffusion（v1.x / v2.xなど）</li>
+<li>モデル自体はオンラインAIより一般向けで汎用</li>
+</ul>
+<li>プロンプト理解はシンプル</li>
+<ul>
+<li>人間的な解釈や文脈補完は弱め</li>
+</ul>
+<li>生成設定が結果に強く影響</li>
+<ul>
+<li>シード、ステップ数、CFG（プロンプト重視度）、サンプラー、モデル種類…全部効く</li>
+</ul>
+<li>学習済みモデルやLoRAで能力が変わる</li>
+<ul>
+<li>オンラインAIほど大規模にデータでチューニングされていない場合が多い</li>
+</ul>
+</ul>
+<h4 id="-Fooocusの設定変更">■ Fooocusの設定変更</h4>
+<p>まずは、Fooocusの設定を変更してみた。</p>
+<p>【Settings】</p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20251221/20251221085727.jpg" width="515" height="686" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>↓↓↓</p>
+<ul>
+<li>「Performance」を「Speed」から「Quality」に変更。</li>
+<li>「Random」を「OFF」に変更。</li>
+<li>「Aspect Ratios」を「1280x768」に設定。</li>
+</ul>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20251221/20251221124242.jpg" width="510" height="768" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>【Styles】</p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20251221/20251221085732.jpg" width="515" height="229" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>↓↓↓</p>
+<ul>
+<li>「Fooocus V2」のみ「ON」</li>
+</ul>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20251221/20251221085735.jpg" width="509" height="229" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>【Models】</p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20251221/20251221085738.jpg" width="501" height="622" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>↓↓↓</p>
+<ul>
+<li>「LoRA sd_xl_offset」の「Weight」を「0.4」に。</li>
+<li>「LoRA 2」以降をオフに。（元々Noneになっているので影響はない）</li>
+</ul>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20251221/20251221085741.jpg" width="501" height="623" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>【Advanced】</p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20251221/20251221085743.jpg" width="503" height="240" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>↓↓↓</p>
+<p>Guidance Scale（CFG:Classifier-Free Guidance）を「8」に。</p>
+<table>
+<thead>
+<tr>
+<th>Guidance Scale</th>
+<th>挙動</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>1～3</th>
+<td>ほぼ無視・ランダム</td>
+</tr>
+<tr>
+<th>4～5</th>
+<td>雰囲気は出るが指示は弱い</td>
+</tr>
+<tr>
+<th>7～9</th>
+<td>最も安定・実用域</td>
+</tr>
+<tr>
+<th>10～12</th>
+<td>指示強め・硬くなる</td>
+</tr>
+<tr>
+<th>13以上</th>
+<td>破綻・ノイズ・変な顔</td>
+</tr>
+</tbody>
+</table>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20251221/20251221085746.jpg" width="503" height="240" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>これらを設定しても、Fooocusを一旦終了して、再立ち上げすると元に戻ってしまう。</p>
+<p>それを防ぐために、Presetのファイルを編集。</p>
+<ul>
+<li>\Fooocus\presets</li>
+</ul>
+<p>の下の「<em>default.json</em>」を編集した。</p>
+<pre>{
+    "default_model": "juggernautXL_v8Rundiffusion.safetensors",
+    "default_refiner": "None",
+    "default_refiner_switch": 0.5,
+    "default_loras": [
+        [
+            true,
+            "sd_xl_offset_example-lora_1.0.safetensors",
+            <span style="color: #ff0000;">0.4</span>
+        ],
+        [
+            <span style="color: #ff0000;">false</span>,
+            "None",
+            1.0
+        ],
+        [
+            <span style="color: #ff0000;">false</span>,
+            "None",
+            1.0
+        ],
+        [
+            <span style="color: #ff0000;">false</span>,
+            "None",
+            1.0
+        ],
+        [
+            <span style="color: #ff0000;">false</span>,
+            "None",
+            1.0
+        ]
+    ],
+    <span style="color: #ff0000;">"default_cfg_scale": 8.0</span>,
+    "default_sample_sharpness": 2.0,
+    "default_sampler": "dpmpp_2m_sde_gpu",
+    "default_scheduler": "karras",
+    <span style="color: #ff0000;">"default_performance": "Quality"</span>,
+    "default_prompt": "",
+    "default_prompt_negative": "",
+    "default_styles": [
+        <span style="color: #ff0000;">"Fooocus V2"</span>
+    ],
+    <span style="color: #ff0000;">"default_aspect_ratio": "1280*768"</span>,
+    "default_overwrite_step": -1,
+    "checkpoint_downloads": {
+        "juggernautXL_v8Rundiffusion.safetensors": "<a href="https://huggingface.co/lllyasviel/fav_models/resolve/main/fav/juggernautXL_v8Rundiffusion.safetensors">https://huggingface.co/lllyasviel/fav_models/resolve/main/fav/juggernautXL_v8Rundiffusion.safetensors</a>"
+    },
+    "embeddings_downloads": {},
+    "lora_downloads": {
+        "sd_xl_offset_example-lora_1.0.safetensors": "<a href="https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0/resolve/main/sd_xl_offset_example-lora_1.0.safetensors">https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0/resolve/main/sd_xl_offset_example-lora_1.0.safetensors</a>"
+    },
+    "previous_default_models": [
+        "juggernautXL_version8Rundiffusion.safetensors",
+        "juggernautXL_version7Rundiffusion.safetensors",
+        "juggernautXL_v7Rundiffusion.safetensors",
+        "juggernautXL_version6Rundiffusion.safetensors",
+        "juggernautXL_v6Rundiffusion.safetensors"
+    ]
+}
+</pre>
+<p>しかし、結果的には、設定を変えても効果はあまりなかった。</p>
+<p>Fooocusは、以下のようなものは苦手らしい。</p>
+<ul>
+<li><span style="white-space: normal;"><span style="white-space: pre;"> </span>日本の風景・街・日常</span></li>
+<li><span style="white-space: normal;"><span style="white-space: pre;"> </span>3人以上の人物</span></li>
+<li><span style="white-space: normal;"><span style="white-space: pre;"> </span>正確な人数指定</span></li>
+<li><span style="white-space: normal;"><span style="white-space: pre;"> </span>特定の日本人らしさ</span></li>
+<li><span style="white-space: normal;"><span style="white-space: pre;"> </span>場所・時代・文化指定</span></li>
+</ul>
+<div>Fooocusが得意なのは以下らしい。</div>
+<ul>
+<li><span style="white-space: normal;"><span style="white-space: pre;"> </span>1人～2人の人物</span></li>
+<li><span style="white-space: normal;"><span style="white-space: pre;"> </span>バストアップ～全身</span></li>
+<li><span style="white-space: normal;"><span style="white-space: pre;"> </span>雰囲気重視・写真風</span></li>
+<li><span style="white-space: normal;"><span style="white-space: pre;"> </span>表情・肌・髪の自然さ</span></li>
+</ul>
+<p>日本語のプロンプトも苦手らしい。</p>
+<p>先日試したような風景や3人の人物は諦めて、女性1人の画像生成を英語のプロンプトで試した。これでもあまり期待した画像は得られなかった。</p>
+<h4 id="-検証">■ 検証</h4>
+<p>《プロンプト》</p>
+<pre>realistic photo,<br />a cute Japanese girl in her 30 s,<br />fashionable clothes,<br />full body,<br />smiling,<br />walking on a old city street,<br />bright daytime</pre>
+<p>《結果》</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20251221/20251221133433.png" width="1200" height="720" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>色々試したが、この程度が精いっぱい。おしゃれな街の雰囲気も出せないし、全身画像を作るのも難しい。これ以上、プロンプトを入れると、さらに酷くなるケースもある。</p>
+<p>Fooocusは「顔アップ最適化UI」らしい。</p>
+<p>Fooocusは内部的に：</p>
+<ul>
+<li>顔検出 → 顔を最優先で最適化</li>
+<li>画面中央・上半身寄りに寄せる</li>
+<li>背景は「雰囲気」扱い</li>
+</ul>
+<p> 日本人・街・全身を同時に満たす学習が弱いらしい。</p>
+<ul>
+<li>日本人らしさ → 弱い</li>
+<li>日本の街 → 弱い</li>
+<li>全身スナップ → 弱い</li>
+</ul>
+<h4 id="-run_realisticbatを使う">■ 「run_realistic.bat」を使う。</h4>
+<p>Fooocus起動用の「run.bat」の他に「run_realistic.bat」があったので、そちらを使ってみた。</p>
+<p>モデルが、</p>
+<ul>
+<li>"juggernautXL_v8Rundiffusion.safetensors"</li>
+</ul>
+<p>ではなく、</p>
+<ul>
+<li>"realisticStockPhoto_v20.safetensors"</li>
+</ul>
+<p>が使われる。</p>
+<p>これにすると、同じプロンプトでも、全身の女性の画像が得られた。しかし、何度か試すと、顔が崩れたりすることもあるし、画像の品質はオンライン画像生成AIには敵わない。</p>
+<p>《プロンプト》</p>
+<pre>realistic photo,<br />a cute Japanese girl in her 30 s,<br />fashionable clothes,<br />full body,<br />smiling,<br />walking on a old city street,<br />bright daytime</pre>
+<p>《結果》</p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20251221/20251221144014.png" width="896" height="1152" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20251221/20251221145615.png" width="720" height="1200" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p><a class="link-card" href="../20/153429.html"><span class="lc-body"><span class="lc-title">無料で使える画像生成AIサイト(ChatGPT)Photoshop、Adobe Firefly、Dreamina(Seedream 4)、Grok Imagine、Canva AI、ImageFX(Imagen3)、Ideogram、Gemini(Nano Banana Pro)、ChatGPT(GPT-Image-1.5)、Qwen3-Max、Bing Image Creator、Microsoft Designer、ChatGPT(Glibatree Art Designer)を比較してみた。</span><span class="lc-desc">先ほど、WindowsPCローカルで画像生成AIができるFooocus（画像生成エンジンはStable Diffusion）を試してみたが、結果は大きく期待外れだった。 WindowsPCローカルではなく、ブラウザ上で無…</span><span class="lc-site">晴歩雨描 · <time>2025-12-20</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20251220/20251220150807.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../23/164434.html"><span class="lc-body"><span class="lc-title">ローカル画像生成AI：RTX3050）Stability Matrix＋Stable Diffusion WebUI Forgeで「FLUX.1 [schnell] GGUF版」を使う。</span><span class="lc-desc">WindowsPCローカルで、画像生成AIのモデル「 FLUX.1 [dev] の GGUF版 」を使ったが、800x600ピクセルの画像生成に10分ほどかかった。 ※【後日追加】その後試したら、「FLUX.1 [dev…</span><span class="lc-site">晴歩雨描 · <time>2025-12-23</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20251223/20251223161527.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="https://ok2nd.github.io/sitemap/hatena-sitemap-table.html?search=%E7%94%BB%E5%83%8F%E7%94%9F%E6%88%90" target="_blank" rel="noopener noreferrer"><span class="lc-body"><span class="lc-title">晴歩雨描：記事一覧</span><span class="lc-desc"></span><span class="lc-site">ok2nd.github.io</span></span></a></p>
+<p><a class="link-card" href="../../03/16/113054.html"><span class="lc-body"><span class="lc-title">画像生成AIで、「ホワイトデー」のカード生成。Bing Image Creator、Gemini（Imagen 3）、Ideogram、ChatGPT（DALL-E3）で。</span><span class="lc-desc">現時点で気軽に無料で使える画像生成AIで、「Happy White Day」のカード生成をしてもらった。（ホワイトデーは過ぎてしまったが。） Microsoft Bing Image Creator https://ww…</span><span class="lc-site">晴歩雨描 · <time>2025-03-16</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250316/20250316111149.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2024/10/07/102500.html"><span class="lc-body"><span class="lc-title">画像生成AI）無料画像編集Webツールアプリ「AI Ease」の「AI顔入れ替え（合成）」を試してみた。オードリーヘプバーン、夏目漱石で。</span><span class="lc-desc">無料画像編集Webツールアプリ「 AI Ease 」を色々試している。 今回、「 AI Ease 」の「 AI顔入れ替え 」を試してみた。 オードリーヘップバーンと夏目漱石の写真で試してみた。オードリーヘップバーンの写真…</span><span class="lc-site">晴歩雨描 · <time>2024-10-07</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20241007/20241007101824.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2024/09/04/170833.html"><span class="lc-body"><span class="lc-title">画像生成AI）「ImageFX（Imagen3）」で、色々と遊んでみた。一部は「Ideogram 2.0」で。</span><span class="lc-desc">画像生成AI「ImageFX（Imagen3）」で、色々と遊んでみた。一部は、画像生成AI「Ideogram 2.0」で。 ■ 浮世絵風のキクイタダキ：ukiyo-e style Goldcrest ■ カワセミと野鳥キ…</span><span class="lc-site">晴歩雨描 · <time>2024-09-04</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20240831/20240831172653.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2024/08/31/141902.html"><span class="lc-body"><span class="lc-title">画像生成AI）「Ideogram 2.0」「ImageFX（Imagen3）」で、日本、韓国、中国、イギリス、ウクライナの女性（女優）のイメージ画像を生成。結構リアル。</span><span class="lc-desc">最近、画像生成AI「Ideogram 2.0」「ImageFX（Imagen3）」を試してみた。 今回、「 Ideogram 2.0 」「 ImageFX（Imagen3） 」で、各国の女優のイメージ画像を生成。 「Im…</span><span class="lc-site">晴歩雨描 · <time>2024-08-31</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20240831/20240831140854.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2024/08/29/105403.html"><span class="lc-body"><span class="lc-title">画像生成AI）「Ideogram 2.0」を試したみた。</span><span class="lc-desc">評価が高そうな画像生成AI「 Ideogram 2.0 」を試したみた。 無料プランでも1日あたり10クレジット（1回の画像作成に2クレジット消費。1回で4枚の画像生成。1日最大20枚の画像生成。）が提供される。 操作は…</span><span class="lc-site">晴歩雨描 · <time>2024-08-29</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20240829/20240829104842.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2024/02/06/220950.html"><span class="lc-body"><span class="lc-title">画像生成AI）Google「Bard（Gemini）」にキクイタダキの画像を生成させてみた。</span><span class="lc-desc">先程、Google「Bard」に画像生成AIを試した。 今回、先日撮影した「キクイタダキ」をGoogle「Bard」に描かせてみた。「キクイタダキ」は英語で「Goldcrest」という。 ■ create an imag…</span><span class="lc-site">晴歩雨描 · <time>2024-02-06</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20240206/20240206215558.jpg" alt="" loading="lazy"></span></a></p></div></article>
+</body>
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>JavaScript）GPT-5→Gemini）カメラのボケ効果をシミュレーションできるWebツールを作ってみた。実用性は低いが。 - 晴歩雨描</title>
+<link rel="stylesheet" href="../../../../style.css">
+</head>
+<body>
+<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>JavaScript）GPT-5→Gemini）カメラのボケ効果をシミュレーションできるWebツールを作ってみた。実用性は低いが。</h1><p class="meta">2025-08-09 · <a href="../../../../category/c42.html">＜AI＞</a> <a href="../../../../category/c18.html">写真・カメラ</a> <a href="../../../../category/c13.html">ホームページ、Web作成</a></p><div class="entry-body"><p>生成AIのChatGPT「<em>GPT-5</em>」がリリースされ、プログラムコード生成能力が評価されているようなので、カメラのボケ効果をシミュレーションできるWebツールを作ってみた。</p>
+<p>カメラのボケ・シミュレーターとしては、「<em>DOF simulator</em>」が良く出来ている。</p>
+<p><a class="link-card" href="../../../2018/05/17/150805.html"><span class="lc-body"><span class="lc-title">デジカメのセンサーサイズとボケの関係が画像で確認できるシミュレーターツール「DOF simulator」</span><span class="lc-desc">デジカメのセンサーサイズとボケ度合いや被写界深度の関係を計算式や図表・グラフなどで示してくれるWebサイトはたくさんあるが、一般アマチュアカメラマンには難しくてわかりづらい。 画像を使ってシミュレーションしてくれるサイト…</span><span class="lc-site">晴歩雨描 · <time>2018-05-17</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20180517/20180517163843.jpg" alt="" loading="lazy"></span></a></p>
+<p>ここまでのものは無理として、どの程度のものが出来るか試してみた。</p>
+<p>プロンプトは、以下のようにしてみた。</p>
+<pre>HTML,CSS,JavaScritでWebアプリを作成して。
+コードはHTMLファイル1本にまとめて。
+機能：カメラの背景ボケの大きさをシミュレーションできるアプリ。
+被写体は女性の人物。背景は任意の風景。それぞれ選択可能ならベスト。
+オプションとして指定できるものは以下。スライダーなどでも指定できるようにして。
++センサーサイズ（フル、APS-C、フォーサーズ）
++焦点距離
++F値
++被写体までの距離
+他に必要な機能があれば追加して。
+</pre>
+<p>上記プロンプトだけで、以下のようなWebページが出来た。ここまでのものが一発で出来るとは思っていなかったので、驚きだ。</p>
+<p>被写体や背景の画像をローカルのもので置き換えできるのも便利。<span style="color: #dd830c;">（Ver.1では、背景画像置き換え機能が使えない不具合あり）</span></p>
+<p><span style="color: #dd830c;">以下、Ver.1、Ver.2とも、PC画面用で、スマホ画面には対応していない。</span></p>
+<p>≪ ボケ効果シミュレーター Ver.1 ≫</p>
+<p><a href="https://ok2nd.github.io/tool/bokeh/gpt5-01.html" target="_blank">https://ok2nd.github.io/tool/bokeh/gpt5-01.html</a></p>
+<p>「<em>Claude</em>」「<em>Google Gemini</em>」「<em>Microsoft Copilot</em>」でも、同じプロンプトで試したが、これに比べると、出来栄えはあまり良くなかった。</p>
+<p>「<em>GPT-5</em>」版も、細かい不具合がいくつかあったので、修正しようとしたが、</p>
+<ul>
+<li>GPT-5. の Free プランの制限に達しました。</li>
+</ul>
+<p>というメッセージが出て修正できなかった。ChatGPTの無料プランは以前から、1日に使える量に制限がある。以下のページに、使用制限などが書かれている。</p>
+<p><a class="link-card" href="https://chatgpt-lab.com/n/n567a7ccabab0" target="_blank" rel="noopener noreferrer"><span class="lc-body"><span class="lc-title">【無料公開】GPT‑5アップデート総まとめ—Thinking自動切替、API強化、Codex CLI対応まで｜AGIラボ</span><span class="lc-desc">日本時間2025年8月8日、OpenAIは遂に多くの人が待ち望んだ「GPT‑5」を発表しました。 ChatGPTの既定モデルはGPT‑5に統一され、すでにAPIでも提供が始まっています。 以前までのモデルとの最大の違いは…</span><span class="lc-site">AGIラボ</span></span><span class="lc-thumb"><img src="https://assets.st-note.com/production/uploads/images/207152075/rectangle_large_type_2_71e992886bbc37b1bb3a39b3c8c8624b.png?fit=bounds&amp;quality=85&amp;width=1280" alt="" loading="lazy"></span></a></p>
+<p>「<em>Claude</em>」も、プログラム生成能力は高いが、1日あたりのメッセージ量や、1アクセスの最大文字数などの制限があるようで、途中から使えなくなる。</p>
+<p>プログラムコードの生成や修正という面では、「<em>Google Gemini</em>」は無料枠内でも制限がない。</p>
+<p>実際のアプリケーションでは、細かい点も含めて何回も修正が必要な場合があるので、無料枠内でアプリケーションを作成しようと思えば、「<em>Google Gemini</em>」が最適かも。</p>
+<p>アプリケーション作成では、最初のバージョンは「<em>GPT-5</em>」や「<em>Claude</em>」に作成させて、改修を「<em>Google Gemini</em>」にさせるのが現状ではお勧めか？。</p>
+<p>今回の「ボケ効果シミュレーター」も、「<em>GPT-5</em>」で生成したものを「<em>Google Gemini</em>」にコードを渡して、修正を加えてもらった。</p>
+<p>≪ ボケ効果シミュレーター Ver.2：Gemini改善版 ≫</p>
+<p><a href="https://ok2nd.github.io/tool/bokeh/gpt5-01-gemini-02.html" target="_blank">https://ok2nd.github.io/tool/bokeh/gpt5-01-gemini-02.html</a></p>
+<p><span style="color: #dd830c;">※ 焦点距離や被写体までの距離、背景の距離を変化させても、被写体画像や背景画像が連動して前後に動くわけでもなく、ボケ効果も実際のレンズの効果を反映できているかは不明で、実用性は全くない。</span></p>
+<p>「PNGをダウンロード」というボタンがあるが、ダウンロードされる画像は、シミュレーターの画面で見ている画像とはボケの大きさが違うものがダウンロードされる。</p>
+<p>被写体の女性の画像は、「<em>Google Gemini</em>」に生成してもらった画像の背景を透過にしたものに置き換えた。</p>
+<p>今回作成したツールの場合は実用性はないが、ここまでのレベルのアプリケーションが生成AIの無料枠内で簡単に出来てしまうことは証明できた。</p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250809/20250809110348.jpg" width="1192" height="687" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p>（↓）他にもゲームやツールを生成AIで作成している。</p>
+<p><a class="link-card" href="../02/214500.html"><span class="lc-body"><span class="lc-title">JavaScript）「無料オンライン対戦オセロゲーム」作成。「BaaS：PubNub」利用。</span><span class="lc-desc">先程、「対戦オセロゲーム」を作成した。 しかし、これはローカルストレージを使用しているので、同一のPCやスマホの同一ブラウザ内同志でないと動作しない。 今回、「 PubNub 」という無料のリアルタイム通信サービス（ B…</span><span class="lc-site">晴歩雨描 · <time>2025-08-02</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250802/20250802131129.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../08/105350.html"><span class="lc-body"><span class="lc-title">ChatGPT「GPT-5」で、言葉で指示しての写真のオブジェクト除去機能を試した。</span><span class="lc-desc">ChatGPT「GPT-5」がリリースされたらしいので、消しゴムマジックのように写真に写り込んだ不要な人や物を消す（オブジェクト除去）機能を試した。 以前に「4o Image Generation」で試した時との比較画像…</span><span class="lc-site">晴歩雨描 · <time>2025-08-08</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250808/20250808104537.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../06/13/162926.html"><span class="lc-body"><span class="lc-title">Claude）JavaScript）透過画像作成Webツール作成。</span><span class="lc-desc">先程、Pythonで「透過画像作成」Windowsアプリを作成した。 今回、ほぼ同等の機能のWebアプリをJavaScriptで作成した。AIツールClaudeに作成してもらった。 以前に、JavaScriptで同様のア…</span><span class="lc-site">晴歩雨描 · <time>2025-06-13</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250613/20250613162135.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../05/25/211331.html"><span class="lc-body"><span class="lc-title">Claude＆Gemini）Python）「写真のトーンカーブ一括補正」Windowsアプリ作成。</span><span class="lc-desc">先日、Pythonで「写真の明るさ＆コントラスト一括補正」Windowsアプリを作成した。 今回、 トーンカーブを使って写真の明るさを補正するWindowsアプリ をPythonで作成。 複数画像を一括して補正できる。 …</span><span class="lc-site">晴歩雨描 · <time>2025-05-25</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250525/20250525210152.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../04/16/095722.html"><span class="lc-body"><span class="lc-title">Claude）JavaScript）画像フォーマットPNG、WEBP、AVIFをJPEGに変換するWebツール作成。複数ファイル一括も可。</span><span class="lc-desc">過去に、画像フォーマットPNGやWEBPをJPEGに変換するWebアプリを作成した。 今回、画像フォーマット PNG、WEBP、AVIFをJPEGに変換する Webアプリを作成。AIツールClaudeに作成してもらった。…</span><span class="lc-site">晴歩雨描 · <time>2025-04-16</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250416/20250416094324.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../03/09/142603.html"><span class="lc-body"><span class="lc-title">JavaScript）2枚の写真/画像をドラッグ＆ドロップして画像比較Webツール。横並び⇔重ねてスライダーを切り替え。Image Compare Viewerを使用。</span><span class="lc-desc">先程、パソコンローカルの2枚の写真/画像をドラッグ＆ドロップして、TwentyTwentyでスライダーで画像比較するWebツールを作成した。 以前に、パソコンローカルの2枚の写真/画像をドラッグ＆ドロップして横並びに表示…</span><span class="lc-site">晴歩雨描 · <time>2025-03-09</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250309/20250309141249.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../03/03/125348.html"><span class="lc-body"><span class="lc-title">JavaScript）画像縮小専用Webツール。複数画像一括処理版。スマホでも使える。</span><span class="lc-desc">先程、画像縮小専用のシンプルなアプリを作成した。 今回、 複数画像を一括して縮小できるバージョンを作成。 （ChatGPTで作成。） 縮小サイズは、画像の長辺サイズが「800px」「1024px」「1200px」「160…</span><span class="lc-site">晴歩雨描 · <time>2025-03-03</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250303/20250303124652.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../04/20/093458.html"><span class="lc-body"><span class="lc-title">Claude）Python）「写真オブジェクト除去」Windowsアプリ作成。シミ消しにも使える。</span><span class="lc-desc">2日前、 JavaScript で「 写真スポッティング編集ツール 」を作成した。 今回、 Python で「 写真オブジェクト除去アプリ 」を作成。AIツールClaudeに作成してもらった。 写真の中のちょっとした不要…</span><span class="lc-site">晴歩雨描 · <time>2025-04-20</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250420/20250420091047.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../01/05/131859.html"><span class="lc-body"><span class="lc-title">JavaScript）白黒（モノクロ）画像をブラウザにアップロードして、色（カラー）変換するWebツール作成。アンチエイリアシング対応。カラーピッカー使用。Copilotで作成。</span><span class="lc-desc">白黒（モノクロ）画像をブラウザにアップロードして、色（カラー）変換するWebツールをJavaScriptで作成。 白黒画像を簡単な手順でカラー変換できるツールは意外と見つからない。 なので、カラー変換できるツールを、HT…</span><span class="lc-site">晴歩雨描 · <time>2025-01-05</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250105/20250105131043.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../03/19/143646.html"><span class="lc-body"><span class="lc-title">AIツール「ChatGPT、Gemini、Copilot、Perplexity、リートン、Claude」で、JavaScriptライブラリ「p5.js」を使った「魚の群れのシミュレーション」アプリ作成。</span><span class="lc-desc">こんな記事があった。 この記事の中に、『「300匹の小さな魚が群れをなして泳ぐ姿のシミュレーションをp5jsを使って作って。Windowを水槽に見立てて、壁にぶつからないようにして」というプロンプトを試してみた』というの…</span><span class="lc-site">晴歩雨描 · <time>2025-03-19</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250319/20250319142423.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../03/20/115145.html"><span class="lc-body"><span class="lc-title">AIツール「ChatGPT、Gemini、Copilot、Perplexity、リートン、Claude」＋JavaScriptライブラリ「p5.js」で「物理シミュレーション」アプリ作成。Claudeはアプリケーション作成能力が高い。</span><span class="lc-desc">昨日、 JavaScriptライブラリ「p5.js」 を使った「魚の群れのシミュレーション」を、AIツール「ChatGPT、Gemini、Copilot、Perplexity、リートン、Claude」で作った。 今回、J…</span><span class="lc-site">晴歩雨描 · <time>2025-03-20</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250320/20250320114142.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../06/14/093748.html"><span class="lc-body"><span class="lc-title">JavaScript＆Web、Python＆Windows）写真画像編集アプリ／ツールまとめ。</span><span class="lc-desc">写真画像編集アプリ／ツールを、JavaScriptとPythonでいくつか作成してきた。それらのツールまとめ。 ■ 画像縮小 【Webツール（JavaScript）】 https://ok2nd.github.io/to…</span><span class="lc-site">晴歩雨描 · <time>2025-06-14</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250614/20250614094138.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../../2024/08/31/141902.html"><span class="lc-body"><span class="lc-title">画像生成AI）「Ideogram 2.0」「ImageFX（Imagen3）」で、日本、韓国、中国、イギリス、ウクライナの女性（女優）のイメージ画像を生成。結構リアル。</span><span class="lc-desc">最近、画像生成AI「Ideogram 2.0」「ImageFX（Imagen3）」を試してみた。 今回、「 Ideogram 2.0 」「 ImageFX（Imagen3） 」で、各国の女優のイメージ画像を生成。 「Im…</span><span class="lc-site">晴歩雨描 · <time>2024-08-31</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20240831/20240831140854.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="153808.html"><span class="lc-body"><span class="lc-title">GPT-5）AI「清少納言」が、未発表の随筆「未聞の草子：あはれをかしの記」を発表。</span><span class="lc-desc">生成AIのChatGPT「GPT-5」がリリースされたので、「GPT-5」に「清少納言」になったつもりで、未発表の随筆を発表してもらった。 なんとなく、それっぽい文章になっている。 ■ 未聞（みもん）の草子「あはれをかし…</span><span class="lc-site">晴歩雨描 · <time>2025-08-09</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250809/20250809153511.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../07/30/092729.html"><span class="lc-body"><span class="lc-title">Gemini）PHP＋MySQLを使ったカレンダー＆スケジューラを作った。</span><span class="lc-desc">夫婦のスケジュール共有に「 Lifebear 」無料版を使ってきたが、Web版サービスが2025年12月中旬に終了すると発表されたので、無料でPCとスマホ両方で使えるスケジュール共有カレンダーアプリを探したが、良いものが…</span><span class="lc-site">晴歩雨描 · <time>2025-07-30</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250730/20250730084219.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../../09/21/101312.html"><span class="lc-body"><span class="lc-title">「Gemini 2.5 Flash Image（Nano Banana）」で、写真の背景ボケを検証。</span><span class="lc-desc">画像編集AI「 Gemini 2.5 Flash Image（Nano Banana） 」で、色々試している。 今回、写真の背景ボケを自動で調整できるか試してみた。 プロンプトは、『 背景を大きくボケさせて 』。 「 G…</span><span class="lc-site">晴歩雨描 · <time>2025-09-21</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250921/20250921112729.png" alt="" loading="lazy"></span></a></p></div></article>
+</body>
+</html>

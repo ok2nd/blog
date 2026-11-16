@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>WordPress）検索対象に「カテゴリ」を追加し「本文」は含めない。 - 晴歩雨描</title>
+<link rel="stylesheet" href="../../../../style.css">
+</head>
+<body>
+<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>WordPress）検索対象に「カテゴリ」を追加し「本文」は含めない。</h1><p class="meta">2022-08-20 · <a href="../../../../category/c2.html">WordPress</a> <a href="../../../../category/c13.html">ホームページ、Web作成</a></p><div class="entry-body"><p><a class="keyword" href="http://d.hatena.ne.jp/keyword/WordPress">WordPress</a>のサイト内検索対象に「カテゴリ」を追加し「本文」は含めないようにする。</p>
+<p>検索対象は「タイトル」と「カテゴリ」にする。</p>
+<p>以下を参考に少しカスタマイズした。</p>
+<p><a class="link-card" href="https://aineku.com/p2152/" target="_blank" rel="noopener noreferrer"><span class="lc-body"><span class="lc-title">【WordPress】サイト内検索にカテゴリー名、タグ名を検索条件に追加する</span><span class="lc-desc">WordPressの標準でのサイト内検索では、『投稿ページ』と『固定ページ』のタイトルと本文、抜粋が検索対象になっているため、カテゴリーなどは検索の対象ではありません。そこで、こちらでは、検索範囲を カテゴリー名、タグ名…</span><span class="lc-site">AINEKU</span></span><span class="lc-thumb"><img src="https://aineku.com/wp-content/themes/cocoon-master/screenshot.jpg" alt="" loading="lazy"></span></a></p>
+<p>「<em>\wp-content\themes\iconic-one\functions.<a class="keyword" href="http://d.hatena.ne.jp/keyword/php">php</a></em>」に以下を追加。</p>
+<pre>function custom_search($search, $wp_query) {
+	global $wpdb;
+	//サーチページ以外だったら終了
+	if (!$wp_query-&gt;is_search)
+		return $search;
+	if (!isset($wp_query-&gt;query_vars))
+		return $search;
+	// カテゴリ名も検索対象に
+	$search_words = explode(' ', isset($wp_query-&gt;query_vars['s']) ? $wp_query-&gt;query_vars['s'] : '');
+	if ( count($search_words) &gt; 0 ) {
+		$search = '';
+		foreach ( $search_words as $word ) {
+			if ( !empty($word) ) {
+				$search_word = $wpdb-&gt;escape("%{$word}%");
+				$search .= " AND (
+					{$wpdb-&gt;posts}.post_title LIKE '{$search_word}'
+					OR {$wpdb-&gt;posts}.ID IN (
+						SELECT distinct r.object_id
+						FROM {$wpdb-&gt;term_relationships} AS r
+						INNER JOIN {$wpdb-&gt;term_taxonomy} AS tt ON r.term_taxonomy_id = tt.term_taxonomy_id
+						INNER JOIN {$wpdb-&gt;terms} AS t ON tt.term_id = t.term_id
+						WHERE t.name LIKE '{$search_word}'
+					)
+				) ";
+			}
+		}
+	}
+	return $search;
+}
+add_filter('posts_search','custom_search', 10, 2);
+</pre>
+<hr />
+<p><a class="link-card" href="../15/231115.html"><span class="lc-body"><span class="lc-title">WordPress）設定まとめ。メディアライブラリを使わないバージョン。</span><span class="lc-desc">自宅WindowsPCローカルに WordPress をインストールしている。 以前、 WordPress 設定まとめを書いた。この時はメディアライブラリを使う前提だった。 メディアライブラリを使わない方法が分かったので…</span><span class="lc-site">晴歩雨描 · <time>2022-08-15</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220811/20220811140646.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../16/105039.html"><span class="lc-body"><span class="lc-title">WordPress）はてなブログから移行（インポート）する手順まとめ。メディアライブラリを使わないバージョン。</span><span class="lc-desc">自宅WindowsPCローカルに WordPress をインストールしている。 「 はてなブログ 」からエクスポートして WordPress にインポートしてみた。 以前、移行（インポート）する手順まとめを書いた。この時…</span><span class="lc-site">晴歩雨描 · <time>2022-08-16</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220817/20220817223605.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../18/135432.html"><span class="lc-body"><span class="lc-title">WordPress）はてなブログから移行した画像をポップアップ表示するようにした。</span><span class="lc-desc">はてなブログ から WordPress への移行を検証している。 はてなブログ から WordPress へ画像を移行して記事内で画像が表示されるようになったが、この画像をクリックしてポップアップ画像を表示するようにした…</span><span class="lc-site">晴歩雨描 · <time>2022-08-18</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220818/20220818135419.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../17/133109.html"><span class="lc-body"><span class="lc-title">はてなブログエクスポートファイルからキーワードリンク&lt;a&gt;タグを除去するJScript。WordPressインポート用。</span><span class="lc-desc">はてなブログ では、文章中の特定のキーワードに勝手にアンダーラインが引かれリンクになる。 無料版では標準的にはこれを消せない。 はてなブログ からエクスポートするファイルにも、その キーワードリンク はそのまま残っている…</span><span class="lc-site">晴歩雨描 · <time>2022-08-17</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220817/20220817132953.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../14/225205.html"><span class="lc-body"><span class="lc-title">WordPress）はてなブログのアイキャッチ画像をメディアライブラリを使わずに記事一覧とブログカードに反映させる。</span><span class="lc-desc">自宅WindowsPCローカルに WordPress をインストールしている。 「 はてなブログ 」から WordPress への移行の検証をしている。 ※ ↓は、本対策を行う前のインポート手順。 どうにか、やりたいこと…</span><span class="lc-site">晴歩雨描 · <time>2022-08-14</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220814/20220814225145.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card" href="../06/224635.html"><span class="lc-body"><span class="lc-title">WindowsPCの古いXAMPPにWordPress（5.0.16）をインストール。</span><span class="lc-desc">※ 後日追記：ドライブやディレクトリを変える場合は注意が必要。 自宅のWindowsPCにWordPressをインストールした手順の備忘録。 自宅のWindowsPCには、古いバージョンのXAMPP（ XAMPP 1.8…</span><span class="lc-site">晴歩雨描 · <time>2022-08-06</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220806/20220806222743.png" alt="" loading="lazy"></span></a></p></div></article>
+</body>
+</html>
