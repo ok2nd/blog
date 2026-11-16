@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>その他 - 晴歩雨描</title>
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<p class="site-nav"><a href="../index.html">← 晴歩雨描</a></p><h1>その他</h1>
+<div class="toolbar"><nav class="views"><a href="c3.html">テキスト一覧</a> | <strong>画像付き一覧</strong></nav><div class="search"><label for="q">検索:</label><input type="search" id="q" autocomplete="off" title="カテゴリ・タイトルで検索（スペース区切りでAND検索）" aria-label="カテゴリ・タイトルで検索"></div></div>
+<table class="entries with-img"><thead><tr><th>カテゴリー</th><th class="col-img">画像</th><th>記事</th></tr></thead><tbody><tr data-q="その他 Amazon（アマゾン）プライム・ビデオ：面白かった映画。"><td class="col-cat"><a class="hl" href="c3.html">その他</a></td><td class="col-img"><a href="../entry/2025/12/14/173132.html" tabindex="-1"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20251214/20251214172656.jpg" alt="Amazon（アマゾン）プライム・ビデオ：面白かった映画。" loading="lazy"></a></td><td class="col-title"><a class="hl" href="../entry/2025/12/14/173132.html">Amazon（アマゾン）プライム・ビデオ：面白かった映画。</a> <span class="date">2025/12/14</span></td></tr><tr data-q="その他 2021年、2022年の大阪ガスのガス料金の推移を比較。"><td class="col-cat"><a class="hl" href="c3.html">その他</a></td><td class="col-img"><a href="../entry/2022/12/05/222158.html" tabindex="-1"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20221205/20221205220056.jpg" alt="2021年、2022年の大阪ガスのガス料金の推移を比較。" loading="lazy"></a></td><td class="col-title"><a class="hl" href="../entry/2022/12/05/222158.html">2021年、2022年の大阪ガスのガス料金の推移を比較。</a> <span class="date">2022/12/05</span></td></tr><tr data-q="その他 Amazon（アマゾン）プライム・ビデオ：おすすめドラマ。"><td class="col-cat"><a class="hl" href="c3.html">その他</a></td><td class="col-img"><a href="../entry/2022/08/20/104401.html" tabindex="-1"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20210520/20210520124853.jpg" alt="Amazon（アマゾン）プライム・ビデオ：おすすめドラマ。" loading="lazy"></a></td><td class="col-title"><a class="hl" href="../entry/2022/08/20/104401.html">Amazon（アマゾン）プライム・ビデオ：おすすめドラマ。</a> <span class="date">2022/08/20</span></td></tr><tr data-q="その他 Amazon（アマゾン）で配達が時間指定できない場合は、ヨドバシ.comで。"><td class="col-cat"><a class="hl" href="c3.html">その他</a></td><td class="col-img"><a href="../entry/2021/12/16/151332.html" tabindex="-1"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20211216/20211216153921.jpg" alt="Amazon（アマゾン）で配達が時間指定できない場合は、ヨドバシ.comで。" loading="lazy"></a></td><td class="col-title"><a class="hl" href="../entry/2021/12/16/151332.html">Amazon（アマゾン）で配達が時間指定できない場合は、ヨドバシ.comで。</a> <span class="date">2021/12/16</span></td></tr><tr data-q="その他 セイコーマートが顧客満足度NO.1"><td class="col-cat"><a class="hl" href="c3.html">その他</a></td><td class="col-img"><a href="../entry/2016/12/09/070108.html" tabindex="-1"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20171114/20171114172907.jpg" alt="セイコーマートが顧客満足度NO.1" loading="lazy"></a></td><td class="col-title"><a class="hl" href="../entry/2016/12/09/070108.html">セイコーマートが顧客満足度NO.1</a> <span class="date">2016/12/09</span></td></tr></tbody></table>
+<p id="none" class="meta" hidden>該当する記事がありません。</p>
+<script>
+(function(){
+  var q=document.getElementById('q'), none=document.getElementById('none');
+  var rows=[].slice.call(document.querySelectorAll('tr[data-q]'));
+  var els=[].slice.call(document.querySelectorAll('.hl'));
+  els.forEach(function(e){e.setAttribute('data-t',e.textContent);});
+  function norm(s){s=s.toLowerCase();return s.normalize?s.normalize('NFKC'):s;}
+  function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+  var idx=rows.map(function(r){return norm(r.getAttribute('data-q'));});
+  /* 検索語に一致した部分を <mark> で囲む (全角/半角・大文字/小文字を区別しない) */
+  function hl(text,words){
+    if(!words.length) return esc(text);
+    var n='',map=[],i,k,c,mk=[];
+    for(i=0;i<text.length;i++){c=norm(text.charAt(i));for(k=0;k<c.length;k++){n+=c.charAt(k);map.push(i);}}
+    words.forEach(function(w){
+      var p=0,j;
+      while((j=n.indexOf(w,p))>=0){for(k=j;k<j+w.length;k++)mk[map[k]]=true;p=j+w.length;}
+    });
+    var out='',inm=false,m;
+    for(i=0;i<text.length;i++){
+      m=!!mk[i];
+      if(m&&!inm){out+='<mark>';inm=true;}else if(!m&&inm){out+='</mark>';inm=false;}
+      out+=esc(text.charAt(i));
+    }
+    return inm?out+'</mark>':out;
+  }
+  function run(){
+    var words=norm(q.value).split(/\s+/).filter(Boolean), n=0;
+    rows.forEach(function(r,i){
+      var ok=words.every(function(w){return idx[i].indexOf(w)>=0;});
+      r.hidden=!ok; if(ok)n++;
+    });
+    els.forEach(function(e){e.innerHTML=hl(e.getAttribute('data-t'),words);});
+    none.hidden=n>0;
+  }
+  q.addEventListener('input',run);
+  run();
+})();
+</script>
+</body>
+</html>
