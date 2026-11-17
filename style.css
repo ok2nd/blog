@@ -12,15 +12,18 @@ pre{overflow-x:auto;background:var(--code);padding:1em;border-radius:6px}
 blockquote{margin:1em 0;padding:.2em 1em;border-left:4px solid var(--line);color:var(--muted)}
 .meta{color:var(--muted);font-size:.9em}
 .site-nav{margin-bottom:2em}
-.link-card{display:flex;justify-content:space-between;align-items:stretch;gap:1em;margin:1em 0;
+.link-card{display:flex;justify-content:space-between;align-items:stretch;gap:.8em;margin:1em 0;
  border:1px solid var(--line);border-radius:8px;overflow:hidden;text-decoration:none;color:inherit;max-width:540px}
 .link-card:hover{background:var(--code)}
-.lc-body{display:flex;flex-direction:column;gap:.3em;padding:.7em 1em;min-width:0}
-.lc-title{font-weight:bold;line-height:1.4}
-.lc-desc{font-size:.85em;color:var(--muted);line-height:1.5}
-.lc-site{font-size:.75em;color:var(--muted)}
-.lc-thumb{flex:0 0 120px}
-.lc-thumb img{width:120px;height:100%;object-fit:cover;display:block}
+.link-card.has-thumb{height:132px}
+.lc-body{display:flex;flex-direction:column;justify-content:center;gap:.25em;padding:.6em .8em;min-width:0}
+.lc-title{font-weight:bold;line-height:1.4;overflow:hidden;
+ display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2}
+.lc-desc{font-size:.75em;color:var(--muted);line-height:1.5;overflow:hidden;
+ display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2}
+.lc-site{font-size:.7em;color:var(--muted)}
+.lc-thumb{flex:0 0 99px}
+.lc-thumb img{display:block;width:99px;height:100%;object-fit:cover}
 .link-card-plain{word-break:break-all}
 [hidden]{display:none!important}
 table.entries{border-collapse:collapse;width:100%;table-layout:fixed;font-size:.9em}
@@ -33,7 +36,7 @@ table.entries td.col-cat a{color:inherit;text-decoration:none}
 table.entries td.col-cat a:hover{text-decoration:underline}
 table.entries td.col-img{padding-top:.5em;padding-bottom:.5em}
 table.entries td.col-img a{display:block}
-table.entries td.col-img img,.noimg{display:block;width:120px;aspect-ratio:1200/630;object-fit:cover;
+table.entries td.col-img img,.noimg{display:block;width:120px;aspect-ratio:4/3;object-fit:cover;
  border-radius:4px;background:var(--code)}
 .date{color:var(--date);white-space:nowrap}
 mark{background:#ffdf00;color:#111;padding:0 .05em;border-radius:2px}
