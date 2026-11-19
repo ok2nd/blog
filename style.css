@@ -4,14 +4,15 @@
 body{max-width:760px;margin:2em auto;padding:0 1em;line-height:1.8;background:var(--bg);color:var(--fg);
  font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Noto Sans JP",Meiryo,sans-serif}
 a{color:var(--link)}
-img,iframe,video{max-width:100%;height:auto}
+img,video{max-width:100%;height:auto}
+iframe{max-width:100%}
 h1{font-size:1.5em;line-height:1.4;margin:.6em 0}
 article h1{font-size:1.3em;line-height:1.5;margin:.4em 0 .6em;overflow-wrap:anywhere}
 .entry-body{overflow-wrap:anywhere;--fs:15px;font-size:var(--fs)}
 .entry-body h5{font-size:calc(var(--fs) + 2px)}
 .entry-body em{background:linear-gradient(transparent 70%,var(--em-bg) 70%);font-style:normal;font-weight:bold}
 .entry-body table{border-collapse:collapse}
-.entry-body th,.entry-body td{border:1px solid var(--tbl-line)}
+.entry-body th,.entry-body td{border:1px solid var(--tbl-line);line-height:1.47}
 .entry-body th{background:var(--th-bg)}
 .td-center th,.td-center td{text-align:center}
 .td-top th,.td-top td{vertical-align:top}
