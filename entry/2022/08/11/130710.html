@@ -7,11 +7,11 @@
 <link rel="stylesheet" href="../../../../style.css">
 </head>
 <body>
-<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>WordPress）アイキャッチ画像を一括削除する方法。</h1><p class="meta">2022-08-11 · <a href="../../../../category/c13.html">ホームページ、Web作成</a> <a href="../../../../category/c2.html">WordPress</a></p><div class="entry-body"><p><a class="keyword" href="http://d.hatena.ne.jp/keyword/WordPress">WordPress</a>に登録されている<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%A2%A5%A4%A5%AD%A5%E3%A5%C3%A5%C1">アイキャッチ</a>画像を一括削除する方法。</p>
+<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>WordPress）アイキャッチ画像を一括削除する方法。</h1><p class="meta">2022-08-11 · <a href="../../../../category/c13.html">ホームページ、Web作成</a> <a href="../../../../category/c2.html">WordPress</a></p><div class="entry-body"><p>WordPressに登録されているアイキャッチ画像を一括削除する方法。</p>
 <p>以下のサイトを参考にした。</p>
 <p><span class="link-card-plain"><a href="https://takayakondo.com/thumbnail-delete-all/">https://takayakondo.com/thumbnail-delete-all/</a></span></p>
-<p>「wp-content\themes\テーマフォルダ 」の下にある「<em>functions.<a class="keyword" href="http://d.hatena.ne.jp/keyword/php">php</a></em>」</p>
-<pre>\xampp\htdocs\<a class="keyword" href="http://d.hatena.ne.jp/keyword/wordpress">wordpress</a>\wp-content\themes\semplicemente\functions.<a class="keyword" href="http://d.hatena.ne.jp/keyword/php">php</a>
+<p>「wp-content\themes\テーマフォルダ 」の下にある「<em>functions.php</em>」</p>
+<pre>\xampp\htdocs\wordpress\wp-content\themes\semplicemente\functions.php
 </pre>
 <p>に、以下のソースを挿入。</p>
 <pre>global $wpdb;
@@ -19,10 +19,10 @@ $wpdb-&gt;query("
 DELETE FROM $wpdb-&gt;postmeta
 WHERE meta_key = '_thumbnail_id'
 ");</pre>
-<p><a class="keyword" href="http://d.hatena.ne.jp/keyword/WordPress">WordPress</a>の<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%C0%A5%C3%A5%B7%A5%E5">ダッシュ</a>ボードを開くと、<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%A2%A5%A4%A5%AD%A5%E3%A5%C3%A5%C1">アイキャッチ</a>画像が一括削除される。</p>
-<p><em>※ <a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%A2%A5%A4%A5%AD%A5%E3%A5%C3%A5%C1">アイキャッチ</a>画像が削除されている事を確認したら、先程「functions.<a class="keyword" href="http://d.hatena.ne.jp/keyword/php">php</a>」に追加したコードを削除しておくこと。</em></p>
-<p><a class="link-card has-thumb" href="231938.html"><span class="lc-body"><span class="lc-title">WordPress）はてなブログからインポートした記事にアイキャッチ画像を一括登録。</span><span class="lc-desc">............ 自分の はてなブログ ではすべて アイキャッチ 画像を登録しているので、エクスポートファイルの「IMAGE:」には…</span><span class="lc-site">晴歩雨描 · <time>2022-08-11</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220811/20220811231738.jpg" alt="" loading="lazy"></span></a></p>
-<p><a class="link-card has-thumb" href="../12/153111.html"><span class="lc-body"><span class="lc-title">WordPress）設定まとめ。メディアライブラリを使うバージョン。</span><span class="lc-desc">自宅のWindowsPCローカルに WordPress をインストールしている。 設定をいくつかやってみたので、備忘録としてまとめ。 ※ メ…</span><span class="lc-site">晴歩雨描 · <time>2022-08-12</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220812/20220812153057.jpg" alt="" loading="lazy"></span></a></p>
-<p><a class="link-card has-thumb" href="../12/160116.html"><span class="lc-body"><span class="lc-title">WordPress）はてなブログから移行（インポート）する手順まとめ。メディアライブラリを使うバージョン。</span><span class="lc-desc">自宅のWindowsPCローカルに WordPress をインストールしている。 「 はてなブログ 」からエクスポートして WordPres…</span><span class="lc-site">晴歩雨描 · <time>2022-08-12</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220807/20220807132140.png" alt="" loading="lazy"></span></a></p></div></article>
+<p>WordPressのダッシュボードを開くと、アイキャッチ画像が一括削除される。</p>
+<p><em>※ アイキャッチ画像が削除されている事を確認したら、先程「functions.php」に追加したコードを削除しておくこと。</em></p>
+<p><a class="link-card has-thumb" href="231938.html"><span class="lc-body"><span class="lc-title">WordPress）はてなブログからインポートした記事にアイキャッチ画像を一括登録。</span><span class="lc-desc">............ 自分のはてなブログではすべてアイキャッチ画像を登録しているので、エクスポートファイルの「IMAGE:」には必ずファ…</span><span class="lc-site">晴歩雨描 · <time>2022-08-11</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220811/20220811231738.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card has-thumb" href="../12/153111.html"><span class="lc-body"><span class="lc-title">WordPress）設定まとめ。メディアライブラリを使うバージョン。</span><span class="lc-desc">自宅のWindowsPCローカルにWordPressをインストールしている。 設定をいくつかやってみたので、備忘録としてまとめ。 ※ メディ…</span><span class="lc-site">晴歩雨描 · <time>2022-08-12</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220812/20220812153057.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card has-thumb" href="../12/160116.html"><span class="lc-body"><span class="lc-title">WordPress）はてなブログから移行（インポート）する手順まとめ。メディアライブラリを使うバージョン。</span><span class="lc-desc">自宅のWindowsPCローカルにWordPressをインストールしている。 「はてなブログ」からエクスポートしてWordPressにインポ…</span><span class="lc-site">晴歩雨描 · <time>2022-08-12</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220807/20220807132140.png" alt="" loading="lazy"></span></a></p></div></article>
 </body>
 </html>

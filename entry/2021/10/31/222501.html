@@ -7,38 +7,38 @@
 <link rel="stylesheet" href="../../../../style.css">
 </head>
 <body>
-<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>Windows10）光学ドライブ（CD/DVD）をダブルクリックしたときに起動するアプリの設定</h1><p class="meta">2021-10-31 · <a href="../../../../category/c8.html">コンピュータ</a></p><div class="entry-body"><p><a class="keyword" href="http://d.hatena.ne.jp/keyword/%B8%F7%B3%D8%A5%C9%A5%E9%A5%A4%A5%D6">光学ドライブ</a>（CD/DVD）をダブルクリックしたときに起動するアプリの設定方法の備忘録。</p>
-<p>先日購入したノートパソコンで、外付け<a class="keyword" href="http://d.hatena.ne.jp/keyword/%B8%F7%B3%D8%A5%C9%A5%E9%A5%A4%A5%D6">光学ドライブ</a>に「DVD-Video」をセットし、ダブルクリックすると、初期インストールされている「<a class="keyword" href="http://d.hatena.ne.jp/keyword/Corel">Corel</a> <a class="keyword" href="http://d.hatena.ne.jp/keyword/WinDVD">WinDVD</a>」が起動する。</p>
-<p>これを、別のアプリ「<a class="keyword" href="http://d.hatena.ne.jp/keyword/VLC%20Media%20Player">VLC Media Player</a>」に変更しようとした。</p>
+<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>Windows10）光学ドライブ（CD/DVD）をダブルクリックしたときに起動するアプリの設定</h1><p class="meta">2021-10-31 · <a href="../../../../category/c8.html">コンピュータ</a></p><div class="entry-body"><p>光学ドライブ（CD/DVD）をダブルクリックしたときに起動するアプリの設定方法の備忘録。</p>
+<p>先日購入したノートパソコンで、外付け光学ドライブに「DVD-Video」をセットし、ダブルクリックすると、初期インストールされている「Corel WinDVD」が起動する。</p>
+<p>これを、別のアプリ「VLC Media Player」に変更しようとした。</p>
 <h4>■ 規定のアプリの設定</h4>
 <ul>
 <li>［設定］→［アプリ］→［規定のアプリ］</li>
 </ul>
-<p>「ビデオプレーヤー」を「<a class="keyword" href="http://d.hatena.ne.jp/keyword/VLC%20media%20player">VLC media player</a>」に設定。</p>
+<p>「ビデオプレーヤー」を「VLC media player」に設定。</p>
 <p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20211031/20211031220059.jpg" alt="f:id:art2nd:20211031220059j:plain" width="270" height="173" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
 <p><em>これだけでは、うまくいかなかった。</em></p>
-<p>そこで、「<a class="keyword" href="http://d.hatena.ne.jp/keyword/Corel">Corel</a> <a class="keyword" href="http://d.hatena.ne.jp/keyword/WinDVD">WinDVD</a>」をアンインストールしたところ、</p>
+<p>そこで、「Corel WinDVD」をアンインストールしたところ、</p>
 <p>『このファイルには、この操作を実行するように関連付けられたアプリがありません。アプリをインストールするか、または既にインストールされている場合は、既定のアプリの設定ページでを関連付けを作成してください。』</p>
 <p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20211031/20211031220702.jpg" alt="f:id:art2nd:20211031220702j:plain" width="836" height="207" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
 <p>というエラーが出るようになった。</p>
-<p>次に、以下の<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%EC%A5%B8%A5%B9%A5%C8%A5%EA">レジストリ</a>修正を行った。</p>
-<h4>■ <a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%EC%A5%B8%A5%B9%A5%C8%A5%EA">レジストリ</a>エディタで<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%EC%A5%B8%A5%B9%A5%C8%A5%EA">レジストリ</a>修正</h4>
-<p><a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%EC%A5%B8%A5%B9%A5%C8%A5%EA">レジストリ</a>エディタ（<em>regedit</em>）で、「<em>HKEY_CLASSES_ROOT\DVD\Shell</em>」の下に、「play」と「playWithVLC」の2つがあったので、「playWithVLC」を残し、最初の「play」を削除。</p>
+<p>次に、以下のレジストリ修正を行った。</p>
+<h4>■ レジストリエディタでレジストリ修正</h4>
+<p>レジストリエディタ（<em>regedit</em>）で、「<em>HKEY_CLASSES_ROOT\DVD\Shell</em>」の下に、「play」と「playWithVLC」の2つがあったので、「playWithVLC」を残し、最初の「play」を削除。</p>
 <p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20211031/20211031220923.jpg" alt="f:id:art2nd:20211031220923j:plain" width="918" height="361" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
 <p>これを行って、解決した。</p>
-<p><a class="keyword" href="http://d.hatena.ne.jp/keyword/%B8%F7%B3%D8%A5%C9%A5%E9%A5%A4%A5%D6">光学ドライブ</a>（CD/DVD）をマウス右ボタンでクリックすると、「<a class="keyword" href="http://d.hatena.ne.jp/keyword/VLC">VLC</a>メディアプレイヤーで再生」がデフォルトになっている。</p>
+<p>光学ドライブ（CD/DVD）をマウス右ボタンでクリックすると、「VLCメディアプレイヤーで再生」がデフォルトになっている。</p>
 <p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20211031/20211031224045.jpg" alt="f:id:art2nd:20211031224045j:plain" width="603" height="133" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
 <h4>■ 自動再生の設定</h4>
 <p>自動再生の設定をする場合は、</p>
 <ul>
-<li>［<a class="keyword" href="http://d.hatena.ne.jp/keyword/Windows">Windows</a> システムツール］→［コン<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%C8%A5%ED%A1%BC%A5%EB">トロール</a>パネル］→［プログラム］→［規定のプログラム］→［自動再生の設定の変更］</li>
+<li>［Windows システムツール］→［コントロールパネル］→［プログラム］→［規定のプログラム］→［自動再生の設定の変更］</li>
 </ul>
-<p>で、DVDムービーに「<a class="keyword" href="http://d.hatena.ne.jp/keyword/VLC%20media%20player">VLC media player</a>」を紐づける。</p>
+<p>で、DVDムービーに「VLC media player」を紐づける。</p>
 <p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20211031/20211031221652.jpg" alt="f:id:art2nd:20211031221652j:plain" width="605" height="176" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
 <p><a class="link-card has-thumb" href="../23/133202.html"><span class="lc-body"><span class="lc-title">Windows10の暗号化機能「BitLocker」を使ってSSDを暗号化。</span><span class="lc-desc">外付けSSDを、Windows10の暗号化機能「 BitLocker 」で暗号化した。 【後日追記】 ※ 「BitLocker」には問題があ…</span><span class="lc-site">晴歩雨描 · <time>2021-10-23</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20211023/20211023124833.jpg" alt="" loading="lazy"></span></a></p>
 <p><a class="link-card has-thumb" href="../../09/27/133214.html"><span class="lc-body"><span class="lc-title">備忘録：WindowsパソコンのIPアドレス固定方法。（Windows10の場合）</span><span class="lc-desc">WindowsパソコンのIPアドレスを固定する方法。 ※ Windows11では設定画面が大きく変わっているので、以下を参照。 【以下はWi…</span><span class="lc-site">晴歩雨描 · <time>2021-09-27</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20210927/20210927132509.jpg" alt="" loading="lazy"></span></a></p>
 <p><a class="link-card has-thumb" href="../../03/02/144911.html"><span class="lc-body"><span class="lc-title">WindowsパソコンのHDDドライブ・ディスクデータを完全消去（削除）。PC初期化。</span><span class="lc-desc">Windowsパソコンを廃棄する場合、ディスク（HDD）のデータを完全消去したい。 ファイルを削除するだけでは、ディレクトリ情報が消えている…</span><span class="lc-site">晴歩雨描 · <time>2021-03-02</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20210302/20210302164254.jpg" alt="" loading="lazy"></span></a></p>
-<p><a class="link-card has-thumb" href="../../01/22/151511.html"><span class="lc-body"><span class="lc-title">Androidスマホから(PC)Windows共有フォルダにWi-Fiでアクセスする。ファイルマネージャーで。（SMB）</span><span class="lc-desc">先日、 SSD を使ってPCに保存してある写真を iPad で観る方法を試した。 今回、 Android スマホ から Windows 共有…</span><span class="lc-site">晴歩雨描 · <time>2021-01-22</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20210122/20210122150129.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card has-thumb" href="../../01/22/151511.html"><span class="lc-body"><span class="lc-title">Androidスマホから(PC)Windows共有フォルダにWi-Fiでアクセスする。ファイルマネージャーで。（SMB）</span><span class="lc-desc">先日、SSDを使ってPCに保存してある写真をiPadで観る方法を試した。 今回、AndroidスマホからWindows共有フォルダーに無線で…</span><span class="lc-site">晴歩雨描 · <time>2021-01-22</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20210122/20210122150129.jpg" alt="" loading="lazy"></span></a></p>
 <p><a class="link-card has-thumb" href="../../../2020/12/21/100836.html"><span class="lc-body"><span class="lc-title">Windows10 セットアップ &amp; 使いやすくする手順の備忘録。ローカルアカウントetc.</span><span class="lc-desc">パソコンを買い替えたので、Windows 10 セットアップと使いやすくする手順の備忘録。 ■ 最初はインターネットに接続しないで、ローカル…</span><span class="lc-site">晴歩雨描 · <time>2020-12-21</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20201220/20201220165746.jpg" alt="" loading="lazy"></span></a></p>
 <p><a class="link-card has-thumb" href="../../../2020/12/06/133625.html"><span class="lc-body"><span class="lc-title">備忘録：Windows10 設定・管理ツールの在り処＆Windowsを使いやすくする設定。</span><span class="lc-desc">たまにしか使わないWindows10の設定ツールや管理ツールが何処にあるか分からなくなるので、備忘録。 ■ 設定、管理ツール類の表示 一番目…</span><span class="lc-site">晴歩雨描 · <time>2020-12-06</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20201206/20201206132733.jpg" alt="" loading="lazy"></span></a></p></div></article>
 </body>

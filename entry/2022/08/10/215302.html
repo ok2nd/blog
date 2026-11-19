@@ -7,16 +7,16 @@
 <link rel="stylesheet" href="../../../../style.css">
 </head>
 <body>
-<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>WordPress）記事一覧にアイキャッチ画像を表示させる。</h1><p class="meta">2022-08-10 · <a href="../../../../category/c13.html">ホームページ、Web作成</a> <a href="../../../../category/c2.html">WordPress</a></p><div class="entry-body"><p><a class="keyword" href="http://d.hatena.ne.jp/keyword/WordPress">WordPress</a>テーマ「Semplicemente」では、<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%A2%A5%A4%A5%AD%A5%E3%A5%C3%A5%C1">アイキャッチ</a>画像を設定しても記事一覧に<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%A2%A5%A4%A5%AD%A5%E3%A5%C3%A5%C1">アイキャッチ</a>画像が表示されない。</p>
-<p><em><span style="color: #454545; font-family: 'Noto Sans JP', sans-serif; font-size: 15.2px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: #ffffff; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;">テーマ「Semplicemente」で、</span><a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%A2%A5%A4%A5%AD%A5%E3%A5%C3%A5%C1">アイキャッチ</a>画像を記事一覧に表示する</em>ように設定した。</p>
-<p>「wp-content\themes\テーマフォルダ」の下の「<em>content.<a class="keyword" href="http://d.hatena.ne.jp/keyword/php">php</a></em>」</p>
-<pre>\xampp\htdocs\<a class="keyword" href="http://d.hatena.ne.jp/keyword/wordpress">wordpress</a>\wp-content\themes\semplicemente\content.<a class="keyword" href="http://d.hatena.ne.jp/keyword/php">php</a>
+<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>WordPress）記事一覧にアイキャッチ画像を表示させる。</h1><p class="meta">2022-08-10 · <a href="../../../../category/c13.html">ホームページ、Web作成</a> <a href="../../../../category/c2.html">WordPress</a></p><div class="entry-body"><p>WordPressテーマ「Semplicemente」では、アイキャッチ画像を設定しても記事一覧にアイキャッチ画像が表示されない。</p>
+<p><em><span style="color: #454545; font-family: 'Noto Sans JP', sans-serif; font-size: 15.2px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: #ffffff; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;">テーマ「Semplicemente」で、</span>アイキャッチ画像を記事一覧に表示する</em>ように設定した。</p>
+<p>「wp-content\themes\テーマフォルダ」の下の「<em>content.php</em>」</p>
+<pre>\xampp\htdocs\wordpress\wp-content\themes\semplicemente\content.php
 </pre>
 <p>の以下の部分に、「the_post_thumbnail('thumbnail');」を追加する。</p>
 <pre>&lt;div class="entry-content"&gt;
-	<em>&lt;?<a class="keyword" href="http://d.hatena.ne.jp/keyword/php">php</a> the_post_thumbnail('thumbnail'); /* ！追加した<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%A2%A5%A4%A5%AD%A5%E3%A5%C3%A5%C1">アイキャッチ</a>画像表示タグ */ ?&gt;</em>
-	&lt;?<a class="keyword" href="http://d.hatena.ne.jp/keyword/php">php</a> the_excerpt(); ?&gt;
-	&lt;?<a class="keyword" href="http://d.hatena.ne.jp/keyword/php">php</a>
+	<em>&lt;?php the_post_thumbnail('thumbnail'); /* ！追加したアイキャッチ画像表示タグ */ ?&gt;</em>
+	&lt;?php the_excerpt(); ?&gt;
+	&lt;?php
 		wp_link_pages( array(
 			'before' =&gt; '&lt;div class="page-links"&gt;' . esc_html__( 'Pages:', 'semplicemente' ),
 			'after'  =&gt; '&lt;/div&gt;',
@@ -24,16 +24,16 @@
 	?&gt;
 &lt;/div&gt;&lt;!-- .entry-content --&gt;
 </pre>
-<p>以下のように、記事一覧に<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%A2%A5%A4%A5%AD%A5%E3%A5%C3%A5%C1">アイキャッチ</a>画像が表示された。</p>
+<p>以下のように、記事一覧にアイキャッチ画像が表示された。</p>
 <p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220810/20220810214932.jpg" width="682" height="503" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
 <p>しかし、記事要約文が画像の下になってしまう。</p>
-<p><em>要約文を<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%A2%A5%A4%A5%AD%A5%E3%A5%C3%A5%C1">アイキャッチ</a>画像の右に回り込ませる</em>ように設定するためには、「<em>追加<a class="keyword" href="http://d.hatena.ne.jp/keyword/CSS">CSS</a></em>」</p>
+<p><em>要約文をアイキャッチ画像の右に回り込ませる</em>ように設定するためには、「<em>追加CSS</em>」</p>
 <ul>
-<li>外観 &gt; カスタマイズ &gt; 追加<a class="keyword" href="http://d.hatena.ne.jp/keyword/CSS">CSS</a></li>
+<li>外観 &gt; カスタマイズ &gt; 追加CSS</li>
 </ul>
-<p>に、以下の<a class="keyword" href="http://d.hatena.ne.jp/keyword/CSS">CSS</a>を設定する。</p>
-<p>テーマ「Semplicemente」で、<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%A2%A5%A4%A5%AD%A5%E3%A5%C3%A5%C1">アイキャッチ</a>画像を正方形で表示するための設定も追加。</p>
-<pre>/* 記事一覧の要約文を<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%A2%A5%A4%A5%AD%A5%E3%A5%C3%A5%C1">アイキャッチ</a>画像の右に回り込ませる */
+<p>に、以下のCSSを設定する。</p>
+<p>テーマ「Semplicemente」で、アイキャッチ画像を正方形で表示するための設定も追加。</p>
+<pre>/* 記事一覧の要約文をアイキャッチ画像の右に回り込ませる */
 .entry-content &gt; img {
 	width:120px;
 	height:120px;
@@ -43,10 +43,10 @@
 }
 </pre>
 <p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220810/20220810214942.jpg" width="680" height="413" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
-<p><a class="link-card has-thumb" href="../15/231115.html"><span class="lc-body"><span class="lc-title">WordPress）設定まとめ。メディアライブラリを使わないバージョン。</span><span class="lc-desc">自宅WindowsPCローカルに WordPress をインストールしている。 以前、 WordPress 設定まとめを書いた。この時はメデ…</span><span class="lc-site">晴歩雨描 · <time>2022-08-15</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220811/20220811140646.jpg" alt="" loading="lazy"></span></a></p>
-<p><a class="link-card has-thumb" href="../16/105039.html"><span class="lc-body"><span class="lc-title">WordPress）はてなブログから移行（インポート）する手順まとめ。メディアライブラリを使わないバージョン。</span><span class="lc-desc">自宅WindowsPCローカルに WordPress をインストールしている。 「 はてなブログ 」からエクスポートして WordPress…</span><span class="lc-site">晴歩雨描 · <time>2022-08-16</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220817/20220817223605.jpg" alt="" loading="lazy"></span></a></p>
-<p><a class="link-card has-thumb" href="../11/231938.html"><span class="lc-body"><span class="lc-title">WordPress）はてなブログからインポートした記事にアイキャッチ画像を一括登録。</span><span class="lc-desc">............ 自分の はてなブログ ではすべて アイキャッチ 画像を登録しているので、エクスポートファイルの「IMAGE:」には…</span><span class="lc-site">晴歩雨描 · <time>2022-08-11</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220811/20220811231738.jpg" alt="" loading="lazy"></span></a></p>
-<p><a class="link-card has-thumb" href="../12/160116.html"><span class="lc-body"><span class="lc-title">WordPress）はてなブログから移行（インポート）する手順まとめ。メディアライブラリを使うバージョン。</span><span class="lc-desc">自宅のWindowsPCローカルに WordPress をインストールしている。 「 はてなブログ 」からエクスポートして WordPres…</span><span class="lc-site">晴歩雨描 · <time>2022-08-12</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220807/20220807132140.png" alt="" loading="lazy"></span></a></p>
-<p><a class="link-card has-thumb" href="../12/153111.html"><span class="lc-body"><span class="lc-title">WordPress）設定まとめ。メディアライブラリを使うバージョン。</span><span class="lc-desc">自宅のWindowsPCローカルに WordPress をインストールしている。 設定をいくつかやってみたので、備忘録としてまとめ。 ※ メ…</span><span class="lc-site">晴歩雨描 · <time>2022-08-12</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220812/20220812153057.jpg" alt="" loading="lazy"></span></a></p></div></article>
+<p><a class="link-card has-thumb" href="../15/231115.html"><span class="lc-body"><span class="lc-title">WordPress）設定まとめ。メディアライブラリを使わないバージョン。</span><span class="lc-desc">自宅WindowsPCローカルにWordPressをインストールしている。 以前、WordPress設定まとめを書いた。この時はメディアライ…</span><span class="lc-site">晴歩雨描 · <time>2022-08-15</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220811/20220811140646.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card has-thumb" href="../16/105039.html"><span class="lc-body"><span class="lc-title">WordPress）はてなブログから移行（インポート）する手順まとめ。メディアライブラリを使わないバージョン。</span><span class="lc-desc">自宅WindowsPCローカルにWordPressをインストールしている。 「はてなブログ」からエクスポートしてWordPressにインポー…</span><span class="lc-site">晴歩雨描 · <time>2022-08-16</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220817/20220817223605.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card has-thumb" href="../11/231938.html"><span class="lc-body"><span class="lc-title">WordPress）はてなブログからインポートした記事にアイキャッチ画像を一括登録。</span><span class="lc-desc">............ 自分のはてなブログではすべてアイキャッチ画像を登録しているので、エクスポートファイルの「IMAGE:」には必ずファ…</span><span class="lc-site">晴歩雨描 · <time>2022-08-11</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220811/20220811231738.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card has-thumb" href="../12/160116.html"><span class="lc-body"><span class="lc-title">WordPress）はてなブログから移行（インポート）する手順まとめ。メディアライブラリを使うバージョン。</span><span class="lc-desc">自宅のWindowsPCローカルにWordPressをインストールしている。 「はてなブログ」からエクスポートしてWordPressにインポ…</span><span class="lc-site">晴歩雨描 · <time>2022-08-12</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220807/20220807132140.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card has-thumb" href="../12/153111.html"><span class="lc-body"><span class="lc-title">WordPress）設定まとめ。メディアライブラリを使うバージョン。</span><span class="lc-desc">自宅のWindowsPCローカルにWordPressをインストールしている。 設定をいくつかやってみたので、備忘録としてまとめ。 ※ メディ…</span><span class="lc-site">晴歩雨描 · <time>2022-08-12</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220812/20220812153057.jpg" alt="" loading="lazy"></span></a></p></div></article>
 </body>
 </html>

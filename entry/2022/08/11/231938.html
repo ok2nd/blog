@@ -8,29 +8,29 @@
 </head>
 <body>
 <p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>WordPress）はてなブログからインポートした記事にアイキャッチ画像を一括登録。</h1><p class="meta">2022-08-11 · <a href="../../../../category/c13.html">ホームページ、Web作成</a> <a href="../../../../category/c2.html">WordPress</a> <a href="../../../../category/c4.html">はてなブログ</a></p><div class="entry-body">............</pre>
-<p>自分の<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A4%CF%A4%C6%A4%CA%A5%D6%A5%ED%A5%B0">はてなブログ</a>ではすべて<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%A2%A5%A4%A5%AD%A5%E3%A5%C3%A5%C1">アイキャッチ</a>画像を登録しているので、エクスポートファイルの「IMAGE:」には必ずファイル名が入っている前提。</p>
-<p><a class="keyword" href="http://d.hatena.ne.jp/keyword/%A4%CF%A4%C6%A4%CA%A5%D6%A5%ED%A5%B0">はてなブログ</a>エクスポートファイルの「<em>IMAGE:</em>」に設定されている画像のみを<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%A2%A5%A4%A5%AD%A5%E3%A5%C3%A5%C1">アイキャッチ</a>画像として登録する。</p>
-<p><a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%D7%A5%E9%A5%B0%A5%A4%A5%F3">プラグイン</a>「<em>hatenablog-eyecatch.<a class="keyword" href="http://d.hatena.ne.jp/keyword/php">php</a></em>」というファイル名にした。「IMUZA.com」さんの<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%D7%A5%E9%A5%B0%A5%A4%A5%F3">プラグイン</a>をほぼそのまま流用させてもらっているので、とりあえず一般公開はしない。</p>
-<p>画像ファイルのパスは以前自作したツールで、<a class="keyword" href="http://d.hatena.ne.jp/keyword/WordPress">WordPress</a>のローカル<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%C7%A5%A3%A5%EC%A5%AF%A5%C8">ディレクト</a>リ「wp-content/uploads/hatena/」に変更している。</p>
-<p><a class="link-card has-thumb" href="../08/123707.html"><span class="lc-body"><span class="lc-title">はてなブログのエクスポートファイルの画像リンクをWordPressローカルに変えるJScriptを作成。</span><span class="lc-desc">自宅のWindowsPCローカルに WordPress をインストールしている。 はてなブログ のエクスポートファイルでは写真画像は、 はて…</span><span class="lc-site">晴歩雨描 · <time>2022-08-08</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220808/20220808125307.png" alt="" loading="lazy"></span></a></p>
-<p>IMAGE:の<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%A2%A5%A4%A5%AD%A5%E3%A5%C3%A5%C1">アイキャッチ</a>画像URLから<a class="keyword" href="http://d.hatena.ne.jp/keyword/WordPress">WordPress</a>用<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%A2%A5%A4%A5%AD%A5%E3%A5%C3%A5%C1">アイキャッチ</a>画像URLを取り出す。</p>
-<pre>IMAGE: /<a class="keyword" href="http://d.hatena.ne.jp/keyword/wordpress">wordpress</a>/wp-content/uploads/hatena/20220729_20220729120420.jpg
+<p>自分のはてなブログではすべてアイキャッチ画像を登録しているので、エクスポートファイルの「IMAGE:」には必ずファイル名が入っている前提。</p>
+<p>はてなブログエクスポートファイルの「<em>IMAGE:</em>」に設定されている画像のみをアイキャッチ画像として登録する。</p>
+<p>プラグイン「<em>hatenablog-eyecatch.php</em>」というファイル名にした。「IMUZA.com」さんのプラグインをほぼそのまま流用させてもらっているので、とりあえず一般公開はしない。</p>
+<p>画像ファイルのパスは以前自作したツールで、WordPressのローカルディレクトリ「wp-content/uploads/hatena/」に変更している。</p>
+<p><a class="link-card has-thumb" href="../08/123707.html"><span class="lc-body"><span class="lc-title">はてなブログのエクスポートファイルの画像リンクをWordPressローカルに変えるJScriptを作成。</span><span class="lc-desc">自宅のWindowsPCローカルにWordPressをインストールしている。 はてなブログのエクスポートファイルでは写真画像は、はてなフォト…</span><span class="lc-site">晴歩雨描 · <time>2022-08-08</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220808/20220808125307.png" alt="" loading="lazy"></span></a></p>
+<p>IMAGE:のアイキャッチ画像URLからWordPress用アイキャッチ画像URLを取り出す。</p>
+<pre>IMAGE: /wordpress/wp-content/uploads/hatena/20220729_20220729120420.jpg
 </pre>
 <p>↓↓↓</p>
 <pre>/wp-content/uploads/hatena/20220729_20220729120420.jpg
 </pre>
-<p>≪「<em>hatenablog-eyecatch.<a class="keyword" href="http://d.hatena.ne.jp/keyword/php">php</a></em>」の該当処理部分コード≫</p>
+<p>≪「<em>hatenablog-eyecatch.php</em>」の該当処理部分コード≫</p>
 <ul>
-<li>\wp-content\plugins\hatenablog-eyecatch\hatenablog-eyecatch.<a class="keyword" href="http://d.hatena.ne.jp/keyword/php">php</a></li>
+<li>\wp-content\plugins\hatenablog-eyecatch\hatenablog-eyecatch.php</li>
 </ul>
-<pre>if (strpos($array[$i], 'IMAGE:') !== FALSE &amp;&amp; strpos($array[$i], '<a class="keyword" href="http://d.hatena.ne.jp/keyword/localhost">localhost</a>') !== FALSE) {
-	$image = str_replace('IMAGE: /<a class="keyword" href="http://d.hatena.ne.jp/keyword/wordpress">wordpress</a>', '', $array[$i]);
+<pre>if (strpos($array[$i], 'IMAGE:') !== FALSE &amp;&amp; strpos($array[$i], 'localhost') !== FALSE) {
+	$image = str_replace('IMAGE: /wordpress', '', $array[$i]);
 	echo $image.'&lt;br&gt;';
 }
 </pre>
-<p><a class="link-card has-thumb" href="../10/215302.html"><span class="lc-body"><span class="lc-title">WordPress）記事一覧にアイキャッチ画像を表示させる。</span><span class="lc-desc">WordPress テーマ「Semplicemente」では、 アイキャッチ 画像を設定しても記事一覧に アイキャッチ 画像が表示されない。…</span><span class="lc-site">晴歩雨描 · <time>2022-08-10</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220810/20220810214942.jpg" alt="" loading="lazy"></span></a></p>
-<p><a class="link-card has-thumb" href="../08/123707.html"><span class="lc-body"><span class="lc-title">はてなブログのエクスポートファイルの画像リンクをWordPressローカルに変えるJScriptを作成。</span><span class="lc-desc">自宅のWindowsPCローカルに WordPress をインストールしている。 はてなブログ のエクスポートファイルでは写真画像は、 はて…</span><span class="lc-site">晴歩雨描 · <time>2022-08-08</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220808/20220808125307.png" alt="" loading="lazy"></span></a></p>
-<p><a class="link-card has-thumb" href="../12/160116.html"><span class="lc-body"><span class="lc-title">WordPress）はてなブログから移行（インポート）する手順まとめ。メディアライブラリを使うバージョン。</span><span class="lc-desc">自宅のWindowsPCローカルに WordPress をインストールしている。 「 はてなブログ 」からエクスポートして WordPres…</span><span class="lc-site">晴歩雨描 · <time>2022-08-12</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220807/20220807132140.png" alt="" loading="lazy"></span></a></p>
-<p><a class="link-card has-thumb" href="../14/225205.html"><span class="lc-body"><span class="lc-title">WordPress）はてなブログのアイキャッチ画像をメディアライブラリを使わずに記事一覧とブログカードに反映させる。</span><span class="lc-desc">自宅WindowsPCローカルに WordPress をインストールしている。 「 はてなブログ 」から WordPress への移行の検証…</span><span class="lc-site">晴歩雨描 · <time>2022-08-14</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220814/20220814225145.jpg" alt="" loading="lazy"></span></a></p></div></article>
+<p><a class="link-card has-thumb" href="../10/215302.html"><span class="lc-body"><span class="lc-title">WordPress）記事一覧にアイキャッチ画像を表示させる。</span><span class="lc-desc">WordPressテーマ「Semplicemente」では、アイキャッチ画像を設定しても記事一覧にアイキャッチ画像が表示されない。 テーマ「…</span><span class="lc-site">晴歩雨描 · <time>2022-08-10</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220810/20220810214942.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card has-thumb" href="../08/123707.html"><span class="lc-body"><span class="lc-title">はてなブログのエクスポートファイルの画像リンクをWordPressローカルに変えるJScriptを作成。</span><span class="lc-desc">自宅のWindowsPCローカルにWordPressをインストールしている。 はてなブログのエクスポートファイルでは写真画像は、はてなフォト…</span><span class="lc-site">晴歩雨描 · <time>2022-08-08</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220808/20220808125307.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card has-thumb" href="../12/160116.html"><span class="lc-body"><span class="lc-title">WordPress）はてなブログから移行（インポート）する手順まとめ。メディアライブラリを使うバージョン。</span><span class="lc-desc">自宅のWindowsPCローカルにWordPressをインストールしている。 「はてなブログ」からエクスポートしてWordPressにインポ…</span><span class="lc-site">晴歩雨描 · <time>2022-08-12</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220807/20220807132140.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card has-thumb" href="../14/225205.html"><span class="lc-body"><span class="lc-title">WordPress）はてなブログのアイキャッチ画像をメディアライブラリを使わずに記事一覧とブログカードに反映させる。</span><span class="lc-desc">自宅WindowsPCローカルにWordPressをインストールしている。 「 はてなブログ 」からWordPressへの移行の検証をしてい…</span><span class="lc-site">晴歩雨描 · <time>2022-08-14</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220814/20220814225145.jpg" alt="" loading="lazy"></span></a></p></div></article>
 </body>
 </html>

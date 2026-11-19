@@ -7,32 +7,32 @@
 <link rel="stylesheet" href="../../../../style.css">
 </head>
 <body>
-<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>WordPress）余分なサイズの画像自動生成を停止する方法。</h1><p class="meta">2022-08-11 · <a href="../../../../category/c13.html">ホームページ、Web作成</a> <a href="../../../../category/c2.html">WordPress</a></p><div class="entry-body"><p><a class="keyword" href="http://d.hatena.ne.jp/keyword/WordPress">WordPress</a>では、画像をアップロードすると、余分なサイズの画像が自動生成される。</p>
+<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>WordPress）余分なサイズの画像自動生成を停止する方法。</h1><p class="meta">2022-08-11 · <a href="../../../../category/c13.html">ホームページ、Web作成</a> <a href="../../../../category/c2.html">WordPress</a></p><div class="entry-body"><p>WordPressでは、画像をアップロードすると、余分なサイズの画像が自動生成される。</p>
 <p>これを停止する方法。</p>
 <p>以下の2つを実施。</p>
 <h5 id="１設定--メディア">【１．設定 &gt; メディア】</h5>
 <p>以下の画像サイズを全て0にする。</p>
 <p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220811/20220811140646.jpg" width="630" height="727" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
-<h5 id="２optionsphp自宅PCの場合">【２．options.<a class="keyword" href="http://d.hatena.ne.jp/keyword/php">php</a>】（自宅PCの場合）</h5>
+<h5 id="２optionsphp自宅PCの場合">【２．options.php】（自宅PCの場合）</h5>
 <ul>
 <li><a href="http://localhost/wordpress/wp-admin/options.php">http://localhost/wordpress/wp-admin/options.php</a></li>
 </ul>
 <p>で、「medium_large_size_w」を0にする。</p>
 <p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220811/20220811140725.jpg" width="989" height="185" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
-<h5 id="３functionsphp">【３．functions.<a class="keyword" href="http://d.hatena.ne.jp/keyword/php">php</a>】</h5>
+<h5 id="３functionsphp">【３．functions.php】</h5>
 <p>■ テーマ「<em>Semplicemente</em>」の場合。</p>
-<p>「\wp-content\themes\semplicemente\functions.<a class="keyword" href="http://d.hatena.ne.jp/keyword/php">php</a>」の以下を<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%B3%A5%E1%A5%F3%A5%C8%A5%A2%A5%A6%A5%C8">コメントアウト</a>する。</p>
+<p>「\wp-content\themes\semplicemente\functions.php」の以下をコメントアウトする。</p>
 <pre>//	add_image_size( 'normal-post' , 720, 9999);
 </pre>
 <p>■ テーマ「<em>Iconic One</em>」の場合。</p>
-<p>「\wp-content\themes\iconic-one\functions.<a class="keyword" href="http://d.hatena.ne.jp/keyword/php">php</a>」の以下を<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%B3%A5%E1%A5%F3%A5%C8%A5%A2%A5%A6%A5%C8">コメントアウト</a>する。</p>
+<p>「\wp-content\themes\iconic-one\functions.php」の以下をコメントアウトする。</p>
 <pre>//	set_post_thumbnail_size( 660, 9999 ); // Unlimited height, soft crop
 //	add_image_size('excerpt-thumbnail', 200, 140, true);
 //	add_image_size('excerpt-thumbnail-mobile', 380, 200, true);
 </pre>
-<p><a class="link-card has-thumb" href="../12/153111.html"><span class="lc-body"><span class="lc-title">WordPress）設定まとめ。メディアライブラリを使うバージョン。</span><span class="lc-desc">自宅のWindowsPCローカルに WordPress をインストールしている。 設定をいくつかやってみたので、備忘録としてまとめ。 ※ メ…</span><span class="lc-site">晴歩雨描 · <time>2022-08-12</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220812/20220812153057.jpg" alt="" loading="lazy"></span></a></p>
-<p><a class="link-card has-thumb" href="../13/124011.html"><span class="lc-body"><span class="lc-title">WordPress）外観テーマを「Iconic One」に変更。 「Iconic One」カスタマイズ。</span><span class="lc-desc">先日、自宅のWindowsPCローカルに WordPress を入れた。 外観テーマを一旦「Semplicemente」に変更したが、 今回…</span><span class="lc-site">晴歩雨描 · <time>2022-08-13</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220813/20220813123456.jpg" alt="" loading="lazy"></span></a></p>
-<p><a class="link-card has-thumb" href="../08/171242.html"><span class="lc-body"><span class="lc-title">WordPress）外観テーマを「Semplicemente」に変更。</span><span class="lc-desc">先日、自宅のWindowsPCローカルに WordPress を入れた。 この WordPress の外観テーマを「Semplicement…</span><span class="lc-site">晴歩雨描 · <time>2022-08-08</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220808/20220808170200.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card has-thumb" href="../12/153111.html"><span class="lc-body"><span class="lc-title">WordPress）設定まとめ。メディアライブラリを使うバージョン。</span><span class="lc-desc">自宅のWindowsPCローカルにWordPressをインストールしている。 設定をいくつかやってみたので、備忘録としてまとめ。 ※ メディ…</span><span class="lc-site">晴歩雨描 · <time>2022-08-12</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220812/20220812153057.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card has-thumb" href="../13/124011.html"><span class="lc-body"><span class="lc-title">WordPress）外観テーマを「Iconic One」に変更。 「Iconic One」カスタマイズ。</span><span class="lc-desc">先日、自宅のWindowsPCローカルにWordPressを入れた。 外観テーマを一旦「Semplicemente」に変更したが、 今回、外…</span><span class="lc-site">晴歩雨描 · <time>2022-08-13</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220813/20220813123456.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card has-thumb" href="../08/171242.html"><span class="lc-body"><span class="lc-title">WordPress）外観テーマを「Semplicemente」に変更。</span><span class="lc-desc">先日、自宅のWindowsPCローカルにWordPressを入れた。 このWordPressの外観テーマを「Semplicemente」に変…</span><span class="lc-site">晴歩雨描 · <time>2022-08-08</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220808/20220808170200.jpg" alt="" loading="lazy"></span></a></p>
 <p><a class="link-card has-thumb" href="../06/224635.html"><span class="lc-body"><span class="lc-title">WindowsPCの古いXAMPPにWordPress（5.0.16）をインストール。</span><span class="lc-desc">※ 後日追記：ドライブやディレクトリを変える場合は注意が必要。 自宅のWindowsPCにWordPressをインストールした手順の備忘録。…</span><span class="lc-site">晴歩雨描 · <time>2022-08-06</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220806/20220806222743.png" alt="" loading="lazy"></span></a></p></div></article>
 </body>
 </html>

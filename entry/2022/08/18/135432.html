@@ -7,17 +7,17 @@
 <link rel="stylesheet" href="../../../../style.css">
 </head>
 <body>
-<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>WordPress）はてなブログから移行した画像をポップアップ表示するようにした。</h1><p class="meta">2022-08-18 · <a href="../../../../category/c13.html">ホームページ、Web作成</a> <a href="../../../../category/c2.html">WordPress</a> <a href="../../../../category/c4.html">はてなブログ</a></p><div class="entry-body"><p><a class="keyword" href="http://d.hatena.ne.jp/keyword/%A4%CF%A4%C6%A4%CA%A5%D6%A5%ED%A5%B0">はてなブログ</a>から<a class="keyword" href="http://d.hatena.ne.jp/keyword/WordPress">WordPress</a>への移行を検証している。</p>
-<p><a class="link-card has-thumb" href="../16/105039.html"><span class="lc-body"><span class="lc-title">WordPress）はてなブログから移行（インポート）する手順まとめ。メディアライブラリを使わないバージョン。</span><span class="lc-desc">自宅WindowsPCローカルに WordPress をインストールしている。 「 はてなブログ 」からエクスポートして WordPress…</span><span class="lc-site">晴歩雨描 · <time>2022-08-16</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220817/20220817223605.jpg" alt="" loading="lazy"></span></a></p>
-<p><a class="keyword" href="http://d.hatena.ne.jp/keyword/%A4%CF%A4%C6%A4%CA%A5%D6%A5%ED%A5%B0">はてなブログ</a>から<a class="keyword" href="http://d.hatena.ne.jp/keyword/WordPress">WordPress</a>へ画像を移行して記事内で画像が表示されるようになったが、この画像をクリックしてポップアップ画像を表示するようにした。</p>
+<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>WordPress）はてなブログから移行した画像をポップアップ表示するようにした。</h1><p class="meta">2022-08-18 · <a href="../../../../category/c13.html">ホームページ、Web作成</a> <a href="../../../../category/c2.html">WordPress</a> <a href="../../../../category/c4.html">はてなブログ</a></p><div class="entry-body"><p>はてなブログからWordPressへの移行を検証している。</p>
+<p><a class="link-card has-thumb" href="../16/105039.html"><span class="lc-body"><span class="lc-title">WordPress）はてなブログから移行（インポート）する手順まとめ。メディアライブラリを使わないバージョン。</span><span class="lc-desc">自宅WindowsPCローカルにWordPressをインストールしている。 「はてなブログ」からエクスポートしてWordPressにインポー…</span><span class="lc-site">晴歩雨描 · <time>2022-08-16</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220817/20220817223605.jpg" alt="" loading="lazy"></span></a></p>
+<p>はてなブログからWordPressへ画像を移行して記事内で画像が表示されるようになったが、この画像をクリックしてポップアップ画像を表示するようにした。</p>
 <p>&lt;a&gt;タグ、&lt;div&gt;タグを使わずに、&lt;img&gt;タグだけで画像を、ポップアップする方法を利用した。</p>
 <p><a class="link-card has-thumb" href="130246.html"><span class="lc-body"><span class="lc-title">JavaScript、CSS）aタグ、divタグを使わずに、imgタグだけで画像をポップアップする。</span><span class="lc-desc">HTMLで画像をポップアップする場合、&lt;a&gt;タグや&lt;div&gt;タグで&lt;img&gt;タグを囲んで行うのが一般的。 &lt;a&gt;タグ、&lt;div&gt;タグを使わず…</span><span class="lc-site">晴歩雨描 · <time>2022-08-18</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220818/20220818150842.jpg" alt="" loading="lazy"></span></a></p>
 <p>テーマフォルダ「<em>\wp-content\themes\iconic-one\</em>」の以下のファイルにそれぞれ追記。</p>
-<p>ポップアップする対象の画像は、class名が「hatena-<a class="keyword" href="http://d.hatena.ne.jp/keyword/fotolife">fotolife</a>」のものだけ。</p>
-<pre>&lt;p&gt;&lt;img class="hatena-<a class="keyword" href="http://d.hatena.ne.jp/keyword/fotolife">fotolife</a>" ....&gt;&lt;/p&gt;
+<p>ポップアップする対象の画像は、class名が「hatena-fotolife」のものだけ。</p>
+<pre>&lt;p&gt;&lt;img class="hatena-fotolife" ....&gt;&lt;/p&gt;
 </pre>
-<h5 id="customcss">≪<em>custom.<a class="keyword" href="http://d.hatena.ne.jp/keyword/css">css</a></em>≫</h5>
-<p>※ ポップアップ画像が<a class="keyword" href="http://d.hatena.ne.jp/keyword/WordPress">WordPress</a>のヘッダーに隠れないように調整。</p>
+<h5 id="customcss">≪<em>custom.css</em>≫</h5>
+<p>※ ポップアップ画像がWordPressのヘッダーに隠れないように調整。</p>
 <p>※ ポップアップ画像には白枠と角丸も付けている。</p>
 <pre>#modal-container {
 	display: none;
@@ -30,7 +30,7 @@
 	z-index: 99;
 }
 #modal-container &gt; div {
-	display: <a class="keyword" href="http://d.hatena.ne.jp/keyword/flex">flex</a>;
+	display: flex;
 	height: 100vh;
 	justify-content: center;
 	align-items: center;
@@ -42,32 +42,32 @@
 	padding: 12px;
 	background-color: #fff;
 	box-shadow: 0 3px 18px -4px rgba(0, 0, 0, 0.8);
-	border-<a class="keyword" href="http://d.hatena.ne.jp/keyword/radius">radius</a>: 10px;
+	border-radius: 10px;
 }
-p &gt; img.hatena-<a class="keyword" href="http://d.hatena.ne.jp/keyword/fotolife">fotolife</a> {
+p &gt; img.hatena-fotolife {
 	cursor: pointer;
 }
-figure &gt; img.hatena-<a class="keyword" href="http://d.hatena.ne.jp/keyword/fotolife">fotolife</a> {
+figure &gt; img.hatena-fotolife {
 	cursor: pointer;
 }
 </pre>
-<h5 id="headerphp">≪<em>header.<a class="keyword" href="http://d.hatena.ne.jp/keyword/php">php</a></em>≫</h5>
-<p>※ <a class="keyword" href="http://d.hatena.ne.jp/keyword/jQuery">jQuery</a>を使う。</p>
+<h5 id="headerphp">≪<em>header.php</em>≫</h5>
+<p>※ jQueryを使う。</p>
 <pre>&lt;script src="<a href="https://code.jquery.com/jquery-3.6.0.min.js">https://code.jquery.com/jquery-3.6.0.min.js</a>" crossorigin="anonymous"&gt;&lt;/script&gt;
 </pre>
-<h5 id="footerphp">≪<em>footer.<a class="keyword" href="http://d.hatena.ne.jp/keyword/php">php</a></em>≫</h5>
+<h5 id="footerphp">≪<em>footer.php</em>≫</h5>
 <p>※ 既に&lt;a&gt;タグで囲われている&lt;img&gt;タグは除くため、&lt;p&gt;タグと&lt;figure&gt;タグ直下だけを対象にしている。</p>
 <pre>&lt;div id="modal-container"&gt;&lt;div&gt;&lt;img src=""&gt;&lt;/div&gt;&lt;/div&gt;
 &lt;script&gt;
 const modal = $('#modal-container');
 const img = modal.find('img');
-$('p &gt; img.hatena-<a class="keyword" href="http://d.hatena.ne.jp/keyword/fotolife">fotolife</a>').each(function(index) {	// &lt;p&gt;直下の&lt;img&gt;だけ対象
+$('p &gt; img.hatena-fotolife').each(function(index) {	// &lt;p&gt;直下の&lt;img&gt;だけ対象
 	$(this).click(function() {
 		img.attr('src', $(this).attr('src'));
 		modal.show();
 	})
 });
-$('figure &gt; img.hatena-<a class="keyword" href="http://d.hatena.ne.jp/keyword/fotolife">fotolife</a>').each(function(index) {	// &lt;figure&gt;直下の&lt;img&gt;だけ対象
+$('figure &gt; img.hatena-fotolife').each(function(index) {	// &lt;figure&gt;直下の&lt;img&gt;だけ対象
 	$(this).click(function() {
 		img.attr('src', $(this).attr('src'));
 		modal.show();
@@ -78,9 +78,9 @@ modal.click(function() {
 });
 &lt;/script&gt;
 </pre>
-<p><a class="link-card has-thumb" href="../15/231115.html"><span class="lc-body"><span class="lc-title">WordPress）設定まとめ。メディアライブラリを使わないバージョン。</span><span class="lc-desc">自宅WindowsPCローカルに WordPress をインストールしている。 以前、 WordPress 設定まとめを書いた。この時はメデ…</span><span class="lc-site">晴歩雨描 · <time>2022-08-15</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220811/20220811140646.jpg" alt="" loading="lazy"></span></a></p>
-<p><a class="link-card has-thumb" href="../14/225205.html"><span class="lc-body"><span class="lc-title">WordPress）はてなブログのアイキャッチ画像をメディアライブラリを使わずに記事一覧とブログカードに反映させる。</span><span class="lc-desc">自宅WindowsPCローカルに WordPress をインストールしている。 「 はてなブログ 」から WordPress への移行の検証…</span><span class="lc-site">晴歩雨描 · <time>2022-08-14</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220814/20220814225145.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card has-thumb" href="../15/231115.html"><span class="lc-body"><span class="lc-title">WordPress）設定まとめ。メディアライブラリを使わないバージョン。</span><span class="lc-desc">自宅WindowsPCローカルにWordPressをインストールしている。 以前、WordPress設定まとめを書いた。この時はメディアライ…</span><span class="lc-site">晴歩雨描 · <time>2022-08-15</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220811/20220811140646.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card has-thumb" href="../14/225205.html"><span class="lc-body"><span class="lc-title">WordPress）はてなブログのアイキャッチ画像をメディアライブラリを使わずに記事一覧とブログカードに反映させる。</span><span class="lc-desc">自宅WindowsPCローカルにWordPressをインストールしている。 「 はてなブログ 」からWordPressへの移行の検証をしてい…</span><span class="lc-site">晴歩雨描 · <time>2022-08-14</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220814/20220814225145.jpg" alt="" loading="lazy"></span></a></p>
 <p><a class="link-card has-thumb" href="../06/224635.html"><span class="lc-body"><span class="lc-title">WindowsPCの古いXAMPPにWordPress（5.0.16）をインストール。</span><span class="lc-desc">※ 後日追記：ドライブやディレクトリを変える場合は注意が必要。 自宅のWindowsPCにWordPressをインストールした手順の備忘録。…</span><span class="lc-site">晴歩雨描 · <time>2022-08-06</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220806/20220806222743.png" alt="" loading="lazy"></span></a></p>
-<p><a class="link-card has-thumb" href="../20/141117.html"><span class="lc-body"><span class="lc-title">WordPress）検索対象に「カテゴリ」を追加し「本文」は含めない。</span><span class="lc-desc">WordPress のサイト内検索対象に「カテゴリ」を追加し「本文」は含めないようにする。 検索対象は「タイトル」と「カテゴリ」にする。 以…</span><span class="lc-site">晴歩雨描 · <time>2022-08-20</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220820/20220820140927.jpg" alt="" loading="lazy"></span></a></p></div></article>
+<p><a class="link-card has-thumb" href="../20/141117.html"><span class="lc-body"><span class="lc-title">WordPress）検索対象に「カテゴリ」を追加し「本文」は含めない。</span><span class="lc-desc">WordPressのサイト内検索対象に「カテゴリ」を追加し「本文」は含めないようにする。 検索対象は「タイトル」と「カテゴリ」にする。 以下…</span><span class="lc-site">晴歩雨描 · <time>2022-08-20</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220820/20220820140927.jpg" alt="" loading="lazy"></span></a></p></div></article>
 </body>
 </html>

@@ -7,22 +7,22 @@
 <link rel="stylesheet" href="../../../../style.css">
 </head>
 <body>
-<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>パナソニックのデジカメ写真のEXIFから、フォトスタイル、クリエイティブコントロール情報を抜き出して、画像ファイル名にEXIF情報を付け足す。（ExifTool/JScript）</h1><p class="meta">2018-12-21 · <a href="../../../../category/c18.html">写真・カメラ</a> <a href="../../../../category/c8.html">コンピュータ</a></p><div class="entry-body"><p>先日、<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%BD%A5%CB%A1%BC">ソニー</a>のデジカメ写真の<a class="keyword" href="http://d.hatena.ne.jp/keyword/EXIF">EXIF</a>から、クリエイティブスタイル、ピクチャーエフェクト情報を抜き出して、画像ファイル名に<a class="keyword" href="http://d.hatena.ne.jp/keyword/EXIF">EXIF</a>情報を付け足す<a class="keyword" href="http://d.hatena.ne.jp/keyword/JScript">JScript</a>を作成した。</p>
-<p><a class="link-card has-thumb" href="../../11/29/093518.html"><span class="lc-body"><span class="lc-title">ソニーのデジカメ写真のEXIFから、クリエイティブスタイル、ピクチャーエフェクト情報を抜き出して、画像ファイル名にEXIF情報を付け足す。（ExifTool/JScript）</span><span class="lc-desc">先日、 価格.com 掲示 板で、DSC-RX100M6でクリエイティブスタイルやピクチャーエフェクトを設定して撮影した写真の EXIF 情…</span><span class="lc-site">晴歩雨描 · <time>2018-11-29</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20181129/20181129091633.jpg" alt="" loading="lazy"></span></a></p>
-<p>今回、<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%D1%A5%CA%A5%BD%A5%CB%A5%C3%A5%AF">パナソニック</a>のデジカメ写真の<a class="keyword" href="http://d.hatena.ne.jp/keyword/EXIF">EXIF</a>から、フォトスタイル、クリエイティブコン<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%C8%A5%ED%A1%BC%A5%EB">トロール</a>情報を抜き出して、画像ファイル名に<a class="keyword" href="http://d.hatena.ne.jp/keyword/EXIF">EXIF</a>情報を付け足す<a class="keyword" href="http://d.hatena.ne.jp/keyword/JScript">JScript</a>を作成。</p>
+<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>パナソニックのデジカメ写真のEXIFから、フォトスタイル、クリエイティブコントロール情報を抜き出して、画像ファイル名にEXIF情報を付け足す。（ExifTool/JScript）</h1><p class="meta">2018-12-21 · <a href="../../../../category/c18.html">写真・カメラ</a> <a href="../../../../category/c8.html">コンピュータ</a></p><div class="entry-body"><p>先日、ソニーのデジカメ写真のEXIFから、クリエイティブスタイル、ピクチャーエフェクト情報を抜き出して、画像ファイル名にEXIF情報を付け足すJScriptを作成した。</p>
+<p><a class="link-card has-thumb" href="../../11/29/093518.html"><span class="lc-body"><span class="lc-title">ソニーのデジカメ写真のEXIFから、クリエイティブスタイル、ピクチャーエフェクト情報を抜き出して、画像ファイル名にEXIF情報を付け足す。（ExifTool/JScript）</span><span class="lc-desc">先日、価格.com掲示板で、DSC-RX100M6でクリエイティブスタイルやピクチャーエフェクトを設定して撮影した写真のEXIF情報を確認す…</span><span class="lc-site">晴歩雨描 · <time>2018-11-29</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20181129/20181129091633.jpg" alt="" loading="lazy"></span></a></p>
+<p>今回、パナソニックのデジカメ写真のEXIFから、フォトスタイル、クリエイティブコントロール情報を抜き出して、画像ファイル名にEXIF情報を付け足すJScriptを作成。</p>
 <p>前提としてExifToolを使うが、そのインストール方法等は上のブログ記事を参照。</p>
 <p>exiftool.exeのデスクトップに置くショートカットのリンク先は次のように設定する。</p>
-<pre>C:\<a class="keyword" href="http://d.hatena.ne.jp/keyword/Windows">Windows</a>\exiftool.exe -k -PhotoStyle -makernotes:contrast -makernotes:saturation -makernotes:sharpness -AdvancedSceneMode
+<pre>C:\Windows\exiftool.exe -k -PhotoStyle -makernotes:contrast -makernotes:saturation -makernotes:sharpness -AdvancedSceneMode
 </pre>
-<p>このショートカットアイコンに、画像ファイルを複数まとめて<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%C9%A5%E9%A5%C3%A5%B0%26amp%3B%A5%C9%A5%ED%A5%C3%A5%D7">ドラッグ&amp;ドロップ</a>すると、<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%B3%A5%DE%A5%F3%A5%C9%A5%D7%A5%ED%A5%F3%A5%D7%A5%C8">コマンドプロンプト</a>に似たウインドウが開いて、まとめて結果が表示される。</p>
-<p><span style="color: #dd830c;">※ 一度にウインドウに表示できる行数に制限がある模様。1度に<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%C9%A5%E9%A5%C3%A5%B0%26amp%3B%A5%C9%A5%ED%A5%C3%A5%D7">ドラッグ&amp;ドロップ</a>する画像ファイルは40個以内にした方が良い。</span></p>
+<p>このショートカットアイコンに、画像ファイルを複数まとめてドラッグ&amp;ドロップすると、コマンドプロンプトに似たウインドウが開いて、まとめて結果が表示される。</p>
+<p><span style="color: #dd830c;">※ 一度にウインドウに表示できる行数に制限がある模様。1度にドラッグ&amp;ドロップする画像ファイルは40個以内にした方が良い。</span></p>
 <p><img class="hatena-fotolife" title="f:id:art2nd:20181221142044j:plain" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20181221/20181221142044.jpg" alt="f:id:art2nd:20181221142044j:plain" /></p>
 <p>このウインドウに表示された結果テキストをCtrl-A、Ctrl-Cでコピーし、exif2ren.jseと同じフォルダにあるdata.txtを開いてペーストし保存する。</p>
 <p>exif2ren.jseアイコンをダブルクリックして実行すると、out.txtというファイルが作成される。</p>
 <p>作成されたout.txtの中身を開くと、以下の「out.txt サンプル」のように、renameコマンドが書かれている。</p>
 <p>Contrast、Saturation、Sharpnessの補正がある場合、頭文字+補正値で表現する。ただ、Saturation、SharpnessはどちらもSで始まるので、それぞれ、tとpにした。c-2 t+2 p+2のように表現。</p>
-<p>renameコマンドに問題が無いかを確認した上で、<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%B3%A5%DE%A5%F3%A5%C9%A5%D7%A5%ED%A5%F3%A5%D7%A5%C8">コマンドプロンプト</a>へ、renameコマンドをコピー&amp;ペーストで実行する。</p>
-<p><span style="color: #ff0000;">※ この<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%B9%A5%AF%A5%EA%A5%D7%A5%C8">スクリプト</a>を使う場合は、自己責任でお願いいたします。また、事前に画像ファイルのバックアップを取った上で利用願います。</span></p>
+<p>renameコマンドに問題が無いかを確認した上で、コマンドプロンプトへ、renameコマンドをコピー&amp;ペーストで実行する。</p>
+<p><span style="color: #ff0000;">※ このスクリプトを使う場合は、自己責任でお願いいたします。また、事前に画像ファイルのバックアップを取った上で利用願います。</span></p>
 <p>【data.txt サンプル：exiftoolの結果】</p>
 <pre>======== C:/work/exiftool/data/P1310956.JPG
 Photo Style                     : Standard or Custom
@@ -47,7 +47,7 @@ Photo Style                     : Standard or Custom
 Contrast                        : Normal
 Saturation                      : Normal
 Sharpness                       : Normal
-Advanced Scene Mode             : <a class="keyword" href="http://d.hatena.ne.jp/keyword/Silky">Silky</a> Monochrome
+Advanced Scene Mode             : Silky Monochrome
     4 image files read
 -- press RETURN --</pre>
 <p>【out.txt サンプル】</p>
@@ -56,8 +56,8 @@ rename C:\work\exiftool\data\P1310957.JPG P1310957_DynamicMonochrome.JPG
 rename C:\work\exiftool\data\P1310960.JPG P1310960_RoughMonochrome.JPG
 rename C:\work\exiftool\data\P1310961.JPG P1310961_SilkyMonochrome.JPG
 </pre>
-<p>【<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%B9%A5%AF%A5%EA%A5%D7%A5%C8">スクリプト</a>コード：exif2ren.jse】</p>
-<p><span style="color: #dd830c;">※ <a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%BD%A5%CB%A1%BC">ソニー</a>用の<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%B9%A5%AF%A5%EA%A5%D7%A5%C8">スクリプト</a>に処理を追加している。<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%BD%A5%CB%A1%BC">ソニー</a>用にも使える。</span></p>
+<p>【スクリプトコード：exif2ren.jse】</p>
+<p><span style="color: #dd830c;">※ ソニー用のスクリプトに処理を追加している。ソニー用にも使える。</span></p>
 <pre>var fs = WScript.CreateObject("Scripting.FileSystemObject");
 var ts = fs.OpenTextFile("data.txt"); 
 var str = ts.ReadAll();
@@ -99,6 +99,6 @@ outfile.Write(out);
 </pre>
 <p><a class="link-card has-thumb" href="../../11/23/123805.html"><span class="lc-body"><span class="lc-title">DSC-RX100M6 クリエイティブスタイル 画像比較</span><span class="lc-desc">SONY DSC-RX100M6のクリエイティブスタイルの画像を比較できるWebページを作成。 ↓ 2種類の画像を左右に並べて比較できる。画…</span><span class="lc-site">晴歩雨描 · <time>2018-11-23</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20181123/20181123122041.jpg" alt="" loading="lazy"></span></a></p>
 <p><a class="link-card has-thumb" href="../../../2020/01/17/145532.html"><span class="lc-body"><span class="lc-title">PowerShot SX70 HSの35mm判換算焦点距離をExifToolで調べる。</span><span class="lc-desc">先日、キヤノン PowerShot SX70 HS を購入した。 SX70 HS では、撮影した写真の35mm判換算焦点距離が知りたくても、…</span><span class="lc-site">晴歩雨描 · <time>2020-01-17</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20200117/20200117141013.jpg" alt="" loading="lazy"></span></a></p>
-<p><a class="link-card has-thumb" href="155050.html"><span class="lc-body"><span class="lc-title">モノクロモード比較：RX100M6、LUMIX GM1＋15mm/F1.7。神戸元町、三宮にて。アスペクト比1:1。</span><span class="lc-desc">SONY DSC-RX100M6と Panasonic LUMIX DMC -GM1のモノクロモードの比較をしてみた。 DMC -GM1はレ…</span><span class="lc-site">晴歩雨描 · <time>2018-12-21</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20181221/20181221152705.jpg" alt="" loading="lazy"></span></a></p></div></article>
+<p><a class="link-card has-thumb" href="155050.html"><span class="lc-body"><span class="lc-title">モノクロモード比較：RX100M6、LUMIX GM1＋15mm/F1.7。神戸元町、三宮にて。アスペクト比1:1。</span><span class="lc-desc">SONY DSC-RX100M6とPanasonic LUMIX DMC-GM1のモノクロモードの比較をしてみた。DMC-GM1はレンズ15…</span><span class="lc-site">晴歩雨描 · <time>2018-12-21</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20181221/20181221152705.jpg" alt="" loading="lazy"></span></a></p></div></article>
 </body>
 </html>

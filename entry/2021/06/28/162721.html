@@ -7,19 +7,19 @@
 <link rel="stylesheet" href="../../../../style.css">
 </head>
 <body>
-<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>Leaflet地図：「日本酒生産量：都道府県別マップ」作成。サンプルソース。逆ジオコーディング付き。</h1><p class="meta">2021-06-28 · <a href="../../../../category/c36.html">酒・ワイン・ビール</a> <a href="../../../../category/c21.html">地図・マップ</a> <a href="../../../../category/c13.html">ホームページ、Web作成</a></p><div class="entry-body"><p>地図データを扱う<a class="keyword" href="http://d.hatena.ne.jp/keyword/JavaScript">JavaScript</a> ライブラリ「Leaflet」を使って、地図表示を試してきた。</p>
+<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>Leaflet地図：「日本酒生産量：都道府県別マップ」作成。サンプルソース。逆ジオコーディング付き。</h1><p class="meta">2021-06-28 · <a href="../../../../category/c36.html">酒・ワイン・ビール</a> <a href="../../../../category/c21.html">地図・マップ</a> <a href="../../../../category/c13.html">ホームページ、Web作成</a></p><div class="entry-body"><p>地図データを扱うJavaScript ライブラリ「Leaflet」を使って、地図表示を試してきた。</p>
 <p><a class="link-card" href="https://ok2nd.github.io/leaflet/" target="_blank" rel="noopener noreferrer"><span class="lc-body"><span class="lc-title">Leaflet地図 リスト by 晴歩雨描</span><span class="lc-desc"></span><span class="lc-site">ok2nd.github.io</span></span></a></p>
-<p>今回、「日本酒生産量：<a class="keyword" href="http://d.hatena.ne.jp/keyword/%C5%D4%C6%BB">都道</a>府県別マップ」を作成した。（↓）</p>
+<p>今回、「日本酒生産量：都道府県別マップ」を作成した。（↓）</p>
 <p><a class="link-card" href="https://ok2nd.github.io/leaflet/todofuken-nihonshu.html" target="_blank" rel="noopener noreferrer"><span class="lc-body"><span class="lc-title">日本酒生産量：都道府県別マップ</span><span class="lc-desc"></span><span class="lc-site">ok2nd.github.io</span></span></a></p>
 <p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20210628/20210628155141.jpg" alt="f:id:art2nd:20210628155141j:plain" width="749" height="521" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
-<p>「knooto.info」の以下の地図と<a class="keyword" href="http://d.hatena.ne.jp/keyword/JavaScript">JavaScript</a>を参考にした。</p>
+<p>「knooto.info」の以下の地図とJavaScriptを参考にした。</p>
 <p><span class="link-card-plain"><a href="https://knooto.info/example/leaflet/pref-map-chart.html">https://knooto.info/example/leaflet/pref-map-chart.html</a></span></p>
-<p><a class="keyword" href="http://d.hatena.ne.jp/keyword/%C5%D4%C6%BB">都道</a>府県別の県境データは、政府CIOポータル「IT<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%C0%A5%C3%A5%B7%A5%E5">ダッシュ</a>ボード」に以前あったデータを利用。現在どこにあるのか不明。</p>
+<p>都道府県別の県境データは、政府CIOポータル「ITダッシュボード」に以前あったデータを利用。現在どこにあるのか不明。</p>
 <p>[県境データ] → <a href="https://ok2nd.github.io/leaflet/js/prefs.js">https://ok2nd.github.io/leaflet/js/prefs.js</a></p>
-<p>【<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%BD%A1%BC%A5%B9%A5%B3%A1%BC%A5%C9">ソースコード</a>抜粋】</p>
+<p>【ソースコード抜粋】</p>
 <pre>&lt;script src="js/prefs.js"&gt;&lt;/script&gt;
 &lt;script&gt;
-// <a class="keyword" href="http://d.hatena.ne.jp/keyword/%C5%D4%C6%BB">都道</a>府県番号 : 日本酒生産量
+// 都道府県番号 : 日本酒生産量
 var fukenValue = {
 	1:3487,
 	2:3145,
@@ -82,19 +82,19 @@ var colorDefs = [
 	{ min: null, max: 199, color: '#A9A9A9' },
 ];
 var color = function(prefCode) {
-	var <a class="keyword" href="http://d.hatena.ne.jp/keyword/value">value</a> = fukenValue[prefCode];
+	var value = fukenValue[prefCode];
 	var colorDef = null;
 	for (var i = 0; i &lt; colorDefs.length; i++) {
 		colorDef = colorDefs[i];
-		var minOK = (colorDef.min == null || colorDef.min &lt;= <a class="keyword" href="http://d.hatena.ne.jp/keyword/value">value</a>);
-		var maxOK = (colorDef.max == null || <a class="keyword" href="http://d.hatena.ne.jp/keyword/value">value</a> &lt;= colorDef.max);
+		var minOK = (colorDef.min == null || colorDef.min &lt;= value);
+		var maxOK = (colorDef.max == null || value &lt;= colorDef.max);
 		if (minOK &amp;&amp; maxOK) return colorDef.color;
 	}
 	return colorDef.color;
 };
 var map = L.map('map').setView([38, 138], 6);
-var tileLayer = L.tileLayer('<a class="keyword" href="http://d.hatena.ne.jp/keyword/https">https</a>://{s}.tile.<a class="keyword" href="http://d.hatena.ne.jp/keyword/openstreetmap">openstreetmap</a>.org/{z}/{x}/{y}.<a class="keyword" href="http://d.hatena.ne.jp/keyword/png">png</a>', {
-	attribution: '&amp;copy; &lt;a href="<a href="https://www.openstreetmap.org/copyright">https://www.openstreetmap.org/copyright</a>"&gt;<a class="keyword" href="http://d.hatena.ne.jp/keyword/OpenStreetMap">OpenStreetMap</a>&lt;/a&gt; contributors',
+var tileLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+	attribution: '&amp;copy; &lt;a href="<a href="https://www.openstreetmap.org/copyright">https://www.openstreetmap.org/copyright</a>"&gt;OpenStreetMap&lt;/a&gt; contributors',
 	continuousWorld: false
 });
 tileLayer.addTo(map);
@@ -135,75 +135,75 @@ legend.onAdd = function (map) {
 legend.addTo(map);
 &lt;/script&gt;
 </pre>
-<p>地図をクリックすると、その<a class="keyword" href="http://d.hatena.ne.jp/keyword/%C5%D4%C6%BB">都道</a>府県名と日本酒生産量を表示する。</p>
-<p>緯度経度から住所検索（逆ジオコーディング）は、以下のWebページを参考に、<a class="keyword" href="http://d.hatena.ne.jp/keyword/%B9%F1%C5%DA%C3%CF%CD%FD%B1%A1">国土地理院</a><a class="keyword" href="http://d.hatena.ne.jp/keyword/API">API</a>を利用。</p>
+<p>地図をクリックすると、その都道府県名と日本酒生産量を表示する。</p>
+<p>緯度経度から住所検索（逆ジオコーディング）は、以下のWebページを参考に、国土地理院APIを利用。</p>
 <p><a class="link-card has-thumb" href="https://memo.appri.me/programming/gsi-geocoding-api#%E9%80%86%E3%82%B8%E3%82%AA%E3%82%B3%E3%83%BC%E3%83%87%E3%82%A3%E3%83%B3%E3%82%B0API" target="_blank" rel="noopener noreferrer"><span class="lc-body"><span class="lc-title">こちらで紹介している国土地理院のAPIを使えば、Google Maps APIを使わなくても会員登録不要でお手軽にジオコーディング＆逆ジオコーディングが可能です。</span><span class="lc-desc">こちらで紹介している国土地理院のAPIを使えば、Google Maps APIを使わなくても会員登録不要でお手軽にジオコーディング＆逆ジオコ…</span><span class="lc-site">芽萌丸</span></span><span class="lc-thumb"><img src="https://i.imgur.com/ibfM94G.jpg" alt="" loading="lazy"></span></a></p>
 <p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20210628/20210628155144.jpg" alt="f:id:art2nd:20210628155144j:plain" width="749" height="521" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
-<p>【<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%BD%A1%BC%A5%B9%A5%B3%A1%BC%A5%C9">ソースコード</a>抜粋】</p>
+<p>【ソースコード抜粋】</p>
 <pre>var todofuken = {
 	1:'北海道',
-	2:'<a class="keyword" href="http://d.hatena.ne.jp/keyword/%C0%C4%BF%B9%B8%A9">青森県</a>',
-	3:'<a class="keyword" href="http://d.hatena.ne.jp/keyword/%B4%E4%BC%EA%B8%A9">岩手県</a>',
-	4:'<a class="keyword" href="http://d.hatena.ne.jp/keyword/%B5%DC%BE%EB%B8%A9">宮城県</a>',
-	5:'<a class="keyword" href="http://d.hatena.ne.jp/keyword/%BD%A9%C5%C4%B8%A9">秋田県</a>',
-	6:'<a class="keyword" href="http://d.hatena.ne.jp/keyword/%BB%B3%B7%C1%B8%A9">山形県</a>',
-	7:'<a class="keyword" href="http://d.hatena.ne.jp/keyword/%CA%A1%C5%E7%B8%A9">福島県</a>',
-	8:'<a class="keyword" href="http://d.hatena.ne.jp/keyword/%B0%F1%BE%EB%B8%A9">茨城県</a>',
+	2:'青森県',
+	3:'岩手県',
+	4:'宮城県',
+	5:'秋田県',
+	6:'山形県',
+	7:'福島県',
+	8:'茨城県',
 	9:'栃木県',
-	10:'<a class="keyword" href="http://d.hatena.ne.jp/keyword/%B7%B2%C7%CF%B8%A9">群馬県</a>',
+	10:'群馬県',
 	11:'埼玉県',
 	12:'千葉県',
 	13:'東京都',
 	14:'神奈川県',
-	15:'<a class="keyword" href="http://d.hatena.ne.jp/keyword/%BF%B7%B3%E3%B8%A9">新潟県</a>',
-	16:'<a class="keyword" href="http://d.hatena.ne.jp/keyword/%C9%D9%BB%B3%B8%A9">富山県</a>',
+	15:'新潟県',
+	16:'富山県',
 	17:'石川県',
-	18:'<a class="keyword" href="http://d.hatena.ne.jp/keyword/%CA%A1%B0%E6%B8%A9">福井県</a>',
-	19:'<a class="keyword" href="http://d.hatena.ne.jp/keyword/%BB%B3%CD%FC%B8%A9">山梨県</a>',
+	18:'福井県',
+	19:'山梨県',
 	20:'長野県',
-	21:'<a class="keyword" href="http://d.hatena.ne.jp/keyword/%B4%F4%C9%EC%B8%A9">岐阜県</a>',
-	22:'<a class="keyword" href="http://d.hatena.ne.jp/keyword/%C0%C5%B2%AC%B8%A9">静岡県</a>',
+	21:'岐阜県',
+	22:'静岡県',
 	23:'愛知県',
-	24:'<a class="keyword" href="http://d.hatena.ne.jp/keyword/%BB%B0%BD%C5%B8%A9">三重県</a>',
-	25:'<a class="keyword" href="http://d.hatena.ne.jp/keyword/%BC%A2%B2%EC%B8%A9">滋賀県</a>',
-	26:'<a class="keyword" href="http://d.hatena.ne.jp/keyword/%B5%FE%C5%D4%C9%DC">京都府</a>',
-	27:'<a class="keyword" href="http://d.hatena.ne.jp/keyword/%C2%E7%BA%E5%C9%DC">大阪府</a>',
-	28:'<a class="keyword" href="http://d.hatena.ne.jp/keyword/%CA%BC%B8%CB%B8%A9">兵庫県</a>',
-	29:'<a class="keyword" href="http://d.hatena.ne.jp/keyword/%C6%E0%CE%C9%B8%A9">奈良県</a>',
-	30:'<a class="keyword" href="http://d.hatena.ne.jp/keyword/%CF%C2%B2%CE%BB%B3%B8%A9">和歌山県</a>',
-	31:'<a class="keyword" href="http://d.hatena.ne.jp/keyword/%C4%BB%BC%E8%B8%A9">鳥取県</a>',
-	32:'<a class="keyword" href="http://d.hatena.ne.jp/keyword/%C5%E7%BA%AC%B8%A9">島根県</a>',
-	33:'<a class="keyword" href="http://d.hatena.ne.jp/keyword/%B2%AC%BB%B3%B8%A9">岡山県</a>',
-	34:'<a class="keyword" href="http://d.hatena.ne.jp/keyword/%B9%AD%C5%E7%B8%A9">広島県</a>',
-	35:'<a class="keyword" href="http://d.hatena.ne.jp/keyword/%BB%B3%B8%FD%B8%A9">山口県</a>',
-	36:'<a class="keyword" href="http://d.hatena.ne.jp/keyword/%C6%C1%C5%E7%B8%A9">徳島県</a>',
-	37:'<a class="keyword" href="http://d.hatena.ne.jp/keyword/%B9%E1%C0%EE%B8%A9">香川県</a>',
-	38:'<a class="keyword" href="http://d.hatena.ne.jp/keyword/%B0%A6%C9%B2%B8%A9">愛媛県</a>',
-	39:'<a class="keyword" href="http://d.hatena.ne.jp/keyword/%B9%E2%C3%CE%B8%A9">高知県</a>',
+	24:'三重県',
+	25:'滋賀県',
+	26:'京都府',
+	27:'大阪府',
+	28:'兵庫県',
+	29:'奈良県',
+	30:'和歌山県',
+	31:'鳥取県',
+	32:'島根県',
+	33:'岡山県',
+	34:'広島県',
+	35:'山口県',
+	36:'徳島県',
+	37:'香川県',
+	38:'愛媛県',
+	39:'高知県',
 	40:'福岡県',
-	41:'<a class="keyword" href="http://d.hatena.ne.jp/keyword/%BA%B4%B2%EC%B8%A9">佐賀県</a>',
-	42:'<a class="keyword" href="http://d.hatena.ne.jp/keyword/%C4%B9%BA%EA%B8%A9">長崎県</a>',
-	43:'<a class="keyword" href="http://d.hatena.ne.jp/keyword/%B7%A7%CB%DC%B8%A9">熊本県</a>',
-	44:'<a class="keyword" href="http://d.hatena.ne.jp/keyword/%C2%E7%CA%AC%B8%A9">大分県</a>',
+	41:'佐賀県',
+	42:'長崎県',
+	43:'熊本県',
+	44:'大分県',
 	45:'宮崎県',
 	46:'鹿児島県',
-	47:'<a class="keyword" href="http://d.hatena.ne.jp/keyword/%B2%AD%C6%EC%B8%A9">沖縄県</a>'
+	47:'沖縄県'
 }
 map.on('click', onMapClick);
 var posMarker = null;
 function onMapClick(e) {
 	posMarkerRemove();
 	var lat = e.latlng.lat;
-	var <a class="keyword" href="http://d.hatena.ne.jp/keyword/lng">lng</a> = e.latlng.<a class="keyword" href="http://d.hatena.ne.jp/keyword/lng">lng</a>;
-	// <a class="keyword" href="http://d.hatena.ne.jp/keyword/%C3%CF%CD%FD%B1%A1">地理院</a>地図サーバから逆ジオコーディングで<a class="keyword" href="http://d.hatena.ne.jp/keyword/%C5%D4%C6%BB">都道</a>府県を調べる
-	var src = '<a href="https://mreversegeocoder.gsi.go.jp/reverse-geocoder/LonLatToAddress?lat='">https://mreversegeocoder.gsi.go.jp/reverse-geocoder/LonLatToAddress?lat='</a> + lat + '&amp;lon=' + <a class="keyword" href="http://d.hatena.ne.jp/keyword/lng">lng</a>;
+	var lng = e.latlng.lng;
+	// 地理院地図サーバから逆ジオコーディングで都道府県を調べる
+	var src = '<a href="https://mreversegeocoder.gsi.go.jp/reverse-geocoder/LonLatToAddress?lat='">https://mreversegeocoder.gsi.go.jp/reverse-geocoder/LonLatToAddress?lat='</a> + lat + '&amp;lon=' + lng;
 	fetch(src)
 	.then((response) =&gt; {
 		return response.text();
 	})
 	.then((text) =&gt; {
-		var results = <a class="keyword" href="http://d.hatena.ne.jp/keyword/JSON">JSON</a>.parse(text);
-		var kenCode = Number(results.results.muniCd.substr(0,2));	// <a class="keyword" href="http://d.hatena.ne.jp/keyword/%C5%D4%C6%BB">都道</a>府県コード
+		var results = JSON.parse(text);
+		var kenCode = Number(results.results.muniCd.substr(0,2));	// 都道府県コード
 		var popStr = '&lt;span class="kenmei"&gt;' + todofuken[kenCode] + '&lt;/span&gt;&lt;br&gt;日本酒生産量（2020年）&lt;br&gt;&lt;span class="seisanryo"&gt;' + fukenValue[kenCode].toLocaleString() + '&lt;/span&gt; キロリットル';
 		posMarker = L.marker(e.latlng).on('click', posMarkerRemove).addTo(map).bindPopup(popStr).openPopup();
 	})
@@ -215,25 +215,25 @@ function posMarkerRemove() {
 	}
 }
 </pre>
-<h4>【2020年 <a class="keyword" href="http://d.hatena.ne.jp/keyword/%C5%D4%C6%BB">都道</a>府県別日本酒生産量】</h4>
-<p>「2020年 <a class="keyword" href="http://d.hatena.ne.jp/keyword/%C5%D4%C6%BB">都道</a>府県別日本酒生産量」は以下のデータを利用。</p>
+<h4>【2020年 都道府県別日本酒生産量】</h4>
+<p>「2020年 都道府県別日本酒生産量」は以下のデータを利用。</p>
 <p><a class="link-card has-thumb" href="https://xn--cesu66k.net/sake_ranking/" target="_blank" rel="noopener noreferrer"><span class="lc-body"><span class="lc-title">日本酒生産量ランキング2026調査｜都道府県別TOP10と酒どころ旅 - 運命のリゾートバイトブログ</span><span class="lc-desc">日本酒生産量ランキング2026を都道府県別にTOP10で紹介。1位兵庫・2位京都・3位新潟など、各エリアの生産量と代表銘柄、味わいの特徴をま…</span><span class="lc-site">運命のリゾートバイトブログ</span></span><span class="lc-thumb"><img src="https://xn--bww52a.biz/wp-content/uploads/2025/06/sake_ranking.png" alt="" loading="lazy"></span></a></p>
 <table>
 <tbody>
 <tr>
-<th><a class="keyword" href="http://d.hatena.ne.jp/keyword/%C5%D4%C6%BB">都道</a>府県</th>
+<th>都道府県</th>
 <th>日本酒生産量</th>
 </tr>
 <tr>
-<th><a class="keyword" href="http://d.hatena.ne.jp/keyword/%CA%BC%B8%CB%B8%A9">兵庫県</a></th>
+<th>兵庫県</th>
 <td>93,599 kl</td>
 </tr>
 <tr>
-<th><a class="keyword" href="http://d.hatena.ne.jp/keyword/%B5%FE%C5%D4%C9%DC">京都府</a></th>
+<th>京都府</th>
 <td>59,975 kl</td>
 </tr>
 <tr>
-<th><a class="keyword" href="http://d.hatena.ne.jp/keyword/%BF%B7%B3%E3%B8%A9">新潟県</a></th>
+<th>新潟県</th>
 <td>28,693 kl</td>
 </tr>
 <tr>
@@ -241,7 +241,7 @@ function posMarkerRemove() {
 <td>15,189 kl</td>
 </tr>
 <tr>
-<th><a class="keyword" href="http://d.hatena.ne.jp/keyword/%BD%A9%C5%C4%B8%A9">秋田県</a></th>
+<th>秋田県</th>
 <td>12,589 kl</td>
 </tr>
 <tr>
@@ -249,15 +249,15 @@ function posMarkerRemove() {
 <td>9,799 kl</td>
 </tr>
 <tr>
-<th><a class="keyword" href="http://d.hatena.ne.jp/keyword/%CA%A1%C5%E7%B8%A9">福島県</a></th>
+<th>福島県</th>
 <td>8,587 kl</td>
 </tr>
 <tr>
-<th><a class="keyword" href="http://d.hatena.ne.jp/keyword/%BB%B3%CD%FC%B8%A9">山梨県</a></th>
+<th>山梨県</th>
 <td>7,737 kl</td>
 </tr>
 <tr>
-<th><a class="keyword" href="http://d.hatena.ne.jp/keyword/%BB%B3%B7%C1%B8%A9">山形県</a></th>
+<th>山形県</th>
 <td>7,256 kl</td>
 </tr>
 <tr>
@@ -273,15 +273,15 @@ function posMarkerRemove() {
 <td>6,164 kl</td>
 </tr>
 <tr>
-<th><a class="keyword" href="http://d.hatena.ne.jp/keyword/%B9%AD%C5%E7%B8%A9">広島県</a></th>
+<th>広島県</th>
 <td>5,747 kl</td>
 </tr>
 <tr>
-<th><a class="keyword" href="http://d.hatena.ne.jp/keyword/%BB%B3%B8%FD%B8%A9">山口県</a></th>
+<th>山口県</th>
 <td>5,493 kl</td>
 </tr>
 <tr>
-<th><a class="keyword" href="http://d.hatena.ne.jp/keyword/%B5%DC%BE%EB%B8%A9">宮城県</a></th>
+<th>宮城県</th>
 <td>5,420 kl</td>
 </tr>
 <tr>
@@ -289,11 +289,11 @@ function posMarkerRemove() {
 <td>4,091 kl</td>
 </tr>
 <tr>
-<th><a class="keyword" href="http://d.hatena.ne.jp/keyword/%B9%E2%C3%CE%B8%A9">高知県</a></th>
+<th>高知県</th>
 <td>3,853 kl</td>
 </tr>
 <tr>
-<th><a class="keyword" href="http://d.hatena.ne.jp/keyword/%C9%D9%BB%B3%B8%A9">富山県</a></th>
+<th>富山県</th>
 <td>3,805 kl</td>
 </tr>
 <tr>
@@ -301,27 +301,27 @@ function posMarkerRemove() {
 <td>3,487 kl</td>
 </tr>
 <tr>
-<th><a class="keyword" href="http://d.hatena.ne.jp/keyword/%B4%F4%C9%EC%B8%A9">岐阜県</a></th>
+<th>岐阜県</th>
 <td>3,403 kl</td>
 </tr>
 <tr>
-<th><a class="keyword" href="http://d.hatena.ne.jp/keyword/%C0%C4%BF%B9%B8%A9">青森県</a></th>
+<th>青森県</th>
 <td>3,145 kl</td>
 </tr>
 <tr>
-<th><a class="keyword" href="http://d.hatena.ne.jp/keyword/%C0%C5%B2%AC%B8%A9">静岡県</a></th>
+<th>静岡県</th>
 <td>3,125 kl</td>
 </tr>
 <tr>
-<th><a class="keyword" href="http://d.hatena.ne.jp/keyword/%BC%A2%B2%EC%B8%A9">滋賀県</a></th>
+<th>滋賀県</th>
 <td>2,954 kl</td>
 </tr>
 <tr>
-<th><a class="keyword" href="http://d.hatena.ne.jp/keyword/%B4%E4%BC%EA%B8%A9">岩手県</a></th>
+<th>岩手県</th>
 <td>2,833 kl</td>
 </tr>
 <tr>
-<th><a class="keyword" href="http://d.hatena.ne.jp/keyword/%C6%E0%CE%C9%B8%A9">奈良県</a></th>
+<th>奈良県</th>
 <td>2,672 kl</td>
 </tr>
 <tr>
@@ -329,39 +329,39 @@ function posMarkerRemove() {
 <td>2,613 kl</td>
 </tr>
 <tr>
-<th><a class="keyword" href="http://d.hatena.ne.jp/keyword/%B0%F1%BE%EB%B8%A9">茨城県</a></th>
+<th>茨城県</th>
 <td>2,595 kl</td>
 </tr>
 <tr>
-<th><a class="keyword" href="http://d.hatena.ne.jp/keyword/%CA%A1%B0%E6%B8%A9">福井県</a></th>
+<th>福井県</th>
 <td>2,592 kl</td>
 </tr>
 <tr>
-<th><a class="keyword" href="http://d.hatena.ne.jp/keyword/%B7%B2%C7%CF%B8%A9">群馬県</a></th>
+<th>群馬県</th>
 <td>2,234 kl</td>
 </tr>
 <tr>
-<th><a class="keyword" href="http://d.hatena.ne.jp/keyword/%BA%B4%B2%EC%B8%A9">佐賀県</a></th>
+<th>佐賀県</th>
 <td>2,108 kl</td>
 </tr>
 <tr>
-<th><a class="keyword" href="http://d.hatena.ne.jp/keyword/%BB%B0%BD%C5%B8%A9">三重県</a></th>
+<th>三重県</th>
 <td>1,900 kl</td>
 </tr>
 <tr>
-<th><a class="keyword" href="http://d.hatena.ne.jp/keyword/%C2%E7%CA%AC%B8%A9">大分県</a></th>
+<th>大分県</th>
 <td>1,887 kl</td>
 </tr>
 <tr>
-<th><a class="keyword" href="http://d.hatena.ne.jp/keyword/%B2%AC%BB%B3%B8%A9">岡山県</a></th>
+<th>岡山県</th>
 <td>1,747 kl</td>
 </tr>
 <tr>
-<th><a class="keyword" href="http://d.hatena.ne.jp/keyword/%CF%C2%B2%CE%BB%B3%B8%A9">和歌山県</a></th>
+<th>和歌山県</th>
 <td>1,732 kl</td>
 </tr>
 <tr>
-<th><a class="keyword" href="http://d.hatena.ne.jp/keyword/%C5%E7%BA%AC%B8%A9">島根県</a></th>
+<th>島根県</th>
 <td>1,420 kl</td>
 </tr>
 <tr>
@@ -369,11 +369,11 @@ function posMarkerRemove() {
 <td>1,275 kl</td>
 </tr>
 <tr>
-<th><a class="keyword" href="http://d.hatena.ne.jp/keyword/%B0%A6%C9%B2%B8%A9">愛媛県</a></th>
+<th>愛媛県</th>
 <td>1,221 kl</td>
 </tr>
 <tr>
-<th><a class="keyword" href="http://d.hatena.ne.jp/keyword/%B9%E1%C0%EE%B8%A9">香川県</a></th>
+<th>香川県</th>
 <td>782 kl</td>
 </tr>
 <tr>
@@ -381,23 +381,23 @@ function posMarkerRemove() {
 <td>778 kl</td>
 </tr>
 <tr>
-<th><a class="keyword" href="http://d.hatena.ne.jp/keyword/%C4%B9%BA%EA%B8%A9">長崎県</a></th>
+<th>長崎県</th>
 <td>741 kl</td>
 </tr>
 <tr>
-<th><a class="keyword" href="http://d.hatena.ne.jp/keyword/%B7%A7%CB%DC%B8%A9">熊本県</a></th>
+<th>熊本県</th>
 <td>703 kl</td>
 </tr>
 <tr>
-<th><a class="keyword" href="http://d.hatena.ne.jp/keyword/%C2%E7%BA%E5%C9%DC">大阪府</a></th>
+<th>大阪府</th>
 <td>688 kl</td>
 </tr>
 <tr>
-<th><a class="keyword" href="http://d.hatena.ne.jp/keyword/%C4%BB%BC%E8%B8%A9">鳥取県</a></th>
+<th>鳥取県</th>
 <td>587 kl</td>
 </tr>
 <tr>
-<th><a class="keyword" href="http://d.hatena.ne.jp/keyword/%C6%C1%C5%E7%B8%A9">徳島県</a></th>
+<th>徳島県</th>
 <td>291 kl</td>
 </tr>
 <tr>
@@ -409,20 +409,20 @@ function posMarkerRemove() {
 <td>0 kl</td>
 </tr>
 <tr>
-<th><a class="keyword" href="http://d.hatena.ne.jp/keyword/%B2%AD%C6%EC%B8%A9">沖縄県</a></th>
+<th>沖縄県</th>
 <td>0 kl</td>
 </tr>
 </tbody>
 </table>
-<p><a class="link-card has-thumb" href="../../../2022/06/15/123352.html"><span class="lc-body"><span class="lc-title">Leaflet地図：「日本酒生産量：都道府県別マップ」の「白地図＋Google Charts（Image Charts）版」作成。</span><span class="lc-desc">地図データを扱う JavaScript ライブラリ「Leaflet」を使って、地図をいくつか作成してきた。 以前に「日本酒生産量： 都道 府…</span><span class="lc-site">晴歩雨描 · <time>2022-06-15</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220615/20220615111331.jpg" alt="" loading="lazy"></span></a></p>
-<p><a class="link-card has-thumb" href="../../../2022/06/15/143701.html"><span class="lc-body"><span class="lc-title">Leaflet地図：「日本酒生産量：都道府県別マップ」の「白地図＋QuickChart.io 版」作成。</span><span class="lc-desc">先程、Leaflet地図「日本酒生産量： 都道 府県別マップ」の「 白地図 ＋ Google Charts（Image Charts）版」を…</span><span class="lc-site">晴歩雨描 · <time>2022-06-15</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220615/20220615142332.jpg" alt="" loading="lazy"></span></a></p>
-<p><a class="link-card has-thumb" href="../16/143619.html"><span class="lc-body"><span class="lc-title">Leaflet地図：「新潟酒蔵マップ」作成。CSVファイルから。サンプルソース。</span><span class="lc-desc">地図データを扱う JavaScript ライブラリ「Leaflet」を使って、地図表示を試してきた。 今回、「新潟酒蔵マップ」を作成した。 …</span><span class="lc-site">晴歩雨描 · <time>2021-06-16</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20210616/20210616143304.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card has-thumb" href="../../../2022/06/15/123352.html"><span class="lc-body"><span class="lc-title">Leaflet地図：「日本酒生産量：都道府県別マップ」の「白地図＋Google Charts（Image Charts）版」作成。</span><span class="lc-desc">地図データを扱うJavaScript ライブラリ「Leaflet」を使って、地図をいくつか作成してきた。 以前に「日本酒生産量：都道府県別マ…</span><span class="lc-site">晴歩雨描 · <time>2022-06-15</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220615/20220615111331.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card has-thumb" href="../../../2022/06/15/143701.html"><span class="lc-body"><span class="lc-title">Leaflet地図：「日本酒生産量：都道府県別マップ」の「白地図＋QuickChart.io 版」作成。</span><span class="lc-desc">先程、Leaflet地図「日本酒生産量：都道府県別マップ」の「白地図＋Google Charts（Image Charts）版」を作成した。…</span><span class="lc-site">晴歩雨描 · <time>2022-06-15</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220615/20220615142332.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card has-thumb" href="../16/143619.html"><span class="lc-body"><span class="lc-title">Leaflet地図：「新潟酒蔵マップ」作成。CSVファイルから。サンプルソース。</span><span class="lc-desc">地図データを扱うJavaScript ライブラリ「Leaflet」を使って、地図表示を試してきた。 今回、「新潟酒蔵マップ」を作成した。 「…</span><span class="lc-site">晴歩雨描 · <time>2021-06-16</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20210616/20210616143304.jpg" alt="" loading="lazy"></span></a></p>
 <p><a class="link-card has-thumb" href="../../../2022/07/05/144222.html"><span class="lc-body"><span class="lc-title">Leaflet地図：都道府県別「りんご」vs「みかん」を円グラフ（Google Image Charts）で表示。</span><span class="lc-desc">地図データを扱うJavaScript ライブラリ「Leaflet」を使って、地図をいくつか作成してきた。 今回、『都道府県別「りんご」vs「…</span><span class="lc-site">晴歩雨描 · <time>2022-07-05</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220705/20220705142457.jpg" alt="" loading="lazy"></span></a></p>
 <p><a class="link-card has-thumb" href="../../../2022/06/03/221404.html"><span class="lc-body"><span class="lc-title">Leaflet地図：「Jawg Maps」世界地図に国旗表示（１）。逆ジオコーディング「Reverse - Nominatim」使用。</span><span class="lc-desc">先日、「Leaflet」＋「Jawg Maps」を使った世界地図を作成した。 この世界地図に、国旗表示機能を追加。（雨雲は廃止） 緯度経度か…</span><span class="lc-site">晴歩雨描 · <time>2022-06-03</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220603/20220603220015.jpg" alt="" loading="lazy"></span></a></p>
 <p><a class="link-card has-thumb" href="../../../2022/06/14/132716.html"><span class="lc-body"><span class="lc-title">Leaflet地図：「日本白地図」作成。逆ジオコーディング付き。</span><span class="lc-desc">地図データを扱うJavaScript ライブラリ「Leaflet」を使って、地図をいくつか作成してきた。 今回、「日本白地図」を作成。「国土…</span><span class="lc-site">晴歩雨描 · <time>2022-06-14</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220614/20220614131026.jpg" alt="" loading="lazy"></span></a></p>
-<p><a class="link-card has-thumb" href="../../../2018/05/02/143139.html"><span class="lc-body"><span class="lc-title">新潟の有名な銘柄の日本酒（〆張鶴、久保田、八海山、越乃寒梅）が関西では定価で売られていない。定価を調べてみた。</span><span class="lc-desc">日本酒の三大酒処は、 兵庫県 「灘」、 京都府 「伏見」、 広島県 「西条」らしい。新潟が入っていないのが不思議だが、一か所に酒蔵が集まって…</span><span class="lc-site">晴歩雨描 · <time>2018-05-02</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20180502/20180502142728.png" alt="" loading="lazy"></span></a></p>
-<p><a class="link-card has-thumb" href="../../05/02/130440.html"><span class="lc-body"><span class="lc-title">灘五郷、京都伏見、兵庫播磨、広島西条の酒蔵マップ、甲州ワイナリーマップをLeafletで作成。Google マップ、OpenStreetMap、国土地理院、Esri World Topo Map。</span><span class="lc-desc">過去に、灘五郷、京都伏見、兵庫播磨、広島西条の酒蔵マップ、 甲州 ワイナリーマップを、「 Google マイマップ」、「 Google Ma…</span><span class="lc-site">晴歩雨描 · <time>2021-05-02</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20210502/20210502114706.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card has-thumb" href="../../../2018/05/02/143139.html"><span class="lc-body"><span class="lc-title">新潟の有名な銘柄の日本酒（〆張鶴、久保田、八海山、越乃寒梅）が関西では定価で売られていない。定価を調べてみた。</span><span class="lc-desc">日本酒の三大酒処は、兵庫県「灘」、京都府「伏見」、広島県「西条」らしい。新潟が入っていないのが不思議だが、一か所に酒蔵が集まっていないからだ…</span><span class="lc-site">晴歩雨描 · <time>2018-05-02</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20180502/20180502142728.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card has-thumb" href="../../05/02/130440.html"><span class="lc-body"><span class="lc-title">灘五郷、京都伏見、兵庫播磨、広島西条の酒蔵マップ、甲州ワイナリーマップをLeafletで作成。Google マップ、OpenStreetMap、国土地理院、Esri World Topo Map。</span><span class="lc-desc">過去に、灘五郷、京都伏見、兵庫播磨、広島西条の酒蔵マップ、甲州ワイナリーマップを、「Googleマイマップ」、「Google Maps AP…</span><span class="lc-site">晴歩雨描 · <time>2021-05-02</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20210502/20210502114706.jpg" alt="" loading="lazy"></span></a></p>
 <p><a class="link-card has-thumb" href="../../../2018/07/07/144138.html"><span class="lc-body"><span class="lc-title">HTML(TABLE)クリッカブルマップ「日本地図」を作成。スマホ対応。</span><span class="lc-desc">HTML(TABLE)で、クリッカブルマップとしての日本地図を作成。（昔、作ったものを手直し） スマホを想定して、縦長画面の時は都道府県名を…</span><span class="lc-site">晴歩雨描 · <time>2018-07-07</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20180707/20180707224156.jpg" alt="" loading="lazy"></span></a></p>
-<p><a class="link-card has-thumb" href="../../../2018/09/13/155542.html"><span class="lc-body"><span class="lc-title">Googleマップの詳細かつ広い範囲の地図を印刷する方法。</span><span class="lc-desc">Googleマップ で広い地域を印刷しようとすると、詳細部分が分からなくなる。 詳細な地域の情報を維持したまま広い範囲の地図を印刷する方法を…</span><span class="lc-site">晴歩雨描 · <time>2018-09-13</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20180913/20180913151632.jpg" alt="" loading="lazy"></span></a></p></div></article>
+<p><a class="link-card has-thumb" href="../../../2018/09/13/155542.html"><span class="lc-body"><span class="lc-title">Googleマップの詳細かつ広い範囲の地図を印刷する方法。</span><span class="lc-desc">Googleマップで広い地域を印刷しようとすると、詳細部分が分からなくなる。 詳細な地域の情報を維持したまま広い範囲の地図を印刷する方法を考…</span><span class="lc-site">晴歩雨描 · <time>2018-09-13</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20180913/20180913151632.jpg" alt="" loading="lazy"></span></a></p></div></article>
 </body>
 </html>

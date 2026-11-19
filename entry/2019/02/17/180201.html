@@ -7,23 +7,23 @@
 <link rel="stylesheet" href="../../../../style.css">
 </head>
 <body>
-<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>影付き枠＋ビネット効果付き写真サムネイルアルバム(神戸散歩)にポップアップ拡大画像を追加。</h1><p class="meta">2019-02-17 · <a href="../../../../category/c18.html">写真・カメラ</a> <a href="../../../../category/c13.html">ホームページ、Web作成</a></p><div class="entry-body"><p><a class="link-card has-thumb" href="../16/223049.html"><span class="lc-body"><span class="lc-title">CSS）影付き枠＋ビネット効果を使った写真のサムネイルアルバム(神戸散歩)をつくってみた。</span><span class="lc-desc">↑ で、CSSを使って、写真に影付き枠とビネット効果を付けてみた。 今回、これを使って、写真のサムネイルアルバムをつくってみた。写真は神戸を…</span><span class="lc-site">晴歩雨描 · <time>2019-02-16</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190216/20190216221449.jpg" alt="" loading="lazy"></span></a>↑ で、影付き枠＋<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%D3%A5%CD%A5%C3%A5%C8">ビネット</a>効果を使った写真のWebサムネイルアルバムをつくった。</p>
+<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>影付き枠＋ビネット効果付き写真サムネイルアルバム(神戸散歩)にポップアップ拡大画像を追加。</h1><p class="meta">2019-02-17 · <a href="../../../../category/c18.html">写真・カメラ</a> <a href="../../../../category/c13.html">ホームページ、Web作成</a></p><div class="entry-body"><p><a class="link-card has-thumb" href="../16/223049.html"><span class="lc-body"><span class="lc-title">CSS）影付き枠＋ビネット効果を使った写真のサムネイルアルバム(神戸散歩)をつくってみた。</span><span class="lc-desc">↑ で、CSSを使って、写真に影付き枠とビネット効果を付けてみた。 今回、これを使って、写真のサムネイルアルバムをつくってみた。写真は神戸を…</span><span class="lc-site">晴歩雨描 · <time>2019-02-16</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190216/20190216221449.jpg" alt="" loading="lazy"></span></a>↑ で、影付き枠＋ビネット効果を使った写真のWebサムネイルアルバムをつくった。</p>
 <p>このWebページのサムネイル画像をクリックした時に画像が拡大されたモーダルウィンドウがポップアップするようにした。</p>
 <p>以下のLightbox2を使用。</p>
 <p><a class="link-card" href="https://lokeshdhakar.com/projects/lightbox2/" target="_blank" rel="noopener noreferrer"><span class="lc-body"><span class="lc-title">Lightbox2</span><span class="lc-desc">Lightbox is a script used to overlay images on the current page. It&#x27;s …</span><span class="lc-site">lokeshdhakar.com</span></span></a></p>
-<p>使い方は簡単。<a class="keyword" href="http://d.hatena.ne.jp/keyword/CSS">CSS</a>と<a class="keyword" href="http://d.hatena.ne.jp/keyword/JavaScript">JavaScript</a>を以下のように読み込んで、&lt;div&gt;を&lt;a&gt;タグで囲い、data-<a class="keyword" href="http://d.hatena.ne.jp/keyword/lightbox">lightbox</a>="group"を追加するだけ。</p>
-<pre>&lt;link rel="stylesheet" href="<a class="keyword" href="http://d.hatena.ne.jp/keyword/lightbox">lightbox</a>/<a class="keyword" href="http://d.hatena.ne.jp/keyword/css">css</a>/<a class="keyword" href="http://d.hatena.ne.jp/keyword/lightbox">lightbox</a>.min.<a class="keyword" href="http://d.hatena.ne.jp/keyword/css">css</a>"&gt;
-&lt;script src="<a class="keyword" href="http://d.hatena.ne.jp/keyword/lightbox">lightbox</a>/js/<a class="keyword" href="http://d.hatena.ne.jp/keyword/lightbox">lightbox</a>-plus-<a class="keyword" href="http://d.hatena.ne.jp/keyword/jquery">jquery</a>.min.js"&gt;&lt;/script&gt;
-&lt;a href="拡大画像.jpg" data-<a class="keyword" href="http://d.hatena.ne.jp/keyword/lightbox">lightbox</a>="group" data-title="神戸散歩"&gt;
+<p>使い方は簡単。CSSとJavaScriptを以下のように読み込んで、&lt;div&gt;を&lt;a&gt;タグで囲い、data-lightbox="group"を追加するだけ。</p>
+<pre>&lt;link rel="stylesheet" href="lightbox/css/lightbox.min.css"&gt;
+&lt;script src="lightbox/js/lightbox-plus-jquery.min.js"&gt;&lt;/script&gt;
+&lt;a href="拡大画像.jpg" data-lightbox="group" data-title="神戸散歩"&gt;
 	&lt;div class="box-frame"&gt;&lt;div class="vignette"&gt;&lt;img src="縮小画像.jpg"&gt;&lt;/div&gt;&lt;/div&gt;
 &lt;/a&gt;
 </pre>
 <p>実際作成したWebページが以下。</p>
 <p><a href="https://ok2nd.sakura.ne.jp/album/kobe1-2.html" target="_blank">https://ok2nd.sakura.ne.jp/album/kobe1-2.html</a></p>
 <p><span class="link-card-plain"><a href="https://ok2nd.sakura.ne.jp/album/kobe1-2.html">https://ok2nd.sakura.ne.jp/album/kobe1-2.html</a></span></p>
-<p>ただし、この方法では、ポップアップした画像に<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%D3%A5%CD%A5%C3%A5%C8">ビネット</a>効果はつかない。</p>
+<p>ただし、この方法では、ポップアップした画像にビネット効果はつかない。</p>
 <p><img class="hatena-fotolife" title="f:id:art2nd:20190217175405j:plain" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190217/20190217175405.jpg" alt="f:id:art2nd:20190217175405j:plain" /></p>
-<p>モーダルウィンドウに<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%D3%A5%CD%A5%C3%A5%C8">ビネット</a>効果がつくようにしたものが以下。</p>
+<p>モーダルウィンドウにビネット効果がつくようにしたものが以下。</p>
 <p><a class="link-card has-thumb" href="182430.html"><span class="lc-body"><span class="lc-title">影付き枠＋ビネット効果付き写真サムネイルアルバム(神戸散歩)のポップアップ拡大画像にビネット効果。</span><span class="lc-desc">↑ で、影付き枠＋ビネット効果を使った写真のWebサムネイルアルバムに、ポップアップ拡大画像を追加した。 しかし、この方法では、ポップアップ…</span><span class="lc-site">晴歩雨描 · <time>2019-02-17</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190217/20190217181044.jpg" alt="" loading="lazy"></span></a></p>
 <hr />
 <p><a class="link-card has-thumb" href="../../../2022/08/18/130246.html"><span class="lc-body"><span class="lc-title">JavaScript、CSS）aタグ、divタグを使わずに、imgタグだけで画像をポップアップする。</span><span class="lc-desc">HTMLで画像をポップアップする場合、&lt;a&gt;タグや&lt;div&gt;タグで&lt;img&gt;タグを囲んで行うのが一般的。 &lt;a&gt;タグ、&lt;div&gt;タグを使わず…</span><span class="lc-site">晴歩雨描 · <time>2022-08-18</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220818/20220818150842.jpg" alt="" loading="lazy"></span></a></p></div></article>

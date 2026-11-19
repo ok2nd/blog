@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>はてなブログ→静的HTML(Python) 使い方ガイド</title>
+<title>hatena2static 使い方ガイド</title>
 <style>
 :root{--bg:#fff;--fg:#222;--muted:#666;--line:#ddd;--code:#f3f5f7;--link:#0b6bcb;--accent:#2f7d4f;--warn:#fff7e0;--warn-line:#e0c060}
 @media (prefers-color-scheme:dark){
@@ -34,7 +34,7 @@ nav.toc ul{margin:0;padding-left:1.2em}
 </head>
 <body>
 
-<h1>はてなブログ→静的HTML(Python) 使い方ガイド</h1>
+<h1>hatena2static 使い方ガイド</h1>
 <p class="lead">はてなブログのエクスポート（MT形式）を静的HTMLに変換するスクリプト <code>hatena2static.py</code> の使い方です。</p>
 
 <nav class="toc">
@@ -56,6 +56,9 @@ nav.toc ul{margin:0;padding-left:1.2em}
 <li>MT形式のエクスポートファイルから、記事ごとのHTML、トップページ（年別一覧）、カテゴリ別ページを生成します。</li>
 <li>ブログカードを、はてなのサービスに依存しない静的なカードHTMLに置き換えます。</li>
 <li>同じブログの記事へのリンクを、ローカルの相対パスに書き換えます。</li>
+<li>本文中のはてなキーワードへのリンク（<code>d.hatena.ne.jp/keyword/</code>）を外し、文字だけを残します。外した件数は、実行の最後に表示されます。</li>
+<li>記事の本文のフォントサイズは15pxです。画像のキャプション（<code>&lt;figcaption&gt;</code>）は、本文と同じサイズで中央揃えにし、キャプションの上の余白は3pxで、画像との見た目の間隔は約9pxです。図（<code>&lt;figure&gt;</code>）の上下の余白は、本文の文字サイズと同じ15pxです。画像とキャプションの間に、改行（<code>&lt;br&gt;</code>）や空白文字が入っていても、余計な隙間ができないようにしています。変えたいときは、<code>style.css</code> の <code>.entry-body</code> と <code>figcaption</code> を編集してください。</li>
+<li>はてなフォトライフの画像（<code>&lt;figure&gt;</code> で囲まれた画像）も、通常の画像と同じ幅で表示します。</li>
 <li>標準ライブラリだけで動作します（Python 3.8以降）。<code>--markdown</code> を使うときだけ <code>pip install markdown</code> が必要です。</li>
 </ul>
 

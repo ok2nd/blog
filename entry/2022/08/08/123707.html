@@ -7,19 +7,19 @@
 <link rel="stylesheet" href="../../../../style.css">
 </head>
 <body>
-<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>はてなブログのエクスポートファイルの画像リンクをWordPressローカルに変えるJScriptを作成。</h1><p class="meta">2022-08-08 · <a href="../../../../category/c13.html">ホームページ、Web作成</a> <a href="../../../../category/c4.html">はてなブログ</a> <a href="../../../../category/c2.html">WordPress</a></p><div class="entry-body"><p>自宅のWindowsPCローカルに<a class="keyword" href="http://d.hatena.ne.jp/keyword/WordPress">WordPress</a>をインストールしている。</p>
+<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>はてなブログのエクスポートファイルの画像リンクをWordPressローカルに変えるJScriptを作成。</h1><p class="meta">2022-08-08 · <a href="../../../../category/c13.html">ホームページ、Web作成</a> <a href="../../../../category/c4.html">はてなブログ</a> <a href="../../../../category/c2.html">WordPress</a></p><div class="entry-body"><p>自宅のWindowsPCローカルにWordPressをインストールしている。</p>
 <p><a class="link-card has-thumb" href="../06/224635.html"><span class="lc-body"><span class="lc-title">WindowsPCの古いXAMPPにWordPress（5.0.16）をインストール。</span><span class="lc-desc">※ 後日追記：ドライブやディレクトリを変える場合は注意が必要。 自宅のWindowsPCにWordPressをインストールした手順の備忘録。…</span><span class="lc-site">晴歩雨描 · <time>2022-08-06</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220806/20220806222743.png" alt="" loading="lazy"></span></a></p>
-<p><a class="keyword" href="http://d.hatena.ne.jp/keyword/%A4%CF%A4%C6%A4%CA%A5%D6%A5%ED%A5%B0">はてなブログ</a>のエクスポートファイルでは写真画像は、<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A4%CF%A4%C6%A4%CA%A5%D5%A5%A9%A5%C8%A5%E9%A5%A4%A5%D5">はてなフォトライフ</a>を参照する形になっている。</p>
+<p>はてなブログのエクスポートファイルでは写真画像は、はてなフォトライフを参照する形になっている。</p>
 <p>≪サンプル≫</p>
 <pre><a href="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220731/20220731131124.jpg">https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220731/20220731131124.jpg</a>
 </pre>
-<p>これを<a class="keyword" href="http://d.hatena.ne.jp/keyword/WordPress">WordPress</a>のローカル<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%C7%A5%A3%A5%EC%A5%AF%A5%C8">ディレクト</a>リ「<em>wp-content/uploads/hatena/</em>」に変更する。画像ファイルは、別途別の方法で<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A4%CF%A4%C6%A4%CA%A5%D5%A5%A9%A5%C8%A5%E9%A5%A4%A5%D5">はてなフォトライフ</a>からダウンロードする。</p>
+<p>これをWordPressのローカルディレクトリ「<em>wp-content/uploads/hatena/</em>」に変更する。画像ファイルは、別途別の方法ではてなフォトライフからダウンロードする。</p>
 <pre>wp-content/uploads/hatena/20220731_20220731131124.jpg
 </pre>
-<p><a class="keyword" href="http://d.hatena.ne.jp/keyword/WordPress">WordPress</a>のローカル<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%C7%A5%A3%A5%EC%A5%AF%A5%C8">ディレクト</a>リに置き換える<a class="keyword" href="http://d.hatena.ne.jp/keyword/JScript">JScript</a><a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%B9%A5%AF%A5%EA%A5%D7%A5%C8">スクリプト</a>を作成。</p>
-<h5 id="JScript-hatena-img-chgjse"><a class="keyword" href="http://d.hatena.ne.jp/keyword/JScript">JScript</a> ≪hatena-img-chg.jse≫</h5>
-<p>※ 以下の<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%B9%A5%AF%A5%EA%A5%D7%A5%C8">スクリプト</a>は、エクスポートファイル内には「ZZZZZ」という文字列はない前提で作成。</p>
-<p>※ エクスポートファイルをこの<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%B9%A5%AF%A5%EA%A5%D7%A5%C8">スクリプト</a>ファイル「hatena-img-chg.jse」に、ドラッグ＆ドロップして使う。</p>
+<p>WordPressのローカルディレクトリに置き換えるJScriptスクリプトを作成。</p>
+<h5 id="JScript-hatena-img-chgjse">JScript ≪hatena-img-chg.jse≫</h5>
+<p>※ 以下のスクリプトは、エクスポートファイル内には「ZZZZZ」という文字列はない前提で作成。</p>
+<p>※ エクスポートファイルをこのスクリプトファイル「hatena-img-chg.jse」に、ドラッグ＆ドロップして使う。</p>
 <pre>xxx.hatenablog.com.export.txt
 </pre>
 <p>↓↓↓（変更後のファイル）</p>
@@ -32,37 +32,37 @@ var inputFile = args(0);
 
 var sr = new ActiveXObject("ADODB.Stream");
 sr.Type = 2;					// adTypeText
-sr.charset = "<a class="keyword" href="http://d.hatena.ne.jp/keyword/utf-8">utf-8</a>";
+sr.charset = "utf-8";
 sr.Open();
 sr.LoadFromFile(inputFile);
 var str = sr.ReadText(-1);			// adReadAll
 sr.Close();
 
-var tmp = str.replace(/<a class="keyword" href="http://d.hatena.ne.jp/keyword/https">https</a>:\/\/<a class="keyword" href="http://d.hatena.ne.jp/keyword/cdn">cdn</a>-ak\.f\.st-hatena.com\/images\/<a class="keyword" href="http://d.hatena.ne.jp/keyword/fotolife">fotolife</a>\/a\/art2nd\//g,'/<a class="keyword" href="http://d.hatena.ne.jp/keyword/wordpress">wordpress</a>/wp-content/uploads/hatena/ZZZZZ');
-var out = tmp.replace(/ZZZZZ(\d{8})\/(\d{14}\.(jpg|<a class="keyword" href="http://d.hatena.ne.jp/keyword/png">png</a>|gif))/g,function() {
+var tmp = str.replace(/https:\/\/cdn-ak\.f\.st-hatena.com\/images\/fotolife\/a\/art2nd\//g,'/wordpress/wp-content/uploads/hatena/ZZZZZ');
+var out = tmp.replace(/ZZZZZ(\d{8})\/(\d{14}\.(jpg|png|gif))/g,function() {
 	return arguments[0].replace('\/', '_').replace('ZZZZZ', '');
 });
 
 var sw = new ActiveXObject("ADODB.Stream");
 sw.Type = 2;					// adTypeText
-sw.charset = "<a class="keyword" href="http://d.hatena.ne.jp/keyword/utf-8">utf-8</a>";
+sw.charset = "utf-8";
 sw.Open();
 sw.WriteText(out, 1);				// adWriteLine
 sw.SaveToFile(inputFile.slice(0,-4) + "-imgchg.txt", 2);	// adSaveCreateOverWrite
 sw.Close();
 </pre>
-<p>※ <a class="keyword" href="http://d.hatena.ne.jp/keyword/%A4%CF%A4%C6%A4%CA%A5%D6%A5%ED%A5%B0">はてなブログ</a>のURLをローカルリンクのURLに変換する<a class="keyword" href="http://d.hatena.ne.jp/keyword/%C0%B5%B5%AC%C9%BD%B8%BD">正規表現</a>については、「teratail」で教えてもらった。</p>
+<p>※ はてなブログのURLをローカルリンクのURLに変換する正規表現については、「teratail」で教えてもらった。</p>
 <p><a class="link-card has-thumb" href="https://teratail.com/" target="_blank" rel="noopener noreferrer"><span class="lc-body"><span class="lc-title">teratail【テラテイル】｜ITエンジニア特化型Q&amp;Aサイト</span><span class="lc-desc">teratail（テラテイル）はプログラミングに特化したQ&amp;Aサイトです。実現したい機能や作業中に発生したエラーについて質問すると、他のエン…</span><span class="lc-site">teratail[テラテイル]</span></span><span class="lc-thumb"><img src="https://teratail.com/img/ogpImages/imgFacebookShare.png" alt="" loading="lazy"></span></a></p>
 <hr />
-<p><a class="link-card has-thumb" href="122922.html"><span class="lc-body"><span class="lc-title">WordPress）画像格納ディレクトリ確認。はてなブログからのインポートテスト。</span><span class="lc-desc">先日、自宅のWindowsPCに WordPress をインストールした。 画像格納 ディレクト リ確認、 はてなブログ からのインポート、…</span><span class="lc-site">晴歩雨描 · <time>2022-08-08</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220807/20220807123827.png" alt="" loading="lazy"></span></a></p>
-<p><a class="link-card has-thumb" href="../16/105039.html"><span class="lc-body"><span class="lc-title">WordPress）はてなブログから移行（インポート）する手順まとめ。メディアライブラリを使わないバージョン。</span><span class="lc-desc">自宅WindowsPCローカルに WordPress をインストールしている。 「 はてなブログ 」からエクスポートして WordPress…</span><span class="lc-site">晴歩雨描 · <time>2022-08-16</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220817/20220817223605.jpg" alt="" loading="lazy"></span></a></p>
-<p><a class="link-card has-thumb" href="../12/160116.html"><span class="lc-body"><span class="lc-title">WordPress）はてなブログから移行（インポート）する手順まとめ。メディアライブラリを使うバージョン。</span><span class="lc-desc">自宅のWindowsPCローカルに WordPress をインストールしている。 「 はてなブログ 」からエクスポートして WordPres…</span><span class="lc-site">晴歩雨描 · <time>2022-08-12</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220807/20220807132140.png" alt="" loading="lazy"></span></a></p>
-<p><a class="link-card has-thumb" href="../15/231115.html"><span class="lc-body"><span class="lc-title">WordPress）設定まとめ。メディアライブラリを使わないバージョン。</span><span class="lc-desc">自宅WindowsPCローカルに WordPress をインストールしている。 以前、 WordPress 設定まとめを書いた。この時はメデ…</span><span class="lc-site">晴歩雨描 · <time>2022-08-15</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220811/20220811140646.jpg" alt="" loading="lazy"></span></a></p>
-<p><a class="link-card has-thumb" href="../12/153111.html"><span class="lc-body"><span class="lc-title">WordPress）設定まとめ。メディアライブラリを使うバージョン。</span><span class="lc-desc">自宅のWindowsPCローカルに WordPress をインストールしている。 設定をいくつかやってみたので、備忘録としてまとめ。 ※ メ…</span><span class="lc-site">晴歩雨描 · <time>2022-08-12</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220812/20220812153057.jpg" alt="" loading="lazy"></span></a></p>
-<p><a class="link-card has-thumb" href="../11/231938.html"><span class="lc-body"><span class="lc-title">WordPress）はてなブログからインポートした記事にアイキャッチ画像を一括登録。</span><span class="lc-desc">............ 自分の はてなブログ ではすべて アイキャッチ 画像を登録しているので、エクスポートファイルの「IMAGE:」には…</span><span class="lc-site">晴歩雨描 · <time>2022-08-11</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220811/20220811231738.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card has-thumb" href="122922.html"><span class="lc-body"><span class="lc-title">WordPress）画像格納ディレクトリ確認。はてなブログからのインポートテスト。</span><span class="lc-desc">先日、自宅のWindowsPCにWordPressをインストールした。 画像格納ディレクトリ確認、はてなブログからのインポート、他、試しごと…</span><span class="lc-site">晴歩雨描 · <time>2022-08-08</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220807/20220807123827.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card has-thumb" href="../16/105039.html"><span class="lc-body"><span class="lc-title">WordPress）はてなブログから移行（インポート）する手順まとめ。メディアライブラリを使わないバージョン。</span><span class="lc-desc">自宅WindowsPCローカルにWordPressをインストールしている。 「はてなブログ」からエクスポートしてWordPressにインポー…</span><span class="lc-site">晴歩雨描 · <time>2022-08-16</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220817/20220817223605.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card has-thumb" href="../12/160116.html"><span class="lc-body"><span class="lc-title">WordPress）はてなブログから移行（インポート）する手順まとめ。メディアライブラリを使うバージョン。</span><span class="lc-desc">自宅のWindowsPCローカルにWordPressをインストールしている。 「はてなブログ」からエクスポートしてWordPressにインポ…</span><span class="lc-site">晴歩雨描 · <time>2022-08-12</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220807/20220807132140.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card has-thumb" href="../15/231115.html"><span class="lc-body"><span class="lc-title">WordPress）設定まとめ。メディアライブラリを使わないバージョン。</span><span class="lc-desc">自宅WindowsPCローカルにWordPressをインストールしている。 以前、WordPress設定まとめを書いた。この時はメディアライ…</span><span class="lc-site">晴歩雨描 · <time>2022-08-15</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220811/20220811140646.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card has-thumb" href="../12/153111.html"><span class="lc-body"><span class="lc-title">WordPress）設定まとめ。メディアライブラリを使うバージョン。</span><span class="lc-desc">自宅のWindowsPCローカルにWordPressをインストールしている。 設定をいくつかやってみたので、備忘録としてまとめ。 ※ メディ…</span><span class="lc-site">晴歩雨描 · <time>2022-08-12</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220812/20220812153057.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card has-thumb" href="../11/231938.html"><span class="lc-body"><span class="lc-title">WordPress）はてなブログからインポートした記事にアイキャッチ画像を一括登録。</span><span class="lc-desc">............ 自分のはてなブログではすべてアイキャッチ画像を登録しているので、エクスポートファイルの「IMAGE:」には必ずファ…</span><span class="lc-site">晴歩雨描 · <time>2022-08-11</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220811/20220811231738.jpg" alt="" loading="lazy"></span></a></p>
 <p><a class="link-card has-thumb" href="../../../2019/06/24/002655.html"><span class="lc-body"><span class="lc-title">検索機能付き「はてなブログ記事一覧」HTML生成スクリプト(JScript)を作成。</span><span class="lc-desc">先日、はてなブログのHTMLサイトマップ（はてなブログ記事一覧）を生成するスクリプト(JScript)を作成した。 これは、Googleクロ…</span><span class="lc-site">晴歩雨描 · <time>2019-06-24</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190623/20190623234257.png" alt="" loading="lazy"></span></a></p>
-<p><a class="link-card has-thumb" href="../../../2019/06/21/215450.html"><span class="lc-body"><span class="lc-title">「Google Search Console」のサイトマップ登録の進展がないので、はてなブログのHTMLサイトマップを生成するスクリプト(JScript)を作成した。</span><span class="lc-desc">先日、「 Google Search Console 」で、 はてなブログ の サイトマップ （「sitemap. xml 」、「sitem…</span><span class="lc-site">晴歩雨描 · <time>2019-06-21</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190621/20190621213324.jpg" alt="" loading="lazy"></span></a></p>
-<p><a class="link-card has-thumb" href="../../../2018/12/21/143023.html"><span class="lc-body"><span class="lc-title">パナソニックのデジカメ写真のEXIFから、フォトスタイル、クリエイティブコントロール情報を抜き出して、画像ファイル名にEXIF情報を付け足す。（ExifTool/JScript）</span><span class="lc-desc">先日、 ソニー のデジカメ写真の EXIF から、クリエイティブスタイル、ピクチャーエフェクト情報を抜き出して、画像ファイル名に EXIF …</span><span class="lc-site">晴歩雨描 · <time>2018-12-21</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20181221/20181221142044.jpg" alt="" loading="lazy"></span></a></p>
-<p><a class="link-card has-thumb" href="../../../2018/11/29/093518.html"><span class="lc-body"><span class="lc-title">ソニーのデジカメ写真のEXIFから、クリエイティブスタイル、ピクチャーエフェクト情報を抜き出して、画像ファイル名にEXIF情報を付け足す。（ExifTool/JScript）</span><span class="lc-desc">先日、 価格.com 掲示 板で、DSC-RX100M6でクリエイティブスタイルやピクチャーエフェクトを設定して撮影した写真の EXIF 情…</span><span class="lc-site">晴歩雨描 · <time>2018-11-29</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20181129/20181129091633.jpg" alt="" loading="lazy"></span></a></p></div></article>
+<p><a class="link-card has-thumb" href="../../../2019/06/21/215450.html"><span class="lc-body"><span class="lc-title">「Google Search Console」のサイトマップ登録の進展がないので、はてなブログのHTMLサイトマップを生成するスクリプト(JScript)を作成した。</span><span class="lc-desc">先日、「Google Search Console」で、はてなブログのサイトマップ（「sitemap.xml」、「sitemap.xml?p…</span><span class="lc-site">晴歩雨描 · <time>2019-06-21</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20190621/20190621213324.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card has-thumb" href="../../../2018/12/21/143023.html"><span class="lc-body"><span class="lc-title">パナソニックのデジカメ写真のEXIFから、フォトスタイル、クリエイティブコントロール情報を抜き出して、画像ファイル名にEXIF情報を付け足す。（ExifTool/JScript）</span><span class="lc-desc">先日、ソニーのデジカメ写真のEXIFから、クリエイティブスタイル、ピクチャーエフェクト情報を抜き出して、画像ファイル名にEXIF情報を付け足…</span><span class="lc-site">晴歩雨描 · <time>2018-12-21</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20181221/20181221142044.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card has-thumb" href="../../../2018/11/29/093518.html"><span class="lc-body"><span class="lc-title">ソニーのデジカメ写真のEXIFから、クリエイティブスタイル、ピクチャーエフェクト情報を抜き出して、画像ファイル名にEXIF情報を付け足す。（ExifTool/JScript）</span><span class="lc-desc">先日、価格.com掲示板で、DSC-RX100M6でクリエイティブスタイルやピクチャーエフェクトを設定して撮影した写真のEXIF情報を確認す…</span><span class="lc-site">晴歩雨描 · <time>2018-11-29</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20181129/20181129091633.jpg" alt="" loading="lazy"></span></a></p></div></article>
 </body>
 </html>
