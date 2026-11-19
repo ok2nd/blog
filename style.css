@@ -1,6 +1,6 @@
-:root{--bg:#fff;--fg:#222;--muted:#666;--line:#ddd;--code:#f6f8fa;--link:#0b6bcb;--date:#e8431f}
+:root{--bg:#fff;--fg:#222;--muted:#666;--line:#ddd;--code:#f6f8fa;--link:#0b6bcb;--date:#e8431f;--em-bg:#ffff00;--tbl-line:#ccc;--th-bg:#f0f0f0}
 @media (prefers-color-scheme:dark){
- :root{--bg:#16181c;--fg:#e6e6e6;--muted:#9aa0a6;--line:#3a3d43;--code:#22252b;--link:#6cb2ff;--date:#ff7a5c}}
+ :root{--bg:#16181c;--fg:#e6e6e6;--muted:#9aa0a6;--line:#3a3d43;--code:#22252b;--link:#6cb2ff;--date:#ff7a5c;--em-bg:#7a6f00;--tbl-line:#4a4d54;--th-bg:#272a30}}
 body{max-width:760px;margin:2em auto;padding:0 1em;line-height:1.8;background:var(--bg);color:var(--fg);
  font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Noto Sans JP",Meiryo,sans-serif}
 a{color:var(--link)}
@@ -8,6 +8,16 @@ img,iframe,video{max-width:100%;height:auto}
 h1{font-size:1.5em;line-height:1.4;margin:.6em 0}
 article h1{font-size:1.3em;line-height:1.5;margin:.4em 0 .6em;overflow-wrap:anywhere}
 .entry-body{overflow-wrap:anywhere;--fs:15px;font-size:var(--fs)}
+.entry-body h5{font-size:calc(var(--fs) + 2px)}
+.entry-body em{background:linear-gradient(transparent 70%,var(--em-bg) 70%);font-style:normal;font-weight:bold}
+.entry-body table{border-collapse:collapse}
+.entry-body th,.entry-body td{border:1px solid var(--tbl-line)}
+.entry-body th{background:var(--th-bg)}
+.td-center th,.td-center td{text-align:center}
+.td-top th,.td-top td{vertical-align:top}
+.font-small{font-size:0.8rem}
+.images-row{display:flex;justify-content:center;align-items:start;gap:8px}
+.images-row-item{min-width:0}
 figure{margin:var(--fs,15px) 0}
 figure img{display:block;max-width:100%;height:auto}
 figure>span{display:block}
@@ -16,7 +26,7 @@ figure br,figure p:empty{display:none}
 figure.figure-image{font-size:0;line-height:0}
 figure.figure-image figcaption{font-size:var(--fs)}
 figcaption{color:var(--muted);line-height:1.6;margin:3px 0 0;text-align:center}
-pre{overflow-x:auto;background:var(--code);padding:1em;border-radius:6px}
+pre{overflow-x:auto;background:var(--code);padding:1em;border:1px solid var(--line);border-radius:6px;font-size:13px;line-height:1.5}
 blockquote{margin:1em 0;padding:.2em 1em;border-left:4px solid var(--line);color:var(--muted)}
 .meta{color:var(--muted);font-size:.9em}
 .site-nav{margin-bottom:2em}
