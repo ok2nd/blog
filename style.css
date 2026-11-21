@@ -9,6 +9,10 @@ iframe{max-width:100%}
 h1{font-size:1.5em;line-height:1.4;margin:.6em 0}
 article h1{font-size:1.3em;line-height:1.5;margin:.4em 0 .6em;overflow-wrap:anywhere}
 .entry-body{overflow-wrap:anywhere;--fs:15px;font-size:var(--fs)}
+.entry-body h1{font-size:calc(var(--fs) + 10px)}
+.entry-body h2{font-size:calc(var(--fs) + 8px)}
+.entry-body h3{font-size:calc(var(--fs) + 6px)}
+.entry-body h4{font-size:calc(var(--fs) + 4px)}
 .entry-body h5{font-size:calc(var(--fs) + 2px)}
 .entry-body em{background:linear-gradient(transparent 70%,var(--em-bg) 70%);font-style:normal;font-weight:bold}
 .entry-body table{border-collapse:collapse}
