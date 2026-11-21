@@ -19,6 +19,7 @@
 <p>この中から「<em>InfinityFree</em>」を使ってみた。</p>
 <p>「GoogieHost」はレスポンスは速いらしいが、管理画面への15日間の非ログインで凍結される（？）らしいので、諦めた。</p>
 <p><strong><span style="color: #dd830c;">※ 後日追記：「InfinityFree」で無料で立ち上げたWebページは2か月程で、ドメイン停止になった。途中で、管理画面へのログインはしてしたが、効果なかった。後日試した「x10Hosting」の方が良いかもしれない。</span></strong></p>
+<p><strong><span style="color: rgb(221, 131, 12);">※ 数か月追記：その後、いくつかの自分用サービスを「InfinityFree」で運用しているが、問題なく使えている。</span></strong></p>
 <p><strong><span style="color: #dd830c;">※ 後日追記：海外のサーバーを使う場合、サーバーの時刻（タイムゾーン）が日本にはなっていない。</span></strong><strong><span style="color: #dd830c;">そのため、システムを構築するにあたっては、その点を考慮する必要がある。</span></strong><strong><span style="color: #dd830c;">PHPでシステム作成する場合、日本時間を設定すること。一般的にconfig.php等に記入する</span></strong>。</p>
 <pre>date_default_timezone_set('Asia/Tokyo');</pre>
 <table class="font-small">
@@ -112,26 +113,26 @@
 <p>■ InfinityFreeアカウント作成。</p>
 <ol>
 <li>Googleアカウントでログイン。</li>
-<li>「Create Account」ボタンを押す。<br />
-<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260120/20260120093659.jpg" width="697" height="173" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<li>「Create Account」ボタンを押す。<br>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260120/20260120093659.jpg" width="697" height="173" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
 </li>
-<li>任意のSubdomain名を入れて、Domain Extensionを複数の中から自分の好きなものを選択。<br />
-<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260120/20260120093713.jpg" width="750" height="409" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<li>任意のSubdomain名を入れて、Domain Extensionを複数の中から自分の好きなものを選択。<br>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260120/20260120093713.jpg" width="750" height="409" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
 </li>
 <li>アカウント生成する。UsernameやPasswordは自動生成される。</li>
 </ol>
 <p>■ 作成されたアカウントのクライアントエリア。</p>
-<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260119/20260119163724.jpg" width="952" height="605" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260119/20260119163724.jpg" width="952" height="605" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
 <p>「View Site」をクリックすると、以下のような画面が表示される。</p>
-<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260119/20260119152641.jpg" width="754" height="595" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260119/20260119152641.jpg" width="754" height="595" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
 <p>■ PHPファイルのアップロード：File Manager</p>
 <p>※「File Manager」を使う。</p>
-<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260119/20260119155046.jpg" width="290" height="175" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
-<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260119/20260119152647.jpg" width="1112" height="597" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260119/20260119155046.jpg" width="290" height="175" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260119/20260119152647.jpg" width="1112" height="597" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
 <p>■ PHPファイルのアップロードはフォルダー一括でもできる。</p>
-<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260119/20260119152650.jpg" width="624" height="438" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260119/20260119152650.jpg" width="624" height="438" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
 <p>■ PHPファイルの修正もできる。</p>
-<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260119/20260119164243.jpg" width="1076" height="723" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260119/20260119164243.jpg" width="1076" height="723" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
 <p>■ PHPファイルのアップロード：FTP</p>
 <p>※ File Managerでアップロードできないファイルがある。</p>
 <p>その場合、FTPを使う。「FTP Details」に、以下の項目がある。</p>
@@ -141,18 +142,18 @@
 <li>FTP Hostname</li>
 <li>FTP Port</li>
 </ul>
-<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260120/20260120115114.jpg" width="766" height="408" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260120/20260120115114.jpg" width="766" height="408" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
 <p>■ MySQL データベース設定</p>
 <p>※「Control Panel」を開く。</p>
-<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260119/20260119155059.jpg" width="296" height="173" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260119/20260119155059.jpg" width="296" height="173" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
 <p>「Control Panel」を下にスクロールして、「DATABASE」の「MySQL Database」を選択。</p>
-<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260119/20260119152655.jpg" width="760" height="257" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260119/20260119152655.jpg" width="760" height="257" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
 <p>データベース名を入れる。実際のデータベース名は、自動で接頭辞がついた形になる。</p>
-<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260119/20260119152658.jpg" width="695" height="243" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
-<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260119/20260119152701.jpg" width="942" height="556" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260119/20260119152658.jpg" width="695" height="243" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260119/20260119152701.jpg" width="942" height="556" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
 <p>■ phpMyAdmin</p>
 <p>上記の「Current Databases」の「Admin」ボタンを押すと、「phpMyAdmin」のページが開く。</p>
-<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260119/20260119160748.jpg" width="863" height="315" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260119/20260119160748.jpg" width="863" height="315" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
 <p>■ データベースを別サーバーから移行</p>
 <p>※ 「phpMyAdmin」のページを使う。</p>
 <p>「さくらインターネット」で運用しているデータベースから、必要なテーブルをエクスポートしたSQLファイル（「CREATE TABLE」、「INSERT INTO テーブル」）を、インポートする。</p>
@@ -169,7 +170,7 @@
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 AUTO_INCREMENT=254 ;
 
 INSERT INTO `tbl_schedule` (`id_schedule`, `id_account`, `c_date`, `c_date2`, `c_color`, `c_memo`, `c_delete`, `c_registtime`) VALUES ..........</pre>
-<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260119/20260119152703.jpg" width="996" height="719" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260119/20260119152703.jpg" width="996" height="719" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
 <p>■ PHPプログラムのMySQL接続部分の修正</p>
 <p>※ 以下の記述をInfinityFreeに合わせて修正。</p>
 <pre>define('DB_SERVER', 'xxxxxxx.com');
@@ -178,7 +179,7 @@ define('DB_PASSWORD', 'xxxxxxx');
 define('DB_NAME', 'xxxxxxx_calendar');
 $conn = mysqli_connect(DB_SERVER, DB_USER, DB_PASSWORD, DB_NAME);</pre>
 <p>MySQLのパスワードは、クライアントエリアの右側「Account Details」の中にある。</p>
-<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260119/20260119161129.jpg" width="1054" height="766" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260119/20260119161129.jpg" width="1054" height="766" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
 <p>■ PHPのMySQL関係の関数を修正。</p>
 <p>「さくらインターネット」で運用していたPHPは古いバージョンで作成した。</p>
 <p>現在の PHP（バージョン 7.0 以上）では古い「mysql_」系の関数が廃止されてる。新しいバージョンでは「mysqli_」系に修正する必要がある。</p>

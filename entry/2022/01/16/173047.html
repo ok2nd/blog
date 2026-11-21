@@ -9,7 +9,7 @@
 <body>
 <p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>はてなブログで、&lt;TABLE&gt;のセル（TH,TD）の余白（padding）を変更するには、「!important」が必要。（カスタマイズCSS）</h1><p class="meta">2022-01-16 · <a href="../../../../category/c13.html">ホームページ、Web作成</a> <a href="../../../../category/c4.html">はてなブログ</a></p><div class="entry-body"><p>はてなブログで、&lt;TABLE&gt;の&lt;TH&gt;&lt;TD&gt;の余白（padding）を変更するには、「<em>!important</em>」が必要。</p>
 <p>■ 特定の記事ページのみ変更する場合は、記事編集の「HTML編集」で、&lt;style&gt;～&lt;/style&gt;を入れればよい。</p>
-<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220116/20220116172327.jpg" alt="f:id:art2nd:20220116172327j:plain" width="356" height="175" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220116/20220116172327.jpg" alt="f:id:art2nd:20220116172327j:plain" width="356" height="175" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
 <p>【ページ内の全部のテーブル】</p>
 <pre>&lt;style&gt;
 th, td {
@@ -19,7 +19,7 @@ th, td {
 <p>ただし、<em>id付きのテーブルの場合は、「!important」は不要。</em></p>
 <p>【特定のidのテーブル】</p>
 <pre>&lt;style&gt;
-#id名 th, td {
+#id名 th, #id名 td {
 	padding: 3px;
 }
 &lt;/style&gt;</pre>
@@ -28,7 +28,7 @@ th, td {
 <li>〔デザイン〕→〔カスタマイズ〕→〔デザインCSS〕</li>
 </ul>
 <p>のところに、以下のCSSを追加。この場合も、「<em>!important</em>」が必要。</p>
-<pre>.entry-content th, td {
+<pre>.entry-content th, .entry-content td {
 	padding: 3px !important;
 	line-height: 1.5em;
 }</pre>
@@ -56,14 +56,14 @@ th, td {
 	font-style: normal;
 	font-weight: bold;
 }
-.entry-content th, td {
+.entry-content th, .entry-content td {
 	padding: 3px !important;
 	line-height: 1.5em;
 }
-.td-center th, td {
+.td-center th, .td-center td {
 	text-align : center;
 }
-.td-top th, td {
+.td-top th, .td-top td {
 	vertical-align: top;
 }
 .font-small {

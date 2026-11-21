@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Excel）全セル内の特定の文字列のみ色を付ける方法（一括処理版）。マクロ作成。 - 晴歩雨描</title>
+<link rel="stylesheet" href="../../../../style.css">
+</head>
+<body>
+<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>Excel）全セル内の特定の文字列のみ色を付ける方法（一括処理版）。マクロ作成。</h1><p class="meta">2026-11-19 · <a href="../../../../category/c8.html">コンピュータ</a></p><div class="entry-body"><p>昨日、「全セル内の特定の文字列のみ色を付ける方法」の記事を書いた。</p>
+<p><a class="link-card has-thumb" href="../18/115649.html"><span class="lc-body"><span class="lc-title">Excel）全セル内の特定の文字列のみ色を付ける方法。マクロ作成し、クイックアクセスツールバーに登録。</span><span class="lc-desc">Excelで、全セル内の特定の一部の文字列のみ色を付ける機能は標準にはない。VBA（マクロ）を作成し、クイックアクセスツールバーに登録する方…</span><span class="lc-site">晴歩雨描 · <time>2026-11-18</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20261118/20261118114958.png" alt="" loading="lazy"></span></a></p>
+<p>今回、<em>色を付ける文字列を毎回指定する方法ではなく、Excelシートに対象文字列を列挙しておき、一括で処理するマクロを作成。</em>（Claudeで作成。）</p>
+<h5 id="-VBAマクロ作成-">【 VBA（マクロ）作成 】</h5>
+<p>※ 前提：赤色＆ボールドにする文字列は、「ハイライト文字列」シートのA列に入っている。</p>
+<pre>Option Explicit
+
+Sub 特定文字列を赤太字にする()
+
+    Const LIST_SHEET As String = "ハイライト文字列"
+    Const CMP_MODE As Long = vbBinaryCompare  ' 大文字小文字・全角半角を区別する。区別しないなら vbTextCompare
+
+    Dim wsList As Worksheet, wsTarget As Worksheet
+    Dim words() As String
+    Dim lastRow As Long, i As Long, n As Long
+    Dim rng As Range, c As Range
+    Dim txt As String, pos As Long, w As Variant
+    Dim hitCells As Long
+
+    Set wsTarget = ActiveSheet
+
+    On Error Resume Next
+    Set wsList = ThisWorkbook.Worksheets(LIST_SHEET)
+    If wsList Is Nothing Then Set wsList = wsTarget.Parent.Worksheets(LIST_SHEET)
+    On Error GoTo 0
+
+    If wsList Is Nothing Then
+        MsgBox "「" &amp; LIST_SHEET &amp; "」シートが見つかりません。", vbExclamation
+        Exit Sub
+    End If
+
+    If wsTarget.Name = LIST_SHEET Then
+        MsgBox "ハイライト文字列シート以外のシートを表示してから実行してください。", vbExclamation
+        Exit Sub
+    End If
+
+    ' --- A列の文字列を配列に取り込む（空白は除く） ---
+    lastRow = wsList.Cells(wsList.Rows.Count, "A").End(xlUp).Row
+    ReDim words(1 To Application.Max(lastRow, 1))
+    For i = 1 To lastRow
+        If Len(Trim$(CStr(wsList.Cells(i, "A").Value))) &gt; 0 Then
+            n = n + 1
+            words(n) = CStr(wsList.Cells(i, "A").Value)
+        End If
+    Next i
+
+    If n = 0 Then
+        MsgBox "ハイライト文字列シートのA列に文字列がありません。", vbExclamation
+        Exit Sub
+    End If
+
+    ' --- 対象セル（定数の文字列セルのみ。数式セルは部分書式不可のため除外） ---
+    On Error Resume Next
+    Set rng = wsTarget.UsedRange.SpecialCells(xlCellTypeConstants, xlTextValues)
+    On Error GoTo 0
+
+    If rng Is Nothing Then
+        MsgBox "処理対象の文字列セルがありません。", vbInformation
+        Exit Sub
+    End If
+
+    Application.ScreenUpdating = False
+    Application.Calculation = xlCalculationManual
+
+    On Error Resume Next
+    For Each c In rng.Cells
+        txt = CStr(c.Value)
+        Dim hit As Boolean: hit = False
+        For i = 1 To n
+            pos = InStr(1, txt, words(i), CMP_MODE)
+            Do While pos &gt; 0
+                With c.Characters(pos, Len(words(i))).Font
+                    .Color = vbRed
+                    .Bold = True
+                End With
+                hit = True
+                pos = InStr(pos + Len(words(i)), txt, words(i), CMP_MODE)
+            Loop
+        Next i
+        If hit Then hitCells = hitCells + 1
+    Next c
+    On Error GoTo 0
+
+    Application.Calculation = xlCalculationAutomatic
+    Application.ScreenUpdating = True
+
+    MsgBox hitCells &amp; " 個のセルを処理しました。", vbInformation
+
+End Sub</pre>
+<p>【 VBA（マクロ）使い方 】</p>
+<ol>
+<li><em>Alt + F11 </em>で VBE を開く。</li>
+<li>挿入 → 標準モジュール を選び、上のコードを貼り付ける。</li>
+<li>処理したいシートを表示した状態で、<em>Alt + F8</em> → 特定文字列を赤太字にする → 実行。<br>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20261119/20261119102153.png" width="527" height="414" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+</li>
+</ol>
+<p><a class="link-card has-thumb" href="../../../2025/01/29/130631.html"><span class="lc-body"><span class="lc-title">JavaScript）ExcelからHTML&lt;table&gt;へ変換するツール作成。ChatGPTで作成。</span><span class="lc-desc">JavaScriptで「Excel to HTML&lt;table&gt;変換」ツール作成。ChatGPTで作成。 ExcelからHTML&lt;table…</span><span class="lc-site">晴歩雨描 · <time>2025-01-29</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250129/20250129134540.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card has-thumb" href="../../../2023/02/24/172717.html"><span class="lc-body"><span class="lc-title">AI）「ChatGPT」で、Excelについて聞いてみた。（曜日の列の作成方法と色を付ける方法）（コード生成）</span><span class="lc-desc">先程、「ChatGPT」で、HTMLとCSSとJavaScriptでアートを作らせてみた。 今回、Excelについて聞いてみた。日付の列に曜…</span><span class="lc-site">晴歩雨描 · <time>2023-02-24</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20230224/20230224172300.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card has-thumb" href="../../../2022/07/12/144002.html"><span class="lc-body"><span class="lc-title">Excel）同じ日付のデータの中から最大値を取り出す。</span><span class="lc-desc">Excelで、同じ日付のデータの中から最大値を取り出す方法の備忘録。 先程、「神戸の暑さ指数一覧」を作成した。 これは、「環境省熱中症予防情…</span><span class="lc-site">晴歩雨描 · <time>2022-07-12</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220712/20220712142956.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card has-thumb" href="../../../2022/07/05/224047.html"><span class="lc-body"><span class="lc-title">Microsoft Office（Word、Excel） の保護ビューを解除しないで印刷する方法。</span><span class="lc-desc">「 Microsoft Office 」のWordやExcelのファイルが、「 保護ビュー 」になっていると印刷もできない。 【方法１】 W…</span><span class="lc-site">晴歩雨描 · <time>2022-07-05</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220705/20220705223117.jpg" alt="" loading="lazy"></span></a></p></div></article>
+</body>
+</html>

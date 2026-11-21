@@ -7,10 +7,10 @@
 <link rel="stylesheet" href="../../../../style.css">
 </head>
 <body>
-<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>JavaScriptでRSSを取得できない（CORS制限）を Cloudflare Workers で無料解決する方法。PHP不要。はてなブックマークRSS取得。</h1><p class="meta">2026-05-07 · <a href="../../../../category/c13.html">ホームページ、Web作成</a> <a href="../../../../category/c4.html">はてなブログ</a></p><div class="entry-body"><p>自分用のサイトで、<em>はてなブックマーク</em>の最新情報をRSSリーダーで表示している。（以下のどちらか）</p>
+<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>JavaScriptでRSSを取得できない（CORS制限）を Cloudflare Workers で無料解決する方法。PHP不要。はてなブックマークRSS取得。</h1><p class="meta">2026-05-07 · <a href="../../../../category/c13.html">ホームページ、Web作成</a> <a href="../../../../category/c4.html">はてなブログ</a></p><div class="entry-body"><p>自分用のサイトで、<em>はてなブックマーク</em>の最新情報をRSSリーダーで表示している。<s>（以下のどちらか）</s></p>
 <ul>
-<li><a href="https://feeds.feedburner.com/hatena/b/hotentry/" target="_blank" rel="noopener">https://feeds.feedburner.com/hatena/b/hotentry/</a></li>
-<li><a href="https://b.hatena.ne.jp/hotentry.rss" target="_blank">https://b.hatena.ne.jp/hotentry.rss</a></li>
+<li><a href="https://feeds.feedburner.com/hatena/b/hotentry/" target="_blank" rel="noopener"><s>https://feeds.feedburner.com/hatena/b/hotentry/</s></a>（現在、使用できない）</li>
+<li><a href="https://b.hatena.ne.jp/hotentry.rss" target="_blank">https://b.hatena.ne.jp/hotentry.rss</a>（総合）</li>
 </ul>
 <p>はてなブックマークのRSSを取得するのに、CORS（Cross-Origin Resource Sharing）制限を回避するために使用していた「api.allorigins.win」のプロキシサービスがあまり調子よくない（？）ので、「<em>Cloudflare Workers</em>」を使ってみる。</p>
 <p>「<em>Cloudflare Workers</em>」とは、サーバーを持たずにコードをインターネット上で実行できるサービス。CORS制限で、ブラウザから直接外部RSSを取得できない場合に、「Cloudflare Workers」が使える。無料ホスティング（InfinityFreeなど）では fetch によるプログラム的なリクエストが遮断されることがあり、PHPによるプロキシも動作しない場合がある。Cloudflare Workers はその制約を受けないため、安定して動作する。</p>
@@ -24,16 +24,16 @@
 <p>「<a href="https://workers.cloudflare.com" target="_blank">https://workers.cloudflare.com</a>」にアクセスしてアカウント作成。</p>
 <p>以下の手順で、Cloudflare Workersを作成する。</p>
 <p>１．Build ＞ Compute</p>
-<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260507/20260507133508.jpg" width="271" height="459" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260507/20260507133508.jpg" width="271" height="459" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
 <p>２．Build ＞ Compute ＞ Workers &amp; Pages</p>
 <p>「Create application」をクリック。</p>
-<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260507/20260507133511.jpg" width="948" height="567" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260507/20260507133511.jpg" width="948" height="567" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
 <p>３．「Start with Hello World!」を選択</p>
-<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260507/20260507133516.jpg" width="580" height="452" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260507/20260507133516.jpg" width="580" height="452" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
 <p>４．「Worker name」を確認して「Deploy」</p>
-<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260507/20260507133519.jpg" width="576" height="642" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260507/20260507133519.jpg" width="576" height="642" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
 <p>５．Edit code</p>
-<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260507/20260507133523.jpg" width="692" height="676" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260507/20260507133523.jpg" width="692" height="676" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
 <p>６．以下のコードを貼り付ける。</p>
 <pre>export default {
   async fetch(request) {
@@ -91,12 +91,12 @@ function jsonResponse(data, status = 200) {
   });
 }</pre>
 <p>７．Deploy</p>
-<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260507/20260507134807.jpg" width="975" height="596" loading="lazy" title="" class="hatena-fotolife" itemprop="image" /></p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260507/20260507134807.jpg" width="975" height="596" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
 <p><strong>《 RSSリーダーを使うJavaScript 》</strong></p>
 <p>以下のようなスクリプトで「Cloudflare Workers」を使って、RSSを取得する。</p>
 <pre>&lt;script&gt;
-// const rssUrl = '<a href="https://b.hatena.ne.jp/hotentry.rss';">https://b.hatena.ne.jp/hotentry.rss';</a>
-const rssUrl = '<a href="https://feeds.feedburner.com/hatena/b/hotentry';">https://feeds.feedburner.com/hatena/b/hotentry';</a>
+const rssUrl = '<a href="https://b.hatena.ne.jp/hotentry.rss';">https://b.hatena.ne.jp/hotentry.rss';</a>
+// const rssUrl = '<a href="https://feeds.feedburner.com/hatena/b/hotentry';">https://feeds.feedburner.com/hatena/b/hotentry';</a>
 async function fetchRSS() {
 	const response = await fetch(`https://<span style="color: #dd830c;">（Worker name）</span>.workers.dev/?url=${encodeURIComponent(rssUrl)}`);
 	const data = await response.json();

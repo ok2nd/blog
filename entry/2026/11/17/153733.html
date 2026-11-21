@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>はてなブログのエクスポートファイル（Movable Type形式）を、静的HTMLに変換して、GitHubで公開する。Pythonスクリプト作成。 - 晴歩雨描</title>
+<link rel="stylesheet" href="../../../../style.css">
+</head>
+<body>
+<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>はてなブログのエクスポートファイル（Movable Type形式）を、静的HTMLに変換して、GitHubで公開する。Pythonスクリプト作成。</h1><p class="meta">2026-11-17 · <a href="../../../../category/c4.html">はてなブログ</a> <a href="../../../../category/c42.html">＜AI＞</a> <a href="../../../../category/c13.html">ホームページ、Web作成</a></p><div class="entry-body"><p><em>はてなブログ</em>をバックアップとして、別サイトに無料でコピーする方法を考えた。</p>
+<p>「<em>WordPress</em>」に移行する方法もあるが、PHPが使えるサーバーが必要になる。</p>
+<p>「<em>Astro+Cloudflare Workers</em>」を使う方法もあるが、面倒そう。</p>
+<p><em>はてなブログのエクスポートファイル（Movable Type形式）を、静的HTMLに変換して、GitHubで公開する方法を考えた。</em></p>
+<p><em>Pythonで、エクスポートファイル（Movable Type形式）を静的HTMLに変換するスクリプトを作成。（Claudeで作成。）</em></p>
+<p><strong>《 はてなブログ→静的HTML(Python) 使い方ガイド 》</strong></p>
+<p><a href="https://ok2nd.github.io/blog/user-guide.html" target="_blank">https://ok2nd.github.io/blog/user-guide.html</a></p>
+<p><strong>《 出力されるファイル 》</strong></p>
+<pre><code>site/
+├── index.html                  トップ（テキスト一覧・検索）
+├── index_image.html            トップ（アイキャッチ画像つき一覧・検索）
+├── style.css                   共通スタイル（ダークモード対応）
+├── category/
+│   ├── c1.html                 カテゴリ別の一覧（テキスト）
+│   ├── c1_image.html           カテゴリ別の一覧（画像付き）
+│   └── c2.html ...
+└── entry/
+    └── 2020/01/01/123456.html  記事（元の /entry/ 以下と同じ階層）</code></pre>
+<p>変換したHTMLをそのまま「<em>GitHub</em>」に入れるだけ。</p>
+<p>画像ファイルは10GB以上あるので、GitHubに入れるのは諦めた。</p>
+<p>「<em>Cloudflare R2</em>」は、無料で10GBまで画像ファイルを格納できるらしいが、クレジットカード登録が必要なので、やめた。</p>
+<p><em>画像ファイルは、はてなブックマーク（はてなフォトライフ）に入っているものを、そのまま参照している。</em></p>
+<p>今回作成したGitHub公開のブログコピーには、ブログ編集機能はない。あくまでもはてなブログのバックアップとして作成。</p>
+<h5 id="-GitHub-版-晴歩雨描ブログ-">《 GitHub 版 「晴歩雨描」ブログ 》</h5>
+<p><a href="https://ok2nd.github.io/blog/" target="_blank">https://ok2nd.github.io/blog/</a></p>
+<p>記事タイトルとカテゴリーの検索が出来る。</p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20261117/20261117110518.jpg" width="888" height="716" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<p>画像付き一覧もできる。</p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20261117/20261117110522.jpg" width="888" height="716" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<p>個々のブログ記事。</p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20261117/20261117110527.jpg" width="888" height="716" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<p>ブログカードも表示される。</p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20261117/20261117110531.jpg" width="888" height="716" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<p><strong>【スマホ画面】</strong></p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20261117/20261117110537.jpg" width="514" height="1200" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<p>スマホの「画像付き一覧」。</p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20261117/20261117110543.jpg" width="514" height="1200" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20261117/20261117110550.jpg" width="514" height="1200" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<p>スマホでのブログ記事表示。</p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20261117/20261117110602.jpg" width="514" height="1200" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<p>スマホでのブログカード例。</p>
+<p><img style="border: 1px #000 solid;" src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20261117/20261117110605.jpg" width="514" height="1200" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<p><a class="link-card" href="https://ok2nd.github.io/sitemap/hatena-sitemap-table.html?search=%E3%81%AF%E3%81%A6%E3%81%AA" target="_blank" rel="noopener noreferrer"><span class="lc-body"><span class="lc-title">晴歩雨描：記事一覧</span><span class="lc-desc"></span><span class="lc-site">ok2nd.github.io</span></span></a></p>
+<p><a class="link-card has-thumb" href="../../05/07/140150.html"><span class="lc-body"><span class="lc-title">JavaScriptでRSSを取得できない（CORS制限）を Cloudflare Workers で無料解決する方法。PHP不要。はてなブックマークRSS取得。</span><span class="lc-desc">自分用のサイトで、 はてなブックマーク の最新情報をRSSリーダーで表示している。 （以下のどちらか） https://feeds.feed…</span><span class="lc-site">晴歩雨描 · <time>2026-05-07</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20260507/20260507134807.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card has-thumb" href="../../../2022/08/16/105039.html"><span class="lc-body"><span class="lc-title">WordPress）はてなブログから移行（インポート）する手順まとめ。メディアライブラリを使わないバージョン。</span><span class="lc-desc">自宅WindowsPCローカルにWordPressをインストールしている。 「はてなブログ」からエクスポートしてWordPressにインポー…</span><span class="lc-site">晴歩雨描 · <time>2022-08-16</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220817/20220817223605.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card has-thumb" href="../../../2022/08/08/122922.html"><span class="lc-body"><span class="lc-title">WordPress）画像格納ディレクトリ確認。はてなブログからのインポートテスト。</span><span class="lc-desc">先日、自宅のWindowsPCにWordPressをインストールした。 画像格納ディレクトリ確認、はてなブログからのインポート、他、試しごと…</span><span class="lc-site">晴歩雨描 · <time>2022-08-08</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220807/20220807123827.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card has-thumb" href="../../../2022/08/11/231938.html"><span class="lc-body"><span class="lc-title">WordPress）はてなブログからインポートした記事にアイキャッチ画像を一括登録。</span><span class="lc-desc">............ 自分のはてなブログではすべてアイキャッチ画像を登録しているので、エクスポートファイルの「IMAGE:」には必ずファ…</span><span class="lc-site">晴歩雨描 · <time>2022-08-11</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220811/20220811231738.jpg" alt="" loading="lazy"></span></a></p></div></article>
+</body>
+</html>

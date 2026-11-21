@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Excel）全セル内の特定の文字列のみ色を付ける方法。マクロ作成し、クイックアクセスツールバーに登録。 - 晴歩雨描</title>
+<link rel="stylesheet" href="../../../../style.css">
+</head>
+<body>
+<p class="site-nav"><a href="../../../../index.html">← 晴歩雨描</a></p><article><h1>Excel）全セル内の特定の文字列のみ色を付ける方法。マクロ作成し、クイックアクセスツールバーに登録。</h1><p class="meta">2026-11-18 · <a href="../../../../category/c8.html">コンピュータ</a></p><div class="entry-body"><p>Excelで、全セル内の特定の一部の文字列のみ色を付ける機能は標準にはない。VBA（マクロ）を作成し、クイックアクセスツールバーに登録する方法を使う。</p>
+<h5 id="-VBAマクロ作成-">【 VBA（マクロ）作成 】</h5>
+<p><span style="color: rgb(221, 131, 12);">※ VBAマクロをブックに保存して使う場合は、Excelの拡張子を、「xlsx」から「xlsm」にしておく必要がある（？）。</span></p>
+<p>キーボードの Alt + F11 キーを押して、VBAエディタ（Visual Basic Editor）を起動。</p>
+<p>メニューバーの [挿入] ＞ [標準モジュール]をクリック。</p>
+<p>開いた白いコード入力ウィンドウに、以下のコードをそのまま貼り付ける。以下のマクロは対象セルを選択する必要はない。すべてのセル（使用されている範囲）が自動的に対象になる。</p>
+<p>画面右上にある × ボタンを押して、VBAエディタ（Visual Basic Editor）を閉じる。（コードは自動的に保存される。）</p>
+<pre>Sub HighlightSpecificTextPrompt()
+    Dim ws As Worksheet
+    Dim findText As String
+    Dim targetCell As Range
+    Dim cellText As String
+    Dim pos As Long
+    Dim colorChoice As Variant
+    Dim fontColor As Long
+    Dim isBold As Boolean
+    Dim colorName As String
+
+    ' --- 1. 検索する文字列を入力 ---
+    findText = Application.InputBox( _
+        Prompt:="検索してハイライトする文字列を入力してください:", _
+        Title:="文字列の検索と書式設定", _
+        Type:=2)
+
+    If findText = "False" Or findText = "" Then Exit Sub
+
+    ' --- 2. 色の選択ポップアップ ---
+    colorChoice = Application.InputBox( _
+        Prompt:="変更する色の番号を入力してください:" &amp; vbCrLf &amp; vbCrLf &amp; _
+                "  1 : 赤" &amp; vbCrLf &amp; _
+                "  2 : 青" &amp; vbCrLf &amp; _
+                "  3 : 緑" &amp; vbCrLf &amp; _
+                "  4 : 黒(太字なし・リセット用)", _
+        Title:="色の選択", _
+        Default:=1, _
+        Type:=1) ' Type 1 = 数値入力
+
+    ' キャンセル時は False が返る
+    If VarType(colorChoice) = vbBoolean Then Exit Sub
+
+    Select Case CLng(colorChoice)
+        Case 1
+            fontColor = RGB(255, 0, 0): isBold = True: colorName = "赤"
+        Case 2
+            fontColor = RGB(0, 0, 255): isBold = True: colorName = "青"
+        Case 3
+            fontColor = RGB(0, 176, 80): isBold = True: colorName = "緑"
+        Case 4
+            fontColor = RGB(0, 0, 0): isBold = False: colorName = "黒(リセット)"
+        Case Else
+            MsgBox "1〜4の数字を入力してください。", vbExclamation
+            Exit Sub
+    End Select
+
+    ' --- 3. 検索して書式を適用 ---
+    Set ws = ActiveSheet
+    Application.ScreenUpdating = False
+
+    For Each targetCell In ws.UsedRange
+        If Not IsEmpty(targetCell.Value) Then
+            If Not IsError(targetCell.Value) Then
+                cellText = CStr(targetCell.Value)
+
+                pos = InStr(1, cellText, findText, vbTextCompare)
+                Do While pos &gt; 0
+                    With targetCell.Characters(pos, Len(findText)).Font
+                        .Color = fontColor
+                        .Bold = isBold
+                    End With
+                    pos = InStr(pos + 1, cellText, findText, vbTextCompare)
+                Loop
+            End If
+        End If
+    Next targetCell
+
+    Application.ScreenUpdating = True
+    MsgBox "「" &amp; findText &amp; "」を【" &amp; colorName &amp; "】に変更しました。", vbInformation
+End Sub</pre>
+<p><em>クイックアクセスツールバーに登録する。</em> Excelの上部にある「クイックアクセスツールバー」にこのマクロを登録しておく。そうすれば、ボタンクリックでダイアログを呼び出せるようになり、VBAエディタを開く必要がなくなる。</p>
+<h5 id="-クイックアクセスツールバー-登録手順-">【 クイックアクセスツールバー 登録手順 】</h5>
+<ol>
+<li><strong>Excelのオプション画面を開く</strong>
+<ul>
+<li>Excel画面の上部メニューにある <strong>[ファイル]</strong> タブをクリック。</li>
+<li>左側の一番下にある <strong>[オプション]</strong> をクリック。</li>
+</ul>
+</li>
+<li><strong>「クイックアクセスツールバー」の設定画面を表示する</strong>
+<ul>
+<li>開いたウィンドウの左側メニューから <strong>[クイックアクセスツールバー]</strong> を選択。</li>
+</ul>
+</li>
+<li><strong>マクロを選択して追加する<br></strong>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20261118/20261118113553.png" width="936" height="678" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<ul>
+<li>画面中央にある「コマンドの選択」のプルダウンをクリックし、<strong>[マクロ]</strong> に変更。</li>
+<li>リストの中に先ほど作成したマクロ <code>HighlightSpecificTextPrompt</code> が表示されるので、クリックして選択。</li>
+<li>中央にある <strong>[追加 &gt;&gt;]</strong> ボタンをクリックすると、右側の「クイックアクセスツールバーのユーザー設定」の一覧にマクロが移動。</li>
+</ul>
+</li>
+<li><strong>アイコンや名前を変更する（任意）</strong>
+<ul>
+<li>右側のリストに追加したマクロを選択した状態で、右下の <strong>[変更...]</strong> ボタンを押す。</li>
+<li>好みのアイコンを選び、「表示名」をわかりやすい名前（例：「選択文字色付け」など）に書き換えて <strong>[OK]</strong> を押す。<br><br></li>
+</ul>
+</li>
+<li><strong>設定を保存する</strong>
+<ul>
+<li>ウィンドウ右下の <strong>[OK]</strong> ボタンをクリックして設定画面を閉じる。</li>
+</ul>
+</li>
+</ol>
+<h5 id="-クイックアクセスツールバー-使い方-">【 クイックアクセスツールバー 使い方 】</h5>
+<ul>
+<li>Excel画面の左上（または上部）にあるクイックアクセスツールバーに、先ほど設定したアイコンが表示される。<br><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20261118/20261118114829.png" width="372" height="117" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></li>
+<li>どのシートを開いているときでも、そのボタンを <strong>1回クリック</strong> すれば、検索文字を入力するポップアップが即座に起動する。<br>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20261118/20261118114958.png" width="272" height="129" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+</li>
+</ul>
+<h5 id="-結果サンプル-">【 結果サンプル 】</h5>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20261118/20261118132209.png" width="524" height="307" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<h5 id="-Excel-ファイルを別フォルダーにコピーしてマクロを使用するとエラーになる-">【 Excel ファイルを別フォルダーにコピーしてマクロを使用するとエラーになる 】</h5>
+<p><em><span style="color: rgb(221, 131, 12);">※ 作成したExcelを別フォルダーに移動して使うとエラーが出る。</span></em></p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20261118/20261118135439.jpg" width="389" height="176" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<p><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20261118/20261118135442.jpg" width="361" height="178" loading="lazy" title="" class="hatena-fotolife" itemprop="image"></p>
+<p>これを解決するためには、個人用マクロブック（PERSONAL.XLSB）を作成する必要があるらしいが、それをしても、「クイックアクセスツールバーのボタン（アイコン）」はパソコン本体（レジストリや設定ファイル）に保存されているため、別PCには引き継がれないらしい。</p>
+<p><a class="link-card has-thumb" href="../19/102259.html"><span class="lc-body"><span class="lc-title">Excel）全セル内の特定の文字列のみ色を付ける方法（一括処理版）。マクロ作成。</span><span class="lc-desc">昨日、「全セル内の特定の文字列のみ色を付ける方法」の記事を書いた。 今回、 色を付ける文字列を毎回指定する方法ではなく、Excelシートに対…</span><span class="lc-site">晴歩雨描 · <time>2026-11-19</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20261119/20261119102153.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card has-thumb" href="../../../2025/01/29/130631.html"><span class="lc-body"><span class="lc-title">JavaScript）ExcelからHTML&lt;table&gt;へ変換するツール作成。ChatGPTで作成。</span><span class="lc-desc">JavaScriptで「Excel to HTML&lt;table&gt;変換」ツール作成。ChatGPTで作成。 ExcelからHTML&lt;table…</span><span class="lc-site">晴歩雨描 · <time>2025-01-29</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20250129/20250129134540.png" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card has-thumb" href="../../../2023/02/24/172717.html"><span class="lc-body"><span class="lc-title">AI）「ChatGPT」で、Excelについて聞いてみた。（曜日の列の作成方法と色を付ける方法）（コード生成）</span><span class="lc-desc">先程、「ChatGPT」で、HTMLとCSSとJavaScriptでアートを作らせてみた。 今回、Excelについて聞いてみた。日付の列に曜…</span><span class="lc-site">晴歩雨描 · <time>2023-02-24</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20230224/20230224172300.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card has-thumb" href="../../../2022/07/12/144002.html"><span class="lc-body"><span class="lc-title">Excel）同じ日付のデータの中から最大値を取り出す。</span><span class="lc-desc">Excelで、同じ日付のデータの中から最大値を取り出す方法の備忘録。 先程、「神戸の暑さ指数一覧」を作成した。 これは、「環境省熱中症予防情…</span><span class="lc-site">晴歩雨描 · <time>2022-07-12</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220712/20220712142956.jpg" alt="" loading="lazy"></span></a></p>
+<p><a class="link-card has-thumb" href="../../../2022/07/05/224047.html"><span class="lc-body"><span class="lc-title">Microsoft Office（Word、Excel） の保護ビューを解除しないで印刷する方法。</span><span class="lc-desc">「 Microsoft Office 」のWordやExcelのファイルが、「 保護ビュー 」になっていると印刷もできない。 【方法１】 W…</span><span class="lc-site">晴歩雨描 · <time>2022-07-05</time></span></span><span class="lc-thumb"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/art2nd/20220705/20220705223117.jpg" alt="" loading="lazy"></span></a></p></div></article>
+</body>
+</html>
